@@ -1,0 +1,12 @@
+Player
+WindowPatternCard
+Die
+FavourToken
+ToolCard
+PublicObjectiveCard
+RoundTrack
+ScoreTrack
+ScoreMarker
+Game
+Round
+Color (ENUM)
