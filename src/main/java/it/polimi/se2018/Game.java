@@ -2,16 +2,22 @@ package it.polimi.se2018;
 
 import it.polimi.se2018.toolcards.ToolCard;
 
+import javax.tools.Tool;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Game {
     private DiceBag diceBag;
-    private PrivateObjectiveCardDeck privateObjectiveCardDeck;
-    private PublicObjectiveCardDeck publicObjectiveCardDeck;
+    private ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck;
+
+    private ArrayList<PublicObjectiveCard> publicObjectiveCardDeck;
     private ArrayList<PublicObjectiveCard> extractedPublicObjectiveCard;
-    private ToolCardDeck toolCardDeck;
+
+    private ArrayList<ToolCard> toolCardDeck;
     private ArrayList<ToolCard> extractedToolCard;
-    private DoubleWindowPatternCardDeck doubleWindowPatternCardDeck;
+
+    private ArrayList<WindowPatternCard> windowPatternCardDeck;
+
     private ArrayList<Player> gamePlayers;
     private RoundTrack roundTrack;
     private Round currentRound;
