@@ -1,5 +1,7 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.toolcards.ToolCard;
+
 import java.util.ArrayList;
 
 public class Game {
