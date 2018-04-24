@@ -1,6 +1,6 @@
 package it.polimi.se2018;
 
-public class PrivateObjectCard {
+public class PrivateObjectiveCard {
 
     private String description;
     private COLOR color;
