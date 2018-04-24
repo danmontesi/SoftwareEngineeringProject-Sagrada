@@ -3,9 +3,19 @@ package it.polimi.se2018;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Die {
-    private int id;
     private COLOR color;
     private int value;
+    private static int[] counts = new int[5];
+
+    //generate a random value die with given color
+    public Die(COLOR color) {
+
+        //ATTENZIONE: NECESSARIO IL CONTROLLO CHE NON CI SIANO PIU' DI 18 DADI PER OGNI COLORE
+
+        this.color = color;
+        this.value = ThreadLocalRandom.current().nextInt(1, 7);
+        counts[color.ordinal()] += 1;
+    }
 
     public void flip(){
         this.value = 7 - this.value;
