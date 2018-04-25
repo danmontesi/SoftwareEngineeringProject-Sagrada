@@ -7,12 +7,15 @@ public class Round {
 
     private DraftPool draftPool;
     private int roundNumber;
-    private Player currentPlayer;
+    private Player currentPlayer = null;
     private Player firstPlayer;
     private HashMap<String, Integer> countPlayersTurns;
     private int turnCount;
 
-
+/**
+ *  Assign next currentPlayer to round
+ *  if currentPlayer == null, currentPlayer will be the first player
+ */
     public void nextPlayer() {
 
     }

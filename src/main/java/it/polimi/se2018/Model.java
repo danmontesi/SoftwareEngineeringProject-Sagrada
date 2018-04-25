@@ -3,10 +3,24 @@ package it.polimi.se2018;
 import it.polimi.se2018.toolcards.ToolCard;
 
 import javax.tools.Tool;
+import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Game {
+
+/** TODO: Problemi nel capire come interagisce il client con il server.
+ *
+ * TODO Il server passa il Model al client, per permettere di chiamare anche i metodi toString del model?
+ *
+ * TODO: Capire dove viene creato il model, guarda come funziona Tris, guarda gli Event-based, pensa ai problemi di concorrenza
+ *
+ *
+ * CHANGES: Chiamato model al posto di Game per coerenza del pattern
+ * Aggiunte alcune classi model-view-controller
+ *
+ */
+
+public class Model {
     private DiceBag diceBag;
     private ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck;
 
@@ -22,13 +36,13 @@ public class Game {
     private RoundTrack roundTrack;
     private Round currentRound;
     private ArrayList<Round> gameRounds;
-    public static Game instance;
+    public static Model instance;
 
-    private Game game(){
+    private Model game(){
 
     }
 
-    public static Game getInstance(){
+    public static Model getInstance(){
 
     }
 
@@ -36,15 +50,24 @@ public class Game {
 
     }
 
-    public void nextRound(){
-
+    public void nextRound() {
+        if (gameRounds.size() == 0) {
+            //notifyWinner();
+        } else {
+            currentRound = gameRounds.remove(0);
+            currentRound.nextPlayer();
+        }
     }
 
     public Round createGameRound(){
 
     }
 
-    public ArrayList<PublicObjectiveCard> getExtractedPublicObjectiveCard{
+    public ArrayList<PublicObjectiveCard> getExtractedPublicObjectiveCard(){
+
+    }
+
+    public ArrayList<WindowPatternCard> getExtractedWindowPatternCard(int toBeExtracted){
 
     }
 
