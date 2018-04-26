@@ -41,6 +41,10 @@ public class Round {
         return currentPlayer;
     }
 
+    public DraftPool getDraftPool() {
+        return draftPool;
+    }
+
     public Player getFirstPlayer() {
         return firstPlayer;
     }

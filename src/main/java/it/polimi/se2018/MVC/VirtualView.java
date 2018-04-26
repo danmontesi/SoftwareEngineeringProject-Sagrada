@@ -1,5 +1,6 @@
 package it.polimi.se2018.MVC;
 
+import it.polimi.se2018.Die;
 import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
 import javafx.beans.InvalidationListener;
@@ -90,6 +91,7 @@ public class VirtualView implements Observer, Observable {
 
     }
 
+    //TODO maybe needs an assignConnectionToPlayers!!!!
     public void assignViewToPlayers(CLIView one, CLIView two, CLIView three, CLIView four){
         Player p1 = new Player(); //TODO completa
         Player p2 = new Player();
@@ -109,6 +111,49 @@ public class VirtualView implements Observer, Observable {
     public void addListener(InvalidationListener listener) {
 
     }
+
+    /** These methods belongs to a move
+     *
+     * @param dieToPlace
+     * @param row
+     * @param column
+     * @param player
+     */
+
+    public void performMoveToServer(Die dieToPlace, int row, int column, Player player){
+        controller.performMoveToServer(dieToPlace, row, column, player);
+    }
+
+    public void notifyCorrectMoveServerToClient(Player playerToNotify){
+        //TODO Need A Connection
+        // playerViewHashMap.get(playerToNotify).notifyCorrectMove()
+    }
+
+    public void notifyIncorrectMoveServerToClient(Player playerToNotify){
+        //TODO Need A Connection AND CLIview function
+        // playerViewHashMap.get(playerToNotify).notifyCorrectMove()
+    }
+
+    public void notifyNotYourTurn(){
+        //TODO Need A Connection AND CLIview function
+        // have just to show something (that is only when I have a GUI
+    }
+
+    /**
+     * These methods belongs to ToolAction
+     *
+     */
+
+    public void performToolAction(int numberOfToolToUse, Player player){
+        controller.performToolActionToServer(numberOfToolToUse, player){
+
+        }
+    }
+
+
+
+
+
 
     @Override
     public void removeListener(InvalidationListener listener) {

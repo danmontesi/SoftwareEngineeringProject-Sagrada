@@ -13,7 +13,22 @@ public class WindowPatternCard {
 
     }
 
-    public void placeDie(Die d, int row, int column, boolean colorRestriction, boolean valueRestriction,
+    /**
+     * edit @danmontesi
+     * placeDie will return boolean instead of void for usability.
+     * In this way, if it returns true (= correct placement), automatically modify permanently the model and call next Turn
+     * if it returns false (= incorrect plaement), model doesn't change and i will be able to notify the view of the incorrect
+     * move and restart the player's turn
+     *
+     * @param d
+     * @param row
+     * @param column
+     * @param colorRestriction
+     * @param valueRestriction
+     * @param placementRestriction
+     * @return
+     */
+    public boolean placeDie(Die d, int row, int column, boolean colorRestriction, boolean valueRestriction,
     boolean placementRestriction){
 
     }

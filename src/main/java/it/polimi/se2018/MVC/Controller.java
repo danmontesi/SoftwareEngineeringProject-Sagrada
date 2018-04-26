@@ -1,7 +1,9 @@
 package it.polimi.se2018.MVC;
 
+import it.polimi.se2018.Die;
 import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
+import it.polimi.se2018.WindowPatternCard;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -57,6 +59,39 @@ public class Controller implements Observer {
         // la assegno
 
 
+    }
+
+    public void performMoveToServer(Die dieToPlace, int row, int column, Player player) {
+        if (model.getCurrentRound.getCurrentPlayer() == player) {
+            WindowPatternCard patternCardWhereToPlaceDie = model.getCurrentRound.getCurrentPlayer().getWindowPatternCard();
+            if (patternCardWhereToPlaceDie.placeDie(dieToPlace, row, column,
+                    false, false, false)) {
+                view.notifyCorrectMoveServerToClient(player);
+            } else {
+                view.notifyIncorrectMoveServerToClient(player);
+            }
+        } else { // Case it's not player's turn
+            view.notifyNotYourTurn();
+        }
+    }
+
+        public void performToolActionToServer(int numberOfToolToUse, Player player){
+            if (player.getTokens() >
+                    (model.getExtractedToolCard.get(numberOfToolToUse).getTokenCounts()>0 ? 1: 2)){
+                //posso utilizzarlo
+
+                if (patternCardWhereToPlaceDie.placeDie(dieToPlace, row, column,
+                        false, false, false)){
+                    view.notifyCorrectMoveServerToClient(player);
+                }
+                else
+                {
+                    view.notifyIncorrectMoveServerToClient(player);
+                }
+            }
+            else{ // Case it's not player's turn
+                view.notifyNotYourTurn();
+            }
     }
 
     @Override
