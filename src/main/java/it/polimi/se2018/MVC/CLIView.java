@@ -3,6 +3,9 @@ package it.polimi.se2018.MVC;
 import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
 import it.polimi.se2018.WindowPatternCard;
+import it.polimi.se2018.toolcards.CircularCutter;
+import it.polimi.se2018.toolcards.Gavel;
+import it.polimi.se2018.toolcards.RoughingForceps;
 import javafx.beans.Observable;
 
 import java.util.ArrayList;
@@ -106,6 +109,22 @@ public class CLIView implements Observable, Observer{
         System.out.println("Now wait until it's your turn");
     }
 
+    /**
+     * Tools methods: i call useTool( param)
+     * Like a Strategy design pattern, thanks to paternity, it will call the right method
+     * @param tool
+     */
+
+    public void useTool(RoughingForceps tool){
+        // Things depends on the tool to use
+    }
+
+    public void useTool(CircularCutter tool){
+        // Things depends on the tool to use
+    }
+    public void useTool(Gavel tool){
+        // Things depends on the tool to use
+    }
     public void waitForYourTurn(Model model){
         model.toString();
         System.out.println("You have to wait until player" + model.getCurrentRound.getCurrentPlayer() + "finishes");
