@@ -3,6 +3,7 @@ package it.polimi.se2018.MVC;
 import it.polimi.se2018.Die;
 import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
+import it.polimi.se2018.toolcards.ToolCard;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
@@ -150,7 +151,13 @@ public class VirtualView implements Observer, Observable {
         }
     }
 
+    public void notifyAbleToUseTool(ToolCard tool, Player player){
+        // TODO Advise ... with connection
+    }
 
+    public void notifyNotAbleToUseTool(Player player){
+        // TODO Advise ... with connection
+    }
 
 
 
@@ -160,8 +167,14 @@ public class VirtualView implements Observer, Observable {
 
     }
 
-    @Override
-    public void update(java.util.Observable o, Object arg) {
-
+    // TODO EDIT
+    public void update(String message) {
+        System.out.println("Ricevuto " + message);
+        try{
+            String[] inputs = message.split(",");
+            handleMove(Integer.valueOf(inputs[0]), Integer.valueOf(inputs[1]));
+        }catch(IllegalArgumentException e){
+            clientConnection.asyncSend("Error!");
+        }
     }
 }

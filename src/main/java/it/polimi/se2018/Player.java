@@ -7,18 +7,26 @@ public class Player {
     private PrivateObjectiveCard privateObjectiveCard;
     private String username;
     private int tokens;
-    private int score;
 
     public int calcuateTotalScore(){
-
+        return calculatePrivateObjectiveScore() - calculatePointPenalization();
     }
 
     public int calculatePrivateObjectiveScore(){
-
+        return privateObjectiveCard.calculateScore();
     }
 
-    public void calculatePublicObjectiveScore(ArrayList<PublicObjectiveCards> publicObjectiveCards){
+    /** EDIT:
+     * Spostato calculatePublicObjScore nel model, in quanto serve il model per sapere le carte pubbliche.
+     * aggiunto calculatePenalizationScore()
+     */
 
+    public int calculatePointPenalization(){
+        int pointsToDecrease=0;
+        for (Cell c : windowPatternCard.getSchema()){
+            pointsToDecrease += (c.getAssociatedDie()==null? 1 : 0);
+        }
+        return pointsToDecrease;
     }
 
     public WindowPatternCard getWindowPatternCard(){
@@ -37,10 +45,6 @@ public class Player {
         return tokens;
     }
 
-    public int getScore(){
-        return score;
-    }
-
     public void setPrivateObjectiveCard(PrivateObjectiveCard privateObjToBeSet){
         this.privateObjectiveCard = privateObjToBeSet;
     }
@@ -50,14 +54,6 @@ public class Player {
     }
 
     public void decreaseTokens(int toBeDecreased){
-
-    }
-
-    public Die chooseDie(DraftPool draftPool){
-
-    }
-
-    public void useTool(String usedToolID){
-
+        tokens -= toBeDecreased;
     }
 }

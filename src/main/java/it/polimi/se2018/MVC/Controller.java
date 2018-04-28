@@ -77,20 +77,13 @@ public class Controller implements Observer {
 
         public void performToolActionToServer(int numberOfToolToUse, Player player){
             if (player.getTokens() >
-                    (model.getExtractedToolCard.get(numberOfToolToUse).getTokenCounts()>0 ? 1: 2)){
+                    (model.getExtractedToolCard.get(numberOfToolToUse).getTokenCounts()>0 ? 1: 2)) {
                 //posso utilizzarlo
-
-                if (patternCardWhereToPlaceDie.placeDie(dieToPlace, row, column,
-                        false, false, false)){
-                    view.notifyCorrectMoveServerToClient(player);
-                }
-                else
-                {
-                    view.notifyIncorrectMoveServerToClient(player);
-                }
+                player.decreaseTokens(model.getExtractedToolCard.get(numberOfToolToUse).getTokenCounts()>0 ? 1: 2);
+                view.notifyAbleToUseTool(model.getExtractedToolCard.get(numberOfToolToUse), player);
             }
-            else{ // Case it's not player's turn
-                view.notifyNotYourTurn();
+            else {
+                view.notifyNotAbleToUseTool(player);
             }
     }
 
