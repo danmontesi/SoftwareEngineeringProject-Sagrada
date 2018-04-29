@@ -13,9 +13,8 @@ import java.util.Observer;
 import java.util.Set;
 
 /**
- * this class is the view for the server
- * it occupies to notify client View by calling methods on it
- * contains the CLIENT View pointer
+ *
+ * To- REDO
  */
 public class VirtualView implements Observer, Observable {
 
@@ -113,17 +112,6 @@ public class VirtualView implements Observer, Observable {
 
     }
 
-    /** These methods belongs to a move
-     *
-     * @param dieToPlace
-     * @param row
-     * @param column
-     * @param player
-     */
-
-    public void performMoveToServer(Die dieToPlace, int row, int column, Player player){
-        controller.performMoveToServer(dieToPlace, row, column, player);
-    }
 
     public void notifyCorrectMoveServerToClient(Player playerToNotify){
         //TODO Need A Connection

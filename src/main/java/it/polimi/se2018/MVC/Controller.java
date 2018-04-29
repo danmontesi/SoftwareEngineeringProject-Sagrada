@@ -5,22 +5,28 @@ import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
 import it.polimi.se2018.WindowPatternCard;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Controller implements Observer {
+public class Controller extends Observable implements Observer {
 
     private Model model;
-    private VirtualView view;
+    private HashMap<Player, ClientController> playerClientControllerMap;
     private ArrayList<Player> orderedPlayers;
+    private ArrayList<ClientController> clients;
+    private ArrayList<ClientController> disconnectedClients;
+    private int roundNumber;
+    private ServerInterface server;
 
 
 
-    public Controller(Model model, CLIView view){
-        this.model = model;
-        this.view = view;
-        view.attach(this);
+
+    public Controller(ArrayList<ClientConnection> clients, ServerInterface server){
+        this.clients = clients;
+        this.server = server;
     }
 
 
@@ -28,6 +34,82 @@ public class Controller implements Observer {
      * do per scontato che il Model sia già stato costruito
      * @param orderedPlayers
      */
+
+    /**
+     * Create a match with 4 players. It calls initializePlayers() and setInitialPlayer()
+     */
+    public void initializeGame() {
+
+    }
+
+    /**
+     * Call methods for starting the board of each player
+     * including:
+     * choose the WPattern Card
+     * ...
+     */
+    public void initializePlayers() {
+
+    }
+
+    /**
+     * Inizialise the next player for the turn
+     * eventually, if every player played twice, it calls passRound()
+     */
+    public void passTurn() {
+    }
+
+    /**
+     * Initialize next Round.
+     * eventually calls endGame if rounds are 10
+     */
+    public void passRound() {
+    }
+
+
+    /**
+     * Calls method for initializing a new round
+     * -> send to all players a new RefreshBoardCommand
+     * -> extract Dices ..
+     * -> set first player and
+     */
+    public void startRound() {
+    }
+
+    /**
+     * Calculate total score of plsyers and determine who is the winner
+     */
+    public void endGame() {
+
+    }
+
+    /**
+     * Generally returns true if need ad allowance to perform a command
+     * @return
+     */
+    public boolean isAllowed(){
+
+    }
+
+    public void sendCommandToAllPlayers(ServerToClientCommand command){
+
+    }
+
+    public void sendCommandToPlayer(Player player, ServerToClientCommand command){
+
+    }
+
+    public void sendCommandToAllExceptCurrent(ServerToClientCommand command){
+
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
+
+
+/*
     public void startGame(ArrayList<Player> orderedPlayers) {
         // assegno i players al model e l'ordine di gioco
         this.orderedPlayers = orderedPlayers;
@@ -39,13 +121,12 @@ public class Controller implements Observer {
             if (p == orderedPlayers.get(0)) {
                 model.nextRound();
                 view.startTurn(p);
-            }
-            else
+            } else
                 view.waitForYourTurn(p);
         }
 
         playerViewHashMap.get(playerToInitializeGame).initializeGame();
-
+    }
         // Methods that calls the Client's View...
         // decido chi comincia per primo e chiamo il metodo del suo view
 
@@ -59,7 +140,10 @@ public class Controller implements Observer {
         // la assegno
 
 
-    }
+
+
+
+
 
     public void performMoveToServer(Die dieToPlace, int row, int column, Player player) {
         if (model.getCurrentRound.getCurrentPlayer() == player) {
@@ -87,12 +171,8 @@ public class Controller implements Observer {
             }
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
 
-    }
+    */
 
 
-
-    }
 }

@@ -56,7 +56,7 @@ public class Cell {
         return colorConstraint;
     }
 
-    public int getvalueConstraint(){
+    public Integer getvalueConstraint(){
         return valueConstraint;
     }
 

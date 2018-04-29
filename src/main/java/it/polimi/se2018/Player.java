@@ -8,6 +8,7 @@ public class Player {
     private String username;
     private int tokens;
 
+
     public int calcuateTotalScore(){
         return calculatePrivateObjectiveScore() - calculatePointPenalization();
     }

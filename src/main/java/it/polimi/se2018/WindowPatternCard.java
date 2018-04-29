@@ -37,6 +37,7 @@ public class WindowPatternCard {
      */
     public boolean placeDie(Die d, int row, int column, boolean colorRestriction, boolean valueRestriction,
     boolean placementRestriction){
+        if (this.getCell(row,column).getAssociatedDie()!= null) { return false; }
         if (colorRestriction) {
             if (!checkColorRestricion(this.getCell(row, column), d)) {
                 return false;
@@ -56,20 +57,22 @@ public class WindowPatternCard {
         return true;
     }
 
-    //What if the index is not valid?
+    //What if the index is not valid? -> The controller checks it :)
     public Die removeDie(int row, int column){
         return schema.get(row*5+column).removeDie();
     }
 
     //TODO: funziona solo per le caselle interne...
-    public boolean checkPlacementRestriction(WindowPatternCard w, Cell c){
+    public boolean checkPlacementRestriction(WindowPatternCard w, Cell c){ // 'w' can be replaced with 'this'
         if (w.isEmpty()){
             int index = c.getIndex();
-            if((index == 0) || (index == 4) || (index == 15) || (index == 19)){
-                return true;
+            // if cell is internal -> false
+            if( ( (index%5) >= 1 ) && ((index%5) <= 3)
+                    && ((index/5) >= 1 ) && ((index/5)<= 4) ){
+                return false;
             }
             else
-                return false;
+                return true;
         }
 
         int adjacents[] = new int[8];
@@ -95,6 +98,7 @@ public class WindowPatternCard {
     }
 
     public boolean checkColorRestricion(Cell c, Die d){
+        if (c.getColorConstraint()==null) { return true; }
         if(c.getColorConstraint().equals(d.getColor())){
             return true;
         }
@@ -103,6 +107,7 @@ public class WindowPatternCard {
     }
 
     public boolean checkValueRestriction(Cell c, Die d){
+        if (c.getvalueConstraint() == null) { return true; }
         if(c.getvalueConstraint() == d.getValue()){
             return true;
         }
