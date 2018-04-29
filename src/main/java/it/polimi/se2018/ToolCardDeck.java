@@ -12,5 +12,4 @@ public class ToolCardDeck {
     public ToolCard extractCard(){
         return cards.remove(0);
     }
-
 }

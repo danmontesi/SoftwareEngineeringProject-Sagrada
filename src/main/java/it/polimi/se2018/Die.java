@@ -41,10 +41,6 @@ public class Die {
         this.value = value;
     }
 
-    public int getId(){
-        return id;
-    }
-
     public COLOR getColor(){
         return color;
     }

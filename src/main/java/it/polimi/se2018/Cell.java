@@ -2,30 +2,34 @@ package it.polimi.se2018;
 
 public class Cell {
     private COLOR colorConstraint;
-    private Integer numberConstraint;
+    private Integer valueConstraint;
     private Die associatedDie;
+    private int index;
 
-    //ATTENZIONE: E' NECESSARIO CONSIDERARE IL CONTROLLO DEI COLORI E DEI NUMERI SUI COSTRUTTORI
-    //AD ESEMPIO BISOGNA RESTITUIRE UN'ECCEZIONE SE IL NUMBER CONSTRAINT E' 7 O SE IL COLOR E' ORANGE
+    //Ale:
+    //ATTENZIONE: Ho cambiato numberConstraint con valueConstraint per coerenza con le altre classi
 
-    public Cell(COLOR colorConstraint, int numberConstraint) {
+    //ATTENZIONE: E' NECESSARIO CONSIDERARE IL CONTROLLO DEI NUMERI SUI COSTRUTTORI
+    //AD ESEMPIO BISOGNA RESTITUIRE UN'ECCEZIONE SE IL value CONSTRAINT E' 7
+
+    public Cell(COLOR colorConstraint, int valueConstraint) {
         this.colorConstraint = colorConstraint;
-        this.numberConstraint = numberConstraint;
+        this.valueConstraint = valueConstraint;
         }
 
     public Cell(COLOR colorConstraint) {
         this.colorConstraint = colorConstraint;
-        this.numberConstraint = null;
+        this.valueConstraint = null;
     }
 
-    public Cell(int numberConstraint) {
+    public Cell(int valueConstraint) {
         this.colorConstraint = null;
-        this.numberConstraint = numberConstraint;
+        this.valueConstraint = valueConstraint;
     }
 
     public Cell() {
         this.colorConstraint = null;
-        this.numberConstraint = null;
+        this.valueConstraint = null;
     }
 
     public void setAssociatedDie(Die toBeSetDie){
@@ -52,7 +56,11 @@ public class Cell {
         return colorConstraint;
     }
 
-    public int getNumberConstraint(){
-        return numberConstraint;
+    public int getvalueConstraint(){
+        return valueConstraint;
+    }
+
+    public int getIndex() {
+        return index;
     }
 }
