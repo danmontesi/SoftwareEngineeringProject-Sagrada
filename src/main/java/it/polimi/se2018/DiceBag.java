@@ -6,6 +6,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public class DiceBag {
     private ArrayList<Die> dice;
 
+    /**
+     * TODO Creates 90 dices adding them to the ArrayList
+     */
+    public DiceBag(){
+
+    }
+
     //extract a random die from the bag
     public Die extractDie(){
         int index = ThreadLocalRandom.current().nextInt(0,  dice.size());

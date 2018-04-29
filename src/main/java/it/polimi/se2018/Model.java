@@ -6,6 +6,7 @@ import javax.tools.Tool;
 import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /** TODO: Problemi nel capire come interagisce il client con il server.
@@ -38,7 +39,14 @@ public class Model {
     private ArrayList<Round> gameRounds;
     public static Model instance;
 
-    private Model game(){
+    /**
+     * Constructor must
+     *
+     * - call createRound()
+     * - initialize all attributes (creating new ones)
+     * - NOT TODO: initialize the decks-> we will do it later in the project
+     */
+    private Model(){
 
     }
 
@@ -46,7 +54,17 @@ public class Model {
 
     }
 
-    public Player calculateWinner(){
+    /**
+     * Calculates all scores of any player
+     * saves them in a HashMap, and returns it
+     *
+     * Scores of any player are calculated summing each Player.calculateTotalScore() and every score of
+     * the PublicObjectiveCards of extractedPublicObjectiveCard, calculated on each player
+     *
+     * @return HashMap
+     */
+
+    public HashMap<Player,Integer> playersScore(){
 
     }
 
@@ -59,6 +77,11 @@ public class Model {
         }
     }
 
+    /**
+     * Initialize all 10 rounds with all attributes except Dices (they are extracted every time)
+     *
+     * @return
+     */
     public Round createGameRound(){
 
     }
@@ -67,7 +90,14 @@ public class Model {
 
     }
 
-    public ArrayList<WindowPatternCard> getExtractedWindowPatternCard(int toBeExtracted){
+    /**
+     * return an ArrayList extracting first card of the windowPatternCardDeck
+     * always need to extract 4 cards together, so no need for a single 'extractOneCard' method
+     *
+     * @param toBeExtracted
+     * @return
+     */
+    public ArrayList<WindowPatternCard> extractWindowPatternCard(int toBeExtracted){
 
     }
 
@@ -79,11 +109,16 @@ public class Model {
 
     }
 
-    public Player getPlayer(int playersNumber){
+    /**
+     * get the Player of ArrayList "players" of the @param(playerNumber) position
+     * @param playerNumber
+     * @return
+     */
+    public Player getPlayer(int playerNumber){
 
     }
 
-    public Round getCurrentRound{
+    public Round getCurrentRound(){
 
     }
 
