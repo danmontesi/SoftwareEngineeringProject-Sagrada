@@ -75,22 +75,44 @@ public class WindowPatternCard {
                 return true;
         }
 
-        int adjacents[] = new int[8];
+        /**
+         * edit @danmontesi
+         * Instead of considering an Array of int, consider an ArrayList when I insert new numbers of adjacent
+         * adjacent are 8 only if the cell is internal (and so the cell passes all the controls)
+         *
+         * if i find at least an adjacent -> return true
+         */
+        ArrayList<Integer> adjacentCells = new ArrayList<>();
         int index = c.getIndex();
-        adjacents[0] = index-6;
-        adjacents[1] = index-5;
-        adjacents[2] = index-4;
-        adjacents[3] = index-1;
-        adjacents[4] = index+1;
-        adjacents[5] = index+4;
-        adjacents[6] = index+5;
-        adjacents[7] = index+6;
 
-        for (int i = 0; i < 8; i++){
-            if((adjacents[i] >= 0)&&(adjacents[i] <=19)){
-                if(this.schema.get(i).getAssociatedDie() != null){
-                    return true;
-                }
+        // 6 chained if clauses to determine if exists an adjacent cell
+
+        if (index/5 > 0){
+            adjacentCells.add(index/5 -1 + index%5);
+        }
+        if (index/5 > 0 && index%5 > 0){
+            adjacentCells.add(index/5 -1 + index%5 -1 );
+            adjacentCells.add(index/5  + index - 1 );
+        }
+        if (index/5 > 0 && index%5 < 4 ){
+            adjacentCells.add(index/5 -1 + index%5 + 1 );
+            adjacentCells.add(index/5  + index%5 + 1 );
+        }
+        if (index/5 < 3 ){
+            adjacentCells.add(index/5 +1 + index%5);
+        }
+        if (index/5 < 3 && index%5 > 0){ // oss: sto inserendo stessi indici multipli, però non comporta errori (farò il controllo solamente 2 volte in + )
+            adjacentCells.add(index/5 +1 + index%5 -1 );
+            adjacentCells.add(index/5  + index - 1 );
+        }
+        if (index/5 < 3 && index%5 < 4 ){ // vedi commento prec
+            adjacentCells.add(index/5 +1 + index%5 + 1 );
+            adjacentCells.add(index/5  + index%5 + 1 );
+        }
+
+        for (int adjIndex : adjacentCells){
+            if(this.schema.get(adjIndex).getAssociatedDie() != null){
+                return true;
             }
         }
         return false;
