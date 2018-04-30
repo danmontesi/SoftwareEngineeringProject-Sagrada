@@ -78,6 +78,18 @@ public class Model {
     }
 
     /**
+     * Assign the draftPool at the very beginning of the round
+     * <p>
+     * meanwhile, the round is built when the game starts
+     */
+    public void setDice() {
+        int n = 2*gamePlayers.size()+1;
+        for (int i=0; i<n; i++){
+            draftPool.placeDie(diceBag.extractDie());
+        }
+    }
+
+    /**
      * Initialize all 10 rounds with all attributes except Dices (they are extracted every time)
      *
      * @return
@@ -101,11 +113,11 @@ public class Model {
 
     }
 
-    public ArrayList<ToolCard> getExtractedToolCard{
+    public ArrayList<ToolCard> getExtractedToolCard(){
 
     }
 
-    public DiceBag getDiceBag{
+    public DiceBag getDiceBag(){
 
     }
 
