@@ -23,6 +23,7 @@ import java.util.HashMap;
 
 public class Model {
     private DiceBag diceBag;
+    private DraftPool draftPool;
     private ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck;
 
     private ArrayList<PublicObjectiveCard> publicObjectiveCardDeck;
