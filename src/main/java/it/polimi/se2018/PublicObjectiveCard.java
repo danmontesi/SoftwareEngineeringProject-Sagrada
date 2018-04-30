@@ -2,14 +2,14 @@ package it.polimi.se2018;
 
 import java.util.HashSet;
 
-public abstract class PublicObjectiveCard {
+public abstract class PublicObjectiveCard { //Probably has to be an Interface for correcting binding methods
 
     private String description;
     private int score;
     private String name;
 
     public int calculateScore(WindowPatternCard w){
-
+        return 0;
     }
 }
 
@@ -46,10 +46,10 @@ class ColorDiagonals extends PublicObjectiveCard {
 
 class RowColorVariety extends PublicObjectiveCard{
     private int score = 6;
-    private int total = 0;
 
     //what if a cell is empty?
     public int calculateScore(WindowPatternCard w){
+        int total = 0;
         for (int i = 0; i < 4; i++){
             HashSet<COLOR> colors = new HashSet<>();
             for(int j = 0; j < 5; j++){
@@ -65,9 +65,9 @@ class RowColorVariety extends PublicObjectiveCard{
 
 class ColumnColorVariety extends PublicObjectiveCard{
     private int score = 5;
-    private int total = 0;
     //what if a cell is empty?
     public int calculateScore(WindowPatternCard w){
+        int total = 0;
         for (int j = 0; j < 5; j++){
             HashSet<COLOR> colors = new HashSet<>();
             for(int i = 0; i < 4; i++){
@@ -83,9 +83,9 @@ class ColumnColorVariety extends PublicObjectiveCard{
 
 class ColumnShadeVariety extends PublicObjectiveCard{
     private int score = 4;
-    private int total = 0;
     //what if a cell is empty?
     public int calculateScore(WindowPatternCard w){
+        int total = 0;
         for (int j = 0; j < 5; j++){
             HashSet<Integer> numbers = new HashSet<>();
             for(int i = 0; i < 4; i++){
@@ -101,8 +101,8 @@ class ColumnShadeVariety extends PublicObjectiveCard{
 
 class ColorVariety extends PublicObjectiveCard{
     private int score = 4;
-    private int total = 0;
     public int calculateScore(WindowPatternCard w){
+        int total = 0;
         HashSet<COLOR> colors = new HashSet<>();
         for (int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
@@ -118,10 +118,9 @@ class ColorVariety extends PublicObjectiveCard{
 
 class RowShadeVariety extends PublicObjectiveCard{
     private int score = 5;
-    private int total = 0;
-
-    //what if a cell is empty?
+    //what if a cell is empty? --> Has to be checked
     public int calculateScore(WindowPatternCard w){
+        int total = 0;
         for (int i = 0; i < 4; i++){
             HashSet<Integer> numbers = new HashSet<>();
             for(int j = 0; j < 5; j++){
@@ -137,8 +136,8 @@ class RowShadeVariety extends PublicObjectiveCard{
 
 class ShadeVariety extends PublicObjectiveCard{
     private int score = 5;
-    private int total = 0;
     public int calculateScore(WindowPatternCard w){
+        int total = 0;
         HashSet<Integer> numbers = new HashSet<>();
         for (int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
@@ -154,8 +153,8 @@ class ShadeVariety extends PublicObjectiveCard{
 
 class DeepShade extends PublicObjectiveCard{
     private int score = 2;
-    private int total = 0;
     public int calculateScore(WindowPatternCard w){
+        int total = 0;
         HashSet<Integer> numbers = new HashSet<>();
         for (int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
@@ -171,8 +170,8 @@ class DeepShade extends PublicObjectiveCard{
 
 class MediumShade extends PublicObjectiveCard{
     private int score = 2;
-    private int total = 0;
     public int calculateScore(WindowPatternCard w){
+        int total = 0;
         HashSet<Integer> numbers = new HashSet<>();
         for (int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
@@ -188,8 +187,8 @@ class MediumShade extends PublicObjectiveCard{
 
 class  LightShade extends PublicObjectiveCard{
     private int score = 2;
-    private int total = 0;
     public int calculateScore(WindowPatternCard w){
+        int total = 0;
         HashSet<Integer> numbers = new HashSet<>();
         for (int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
