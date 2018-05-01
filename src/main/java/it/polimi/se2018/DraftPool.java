@@ -1,13 +1,11 @@
 package it.polimi.se2018;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DraftPool {
     private ArrayList<Die> dice;
 
-    //DA RIVEDERE
     public DraftPool() {
         this.dice = null;
     }
@@ -16,10 +14,18 @@ public class DraftPool {
         return dice.remove(diePosition);
     }
 
-    public Die switchDie(int diePosition, Die toBeSwitched){
+    //switch a die with a random one
+    public Die switchDie(Die toBeSwitched){
         int index = ThreadLocalRandom.current().nextInt(0,  dice.size());
         Die temp = dice.get(index);
         dice.set(index, toBeSwitched);
+        return temp;
+    }
+
+    //switch a die with a given one
+    public Die switchDie(int diePosition, Die toBeSwitched){
+        Die temp = dice.get(diePosition);
+        dice.set(diePosition, toBeSwitched);
         return temp;
     }
 
@@ -29,9 +35,8 @@ public class DraftPool {
 
     //roll all dice in the DraftPool
     public void rollDice(){
-        Iterator<Die> iterator = dice.iterator();
-        while(iterator.hasNext()){
-            iterator.next().roll();
+        for (Die aDice : dice) {
+            aDice.roll();
         }
     }
 }

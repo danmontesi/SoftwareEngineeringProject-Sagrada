@@ -10,7 +10,7 @@ public class Die {
     //generate a random value die with given color
     public Die(COLOR color) {
 
-        //ATTENZIONE: NECESSARIO IL CONTROLLO CHE NON CI SIANO PIU' DI 18 DADI PER OGNI COLORE
+        //ATTENTION: static array counts could interfere with multiple games
 
         this.color = color;
         this.value = ThreadLocalRandom.current().nextInt(1, 7);

@@ -11,11 +11,11 @@ public class DiceBag {
      */
     public DiceBag(){
         for (int i=0; i<90; i+=5){
-            dice.set(i, new Die(COLOR.RED));
-            dice.set(i+1, new Die(COLOR.GREEN));
-            dice.set(i+2, new Die(COLOR.VIOLET));
-            dice.set(i+3, new Die(COLOR.BLUE));
-            dice.set(i+4, new Die(COLOR.YELLOW));
+            dice.add(new Die(COLOR.RED));
+            dice.add(new Die(COLOR.GREEN));
+            dice.add(new Die(COLOR.VIOLET));
+            dice.add(new Die(COLOR.BLUE));
+            dice.add(new Die(COLOR.YELLOW));
         }
     }
 
