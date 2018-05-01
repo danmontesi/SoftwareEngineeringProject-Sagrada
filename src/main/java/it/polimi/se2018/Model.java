@@ -7,6 +7,7 @@ import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 /** TODO: Problemi nel capire come interagisce il client con il server.
@@ -47,12 +48,17 @@ public class Model {
      * - initialize all attributes (creating new ones)
      * - NOT TODO: initialize the decks-> we will do it later in the project
      */
-    private Model(){
-
+    private Model( ArrayList<Player> players){
+        gamePlayers = players;
+        gameRounds = createRound();
+        currentRound.setFirstPlayer(gamePlayers.get(0));
+        diceBag = new DiceBag();
+        roundTrack = new RoundTrack();
+        draftPool = new DraftPool();
     }
 
     public static Model getInstance(){
-
+        return instance;
     }
 
     /**
@@ -65,8 +71,20 @@ public class Model {
      * @return HashMap
      */
 
-    public HashMap<Player,Integer> playersScore(){
+    public int playerScore(Player player) {
+        int publicObjectiveScore = 0;
+        for (int i=0; i<3; i++){
+            publicObjectiveScore += extractedPublicObjectiveCard.get(i).calculateScore(player.getWindowPatternCard());
+        }
+        return player.calcuateTotalScore() + publicObjectiveScore;
+    }
 
+    public HashMap<Player,Integer> playersScore() {
+        HashMap<Player, Integer> playersScore = null;
+        for (int i=0; i<gamePlayers.size(); i++){
+            playersScore.put(gamePlayers.get(i), playerScore(gamePlayers.get(i)));
+        }
+        return playersScore;
     }
 
     public void nextRound() {
@@ -91,35 +109,52 @@ public class Model {
     }
 
     /**
-     * Initialize all 10 rounds with all attributes except Dices (they are extracted every time)
+     * Initialize all 10 rounds with all attributes except Dice (they are extracted every time)
      *
      * @return
      */
-    public Round createGameRound(){
-
+    public ArrayList<Round> createRound(){
+        ArrayList<Round> roundList = null;
+        for (int i=1; i<11; i++){
+            roundList.set(i, new Round());
+            roundList.get(i).setRoundNumber(i);
+            roundList.get(i).setFirstPlayer( /* manca firstPlayer */ );
+        }
+        return roundList;
     }
 
     public ArrayList<PublicObjectiveCard> getExtractedPublicObjectiveCard(){
-
+        for (int i=0; i<3; i++){
+            int index = ThreadLocalRandom.current().nextInt(0,  publicObjectiveCardDeck.size());
+            extractedPublicObjectiveCard.set(i, publicObjectiveCardDeck.remove(index));
+        }
+        return extractedPublicObjectiveCard;
     }
 
     /**
      * return an ArrayList extracting first card of the windowPatternCardDeck
      * always need to extract 4 cards together, so no need for a single 'extractOneCard' method
      *
-     * @param toBeExtracted
      * @return
      */
-    public ArrayList<WindowPatternCard> extractWindowPatternCard(int toBeExtracted){
-
+    public ArrayList<WindowPatternCard> extractWindowPatternCard(){
+        for (int i=0; i<4; i++){
+            int index = ThreadLocalRandom.current().nextInt(0,  windowPatternCardDeck.size());
+            extractWindowPatternCard().set(i, windowPatternCardDeck.remove(index));
+        }
+        return extractWindowPatternCard();
     }
 
     public ArrayList<ToolCard> getExtractedToolCard(){
-
+        for (int i=0; i<3; i++){
+            int index = ThreadLocalRandom.current().nextInt(0,  toolCardDeck.size());
+            extractedToolCard.set(i, toolCardDeck.remove(index));
+        }
+        return extractedToolCard;
     }
 
     public DiceBag getDiceBag(){
-
+        return diceBag;
     }
 
     /**
@@ -128,18 +163,18 @@ public class Model {
      * @return
      */
     public Player getPlayer(int playerNumber){
-
+        return gamePlayers.get(playerNumber);
     }
 
     public Round getCurrentRound(){
-
+        return currentRound;
     }
 
     public Round getRound(int roundNumber){
-
+        return gameRounds.get(roundNumber);
     }
 
     public RoundTrack getRoundTrack(){
-
+        return roundTrack;
     }
 }

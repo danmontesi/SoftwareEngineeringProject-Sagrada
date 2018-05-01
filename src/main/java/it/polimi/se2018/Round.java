@@ -8,19 +8,22 @@ import static it.polimi.se2018.Model.instance;
 
 public class Round {
 
-    private DraftPool draftPool;
     private int roundNumber;
     private Player currentPlayer = null;
     private Player firstPlayer;
     private HashMap<String, Integer> countPlayersTurns;
     private int turnCount = 1;
     private ArrayList<Player> gamePlayers;
-    private DiceBag diceBag;
+    private DraftPool draftPool;
 
-/**
- *  Assign next currentPlayer to round
- *  if currentPlayer == null, currentPlayer will be the first player
- */
+    public Round(){
+        
+    }
+
+    /**
+     *  Assign next currentPlayer to round
+     *  if currentPlayer == null, currentPlayer will be the first player
+     */
     public void nextPlayer() {
         int i=0;
         while (!firstPlayer.getUsername().equals(gamePlayers.get(i).getUsername())){
@@ -62,13 +65,13 @@ public class Round {
         return currentPlayer;
     }
 
-    public DraftPool getDraftPool() {
-        return draftPool;
-    }
-
     public Player getFirstPlayer() {
         return firstPlayer;
     }
+
+    public void setFirstPlayer(Player firstPlayer) { this.firstPlayer = firstPlayer; }
+
+    public void setRoundNumber(int roundNumber) { this.roundNumber = roundNumber; }
 
     /*
     public HashMap<String, Integer> getCountPlayersTurns() {
