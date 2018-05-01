@@ -26,11 +26,11 @@ public class Round {
     /**
      *  Assign next currentPlayer to round
      *  if currentPlayer == null, currentPlayer will be the first player
-     *
+     *  non serve l'eccezione del doppio turno in quanto può essere applicata solo nella seconda metà del round
      *  se siamo nella prima metà del round currentPlayer sarà il successivo nella lista di giocatori;
-     *  se ha già giocato 2 turni si passerà al giocatore ancora dopo
+     *
      *  se siamo nella seconda metà del round currentPlayer sarà il precedente nella lista di giocatori;
-     *  non serve l'eccezione del doppio turno in quanto può essere applicata solo nella prima metà del round
+     *  se ha già giocato 2 turni si passerà al giocatore ancora dopo
      *
      *  TODO: il metodo nextPlayer() deve anche:
      *  1) aggiornare il numero del turno turnCount - fatto
@@ -43,25 +43,29 @@ public class Round {
             i++;
         }
         if (currentPlayer == null){
-            currentPlayer = firstPlayer;
-        } else if (turnCount == 2*gamePlayers.size()){
-            firstPlayer = gamePlayers.get(i+1);
-            currentPlayer = null;
-            instance.nextRound();
-        } else if (turnCount < gamePlayers.size()){
-            if (gamePlayers.get(i+1) == null){
-                currentPlayer = gamePlayers.get(0);
+            currentPlayer = firstPlayer; //primo giocatore
+        } else if (turnCount == 2*gamePlayers.size()){ //se siamo a fine round
+            firstPlayer = gamePlayers.get(i+1); //predispone firstPlayer per il prossimo round
+            currentPlayer = null; //curretnPlayer torna ad essere null (così al prossimo round gli verrà assegnato firstPlayer)
+            instance.nextRound(); //chiama il round successivo
+        } else if (turnCount < gamePlayers.size()){ //se siamo nella prima metà del round/il primo turno di ogni giocatore
+            if (gamePlayers.get(i+1) == null){ //se siamo arrivati a fine lista gamePlayers (lista dei giocatori)
+                currentPlayer = gamePlayers.get(0); //currentPlayer sarà il primo giocatore in gamePlayers
             } else {
-                currentPlayer = gamePlayers.get(i+1);
+                currentPlayer = gamePlayers.get(i+1); //currentPlayer sarà il successivo giocatore in gamePlayers
             }
-            if (countPlayersTurns.get(currentPlayer.getUsername()) > 1){
-                currentPlayer = gamePlayers.get(i+1);
-            }
-        } else if (turnCount > gamePlayers.size()){
-            if (gamePlayers.get(i-1) == null){
-                currentPlayer = gamePlayers.get(gamePlayers.size());
+        } else if (turnCount > gamePlayers.size()){ //se siamo nella seconda metà del round/il secondo turno di ogni giocatore
+            if (gamePlayers.get(i-1) == null){ //se siamo arrivati all'inizio di gamePlayers
+                currentPlayer = gamePlayers.get(gamePlayers.size()); //currentPlayer sarà l'ultimo giocatore in gamePlayers (dato che stiamo andando a ritroso)
             } else {
-                currentPlayer = gamePlayers.get(i-1);
+                currentPlayer = gamePlayers.get(i-1); //altrimenti currentPlayer sarà il giocatore precedente in gamePlayers
+            }
+            if (countPlayersTurns.get(currentPlayer.getUsername()) > 1){ //se il currentPlayer designato ha già giocato 2 turni
+                if (gamePlayers.get(i-1) == null){ //si passa a quello ancora dopo, con i soliti controlli di fine lista
+                    currentPlayer = gamePlayers.get(gamePlayers.size());
+                } else {
+                    currentPlayer = gamePlayers.get(i-1);
+                }
             }
         }
         turnCount ++;
