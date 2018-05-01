@@ -124,7 +124,6 @@ public class Model {
         for (int i = 0; i < 10; i++) {
             roundList.set(i, new Round());
             roundList.get(i).setRoundNumber(i+1);
-            roundList.get(i).setFirstPlayer( /* manca firstPlayer */); //TODO Serve scrivere per ogni round creato tutti i FirstPlayer. Si consideri il primo player = primo dell'ArrayList<Player> gamePlayers
         }
         return roundList;
     }
