@@ -57,8 +57,30 @@ public class Model {
         draftPool = new DraftPool();
     }
 
-    public static Model getInstance(){
+    /**
+     * Singleton
+     * @param players
+     * @return
+     */
+    public static Model getInstance(ArrayList<Player> players){
+        if (instance==null){
+            instance = new Model(players);
+        }
         return instance;
+    }
+
+    /**
+     * Calculates total score of a given player
+     * @param player
+     * @return
+     */
+
+    public int playerScore(Player player) {
+        int publicObjectiveScore = 0;
+        for (int i=0; i<3; i++){
+            publicObjectiveScore += extractedPublicObjectiveCard.get(i).calculateScore(player.getWindowPatternCard());
+        }
+        return player.calcuateTotalScore() + publicObjectiveScore;
     }
 
     /**
@@ -71,16 +93,8 @@ public class Model {
      * @return HashMap
      */
 
-    public int playerScore(Player player) {
-        int publicObjectiveScore = 0;
-        for (int i=0; i<3; i++){
-            publicObjectiveScore += extractedPublicObjectiveCard.get(i).calculateScore(player.getWindowPatternCard());
-        }
-        return player.calcuateTotalScore() + publicObjectiveScore;
-    }
-
     public HashMap<Player,Integer> playersScore() {
-        HashMap<Player, Integer> playersScore = null;
+        HashMap<Player, Integer> playersScore = new HashMap<>();
         for (int i=0; i<gamePlayers.size(); i++){
             playersScore.put(gamePlayers.get(i), playerScore(gamePlayers.get(i)));
         }
@@ -113,12 +127,12 @@ public class Model {
      *
      * @return
      */
-    public ArrayList<Round> createRound(){
+    public ArrayList<Round> createRound() {
         ArrayList<Round> roundList = null;
-        for (int i=1; i<11; i++){
+        for (int i = 1; i < 11; i++) {  //TODO: generalmente gli indici partono dal numero 0, così remove(0) funziona
             roundList.set(i, new Round());
             roundList.get(i).setRoundNumber(i);
-            roundList.get(i).setFirstPlayer( /* manca firstPlayer */ );
+            roundList.get(i).setFirstPlayer( /* manca firstPlayer */); //TODO Serve scrivere per ogni round creato tutti i FirstPlayer. Si consideri il primo player = primo dell'ArrayList<Player> gamePlayers
         }
         return roundList;
     }

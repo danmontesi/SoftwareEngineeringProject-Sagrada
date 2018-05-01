@@ -16,6 +16,9 @@ public class Round {
     private ArrayList<Player> gamePlayers;
     private DraftPool draftPool;
 
+
+    // TODO: Il costruttore deve Inizializzare i dadi della DraftPool e tutti gli attributi
+    //
     public Round(){
         
     }
@@ -23,6 +26,13 @@ public class Round {
     /**
      *  Assign next currentPlayer to round
      *  if currentPlayer == null, currentPlayer will be the first player
+     *
+     *  TODO: Come funziona l'algoritmo? Commenta le parti più significative (non sto capendo niente ahah)
+     *
+     *  TODO: il metodo nextPlayer() deve anche:
+     *  1) aggiornare il numero del turno turnCount
+     *  2) aumentare il numero di turni di 1 nell'HashMap per il giocatore che giocherà
+     *  3) nel caso in cui il giocatore successivo risulti aver giocato già 2 turni, DEVE ESSERE SALTATO
      */
     public void nextPlayer() {
         int i=0;
@@ -69,9 +79,13 @@ public class Round {
         return firstPlayer;
     }
 
-    public void setFirstPlayer(Player firstPlayer) { this.firstPlayer = firstPlayer; }
+    public void setFirstPlayer(Player firstPlayer) {
+        this.firstPlayer = firstPlayer;
+    }
 
-    public void setRoundNumber(int roundNumber) { this.roundNumber = roundNumber; }
+    public void setRoundNumber(int roundNumber) {
+        this.roundNumber = roundNumber;
+    }
 
     /*
     public HashMap<String, Integer> getCountPlayersTurns() {
