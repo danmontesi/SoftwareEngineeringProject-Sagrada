@@ -10,7 +10,7 @@ public class Player {
 
 
     public int calcuateTotalScore(){
-        return calculatePrivateObjectiveScore() - calculatePointPenalization();
+        return calculatePrivateObjectiveScore() - calculatePointPenalization() + tokens;
     }
 
     public int calculatePrivateObjectiveScore(){
