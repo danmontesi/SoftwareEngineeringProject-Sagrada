@@ -59,8 +59,6 @@ public class Model {
 
     /**
      * Singleton
-     * @param players
-     * @return
      */
     public static Model getInstance(ArrayList<Player> players){
         if (instance==null){
@@ -71,8 +69,6 @@ public class Model {
 
     /**
      * Calculates total score of a given player
-     * @param player
-     * @return
      */
 
     public int playerScore(Player player) {
@@ -89,8 +85,6 @@ public class Model {
      *
      * Scores of any player are calculated summing each Player.calculateTotalScore() and every score of
      * the PublicObjectiveCards of extractedPublicObjectiveCard, calculated on each player
-     *
-     * @return HashMap
      */
 
     public HashMap<Player,Integer> playersScore() {
@@ -124,14 +118,12 @@ public class Model {
 
     /**
      * Initialize all 10 rounds with all attributes except Dice (they are extracted every time)
-     *
-     * @return
      */
     public ArrayList<Round> createRound() {
         ArrayList<Round> roundList = null;
-        for (int i = 1; i < 11; i++) {  //TODO: generalmente gli indici partono dal numero 0, così remove(0) funziona
+        for (int i = 0; i < 10; i++) {
             roundList.set(i, new Round());
-            roundList.get(i).setRoundNumber(i);
+            roundList.get(i).setRoundNumber(i+1);
             roundList.get(i).setFirstPlayer( /* manca firstPlayer */); //TODO Serve scrivere per ogni round creato tutti i FirstPlayer. Si consideri il primo player = primo dell'ArrayList<Player> gamePlayers
         }
         return roundList;
@@ -148,8 +140,6 @@ public class Model {
     /**
      * return an ArrayList extracting first card of the windowPatternCardDeck
      * always need to extract 4 cards together, so no need for a single 'extractOneCard' method
-     *
-     * @return
      */
     public ArrayList<WindowPatternCard> extractWindowPatternCard(){
         for (int i=0; i<4; i++){
@@ -173,8 +163,6 @@ public class Model {
 
     /**
      * get the Player of ArrayList "players" of the @param(playerNumber) position
-     * @param playerNumber
-     * @return
      */
     public Player getPlayer(int playerNumber){
         return gamePlayers.get(playerNumber);

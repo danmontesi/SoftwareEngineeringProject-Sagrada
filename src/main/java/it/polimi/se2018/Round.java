@@ -27,12 +27,15 @@ public class Round {
      *  Assign next currentPlayer to round
      *  if currentPlayer == null, currentPlayer will be the first player
      *
-     *  TODO: Come funziona l'algoritmo? Commenta le parti più significative (non sto capendo niente ahah)
+     *  se siamo nella prima metà del round currentPlayer sarà il successivo nella lista di giocatori;
+     *  se ha già giocato 2 turni si passerà al giocatore ancora dopo
+     *  se siamo nella seconda metà del round currentPlayer sarà il precedente nella lista di giocatori;
+     *  non serve l'eccezione del doppio turno in quanto può essere applicata solo nella prima metà del round
      *
      *  TODO: il metodo nextPlayer() deve anche:
-     *  1) aggiornare il numero del turno turnCount
+     *  1) aggiornare il numero del turno turnCount - fatto
      *  2) aumentare il numero di turni di 1 nell'HashMap per il giocatore che giocherà
-     *  3) nel caso in cui il giocatore successivo risulti aver giocato già 2 turni, DEVE ESSERE SALTATO
+     *  3) nel caso in cui il giocatore successivo risulti aver giocato già 2 turni, DEVE ESSERE SALTATO - fatto
      */
     public void nextPlayer() {
         int i=0;
@@ -61,6 +64,7 @@ public class Round {
                 currentPlayer = gamePlayers.get(i-1);
             }
         }
+        turnCount ++;
     }
 
     public int getRoundNumber() {
