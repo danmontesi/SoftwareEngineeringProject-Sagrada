@@ -21,10 +21,10 @@ public class ClientController {
 
     private View userInterface;
 
+    /** The network interface. */
     private ClientConnecter clientConnecterInterface;
 
-    /** The network interface. */
-    //private ClientConnecterInterface clientConnecterInterface;
+
 
     // Main method for sending commands to Server
 

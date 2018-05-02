@@ -14,19 +14,11 @@ import java.util.Set;
 
 /**
  *
- * To- REDO
+ * TODO: USELESS CLASS TO BE DELETED
  */
 public class VirtualView implements Observer, Observable {
 
     private Model model = null;
-
-    private CLIView view1 = null;
-
-    private CLIView view2 = null;
-
-    private CLIView view3 = null;
-
-    private CLIView view4 = null;
 
     private HashMap<Player, CLIView> playerViewHashMap;
 

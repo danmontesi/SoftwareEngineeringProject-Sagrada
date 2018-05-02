@@ -8,21 +8,9 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-public class View implements Observer{
+public abstract class View implements Observer{
     private ClientController clientController;
     private String playerUsername;
-
-    /**
-     * Can be used for mark the status as :
-     * Disconnected-
-     * Connected
-     *
-     * or (to Decide)
-     *
-     *CurrentPlayer
-     * notCurrent
-     */
-    private String playerState;
 
 
     /**
@@ -47,15 +35,11 @@ public class View implements Observer{
 
     }
 
-    private void chooseWindowPatternCard(ArrayList<WindowPatternCard> cards){
+    private void askWindowPatternCard(ArrayList<WindowPatternCard> cards){
 
     }
 
-    public void chooseToolCardToUse(ArrayList<ToolCard> cards){
-
-    }
-
-    public void changePlayerState(String state){
+    public void askToolCardToUse(ArrayList<ToolCard> cards){
 
     }
 
@@ -63,11 +47,11 @@ public class View implements Observer{
 
     }
 
-    public void showWin(){
+    public void showWin(String rankingString){
 
     }
 
-    public void showLose(){
+    public void showLose(String rankingString){
 
     }
 
@@ -105,11 +89,19 @@ public class View implements Observer{
     public void showActionPerformed(){
 
     }
+
+    public void refreshBoard(){
+
+    }
     public void update(Observable o, Object obj){
 
     }
 
     public void addObserver(){
+
+    }
+
+    public void showWaitForYourTurn(){
 
     }
 

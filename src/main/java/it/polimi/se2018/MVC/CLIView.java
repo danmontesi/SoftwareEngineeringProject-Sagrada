@@ -15,6 +15,9 @@ import java.util.Scanner;
 
 public class CLIView extends View{
 
+    /**
+     * CliView receives a clone of current model each time it's Player's turn
+     */
     Model currentModel;
 
     private ClientController clientController;
@@ -79,7 +82,7 @@ public class CLIView extends View{
 
     }
 
-    private void chooseWindowPatternCard(ArrayList<WindowPatternCard> cards){
+    private void askWindowPatternCard(ArrayList<WindowPatternCard> cards){
         for (WindowPatternCard p : cards) {
             p.toString();
         }
@@ -94,33 +97,19 @@ public class CLIView extends View{
 
     }
 
-    public void chooseToolCardToUse(ArrayList<ToolCard> cards){
+    public void askToolCardToUse(ArrayList<ToolCard> cards){
         cards.toString(); // TODO better toString
         System.out.println("Which one you want to use?");
         //TODO scanner
         clientController.sendCommand(new ChosenToolCardCommand(2));
     }
 
-    public void changePlayerState(String state){
-
-    }
-
-    public void askPlayerMove(){
-
-    }
 
     public void showWin(){
 
     }
 
     public void showLose(){
-
-    }
-
-    /** use to refresh board & else
-     *
-     */
-    public void notifyOtherPlayerMove(){
 
     }
 
@@ -169,7 +158,7 @@ public class CLIView extends View{
 
 
 
-    public void performMove(){
+    public void askPlayerMove(){
         System.out.println("Chose which die you prefere to pick from the DraftPool");
         currentModel.getCurrentRound.getDraftPool().toString();
         Scanner scan = new Scanner(System.in);
@@ -185,48 +174,14 @@ public class CLIView extends View{
         // connection.performMoveClientToServer(dice, row, col, player)
     }
 
-    public void notifyCorrectMove(){
+    public void showCorrectMove(){
         System.out.println("The move is correct");
         System.out.println("Now wait until it's your turn");
     }
 
-    /**
-     * Tools methods: i call useTool( param)
-     * Like a Strategy design pattern, thanks to paternity, it will call the right method
-     * @param tool
-     */
-
-    public void useTool(RoughingForceps tool){
-        // Things depends on the tool to use
-    }
-
-    public void useTool(CircularCutter tool){
-        // Things depends on the tool to use
-    }
-    public void useTool(Gavel tool){
-        // Things depends on the tool to use
-    }
-    public void waitForYourTurn(Model model){
+    public void showWaitForYourTurn(Model model){
         model.toString();
         System.out.println("You have to wait until player" + model.getCurrentRound.getCurrentPlayer() + "finishes");
-    }
-    public void playersArrived(){
-
-        /*
-            waits for a response from VirtualView
-         */
-    }
-
-
-    public void notifyAlreadyFourPlayers(){
-        System.out.println("There are already 4 players at that game!");
-    }
-
-    /**
-     * Layout of the Player move choice
-     */
-    public void startPlayerAction(){
-
     }
 
 

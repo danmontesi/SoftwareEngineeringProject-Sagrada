@@ -4,6 +4,8 @@ import it.polimi.se2018.Die;
 import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
 import it.polimi.se2018.WindowPatternCard;
+import it.polimi.se2018.network.ClientConnection;
+import it.polimi.se2018.network.Server;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -13,13 +15,13 @@ import java.util.Observer;
 
 public class Controller extends Observable implements Observer {
 
-    private Model model;
+    private Model model; //Always updated through notify() method of the Model, called every time it is modified
     private HashMap<Player, ClientController> playerClientControllerMap;
     private ArrayList<Player> orderedPlayers;
-    private ArrayList<ClientController> clients;
+    private ArrayList<Connection> clients;
     private ArrayList<ClientController> disconnectedClients;
     private int roundNumber;
-    private ServerInterface server;
+    private Server server;
 
 
 
@@ -73,7 +75,7 @@ public class Controller extends Observable implements Observer {
      * -> extract Dices ..
      * -> set first player and
      */
-    public void startRound() {
+    public void startNewRound() {
     }
 
     /**
@@ -99,12 +101,39 @@ public class Controller extends Observable implements Observer {
 
     }
 
-    public void sendCommandToAllExceptCurrent(ServerToClientCommand command){
+    public void sendCommandToAllPlayersExceptGiven(ServerToClientCommand command, Player p){
+
+    }
+
+    public void notifyPlayerDisconnection(Player player){
 
     }
 
     @Override
     public void update(Observable o, Object arg) {
+
+    }
+
+    public void notifyWinner(Player p){
+
+    }
+
+    public void notifyLoser(Player p){
+
+    }
+
+
+    // NETWORK METHODS
+
+    public void run(){
+
+    }
+
+    public void addDisconnectedClient(ClientConnection connection){
+
+    }
+
+    public void reconnectDisconnectedClient(ClientConnection connection){
 
     }
 
