@@ -6,86 +6,167 @@ import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.toolcards.CircularCutter;
 import it.polimi.se2018.toolcards.Gavel;
 import it.polimi.se2018.toolcards.RoughingForceps;
+import it.polimi.se2018.toolcards.ToolCard;
 import javafx.beans.Observable;
 
 import java.util.ArrayList;
 import java.util.Observer;
 import java.util.Scanner;
 
-public class CLIView implements Observable, Observer{
+public class CLIView extends View{
 
-    private VirtualView virtualView;
-    //private Model model;
-    private Player assignedPlayer; //TODO pre-assegno subito e lo metto nel model, oppure lo assegno dopo
-    //private Controller controller;
+    Model currentModel;
 
-    private Model currentModel;
+    private ClientController clientController;
 
-    public CLIView(){
-        ;
+    /**
+     * Can be used for mark the status as :
+     * Disconnected-
+     * Connected
+     *
+     * or (to Decide)
+     *
+     *CurrentPlayer
+     * notCurrent
+     */
+    private String playerState;
+
+
+    /**
+     * Initialize Graphic or Command Line User Interface
+     */
+    public void initializeGame(){
+        //Calls chooseWindowPatternCard(..)
     }
 
-    public void initializePatternCardChoosingPanel(ArrayList<WindowPatternCard> patternCardsToChooseFrom){
-        for (WindowPatternCard p : patternCardsToChooseFrom) {
+    /**
+     * Set the board for a new Round
+     */
+    public void initializeRound(){
+
+
+    }
+
+    /**
+     * Start a turn: menu with possible moves options
+     */
+    public void startTurn(Model model) {
+        this.currentModel = model; //NB: Is a clone come from a Command
+        model.toString();
+        System.out.println("It's your turn, "+ playerUsename +"!");
+        System.out.println("What do you want to do?");
+        System.out.println("1 - Place a die");
+        System.out.println("2 - Use ToolCard");
+        System.out.println("3 - Pass the Turn");
+        System.out.println("4 - Disconnect from the game");
+
+        Scanner scan = new Scanner(System.in);
+        int c = scan.nextInt();
+        //TODO Che succede se inserisce un altro numero?
+        switch(c) {
+            case 1:
+                break;
+            case 2:
+                chooseToolCardToUse(model.getExtractedToolCard());
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            default:
+                ;
+        }
+
+    }
+
+    private void chooseWindowPatternCard(ArrayList<WindowPatternCard> cards){
+        for (WindowPatternCard p : cards) {
             p.toString();
         }
         System.out.println("Choose the card you want:");
         //TODO scanner
         int i=0;
-        // TODO end scan
+        //TODO end scan
 
-        WindowPatternCard chosen = patternCardsToChooseFrom.get(i);
+        WindowPatternCard chosen = cards.get(i);
 
         //send to the server the answer...
 
     }
 
-    public void initializeChoosingPanel(){
-        System.out.println("Welcome to Sagrada");
-        System.out.println("you will play a fantastic game!");
-        System.out.println("which connection do you prefere to use?");
-        System.out.println("0: Socket\n" + "1: RMI");
-        Scanner scan = new Scanner(System.in);
-        int c = scan.nextInt(); //TODO: pensa se fare una classe che lo implementi oppure no
-        switch(c) {
-            case 1:
-                break;
-            case 0:
-                break;
-            default:
-                ;
-        }
-        System.out.println("waiting for players... wait please");
-        virtualView.waitForPlayers();
+    public void chooseToolCardToUse(ArrayList<ToolCard> cards){
+        cards.toString(); // TODO better toString
+        System.out.println("Which one you want to use?");
+        //TODO scanner
+        clientController.sendCommand(new ChosenToolCardCommand(2));
+    }
 
+    public void changePlayerState(String state){
 
+    }
+
+    public void askPlayerMove(){
+
+    }
+
+    public void showWin(){
+
+    }
+
+    public void showLose(){
+
+    }
+
+    /** use to refresh board & else
+     *
+     */
+    public void notifyOtherPlayerMove(){
+
+    }
+
+    public void showInvalidInput(){
+
+    }
+
+    public void showCorrectAuthenthication(String username){
 
     }
 
 
-    public void startTurn(Model model){
-        this.currentModel = model;
-        model.toString();
-        System.out.println("E' il tuo turno, "+ assignedPlayer.getUsername()+"!");
-        System.out.println("Cosa vuoi fare?");
-        System.out.println("1 - Mossa");
-        System.out.println("2 - Passa il turno");
-        System.out.println("3 - Usa ToolCard");
-        System.out.println("4 - Abbandona il gioco");
+    public void showIncorrectAuthenthication(String username){
 
-        Scanner scan = new Scanner(System.in);
-        int c = scan.nextInt(); //TODO: pensa se fare una classe che lo implementi oppure no
-        switch(c) {
-            case 1:
-                performMove();
-                break;
-            case 0:
-                break;
-            default:
-                ;
-
-        }
     }
+
+    public void showDisconnectedPlayer(Player p){
+
+    }
+
+    public void askLoginInformation(){
+
+    }
+
+    /** Some other player action
+     * or the player's one
+     */
+    public void showActionPerformed(){
+
+    }
+    public void update(java.util.Observable o, Object obj){
+
+    }
+
+    public void addObserver(){
+
+    }
+
+
+
+
+
+    public CLIView(){
+        ;
+    }
+
 
 
     public void performMove(){

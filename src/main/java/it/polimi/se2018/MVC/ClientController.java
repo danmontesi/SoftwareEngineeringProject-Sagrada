@@ -1,5 +1,8 @@
 package it.polimi.se2018.MVC;
 
+import com.sun.deploy.util.SessionState;
+import it.polimi.se2018.network.SocketClientConnecter;
+
 public class ClientController {
 
     /**
@@ -14,17 +17,20 @@ public class ClientController {
      *
      */
 
+    // TODO CALLED: CLientCommandHandler
 
     private View userInterface;
 
+    private ClientConnecter clientConnecterInterface;
+
     /** The network interface. */
-    //private NetworkInterface networkInterface;
+    //private ClientConnecterInterface clientConnecterInterface;
 
     // Main method for sending commands to Server
 
-    private void sendCommand(ClientToServerCommand command) {
+    public void sendCommand(ClientToServerCommand command) {
         try {
-            networkInterface.sendCommand(command);
+            clientConnecterInterface.sendCommand(command);
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -32,25 +38,6 @@ public class ClientController {
         }
     }
 
-
-
-    // Specialised methods for sending commands to Server
-
-
-
-    public void notifyChosenToolCard(int numberChosen) {
-        sendCommand(new ChosenToolCardCommand(numberChosen));
-    }
-
-    /* (non-Javadoc)
-     * @see it.polimi.ingsw.ps19.view.InputObserver#notifyMove(java.lang.String)
-     */
-    @Override
-    public void notifyMove(String move) {
-        sendCommand(new PlayerMoveCommand(move));
-    }
-
-    //....
 
 
     /**
@@ -93,7 +80,7 @@ public class ClientController {
      *
      * @param askPrivilegeChoiceCommand the ask privilege choice command
      */
-    public void applyCommand(AskPrivilegeChoiceCommand askPrivilegeChoiceCommand) {
+    public void applyCommand(ChosenToolCardCommand askPrivilegeChoiceCommand) {
         userInterface.AskPrivilegeChoice(askPrivilegeChoiceCommand.getNumberOfPrivilege(), askPrivilegeChoiceCommand.getPrivilegeResources());
 
     }

@@ -10,6 +10,7 @@ import java.util.Observer;
 
 public class View implements Observer{
     private ClientController clientController;
+    private String playerUsername;
 
     /**
      * Can be used for mark the status as :
