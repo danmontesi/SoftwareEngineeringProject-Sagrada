@@ -4,10 +4,6 @@ import it.polimi.se2018.MVC.VirtualView;
 import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.toolcards.ToolCard;
 
-import javax.tools.Tool;
-import java.awt.*;
-import java.lang.reflect.Array;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -61,17 +57,18 @@ public class Model extends Observable{
     private Model(ArrayList<Player> players, ArrayList<ClientConnection> connectedClients){
         gamePlayers = players;
         gameRounds = createRound();
-        diceBag = new DiceBag();
+        diceBag = DiceBag.getInstance();
         roundTrack = new RoundTrack();
         virtualView= new VirtualView(connectedClients);
     }
 
+
     /**
      * Singleton
      */
-    public static Model getInstance(ArrayList<Player> players){
+    public static Model getInstance(ArrayList<Player> players, ArrayList<ClientConnection> connectedClients){
         if (instance==null){
-            instance = new Model(players);
+            instance = new Model(players, connectedClients);
         }
         return instance;
     }
@@ -162,10 +159,6 @@ public class Model extends Observable{
             extractedToolCard.set(i, toolCardDeck.remove(index));
         }
         return extractedToolCard;
-    }
-
-    public DiceBag getDiceBag(){
-        return diceBag;
     }
 
     /**

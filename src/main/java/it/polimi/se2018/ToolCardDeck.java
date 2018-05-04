@@ -8,7 +8,8 @@ public class ToolCardDeck {
     private ArrayList<ToolCard> cards;
 
 
-    //ATTENZIONE!! CONTROLLARE EmptyDeckException !!!!
+    //TODO: ATTENZIONE!! CONTROLLARE EmptyDeckException !!
+    //anche se forse non è strettamente necessario
     public ToolCard extractCard(){
         return cards.remove(0);
     }
