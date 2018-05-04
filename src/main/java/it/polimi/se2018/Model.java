@@ -1,5 +1,6 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.MVC.Controller;
 import it.polimi.se2018.MVC.VirtualView;
 import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.toolcards.ToolCard;
@@ -26,7 +27,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Model extends Observable{
 
-    private Observer virtualView;
+    private ArrayList<Observer> observers;
     private DiceBag diceBag;
 
     private ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck;
@@ -55,12 +56,14 @@ public class Model extends Observable{
      * - initialize all attributes (creating new ones)
      * - NOT TODO: initialize the decks-> we will do it later in the project
      */
-    private Model(ArrayList<Player> players, ArrayList<ClientConnection> connectedClients){
+    private Model(ArrayList<Player> players, ArrayList<ClientConnection> connectedClients, Controller controller){
+
         gamePlayers = players;
         gameRounds = createRound();
         diceBag = new DiceBag();
         roundTrack = new RoundTrack();
-        virtualView= new VirtualView(connectedClients);
+        observers.add(controller);
+        // TODO CREATE ALL CARDS
     }
 
     /**
@@ -68,7 +71,7 @@ public class Model extends Observable{
      */
     public static Model getInstance(ArrayList<Player> players){
         if (instance==null){
-            instance = new Model(players);
+            instance = new Model(players); // TODO FALLO BENE
         }
         return instance;
     }
@@ -111,16 +114,6 @@ public class Model extends Observable{
     }
 
     /**
-     * Assign the draftPool at the very beginning of the round
-     * <p>
-     * meanwhile, the round is built when the game starts
-     */
-    public void setDice() {
-        int n = 2*gamePlayers.size()+1;
-        for (int i=0; i<n; i++){
-            draftPool.placeDie(diceBag.extractDie());
-        }
-    }
 
     /**
      * Initialize all 10 rounds with all attributes except Dice (they are extracted every time)
@@ -188,18 +181,10 @@ public class Model extends Observable{
     /**
      * Notify methods for VirtualView
      */
-    public void notifyChanges(){
-        virtualView.update(this, this);
+    public void notifyModelChanges(){
+        for (Observer o : observers)
+            o.update(this, this);
     }
 
-    public void notifyReconnectedClient(ClientConnection c){
-        virtualView.updateConnectedClient(c);
-
-    }
-
-    public void notifyDisconnectedClient(ClientConnection c){
-        virtualView.updateDisconnectedClient(c);
-
-    }
 
 }
