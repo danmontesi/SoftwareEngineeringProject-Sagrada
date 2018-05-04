@@ -3,6 +3,7 @@ package it.polimi.se2018.MVC;
 import it.polimi.se2018.Die;
 import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
+import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.toolcards.ToolCard;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -21,18 +22,26 @@ import java.util.Set;
 
 public class VirtualView implements Observer{
 
+    //List of connected clients that have to be updated
+    private ArrayList<ClientConnection> connectedClients;
 
-    private ArrayList<Connection> connections;
-    private Model model = null;
-    public VirtualView(Model model) {
-        this.model = model;
+    //List of disconnected clients, haven't to be updated. (until they reconnect)
+    private ArrayList<ClientConnection> disconnectedClients;
+
+    public VirtualView(ArrayList<ClientConnection> connections) {
+        this.connectedClients = connections;
     }
 
     @Override
     public void update(java.util.Observable model, Object modell) {
         // send refreshCommand
-        for (Connection c : connections){
+        for (ClientConnection c : connectedClients){
             // send... new RefreshBoardCommand(model);
         }
+    }
+
+    public void updateDisconnectedClient(ClientConnection c){
+        connectedClients.remove(c);
+        disconnectedClients.add(c);
     }
 }

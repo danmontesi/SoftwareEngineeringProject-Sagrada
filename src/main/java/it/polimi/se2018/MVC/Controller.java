@@ -17,18 +17,23 @@ import java.util.Observer;
 public class Controller extends Observable implements Observer {
 
     private Model model; //Always updated through notify() method of the Model, called every time it is modified
+    private VirtualView virtualView;
+
     private HashMap<Player, Connection> playerClientControllerMap;
     private ArrayList<Player> orderedPlayers;
-    private ArrayList<Connection> clients;
-    private ArrayList<ClientController> disconnectedClients;
+
+    private ArrayList<ClientConnection> connectedClients;
+    private ArrayList<ClientConnection> disconnectedClients;
+
     private int roundNumber;
     private Server server;
 
 
 
 
-    public Controller(ArrayList<ClientConnection> clients, ServerInterface server){
-        this.clients = clients;
+
+    public Controller(ArrayList<ClientConnection> clients, Server server){
+        this.connectedClients = clients;
         this.server = server;
     }
 

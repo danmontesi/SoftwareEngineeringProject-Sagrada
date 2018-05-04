@@ -1,6 +1,7 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.MVC.VirtualView;
+import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.toolcards.ToolCard;
 
 import javax.tools.Tool;
@@ -41,6 +42,9 @@ public class Model extends Observable{
 
     private ArrayList<WindowPatternCard> windowPatternCardDeck;
 
+    private ArrayList<ClientConnection> connectedClients;
+    private ArrayList<ClientConnection> disconnectedClients;
+
     private ArrayList<Player> gamePlayers;
     private RoundTrack roundTrack;
     private Round currentRound;
@@ -54,15 +58,12 @@ public class Model extends Observable{
      * - initialize all attributes (creating new ones)
      * - NOT TODO: initialize the decks-> we will do it later in the project
      */
-    private Model(ArrayList<Player> players, ArrayList<Connection> connections, ){
+    private Model(ArrayList<Player> players, ArrayList<ClientConnection> connectedClients){
         gamePlayers = players;
         gameRounds = createRound();
-        currentRound.setFirstPlayer(gamePlayers.get(0));
         diceBag = new DiceBag();
         roundTrack = new RoundTrack();
-        draftPool = new DraftPool();
-
-        virtualView= new VirtualView();
+        virtualView= new VirtualView(connectedClients);
     }
 
     /**
@@ -189,6 +190,6 @@ public class Model extends Observable{
 
     public void notifyChanges(){
         virtualView.update(this, this);
-
     }
+
 }
