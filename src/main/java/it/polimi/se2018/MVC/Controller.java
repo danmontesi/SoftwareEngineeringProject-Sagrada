@@ -8,6 +8,7 @@ import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.network.Server;
 
 import java.lang.reflect.Array;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -16,7 +17,7 @@ import java.util.Observer;
 public class Controller extends Observable implements Observer {
 
     private Model model; //Always updated through notify() method of the Model, called every time it is modified
-    private HashMap<Player, ClientController> playerClientControllerMap;
+    private HashMap<Player, Connection> playerClientControllerMap;
     private ArrayList<Player> orderedPlayers;
     private ArrayList<Connection> clients;
     private ArrayList<ClientController> disconnectedClients;

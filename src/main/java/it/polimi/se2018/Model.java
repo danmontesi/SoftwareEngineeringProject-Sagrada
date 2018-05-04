@@ -1,12 +1,16 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.MVC.VirtualView;
 import it.polimi.se2018.toolcards.ToolCard;
 
 import javax.tools.Tool;
 import java.awt.*;
 import java.lang.reflect.Array;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -22,7 +26,9 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  */
 
-public class Model {
+public class Model extends Observable{
+
+    private Observer virtualView;
     private DiceBag diceBag;
     private DraftPool draftPool;
     private ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck;
@@ -48,13 +54,15 @@ public class Model {
      * - initialize all attributes (creating new ones)
      * - NOT TODO: initialize the decks-> we will do it later in the project
      */
-    private Model( ArrayList<Player> players){
+    private Model(ArrayList<Player> players, ArrayList<Connection> connections, ){
         gamePlayers = players;
         gameRounds = createRound();
         currentRound.setFirstPlayer(gamePlayers.get(0));
         diceBag = new DiceBag();
         roundTrack = new RoundTrack();
         draftPool = new DraftPool();
+
+        virtualView= new VirtualView();
     }
 
     /**
@@ -177,5 +185,10 @@ public class Model {
 
     public RoundTrack getRoundTrack(){
         return roundTrack;
+    }
+
+    public void notifyChanges(){
+        virtualView.update(this, this);
+
     }
 }

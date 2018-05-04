@@ -21,7 +21,7 @@ public abstract class ServerToClientCommand implements Serializable {
 
 class AskAuthenticationCommand{
 
-        }
+}
 
 class AuthenticatedCorrectlyCommand{
 
