@@ -6,9 +6,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class DiceBag {
     private ArrayList<Die> dice;
 
-    /**
-     * TODO Creates 90 dices adding them to the ArrayList
-     */
     public DiceBag(){
         for (int i=0; i<90; i+=5){
             dice.add(Die.getInstance(COLOR.RED));

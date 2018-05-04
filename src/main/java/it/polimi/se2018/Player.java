@@ -7,7 +7,6 @@ public class Player {
     private int tokens;
 
 
-
     public Player(PrivateObjectiveCard privateObjectiveCard, String username) {
         this.windowPatternCard = null;
         this.privateObjectiveCard = privateObjectiveCard;

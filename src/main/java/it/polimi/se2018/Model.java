@@ -59,7 +59,7 @@ public class Model extends Observable{
     private Model(ArrayList<Player> players, ArrayList<ClientConnection> connectedClients, Controller controller){
 
         gamePlayers = players;
-        gameRounds = createRound();
+        gameRounds = createRounds();
         diceBag = new DiceBag();
         roundTrack = new RoundTrack();
         observers.add(controller);
@@ -118,7 +118,7 @@ public class Model extends Observable{
     /**
      * Initialize all 10 rounds with all attributes except Dice (they are extracted every time)
      */
-    public ArrayList<Round> createRound() {
+    public ArrayList<Round> createRounds() {
         ArrayList<Round> roundList = null;
         for (int i = 0; i < 10; i++) {
             roundList.set(i, new Round(i+1, gamePlayers.get(((i+1)%4)-1), gamePlayers, diceBag));
