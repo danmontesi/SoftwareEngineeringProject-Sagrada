@@ -90,14 +90,6 @@ public class Round {
     public Player getFirstPlayer() {
         return firstPlayer;
     }
-
-    public void setFirstPlayer(Player firstPlayer) {
-        this.firstPlayer = firstPlayer;
-    }
-
-    public void setRoundNumber(int roundNumber) {
-        this.roundNumber = roundNumber;
-    }
 }
 
 

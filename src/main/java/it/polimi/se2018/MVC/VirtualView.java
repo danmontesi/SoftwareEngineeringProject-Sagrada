@@ -20,7 +20,7 @@ import java.util.Set;
  *
  * */
 
-public class VirtualView implements Observer{
+public class VirtualView implements Observer {
 
     //List of connected clients that have to be updated
     private ArrayList<ClientConnection> connectedClients;
@@ -35,13 +35,18 @@ public class VirtualView implements Observer{
     @Override
     public void update(java.util.Observable model, Object modell) {
         // send refreshCommand
-        for (ClientConnection c : connectedClients){
+        for (ClientConnection c : connectedClients) {
             // send... new RefreshBoardCommand(model);
         }
     }
 
-    public void updateDisconnectedClient(ClientConnection c){
+    public void updateDisconnectedClient(ClientConnection c) {
         connectedClients.remove(c);
         disconnectedClients.add(c);
+    }
+
+    public void updateConnectedClient(ClientConnection c) {
+        connectedClients.add(c);
+        disconnectedClients.remove(c);
     }
 }

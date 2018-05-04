@@ -1,5 +1,6 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.MVC.Controller;
 import it.polimi.se2018.MVC.VirtualView;
 import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.toolcards.ToolCard;
@@ -11,23 +12,20 @@ import java.util.Observer;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-/** TODO: Problemi nel capire come interagisce il client con il server.
+/**
+ * This is the model, the class that maintain the State of the game
+ * It is an Observable from a VirtualView (the Observer).
+ * The Virtual View just send "broadcast" all graphical changes of the board
  *
- * TODO Il server passa il Model al client, per permettere di chiamare anche i metodi toString del model?
- *
- * TODO: Capire dove viene creato il model, guarda come funziona Tris, guarda gli Event-based, pensa ai problemi di concorrenza
- *
- *
- * CHANGES: Chiamato model al posto di Game per coerenza del pattern
- * Aggiunte alcune classi model-view-controller
+ * The controller directly modifies the Model.
  *
  */
 
 public class Model extends Observable{
 
-    private Observer virtualView;
+    private ArrayList<Observer> observers;
     private DiceBag diceBag;
-    private DraftPool draftPool;
+
     private ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck;
 
     private ArrayList<PublicObjectiveCard> publicObjectiveCardDeck;
@@ -54,14 +52,15 @@ public class Model extends Observable{
      * - initialize all attributes (creating new ones)
      * - NOT TODO: initialize the decks-> we will do it later in the project
      */
-    private Model(ArrayList<Player> players, ArrayList<ClientConnection> connectedClients){
+    private Model(ArrayList<Player> players, ArrayList<ClientConnection> connectedClients, Controller controller){
+
         gamePlayers = players;
         gameRounds = createRound();
         diceBag = DiceBag.getInstance();
         roundTrack = new RoundTrack();
-        virtualView= new VirtualView(connectedClients);
+        observers.add(controller);
+        // TODO CREATE ALL CARDS
     }
-
 
     /**
      * Singleton
@@ -111,21 +110,11 @@ public class Model extends Observable{
     }
 
     /**
-     * Assign the draftPool at the very beginning of the round
-     * <p>
-     * meanwhile, the round is built when the game starts
-     */
-    public void setDice() {
-        int n = 2*gamePlayers.size()+1;
-        for (int i=0; i<n; i++){
-            draftPool.placeDie(diceBag.extractDie());
-        }
-    }
 
     /**
      * Initialize all 10 rounds with all attributes except Dice (they are extracted every time)
      */
-    public ArrayList<Round> createRound() {
+    public ArrayList<Round> createRounds() {
         ArrayList<Round> roundList = null;
         for (int i = 0; i < 10; i++) {
             roundList.set(i, new Round(i+1, gamePlayers.get(((i+1)%4)-1), gamePlayers, diceBag));
@@ -180,8 +169,14 @@ public class Model extends Observable{
         return roundTrack;
     }
 
-    public void notifyChanges(){
-        virtualView.update(this, this);
+
+    /**
+     * Notify methods for VirtualView
+     */
+    public void notifyModelChanges(){
+        for (Observer o : observers)
+            o.update(this, this);
     }
+
 
 }
