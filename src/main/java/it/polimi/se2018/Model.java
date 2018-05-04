@@ -15,15 +15,12 @@ import java.util.Observer;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-/** TODO: Problemi nel capire come interagisce il client con il server.
+/**
+ * This is the model, the class that maintain the State of the game
+ * It is an Observable from a VirtualView (the Observer).
+ * The Virtual View just send "broadcast" all graphical changes of the board
  *
- * TODO Il server passa il Model al client, per permettere di chiamare anche i metodi toString del model?
- *
- * TODO: Capire dove viene creato il model, guarda come funziona Tris, guarda gli Event-based, pensa ai problemi di concorrenza
- *
- *
- * CHANGES: Chiamato model al posto di Game per coerenza del pattern
- * Aggiunte alcune classi model-view-controller
+ * The controller directly modifies the Model.
  *
  */
 
@@ -31,7 +28,7 @@ public class Model extends Observable{
 
     private Observer virtualView;
     private DiceBag diceBag;
-    private DraftPool draftPool;
+
     private ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck;
 
     private ArrayList<PublicObjectiveCard> publicObjectiveCardDeck;
@@ -187,8 +184,22 @@ public class Model extends Observable{
         return roundTrack;
     }
 
+
+    /**
+     * Notify methods for VirtualView
+     */
     public void notifyChanges(){
         virtualView.update(this, this);
+    }
+
+    public void notifyReconnectedClient(ClientConnection c){
+        virtualView.updateConnectedClient(c);
+
+    }
+
+    public void notifyDisconnectedClient(ClientConnection c){
+        virtualView.updateDisconnectedClient(c);
+
     }
 
 }

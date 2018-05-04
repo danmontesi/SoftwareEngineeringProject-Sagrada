@@ -8,7 +8,6 @@ public class DraftPool {
 
     public DraftPool() {
 
-        this.dice =
     }
 
     public Die takeDie(int diePosition){

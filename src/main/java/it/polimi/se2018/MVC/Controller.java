@@ -16,6 +16,14 @@ import java.util.Observer;
 
 public class Controller extends Observable implements Observer {
 
+    /**
+     * This is the main controller of the game
+     * It lives in the Server side, and contains all references to Players and their Connections
+     *
+     * Has a link to
+     * - Model (it modifies the model)
+     * - Connections with the Client (to handle ServerToClientCommands)
+     */
     private Model model; //Always updated through notify() method of the Model, called every time it is modified
     private VirtualView virtualView;
 
