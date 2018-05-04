@@ -11,7 +11,7 @@ public class Round {
     private int roundNumber;
     private Player currentPlayer = null;
     private Player firstPlayer;
-    private HashMap<String, Integer> countPlayersTurns;
+    private HashMap<Player, Integer> countPlayersTurns;
     private int turnCount = 1;
     private ArrayList<Player> gamePlayers;
     private DraftPool draftPool;
@@ -19,8 +19,15 @@ public class Round {
 
     // TODO: Il costruttore deve Inizializzare i dadi della DraftPool e tutti gli attributi
     //
-    public Round(){
-        
+    public Round(int roundNumber, Player firstPlayer, ArrayList<Player> gamePlayers){
+        this.roundNumber = roundNumber;
+        this.firstPlayer = firstPlayer;
+        this.gamePlayers = gamePlayers;
+        countPlayersTurns = new HashMap<>();
+        for (int i=0; i<gamePlayers.size(); i++){
+            countPlayersTurns.put(gamePlayers.get(i), 0);
+        }
+        draftPool = new DraftPool();
     }
 
     /**
@@ -31,11 +38,6 @@ public class Round {
      *
      *  se siamo nella seconda metà del round currentPlayer sarà il precedente nella lista di giocatori;
      *  se ha già giocato 2 turni si passerà al giocatore ancora dopo
-     *
-     *  TODO: il metodo nextPlayer() deve anche:
-     *  1) aggiornare il numero del turno turnCount - fatto
-     *  2) aumentare il numero di turni di 1 nell'HashMap per il giocatore che giocherà
-     *  3) nel caso in cui il giocatore successivo risulti aver giocato già 2 turni, DEVE ESSERE SALTATO - fatto
      */
     public void nextPlayer() {
         int i=0;
@@ -60,7 +62,7 @@ public class Round {
             } else {
                 currentPlayer = gamePlayers.get(i-1); //altrimenti currentPlayer sarà il giocatore precedente in gamePlayers
             }
-            if (countPlayersTurns.get(currentPlayer.getUsername()) > 1){ //se il currentPlayer designato ha già giocato 2 turni
+            if (countPlayersTurns.get(currentPlayer) > 1){ //se il currentPlayer designato ha già giocato 2 turni
                 if (gamePlayers.get(i-1) == null){ //si passa a quello ancora dopo, con i soliti controlli di fine lista
                     currentPlayer = gamePlayers.get(gamePlayers.size());
                 } else {
@@ -68,6 +70,7 @@ public class Round {
                 }
             }
         }
+        countPlayersTurns.put((currentPlayer), countPlayersTurns.get(currentPlayer)+1);
         turnCount ++;
     }
 
@@ -94,12 +97,6 @@ public class Round {
     public void setRoundNumber(int roundNumber) {
         this.roundNumber = roundNumber;
     }
-
-    /*
-    public HashMap<String, Integer> getCountPlayersTurns() {
-        return countPlayersTurns;
-    }
-    */
 }
 
 

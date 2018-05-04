@@ -7,7 +7,8 @@ public class DraftPool {
     private ArrayList<Die> dice;
 
     public DraftPool() {
-        this.dice = null;
+
+        this.dice =
     }
 
     public Die takeDie(int diePosition){

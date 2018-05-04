@@ -131,8 +131,7 @@ public class Model extends Observable{
     public ArrayList<Round> createRound() {
         ArrayList<Round> roundList = null;
         for (int i = 0; i < 10; i++) {
-            roundList.set(i, new Round());
-            roundList.get(i).setRoundNumber(i+1);
+            roundList.set(i, new Round(i+1, gamePlayers.get(((i+1)%4)-1), gamePlayers));
         }
         return roundList;
     }
