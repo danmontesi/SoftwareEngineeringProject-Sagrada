@@ -7,9 +7,8 @@ public class Player {
     private int tokens;
 
 
-    public Player(PrivateObjectiveCard privateObjectiveCard, String username) {
+    public Player(String username) {
         this.windowPatternCard = null;
-        this.privateObjectiveCard = privateObjectiveCard;
         this.username = username;
         this.tokens = 0;
     }

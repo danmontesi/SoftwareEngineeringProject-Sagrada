@@ -18,7 +18,9 @@ public class CLIView extends View{
     /**
      * CliView receives a clone of current model each time it's Player's turn
      */
-    Model currentModel;
+
+    private String playerUsername;
+    private Model currentModel;
 
     private ClientController clientController;
 
@@ -70,7 +72,7 @@ public class CLIView extends View{
             case 1:
                 break;
             case 2:
-                chooseToolCardToUse(model.getExtractedToolCard());
+                clientController.sendCommand( new ChosenToolCardCommand(model.getExtractedToolCard()));
                 break;
             case 3:
                 break;

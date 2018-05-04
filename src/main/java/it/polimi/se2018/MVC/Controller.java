@@ -25,9 +25,8 @@ public class Controller extends Observable implements Observer {
      * - Connections with the Client (to handle ServerToClientCommands)
      */
     private Model model; //Always updated through notify() method of the Model, called every time it is modified
-    private VirtualView virtualView;
 
-    private HashMap<Player, Connection> playerClientControllerMap;
+    private HashMap<Player, Connection> playerClientConnectionMap;
     private ArrayList<Player> orderedPlayers;
 
     private ArrayList<ClientConnection> connectedClients;
@@ -36,12 +35,11 @@ public class Controller extends Observable implements Observer {
     private int roundNumber;
     private Server server;
 
-
-
-
-
-    public Controller(ArrayList<ClientConnection> clients, Server server){
-        this.connectedClients = clients;
+    public Controller(Model model, ArrayList<Player> orderedPlayers, ArrayList<ClientConnection> connectedClients, int roundNumber, Server server) {
+        this.model = model;
+        this.orderedPlayers = orderedPlayers;
+        this.connectedClients = connectedClients;
+        this.roundNumber = roundNumber;
         this.server = server;
     }
 
@@ -93,7 +91,7 @@ public class Controller extends Observable implements Observer {
     }
 
     /**
-     * Calculate total score of plsyers and determine who is the winner
+     * Calculate total score of players and determine who is the winner
      */
     public void endGame() {
 
@@ -123,9 +121,14 @@ public class Controller extends Observable implements Observer {
 
     }
 
+    /**
+     * update is called by the Model only
+     * i have to update every client's model
+     */
     @Override
     public void update(Observable o, Object arg) {
-
+        // to all ClientConnections->
+        // sendToAllPlayers( new refreshBoardCommand();
     }
 
     public void notifyWinner(Player p){
@@ -138,7 +141,6 @@ public class Controller extends Observable implements Observer {
 
 
     // NETWORK METHODS
-
     public void run(){
 
     }
@@ -148,6 +150,22 @@ public class Controller extends Observable implements Observer {
     }
 
     public void reconnectDisconnectedClient(ClientConnection connection){
+
+    }
+
+    /**
+     * Those are methods that apply commands arriving from the Client
+     * There are 1 method for every class for every command
+     */
+    public void applyClientCommand(ChosenToolCardCommand command){
+
+    }
+
+    public void applyClientCommand(ChosenWindowPatternCardCommand command){
+
+    }
+
+    public void applyClientCommand(ChosenMoveCommand command){
 
     }
 

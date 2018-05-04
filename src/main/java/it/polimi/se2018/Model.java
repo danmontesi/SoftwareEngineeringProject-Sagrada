@@ -35,14 +35,18 @@ public class Model extends Observable{
 
     private ArrayList<WindowPatternCard> windowPatternCardDeck;
 
-    private ArrayList<ClientConnection> connectedClients;
-    private ArrayList<ClientConnection> disconnectedClients;
+    /**
+     * Changed from ClientConnection to Players (The conotroller knows to which player correspond its Client)
+     */
+    private ArrayList<Player> connectedPlayers;
+    private ArrayList<Player> disconnectedPlayers;
 
     private ArrayList<Player> gamePlayers;
     private RoundTrack roundTrack;
     private Round currentRound;
     private ArrayList<Round> gameRounds;
     public static Model instance;
+
 
     /**
      * Constructor must
@@ -51,13 +55,13 @@ public class Model extends Observable{
      * - initialize all attributes (creating new ones)
      * - NOT TODO: initialize the decks-> we will do it later in the project
      */
-    private Model(ArrayList<Player> players, ArrayList<ClientConnection> connectedClients, Controller controller){
+    private Model(ArrayList<Player> players){
+
 
         gamePlayers = players;
         gameRounds = createRounds();
         diceBag = DiceBag.getInstance();
         roundTrack = new RoundTrack();
-        observers.add(controller);
         // TODO CREATE ALL CARDS
     }
 
@@ -65,9 +69,9 @@ public class Model extends Observable{
      * Singleton
      */
     //TODO: FALLO BENE CIT. DANI
-    public static Model getInstance(ArrayList<Player> players, ArrayList<ClientConnection> connectedClients, Controller controller){
+    public static Model getInstance(ArrayList<Player> players){
         if (instance==null){
-            instance = new Model(players, connectedClients, controller);
+            instance = new Model(players);
         }
         return instance;
     }
@@ -150,13 +154,6 @@ public class Model extends Observable{
         return extractedToolCard;
     }
 
-    /**
-     * get the Player of ArrayList "players" of the @param(playerNumber) position
-     */
-    public Player getPlayer(int playerNumber){
-        return gamePlayers.get(playerNumber);
-    }
-
     public Round getCurrentRound(){
         return currentRound;
     }
@@ -169,13 +166,48 @@ public class Model extends Observable{
         return roundTrack;
     }
 
+    public void addDisconnectedPlayer(Player pl){
+        disconnectedPlayers.add(pl);
+        connectedPlayers.remove(pl);
+    }
+
+    public void addReconnectedPlayer(Player pl){
+        disconnectedPlayers.remove(pl);
+        connectedPlayers.add(pl);
+    }
 
     /**
-     * Notify methods for VirtualView
+     * Notify methods for Controller
      */
     public void notifyModelChanges(){
         for (Observer o : observers)
             o.update(this, this);
+    }
+
+    public void addObserver(Observer o){
+        observers.add(o);
+    }
+
+
+    public ArrayList<Player> getGamePlayers() {
+        return gamePlayers;
+    }
+
+    public ArrayList<Round> getGameRounds() {
+        return gameRounds;
+    }
+
+    public DiceBag getDiceBag() {
+        return diceBag;
+    }
+
+
+    public ArrayList<Player> getConnectedPlayers() {
+        return connectedPlayers;
+    }
+
+    public ArrayList<Player> getDisconnectedPlayers() {
+        return disconnectedPlayers;
     }
 
 
