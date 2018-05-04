@@ -15,19 +15,20 @@ public class Round {
     private int turnCount = 1;
     private ArrayList<Player> gamePlayers;
     private DraftPool draftPool;
-
+    private DiceBag diceBag;
 
     // TODO: Il costruttore deve Inizializzare i dadi della DraftPool e tutti gli attributi
     //
-    public Round(int roundNumber, Player firstPlayer, ArrayList<Player> gamePlayers){
+    public Round(int roundNumber, Player firstPlayer, ArrayList<Player> gamePlayers, DiceBag diceBag){
         this.roundNumber = roundNumber;
         this.firstPlayer = firstPlayer;
         this.gamePlayers = gamePlayers;
+        this.diceBag = diceBag;
         countPlayersTurns = new HashMap<>();
         for (int i=0; i<gamePlayers.size(); i++){
             countPlayersTurns.put(gamePlayers.get(i), 0);
         }
-        draftPool = new DraftPool();
+        draftPool = new DraftPool(diceBag, gamePlayers.size());
     }
 
     /**

@@ -14,7 +14,7 @@ public class Player {
     }
 
     public int calculatePrivateObjectiveScore(){
-        return privateObjectiveCard.calculateScore();
+        return privateObjectiveCard.calculateScore(windowPatternCard);
     }
 
     /** EDIT:
