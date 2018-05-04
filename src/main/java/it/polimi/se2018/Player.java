@@ -1,13 +1,19 @@
 package it.polimi.se2018;
 
-import java.util.ArrayList;
-
 public class Player {
     private WindowPatternCard windowPatternCard;
     private PrivateObjectiveCard privateObjectiveCard;
     private String username;
     private int tokens;
 
+
+
+    public Player(PrivateObjectiveCard privateObjectiveCard, String username) {
+        this.windowPatternCard = null;
+        this.privateObjectiveCard = privateObjectiveCard;
+        this.username = username;
+        this.tokens = 0;
+    }
 
     public int calcuateTotalScore(){
         return calculatePrivateObjectiveScore() - calculatePointPenalization() + tokens;
@@ -24,8 +30,8 @@ public class Player {
 
     public int calculatePointPenalization(){
         int pointsToDecrease=0;
-        for (Cell c : windowPatternCard.getSchema()){
-            pointsToDecrease += (c.getAssociatedDie()==null? 1 : 0);
+        for (Cell c : this.windowPatternCard.getSchema()){
+            pointsToDecrease += (c.getAssociatedDie()== null ? 1 : 0);
         }
         return pointsToDecrease;
     }
@@ -52,6 +58,7 @@ public class Player {
 
     public void setWindowPatternCard(WindowPatternCard patternToBeSet){
         this.windowPatternCard = patternToBeSet;
+        this.tokens = this.windowPatternCard.getDifficulty();
     }
 
     public void decreaseTokens(int toBeDecreased){

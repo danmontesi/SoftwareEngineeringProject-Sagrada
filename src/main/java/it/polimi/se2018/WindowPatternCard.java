@@ -8,7 +8,12 @@ public class WindowPatternCard {
     private ArrayList<Cell> schema;
     private int difficulty;
     private String name;
-    private int cardID;
+
+    public WindowPatternCard(ArrayList<Cell> schema, int difficulty, String name) {
+        this.schema = schema;
+        this.difficulty = difficulty;
+        this.name = name;
+    }
 
     public boolean isEmpty() {
         Iterator<Cell> iterator = schema.iterator();
@@ -62,19 +67,17 @@ public class WindowPatternCard {
         return schema.get(row*5+column).removeDie();
     }
 
-    //TODO: funziona solo per le caselle interne...
     public boolean checkPlacementRestriction(WindowPatternCard w, Cell c){ // 'w' can be replaced with 'this'
-        if (w.isEmpty()){
-            int index = c.getIndex();
+        int index = c.getIndex();
+        if (w.isEmpty()) {
             // if cell is internal -> false
-            if( ( (index%5) >= 1 ) && ((index%5) <= 3)
-                    && ((index/5) >= 1 ) && ((index/5)<= 4) ){
+            if (((index % 5) > 0) && ((index % 5) < 4)
+                    && ((index / 5) > 0) && ((index / 5) < 3)) {
                 return false;
-            }
-            else
+            } else
                 return true;
-        }
 
+        }
         /**
          * edit @danmontesi
          * Instead of considering an Array of int, consider an ArrayList when I insert new numbers of adjacent
@@ -83,7 +86,6 @@ public class WindowPatternCard {
          * if i find at least an adjacent -> return true
          */
         ArrayList<Integer> adjacentCells = new ArrayList<>();
-        int index = c.getIndex();
 
         // 6 chained if clauses to determine if exists an adjacent cell
 
@@ -157,10 +159,6 @@ public class WindowPatternCard {
             }
         }
         return true;
-    }
-
-    public int getCardID(){
-        return this.cardID;
     }
 
     public String getCardName(){
