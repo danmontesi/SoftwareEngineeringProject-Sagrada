@@ -1,7 +1,6 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.MVC.Controller;
-import it.polimi.se2018.MVC.VirtualView;
 import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.toolcards.ToolCard;
 
@@ -55,7 +54,7 @@ public class Model extends Observable{
     private Model(ArrayList<Player> players, ArrayList<ClientConnection> connectedClients, Controller controller){
 
         gamePlayers = players;
-        gameRounds = createRound();
+        gameRounds = createRounds();
         diceBag = DiceBag.getInstance();
         roundTrack = new RoundTrack();
         observers.add(controller);
@@ -65,9 +64,10 @@ public class Model extends Observable{
     /**
      * Singleton
      */
-    public static Model getInstance(ArrayList<Player> players, ArrayList<ClientConnection> connectedClients){
+    //TODO: FALLO BENE CIT. DANI
+    public static Model getInstance(ArrayList<Player> players, ArrayList<ClientConnection> connectedClients, Controller controller){
         if (instance==null){
-            instance = new Model(players, connectedClients);
+            instance = new Model(players, connectedClients, controller);
         }
         return instance;
     }
