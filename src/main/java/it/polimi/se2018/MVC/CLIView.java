@@ -187,28 +187,5 @@ public class CLIView extends View{
     }
 
 
-    // TODO EDIT & ADD notify to Model! ( that calls update!)
-    // EDIT: ho bisogno di una view e anche una Virtual View per ogni giocatore!!!
-    // Il controller invece misa che è uno...!
-    public void update(MoveMessage message)
-    {
-        String resultMsg = message.getBoard().toString();
-        if (message.getBoard().isGameOver(message.getPlayer().getMarker())) {
-            if (message.getPlayer() == player) {
-                resultMsg = resultMsg + "\nHai vinto!";
-            } else {
-                resultMsg = resultMsg + "\nHai perso!";
-            }
-        }
-        else if(message.getBoard().isFull()){
-            resultMsg = resultMsg + "\nParità!";
-        }
-        if(message.getPlayer() == player){
-            resultMsg = resultMsg + "\nAttendi la mossa dell'altro giocatore!";
-        }
-        else{
-            resultMsg = resultMsg + "\nScegli la tua mossa:";
-        }
-        showMessage(resultMsg);
-    }
+
 }

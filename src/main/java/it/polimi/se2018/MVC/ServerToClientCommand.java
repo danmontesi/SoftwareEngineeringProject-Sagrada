@@ -1,5 +1,7 @@
 package it.polimi.se2018.MVC;
 
+import it.polimi.se2018.network.ClientConnection;
+
 import java.io.Serializable;
 
 public abstract class ServerToClientCommand implements Serializable {

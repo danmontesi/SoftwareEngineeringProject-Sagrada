@@ -9,9 +9,8 @@ public class ClientToServerCommand {
      */
 
 
-
-    }
 }
+
 
 class ChosenToolCardCommand {
     int numberChosen;
@@ -25,3 +24,11 @@ class ChosenToolCardCommand {
 
 
 //... Many others
+
+class ChosenWindowPatternCardCommand {
+
+}
+
+class ChosenUsernameCommand{
+
+}

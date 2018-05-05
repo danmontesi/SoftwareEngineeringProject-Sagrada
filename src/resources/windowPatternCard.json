@@ -1,0 +1,30 @@
+[
+  {
+    "name":"WP1",
+    "difficulty":"2",
+    "schema":[
+      "RED", "1", "no", "no", "no", "no", "RED", "1", "no", "no", "no", "no", "RED", "1", "no", "no", "no", "no", "no", "no"
+    ]
+  },
+  {
+    "name":"WP2",
+    "difficulty":"2",
+    "schema":[
+      "VIOLET", "1", "no", "no", "no", "no", "RED", "1", "no", "no", "no", "no", "RED", "1", "no", "no", "no", "no", "no", "no"
+    ]
+  },
+  {
+    "name":"WP3",
+    "difficulty":"2",
+    "schema":[
+      "YELLOW", "1", "no", "no", "no", "no", "RED", "1", "no", "no", "no", "no", "RED", "1", "no", "no", "no", "no", "no", "no"
+    ]
+  },
+  {
+    "name":"WP4",
+    "difficulty":"2",
+    "schema":[
+      "RED", "1", "no", "no", "no", "no", "RED", "1", "no", "no", "no", "no", "RED", "1", "no", "no", "no", "no", "no", "no"
+    ]
+  }
+]
