@@ -16,6 +16,7 @@ public class DiceBag {
     }
 
     private DiceBag(){
+        dice = new ArrayList<>();
         for (int i=0; i<90; i+=5){
             dice.add(Die.getInstance(COLOR.RED));
             dice.add(Die.getInstance(COLOR.GREEN));

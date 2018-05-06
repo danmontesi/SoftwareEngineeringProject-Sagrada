@@ -90,6 +90,10 @@ public class Round {
     public Player getFirstPlayer() {
         return firstPlayer;
     }
+
+    public DraftPool getDraftPool() {
+        return draftPool;
+    }
 }
 
 

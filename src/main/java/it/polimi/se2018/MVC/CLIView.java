@@ -58,7 +58,7 @@ public class CLIView extends View{
     public void startTurn(Model model) {
         this.currentModel = model; //NB: Is a clone come from a Command
         model.toString();
-        System.out.println("It's your turn, "+ playerUsename +"!");
+        System.out.println("It's your turn, "+ playerUsername +"!");
         System.out.println("What do you want to do?");
         System.out.println("1 - Place a die");
         System.out.println("2 - Use ToolCard");
@@ -72,7 +72,7 @@ public class CLIView extends View{
             case 1:
                 break;
             case 2:
-                clientController.sendCommand( new ChosenToolCardCommand(model.getExtractedToolCard()));
+                askToolCardToUse(currentModel.getExtractedToolCard());
                 break;
             case 3:
                 break;
@@ -162,7 +162,7 @@ public class CLIView extends View{
 
     public void askPlayerMove(){
         System.out.println("Chose which die you prefere to pick from the DraftPool");
-        currentModel.getCurrentRound.getDraftPool().toString();
+        currentModel.getCurrentRound().getDraftPool().toString();
         Scanner scan = new Scanner(System.in);
         int dieChoose = scan.nextInt();
 
@@ -183,7 +183,7 @@ public class CLIView extends View{
 
     public void showWaitForYourTurn(Model model){
         model.toString();
-        System.out.println("You have to wait until player" + model.getCurrentRound.getCurrentPlayer() + "finishes");
+        System.out.println("You have to wait until player" + model.getCurrentRound().getCurrentPlayer() + "finishes");
     }
 
 

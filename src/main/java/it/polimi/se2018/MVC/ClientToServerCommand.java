@@ -12,7 +12,7 @@ public class ClientToServerCommand {
 }
 
 
-class ChosenToolCardCommand {
+class ChosenToolCardCommand extends ClientToServerCommand{
     int numberChosen;
 
     public ChosenToolCardCommand(int numberChosen){

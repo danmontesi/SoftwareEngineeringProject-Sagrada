@@ -5,7 +5,6 @@ import it.polimi.se2018.MVC.Controller;
 import it.polimi.se2018.network.ClientConnection;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -46,5 +45,10 @@ public class GameMatchTest {
         assertEquals(8, model.getGameRounds().size());
    }
 
+   //Testing Player
+   @Before
+    public void assignCardsToPlayers(){
+
+   }
 
 }

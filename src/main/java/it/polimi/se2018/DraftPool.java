@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DraftPool {
-    private ArrayList<Die> dice;
+    private ArrayList<Die> dice = new ArrayList<>(10);
     private DiceBag diceBag;
 
     public DraftPool(DiceBag diceBag, int playersNumber) {
         this.diceBag = diceBag;
         for (int i=0; i<playersNumber; i++){
-            this.dice.set(i, diceBag.extractDie());
+            this.dice.add(diceBag.extractDie());
         }
     }
 

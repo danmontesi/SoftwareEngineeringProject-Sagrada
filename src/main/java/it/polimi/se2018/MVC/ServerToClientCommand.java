@@ -45,6 +45,27 @@ class InitializeTurnCommand{
 
 }
 
+class WinCommand{
+
+}
+
+class LoseCommand{
+
+}
+
+class StartTurnCommand{
+
+}
+
+class CloseClientCommand{
+
+}
+
+class InvalidInputCommand{
+
+}
+
+
 /** Eccetera
  *
  */

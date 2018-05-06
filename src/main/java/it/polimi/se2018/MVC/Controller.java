@@ -102,7 +102,7 @@ public class Controller extends Observable implements Observer {
      * @return
      */
     public boolean isAllowed(){
-
+        return true;
     }
 
     public void sendCommandToAllPlayers(ServerToClientCommand command){
@@ -162,10 +162,6 @@ public class Controller extends Observable implements Observer {
     }
 
     public void applyClientCommand(ChosenWindowPatternCardCommand command){
-
-    }
-
-    public void applyClientCommand(ChosenMoveCommand command){
 
     }
 

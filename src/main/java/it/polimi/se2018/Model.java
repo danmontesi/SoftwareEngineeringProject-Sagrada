@@ -119,9 +119,9 @@ public class Model extends Observable{
      * Initialize all 10 rounds with all attributes except Dice (they are extracted every time)
      */
     public ArrayList<Round> createRounds() {
-        ArrayList<Round> roundList = null;
+        ArrayList<Round> roundList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            roundList.set(i, new Round(i+1, gamePlayers.get(((i+1)%4)-1), gamePlayers, diceBag));
+            roundList.add(new Round(i+1, gamePlayers.get(((i+1)%4)-1), gamePlayers, diceBag));
         }
         return roundList;
     }

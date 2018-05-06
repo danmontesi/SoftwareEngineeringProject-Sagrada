@@ -22,7 +22,7 @@ public class ClientController {
     private View userInterface;
 
     /** The network interface. */
-    private ClientConnecter clientConnecterInterface;
+    //private ClientConnecter clientConnecterInterface;
 
 
 
@@ -30,7 +30,7 @@ public class ClientController {
 
     public void sendCommand(ClientToServerCommand command) {
         try {
-            clientConnecterInterface.sendCommand(command);
+            //clientConnecterInterface.sendCommand(command);
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -49,8 +49,9 @@ public class ClientController {
      * @param invalidCommand
      */
 
-    public void applyCommand(InvalidCommand invalidCommand) {
-        userInterface.commandNotValid();
+
+    public void applyCommand(InvalidInputCommand invalidCommand) {
+        //userInterface.commandNotValid();
 
     }
 
@@ -70,8 +71,8 @@ public class ClientController {
      * @param closeConnectionCommand the close connection command
      */
     public void applyCommand(CloseClientCommand closeConnectionCommand) {
-        userInterface.notifyServerClosed();
-        networkInterface.closeConnection();
+        //userInterface.notifyServerClosed();
+        //networkInterface.closeConnection();
 
     }
 
@@ -81,7 +82,7 @@ public class ClientController {
      * @param askPrivilegeChoiceCommand the ask privilege choice command
      */
     public void applyCommand(ChosenToolCardCommand askPrivilegeChoiceCommand) {
-        userInterface.AskPrivilegeChoice(askPrivilegeChoiceCommand.getNumberOfPrivilege(), askPrivilegeChoiceCommand.getPrivilegeResources());
+        //userInterface.AskPrivilegeChoice(askPrivilegeChoiceCommand.getNumberOfPrivilege(), askPrivilegeChoiceCommand.getPrivilegeResources());
 
     }
 
@@ -91,7 +92,7 @@ public class ClientController {
      * @param initializeMatchCommand the initialize match command
      */
     public void applyCommand(InitializeMatchCommand initializeMatchCommand) {
-        userInterface.initializeMatch(initializeMatchCommand.getNumPlayers());
+        //userInterface.initializeMatch(initializeMatchCommand.getNumPlayers());
     }
 
     /**
@@ -100,7 +101,7 @@ public class ClientController {
      * @param winCommand the win command
      */
     public void applyCommand(WinCommand winCommand) {
-        userInterface.win();
+        //userInterface.win();
 
     }
 
@@ -110,7 +111,7 @@ public class ClientController {
      * @param loseCommand the lose command
      */
     public void applyCommand(LoseCommand loseCommand) {
-        userInterface.lose();
+        //userInterface.lose();
 
     }
 
