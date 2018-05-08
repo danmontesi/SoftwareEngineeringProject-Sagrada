@@ -12,7 +12,8 @@ public class RowShadeVariety extends PublicObjectiveCard{
         for (int i = 0; i < 4; i++){
             HashSet<Integer> numbers = new HashSet<>();
             for(int j = 0; j < 5; j++){
-                numbers.add(w.getCell(i, j).getAssociatedDie().getValue());
+                if (w.getCell(i, j).getAssociatedDie() != null)
+                    numbers.add(w.getCell(i, j).getAssociatedDie().getValue());
             }
             if(numbers.size() == 5){
                 total += score;
