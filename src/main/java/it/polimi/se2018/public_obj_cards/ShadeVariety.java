@@ -11,7 +11,8 @@ public class ShadeVariety extends PublicObjectiveCard{
         HashSet<Integer> numbers = new HashSet<>();
         for (int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
-                numbers.add(w.getCell(i, j).getAssociatedDie().getValue());
+                if (w.getCell(i, j).getAssociatedDie()!= null)
+                    numbers.add(w.getCell(i, j).getAssociatedDie().getValue());
             }
             if(numbers.size() == 6){
                 total += score;

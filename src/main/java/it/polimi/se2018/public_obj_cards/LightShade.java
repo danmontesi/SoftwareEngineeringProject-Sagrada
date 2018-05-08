@@ -2,19 +2,29 @@ package it.polimi.se2018.public_obj_cards;
 
 import it.polimi.se2018.WindowPatternCard;
 
-import java.util.HashSet;
-
-public class  LightShade extends PublicObjectiveCard{
+public class LightShade extends PublicObjectiveCard{
     private int score = 2;
     public int calculateScore(WindowPatternCard w){
         int total = 0;
-        HashSet<Integer> numbers = new HashSet<>();
+        int[] numbers = new int[2];
+        numbers[0] = 0;
+        numbers[1] = 0;
+        //Check the number of 1 and 2 in window pattern card and save it in numbers
         for (int i = 0; i < 4; i++){
-            for(int j = 0; j < 5; j++){
-                numbers.add(w.getCell(i, j).getAssociatedDie().getValue());
+            for(int j = 0; j < 5; j++) {
+                if (w.getCell(i, j).getAssociatedDie() != null) {
+                    if (w.getCell(i, j).getAssociatedDie().getValue() == 1) {
+                        numbers[0] += 1;
+                    } else if (w.getCell(i, j).getAssociatedDie().getValue() == 2) {
+                        numbers[1] += 1;
+                    }
+                }
             }
-            if(numbers.contains(1)&&(numbers.contains(2))){
-                total += score;
+            if(numbers[0] > numbers[1]){
+                total += score*numbers[1];
+            }
+            else{
+                total +=score*numbers[0];
             }
         }
         return total;
