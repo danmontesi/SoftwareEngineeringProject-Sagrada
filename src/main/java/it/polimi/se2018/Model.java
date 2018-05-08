@@ -1,7 +1,6 @@
 package it.polimi.se2018;
 
-import it.polimi.se2018.MVC.Controller;
-import it.polimi.se2018.network.ClientConnection;
+import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.toolcards.ToolCard;
 
 import java.util.ArrayList;
