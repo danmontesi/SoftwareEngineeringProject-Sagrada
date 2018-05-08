@@ -24,4 +24,4 @@ public class ColorVariety extends PublicObjectiveCard {
     }
 }
 
-}
+
