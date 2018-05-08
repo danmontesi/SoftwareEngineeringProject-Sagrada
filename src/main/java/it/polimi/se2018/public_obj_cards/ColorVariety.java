@@ -22,5 +22,3 @@ public class ColorVariety extends PublicObjectiveCard {
         return total;
     }
 }
-
-}
