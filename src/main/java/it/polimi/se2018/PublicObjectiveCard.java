@@ -155,13 +155,24 @@ class DeepShade extends PublicObjectiveCard{
     private int score = 2;
     public int calculateScore(WindowPatternCard w){
         int total = 0;
-        HashSet<Integer> numbers = new HashSet<>();
+        int[] numbers = new int[2];
+        numbers[0] = 0;
+        numbers[1] = 0;
+        //Check the number of 5 and 6 in window pattern card and save it in numbers
         for (int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
-                numbers.add(w.getCell(i, j).getAssociatedDie().getValue());
+                if (w.getCell(i, j).getAssociatedDie().getValue() == 5){
+                    numbers[0]+=1;
+                }
+                else if (w.getCell(i, j).getAssociatedDie().getValue() == 6){
+                    numbers[1]+=1;
+                }
             }
-            if(numbers.contains(5)&&(numbers.contains(6))){
-                total += score;
+            if(numbers[0] > numbers[1]){
+                total += score*numbers[1];
+            }
+            else{
+                total +=score*numbers[0];
             }
         }
         return total;
@@ -172,13 +183,24 @@ class MediumShade extends PublicObjectiveCard{
     private int score = 2;
     public int calculateScore(WindowPatternCard w){
         int total = 0;
-        HashSet<Integer> numbers = new HashSet<>();
+        int[] numbers = new int[2];
+        numbers[0] = 0;
+        numbers[1] = 0;
+        //Check the number of 3 and 4 in window pattern card and save it in numbers
         for (int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
-                numbers.add(w.getCell(i, j).getAssociatedDie().getValue());
+                if (w.getCell(i, j).getAssociatedDie().getValue() == 3){
+                    numbers[0]+=1;
+                }
+                else if (w.getCell(i, j).getAssociatedDie().getValue() == 4){
+                    numbers[1]+=1;
+                }
             }
-            if(numbers.contains(3)&&(numbers.contains(4))){
-                total += score;
+            if(numbers[0] > numbers[1]){
+                total += score*numbers[1];
+            }
+            else{
+                total +=score*numbers[0];
             }
         }
         return total;
@@ -189,13 +211,24 @@ class  LightShade extends PublicObjectiveCard{
     private int score = 2;
     public int calculateScore(WindowPatternCard w){
         int total = 0;
-        HashSet<Integer> numbers = new HashSet<>();
+        int[] numbers = new int[2];
+        numbers[0] = 0;
+        numbers[1] = 0;
+        //Check the number of 1 and 2 in window pattern card and save it in numbers
         for (int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
-                numbers.add(w.getCell(i, j).getAssociatedDie().getValue());
+                if (w.getCell(i, j).getAssociatedDie().getValue() == 1){
+                    numbers[0]+=1;
+                }
+                else if (w.getCell(i, j).getAssociatedDie().getValue() == 2){
+                    numbers[1]+=1;
+                }
             }
-            if(numbers.contains(1)&&(numbers.contains(2))){
-                total += score;
+            if(numbers[0] > numbers[1]){
+                total += score*numbers[1];
+            }
+            else{
+                total +=score*numbers[0];
             }
         }
         return total;
