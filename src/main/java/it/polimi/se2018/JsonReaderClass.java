@@ -1,15 +1,12 @@
 package it.polimi.se2018;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.util.Iterator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class JsonReaderClass {
@@ -19,7 +16,8 @@ public class JsonReaderClass {
 
         JSONParser parser = new JSONParser();
 
-        JSONArray a = (JSONArray) parser.parse(new FileReader("/Users/danmontesi/Desktop/ing-sw-2018-ProvaFinale/src/resources/windowPatternCard.json"));
+        //ATTENZIONE: POTREBBE ESSERE NECESSARIO MODIFICARE IL PERCORSO RELATIVO
+        JSONArray a = (JSONArray) parser.parse(new FileReader("/../../../../../resources/windowPatternCard.json"));
 
         for (Object o : a)
         {
