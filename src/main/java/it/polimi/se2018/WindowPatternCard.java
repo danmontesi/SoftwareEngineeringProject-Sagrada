@@ -131,8 +131,8 @@ public class WindowPatternCard {
     }
 
     public boolean checkValueRestriction(Cell c, Die d){
-        if (c.getvalueConstraint() == null) { return true; }
-        if(c.getvalueConstraint() == d.getValue()){
+        if (c.getValueConstraint() == null) { return true; }
+        if(c.getValueConstraint() == d.getValue()){
             return true;
         }
         else
@@ -143,7 +143,7 @@ public class WindowPatternCard {
         Iterator<Cell> iterator = schema.iterator();
         while(iterator.hasNext()){
             Cell temp = iterator.next();
-            if ((temp.getAssociatedDie() != null)&&(temp.getAssociatedDie().getValue() != temp.getvalueConstraint())){
+            if ((temp.getAssociatedDie() != null)&&(temp.getAssociatedDie().getValue() != temp.getValueConstraint())){
                 return false;
             }
         }

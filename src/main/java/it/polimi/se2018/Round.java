@@ -9,7 +9,7 @@ import static it.polimi.se2018.Model.instance;
 public class Round {
 
     private int roundNumber;
-    private Player currentPlayer = null;
+    private Player currentPlayer;
     private Player firstPlayer;
     private HashMap<Player, Integer> countPlayersTurns;
     private int turnCount = 1;
@@ -24,6 +24,7 @@ public class Round {
         this.firstPlayer = firstPlayer;
         this.gamePlayers = gamePlayers;
         this.diceBag = diceBag;
+        currentPlayer = null;
         countPlayersTurns = new HashMap<>();
         for (int i=0; i<gamePlayers.size(); i++){
             countPlayersTurns.put(gamePlayers.get(i), 0);
