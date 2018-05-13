@@ -1,5 +1,7 @@
-package it.polimi.se2018;
+package it.polimi.se2018.MatchTest;
 
+import it.polimi.se2018.COLOR;
+import it.polimi.se2018.Die;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,16 +9,17 @@ import static junit.framework.TestCase.*;
 
 public class DieTest {
     Die die;
+
     @Before
     public void setUp(){
-        die = Die.getInstance(COLOR.RED);
+        die = new Die(COLOR.RED);
     }
 
     @Test
     public void testRoll(){
         die.roll();
         assertTrue((die.getValue() <= 6) &&(die.getValue()) >=1);
-        assertTrue(die.getColor().equals(COLOR.RED));
+        assertEquals(die.getColor(), COLOR.RED);
     }
 
     @Test
@@ -45,13 +48,5 @@ public class DieTest {
         die.setValue(6);
         die.decreaseByOne();
         assertEquals(5, die.getValue());
-    }
-
-    @Test
-    public void testGetInstance(){
-        for (int i = 0; i < 13; i++){
-            assertNotNull(die = Die.getInstance(COLOR.RED));
-        }
-        assertNull(die = Die.getInstance(COLOR.RED));
     }
 }

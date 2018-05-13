@@ -8,7 +8,7 @@ public class PrivateObjectiveCard {
     public int calculateScore(WindowPatternCard w){
         int score = 0;
         for (Cell c : w.getSchema()){
-            score += (c.getAssociatedDie().getColor() == color? 1 : 0);
+            score += (c.getAssociatedDie().get().getColor() == color? 1 : 0);
         }
         return score;
     }
@@ -16,6 +16,5 @@ public class PrivateObjectiveCard {
     public String getDescription(){
         return description;
     }
-
 
 }

@@ -5,15 +5,12 @@ import it.polimi.se2018.Cell;
 import it.polimi.se2018.Die;
 import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.public_obj_cards.*;
-
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertArrayEquals;
 
 /**
  * @author danmontesi
@@ -44,51 +41,51 @@ public class PublicObjectiveCardsTest {
         }
 
         int counter=0;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.RED));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.RED));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.BLUE));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.VIOLET));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.VIOLET));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.VIOLET));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.VIOLET));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.VIOLET));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.VIOLET));
         counter++;
 
         //FIRST ROW
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.BLUE));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.GREEN));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.GREEN));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.GREEN));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.GREEN));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.GREEN));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.GREEN));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.GREEN));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.GREEN));
         counter++;
 
         //SECOND ROW
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.YELLOW));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.YELLOW));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.YELLOW));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.YELLOW));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.RED));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.RED));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.BLUE));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.RED));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.RED));
         counter++;
 
         //THIRD ROW
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.RED));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.RED));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.BLUE));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.YELLOW));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.YELLOW));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.BLUE));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
         counter++;
-        schema.get(counter).setAssociatedDie(Die.getInstance(COLOR.GREEN));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.GREEN));
         //FOURTH ROW
 
         for (int i = 0; i < 20; i++) {

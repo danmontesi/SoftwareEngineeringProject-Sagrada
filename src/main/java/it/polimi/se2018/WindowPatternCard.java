@@ -3,6 +3,7 @@ package it.polimi.se2018;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Optional;
 
 public class WindowPatternCard {
     private ArrayList<Cell> schema;
@@ -16,13 +17,7 @@ public class WindowPatternCard {
     }
 
     public boolean isEmpty() {
-        Iterator<Cell> iterator = schema.iterator();
-        while(iterator.hasNext()){
-            if(iterator.next().getAssociatedDie() != null){
-                return false;
-            }
-        }
-        return true;
+        return this.schema.isEmpty();
     }
 
     /**
@@ -63,7 +58,7 @@ public class WindowPatternCard {
     }
 
     //What if the index is not valid? -> The controller checks it :)
-    public Die removeDie(int row, int column){
+    public Optional<Die> removeDie(int row, int column){
         return schema.get(row*5+column).removeDie();
     }
 
@@ -143,7 +138,7 @@ public class WindowPatternCard {
         Iterator<Cell> iterator = schema.iterator();
         while(iterator.hasNext()){
             Cell temp = iterator.next();
-            if ((temp.getAssociatedDie() != null)&&(temp.getAssociatedDie().getValue() != temp.getValueConstraint())){
+            if ((temp.getAssociatedDie() != null)&&(temp.getAssociatedDie().get().getValue() != temp.getValueConstraint())){
                 return false;
             }
         }
@@ -154,7 +149,7 @@ public class WindowPatternCard {
         Iterator<Cell> iterator = schema.iterator();
         while(iterator.hasNext()){
             Cell temp = iterator.next();
-            if ((temp.getAssociatedDie() != null) && !(temp.getAssociatedDie().getColor().equals(temp.getColorConstraint()))){
+            if ((temp.getAssociatedDie() != null) && !(temp.getAssociatedDie().get().getColor().equals(temp.getColorConstraint()))){
                 return false;
             }
         }

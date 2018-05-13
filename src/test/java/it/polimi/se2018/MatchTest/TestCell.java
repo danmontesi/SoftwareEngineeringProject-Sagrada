@@ -5,7 +5,11 @@ import it.polimi.se2018.Cell;
 import it.polimi.se2018.Die;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class TestCell {
 
@@ -14,7 +18,7 @@ public class TestCell {
 
     @Before
     public void setUp(){
-        die = Die.getInstance(COLOR.RED);
+        die = new Die(COLOR.RED);
         cell = new Cell();
         cell.setAssociatedDie(die);
     }
@@ -22,14 +26,14 @@ public class TestCell {
     @Test
     public void testRemoveDie(){
         Die temp = cell.getAssociatedDie();
-        Die temp2 = cell.removeDie();
+        Optional<Die> temp2 = cell.removeDie();
         assertNull(cell.getAssociatedDie());
         assertEquals(temp, temp2);
     }
 
     @Test
     public void testSwitchDie(){
-        Die toSwitchDie = Die.getInstance(COLOR.YELLOW);
+        Die toSwitchDie =new Die(COLOR.YELLOW);
         Die temp = cell.getAssociatedDie();
         Die temp2 = cell.switchDie(toSwitchDie);
         assertEquals(toSwitchDie, cell.getAssociatedDie());

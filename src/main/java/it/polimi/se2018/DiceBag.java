@@ -18,11 +18,11 @@ public class DiceBag {
     private DiceBag(){
         dice = new ArrayList<>();
         for (int i=0; i<90; i+=5){
-            dice.add(Die.getInstance(COLOR.RED));
-            dice.add(Die.getInstance(COLOR.GREEN));
-            dice.add(Die.getInstance(COLOR.VIOLET));
-            dice.add(Die.getInstance(COLOR.BLUE));
-            dice.add(Die.getInstance(COLOR.YELLOW));
+            dice.add(new Die(COLOR.RED));
+            dice.add(new Die(COLOR.GREEN));
+            dice.add(new Die(COLOR.VIOLET));
+            dice.add(new Die(COLOR.BLUE));
+            dice.add(new Die(COLOR.YELLOW));
         }
     }
 

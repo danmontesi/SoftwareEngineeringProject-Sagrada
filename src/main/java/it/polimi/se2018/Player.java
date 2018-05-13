@@ -26,6 +26,7 @@ public class Player {
      * aggiunto calculatePenalizationScore()
      */
 
+    //PROBABILMENTE QUESTO VA SPOSTATO NEL CONTROLLER
     public int calculatePointPenalization(){
         int pointsToDecrease=0;
         for (Cell c : this.windowPatternCard.getSchema()){

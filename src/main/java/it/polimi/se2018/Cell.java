@@ -1,5 +1,7 @@
 package it.polimi.se2018;
 
+import java.util.Optional;
+
 public class Cell {
     private COLOR colorConstraint;
     private Integer valueConstraint;
@@ -36,10 +38,15 @@ public class Cell {
         this.associatedDie = toBeSetDie;
     }
 
-    public Die removeDie(){
-        Die temp = this.associatedDie;
-        associatedDie = null;
-        return temp;
+    public Optional<Die> removeDie(){
+        try{
+            Die temp = this.associatedDie;
+            associatedDie = null;
+            return Optional.of(temp);
+        }
+        catch(NullPointerException e){
+            return Optional.empty();
+        }
     }
 
     public Die switchDie(Die toSwitchDie){
@@ -48,8 +55,8 @@ public class Cell {
         return temp;
     }
 
-    public Die getAssociatedDie(){
-        return associatedDie;
+    public Optional<Die> getAssociatedDie(){
+        return Optional.of(associatedDie);
     }
 
     public COLOR getColorConstraint(){
