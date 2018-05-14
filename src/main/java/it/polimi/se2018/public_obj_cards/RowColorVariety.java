@@ -14,8 +14,8 @@ public class RowColorVariety extends PublicObjectiveCard{
         for (int i = 0; i < 4; i++){
             HashSet<COLOR> colors = new HashSet<>();
             for(int j = 0; j < 5; j++){
-                if (w.getCell(i, j).getAssociatedDie() != null)
-                    colors.add(w.getCell(i, j).getAssociatedDie().getColor());
+                if (w.getCell(i, j).getAssociatedDie().isPresent())
+                    colors.add(w.getCell(i, j).getAssociatedDie().get().getColor());
             }
             if(colors.size() == 5){
                 total += score;

@@ -14,7 +14,7 @@ public class ShadeVariety extends PublicObjectiveCard{
 
                 //DA RIVEDERE E DA INSERIRE IN UN BLOCCO
                 //TRY/CATCH
-                if (w.getCell(i, j).getAssociatedDie()!= null)
+                if (w.getCell(i, j).getAssociatedDie().isPresent())
                     numbers.add(w.getCell(i, j).getAssociatedDie().get().getValue());
             }
             if(numbers.size() == 6){

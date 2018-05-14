@@ -12,8 +12,8 @@ public class ColumnShadeVariety extends PublicObjectiveCard{
         for (int j = 0; j < 5; j++){
             HashSet<Integer> numbers = new HashSet<>();
             for(int i = 0; i < 4; i++){
-                if (w.getCell(i, j).getAssociatedDie() != null)
-                    numbers.add(w.getCell(i, j).getAssociatedDie().getValue());
+                if (w.getCell(i, j).getAssociatedDie().isPresent())
+                    numbers.add(w.getCell(i, j).getAssociatedDie().get().getValue());
             }
             if(numbers.size() == 4){
                 total += score;

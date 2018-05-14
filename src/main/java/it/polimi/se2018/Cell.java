@@ -17,21 +17,25 @@ public class Cell {
     public Cell(COLOR colorConstraint, int valueConstraint) {
         this.colorConstraint = colorConstraint;
         this.valueConstraint = valueConstraint;
+        this.associatedDie = null;
         }
 
     public Cell(COLOR colorConstraint) {
         this.colorConstraint = colorConstraint;
         this.valueConstraint = null;
+        this.associatedDie = null;
     }
 
     public Cell(int valueConstraint) {
         this.colorConstraint = null;
         this.valueConstraint = valueConstraint;
+        this.associatedDie = null;
     }
 
     public Cell() {
         this.colorConstraint = null;
         this.valueConstraint = null;
+        this.associatedDie = null;
     }
 
     public void setAssociatedDie(Die toBeSetDie){
@@ -56,7 +60,12 @@ public class Cell {
     }
 
     public Optional<Die> getAssociatedDie(){
-        return Optional.of(associatedDie);
+        try{
+            return Optional.of(associatedDie);
+        }
+        catch (NullPointerException e){
+            return Optional.empty();
+        }
     }
 
     public COLOR getColorConstraint(){

@@ -12,10 +12,10 @@ public class LightShade extends PublicObjectiveCard{
         //Check the number of 1 and 2 in window pattern card and save it in numbers
         for (int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++) {
-                if (w.getCell(i, j).getAssociatedDie() != null) {
-                    if (w.getCell(i, j).getAssociatedDie().getValue() == 1) {
+                if (w.getCell(i, j).getAssociatedDie().isPresent()) {
+                    if (w.getCell(i, j).getAssociatedDie().get().getValue() == 1) {
                         numbers[0] += 1;
-                    } else if (w.getCell(i, j).getAssociatedDie().getValue() == 2) {
+                    } else if (w.getCell(i, j).getAssociatedDie().get().getValue() == 2) {
                         numbers[1] += 1;
                     }
                 }

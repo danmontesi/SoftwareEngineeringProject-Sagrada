@@ -6,6 +6,8 @@ import it.polimi.se2018.RoundTrack;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
 
 public class RoundTrackTest{
@@ -19,10 +21,16 @@ public class RoundTrackTest{
     }
 
     @Test
+    public void setUpTest(){
+        assertEquals(10, rt.getRoundCells().size());
+        assertEquals(Optional.empty(), rt.getDie(3));
+    }
+
+    @Test
     public void removeDieTest(){
         rt.removeDie(1);
         rt.removeDie(5);
-        assertEquals(rt.getRoundCells().size(), 1);
+        assertEquals(1, rt.diceInTrack());
     }
 
     @Test
@@ -32,7 +40,7 @@ public class RoundTrackTest{
     }
     @Test
     public void placeDieTest(){
-        assertEquals(rt.getRoundCells().size(), 2);
+        assertEquals(2, rt.diceInTrack());
     }
 
     @Test

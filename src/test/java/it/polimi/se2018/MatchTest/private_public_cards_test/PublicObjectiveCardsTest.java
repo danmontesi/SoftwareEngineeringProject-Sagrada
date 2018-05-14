@@ -89,7 +89,7 @@ public class PublicObjectiveCardsTest {
         //FOURTH ROW
 
         for (int i = 0; i < 20; i++) {
-            schema.get(i).getAssociatedDie().setValue(1);
+            schema.get(i).getAssociatedDie().get().setValue(1);
         }
 
         myWPCard = new WindowPatternCard(schema, 2, "WP1");

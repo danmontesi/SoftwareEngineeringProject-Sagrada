@@ -13,8 +13,8 @@ public class ColumnColorVariety extends PublicObjectiveCard{
         for (int j = 0; j < 5; j++){
             HashSet<COLOR> colors = new HashSet<>();
             for(int i = 0; i < 4; i++){
-                if (w.getCell(i, j).getAssociatedDie() != null);
-                colors.add(w.getCell(i, j).getAssociatedDie().getColor());
+                if (w.getCell(i, j).getAssociatedDie().isPresent());
+                colors.add(w.getCell(i, j).getAssociatedDie().get().getColor());
             }
             if(colors.size() == 4){
                 total += score;

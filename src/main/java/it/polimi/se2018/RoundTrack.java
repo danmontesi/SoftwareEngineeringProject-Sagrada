@@ -30,11 +30,22 @@ public class RoundTrack {
 
     //Cosa succede se ci sono due dadi da mettere contemporaneamente sul roundTrack?
     public void placeDie(Die toBePlaced) {
-        int i = 0;
-        while (!roundCells.get(i).getAssociatedDie().equals(null)) {
-            i++;
+        for (int i = 0; i < 10; i++) {
+            if (!roundCells.get(i).getAssociatedDie().isPresent()) {
+                roundCells.get(i).setAssociatedDie(toBePlaced);
+                return;
+            }
         }
-        roundCells.get(i).setAssociatedDie(toBePlaced);
+    }
+
+    public int diceInTrack(){
+        int n = 0;
+        for (int i = 0; i < 10; i++){
+            if(roundCells.get(i).getAssociatedDie().isPresent()){
+                n +=1;
+            }
+        }
+        return n;
     }
 
     public Optional<Die> getDie(int cellNumber){

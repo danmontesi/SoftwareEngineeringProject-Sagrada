@@ -25,7 +25,7 @@ public class TestCell {
 
     @Test
     public void testRemoveDie(){
-        Die temp = cell.getAssociatedDie();
+        Die temp = cell.getAssociatedDie().get();
         Optional<Die> temp2 = cell.removeDie();
         assertNull(cell.getAssociatedDie());
         assertEquals(temp, temp2);
@@ -34,7 +34,7 @@ public class TestCell {
     @Test
     public void testSwitchDie(){
         Die toSwitchDie =new Die(COLOR.YELLOW);
-        Die temp = cell.getAssociatedDie();
+        Die temp = cell.getAssociatedDie().get();
         Die temp2 = cell.switchDie(toSwitchDie);
         assertEquals(toSwitchDie, cell.getAssociatedDie());
         assertEquals(temp, temp2);
