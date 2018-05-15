@@ -32,7 +32,7 @@ public class Round {
         draftPool = new DraftPool(diceBag, gamePlayers.size());
     }
 
-    /**
+    /*  CONTROLLER
      *  Assign next currentPlayer to round
      *  if currentPlayer == null, currentPlayer will be the first player
      *  non serve l'eccezione del doppio turno in quanto può essere applicata solo nella seconda metà del round
@@ -40,7 +40,7 @@ public class Round {
      *
      *  se siamo nella seconda metà del round currentPlayer sarà il precedente nella lista di giocatori;
      *  se ha già giocato 2 turni si passerà al giocatore ancora dopo
-     */
+     *
     public void nextPlayer() {
         int i=0;
         while (!firstPlayer.getUsername().equals(gamePlayers.get(i).getUsername())){
@@ -75,6 +75,7 @@ public class Round {
         countPlayersTurns.put((currentPlayer), countPlayersTurns.get(currentPlayer)+1);
         turnCount ++;
     }
+    */
 
     public int getRoundNumber() {
         return roundNumber;

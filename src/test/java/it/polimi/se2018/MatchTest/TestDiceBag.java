@@ -16,7 +16,7 @@ public class TestDiceBag {
         diceBag = DiceBag.getInstance();
     }
 
-    @Test
+    /*@Test
     public void testExtractDie(){
         Die temp = diceBag.extractDie();
         Die temp2;
@@ -56,6 +56,6 @@ public class TestDiceBag {
     public void testSwitchDie(){
         Die toSwitchDie = diceBag.extractDie();
 
-    }
+    }*/
 
 }
