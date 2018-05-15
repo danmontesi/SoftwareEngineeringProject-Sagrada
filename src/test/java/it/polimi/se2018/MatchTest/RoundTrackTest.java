@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class RoundTrackTest{
     RoundTrack rt;
@@ -45,6 +45,7 @@ public class RoundTrackTest{
 
     @Test
     public void getDieTest(){
-
+        assertNotNull(rt.getDie(0));
+        assertFalse(rt.getDie(4).isPresent());
     }
 }
