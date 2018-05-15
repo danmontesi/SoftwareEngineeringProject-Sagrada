@@ -44,4 +44,8 @@ public class DiceBag {
         dice.set(index, toBeSwitched);
         return temp;
     }
+
+    public ArrayList<Die> getDice() {
+        return dice;
+    }
 }

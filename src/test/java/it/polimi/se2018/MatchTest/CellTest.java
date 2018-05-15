@@ -8,8 +8,7 @@ import org.junit.Test;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class CellTest {
 
@@ -27,8 +26,8 @@ public class CellTest {
     public void testRemoveDie(){
         Die temp = cell.getAssociatedDie().get();
         Optional<Die> temp2 = cell.removeDie();
-        assertNull(cell.getAssociatedDie());
-        assertEquals(temp, temp2);
+        assertFalse(cell.getAssociatedDie().isPresent());
+        assertEquals(temp, temp2.get());
     }
 
     @Test
@@ -36,7 +35,7 @@ public class CellTest {
         Die toSwitchDie =new Die(COLOR.YELLOW);
         Die temp = cell.getAssociatedDie().get();
         Die temp2 = cell.switchDie(toSwitchDie);
-        assertEquals(toSwitchDie, cell.getAssociatedDie());
+        assertEquals(toSwitchDie, cell.getAssociatedDie().get());
         assertEquals(temp, temp2);
     }
 }

@@ -16,13 +16,13 @@ public class TestDiceBag {
         diceBag = DiceBag.getInstance();
     }
 
-    /*@Test
+    @Test
     public void testExtractDie(){
         Die temp = diceBag.extractDie();
         Die temp2;
         assertNotNull(temp);
-        for (int i=0; i<90; i++){
-            temp2 = diceBag.getDie(i);
+        for (int i=0; i<diceBag.getDice().size(); i++){
+            temp2 = diceBag.getDice().get(i);
             assertNotEquals(temp, temp2);
         }
     }
@@ -31,31 +31,26 @@ public class TestDiceBag {
     public void testInsertDie(){
         Die die = diceBag.extractDie();
         int c=0;
-        for(int i=0; i<90; i++){
-            if (diceBag.getDie(i)!=null){
-                    if (diceBag.getDie(i).getColor().equals(die.getColor())) {
-                        c++;
-                    }
+        for(int i=0; i<diceBag.getDice().size(); i++){
+            if (diceBag.getDice().get(i).getColor().equals(die.getColor())) {
+                c++;
             }
         }
         diceBag.insertDie(die);
         int c2=0;
-        for(int i=0; i<90; i++){
-            if (diceBag.getDie(i)!=null){
-                if (diceBag.getDie(i).getColor().equals(die.getColor())) {
-                    c2++;
-                }
+        for(int i=0; i<diceBag.getDice().size(); i++){
+            if (diceBag.getDice().get(i).getColor().equals(die.getColor())) {
+                c2++;
             }
-            if (c2<=c){
-                fail();
-            }
+        }
+        if (c2<=c){
+            fail();
         }
     }
 
     /*@Test
     public void testSwitchDie(){
-        Die toSwitchDie = diceBag.extractDie();
 
-    }*/
-
+    }
+    */
 }
