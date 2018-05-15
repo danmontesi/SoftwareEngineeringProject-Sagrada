@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 public class TestDiceBag {
 
-    /*private DiceBag diceBag;
+    private DiceBag diceBag;
 
     @Before
     public void setUp(){
@@ -56,5 +56,6 @@ public class TestDiceBag {
     public void testSwitchDie(){
         Die toSwitchDie = diceBag.extractDie();
 
-    }*/
+    }
+
 }
