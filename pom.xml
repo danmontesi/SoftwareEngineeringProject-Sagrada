@@ -13,23 +13,27 @@
  
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
- 
+
         <!-- Java version -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
- 
+
         <!-- Integrating Sonar with Jacoco -->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.language>java</sonar.language>
- 
+
         <sonar.host.url>http://localhost:9000/</sonar.host.url>
         <!--sonar.login>admin</sonar.login>
         <sonar.password>admin</sonar.password-->
- 
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.language>java</sonar.language>
+        <sonar.host.url> http://localhost:9000/ </sonar.host.url>
+
     </properties>
- 
+
     <dependencies>
 
         <dependency>
