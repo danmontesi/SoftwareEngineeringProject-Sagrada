@@ -1,0 +1,142 @@
+{
+	"WindowPatternCards":[
+      {
+          "name": "Virtus",
+          "difficulty":  5,
+          "schema": [
+            {
+              "row": 0,
+              "column": 0,
+              "valueConstraint": 4
+            },
+            {
+              "row": 0,
+              "column": 2,
+              "valueConstraint": 2
+            },
+            {
+              "row": 0,
+              "column": 3,
+              "valueConstraint": 5
+            },
+            {
+              "row": 0,
+              "column": 4,
+              "colorConstraint": "GREEN"
+            },
+            {
+              "row": 1,
+              "column": 2,
+              "valueConstraint": 6
+            },
+            {
+              "row": 1,
+              "column": 3,
+              "colorConstraint": "GREEN"
+            },
+            {
+              "row": 1,
+              "column": 4,
+              "valueConstraint": 2
+            },
+            {
+              "row": 2,
+              "column": 1,
+              "valueConstraint": 3
+            },
+            {
+              "row": 2,
+              "column": 2,
+              "colorConstraint": "GREEN"
+            },
+            {
+              "row": 2,
+              "column": 3,
+              "valueConstraint": 4
+            },
+            {
+              "row": 3,
+              "column": 0,
+              "valueConstraint": 5
+            },
+            {
+              "row": 3,
+              "column": 1,
+              "colorConstraint": "GREEN"
+            },
+            {
+              "row": 3,
+              "column": 2,
+              "valueConstraint": 1
+            }
+
+          ]
+      },
+      {
+          "name": "Via Lux",
+          "difficulty":  4,
+          "schema": [
+            {
+              "row": 0,
+              "column": 0,
+              "colorConstraint": "YELLOW"
+            },
+            {
+              "row": 0,
+              "column": 2,
+              "valueConstraint": 6
+            },
+            {
+              "row": 1,
+              "column": 1,
+              "valueConstraint": 1
+            },
+            {
+              "row": 1,
+              "column": 2,
+              "valueConstraint": 5
+            },
+            {
+              "row": 1,
+              "column": 4,
+              "valueConstraint": 2
+            },
+            {
+              "row": 2,
+              "column": 0,
+              "valueConstraint": 3
+            },
+            {
+              "row": 2,
+              "column": 1,
+              "colorConstraint": "YELLOW"
+            },
+            {
+              "row": 2,
+              "column": 2,
+              "colorConstraint": "RED"
+            },
+            {
+              "row": 2,
+              "column": 3,
+              "colorConstraint": "VIOLET"
+            },
+            {
+              "row": 3,
+              "column": 2,
+              "valueConstraint": 4
+            },
+            {
+              "row": 3,
+              "column": 3,
+              "valueConstraint": 3
+            },
+            {
+              "row": 3,
+              "column": 4,
+              "colorConstraint": "RED"
+            }
+          ]
+      }
+	]
+}
