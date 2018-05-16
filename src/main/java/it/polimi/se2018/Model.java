@@ -34,9 +34,7 @@ public class Model extends Observable{
 
     private ArrayList<WindowPatternCard> windowPatternCardDeck;
 
-    /**
-     * Changed from ClientConnection to Players (The conotroller knows to which player correspond its Client)
-     */
+    //Changed from ClientConnection to Players (The conotroller knows to which player correspond its Client)
     private ArrayList<Player> connectedPlayers;
     private ArrayList<Player> disconnectedPlayers;
 
@@ -47,16 +45,17 @@ public class Model extends Observable{
     public static Model instance;
 
 
-    /**
-     * Constructor must
-     *
+    /*Constructor must
      * - call createRound()
      * - initialize all attributes (creating new ones)
      * - NOT TODO: initialize the decks-> we will do it later in the project
      */
+
+    /**
+     * Constructor: generates a game
+     * @param players list of game players
+     */
     private Model(ArrayList<Player> players){
-
-
         gamePlayers = players;
         gameRounds = createRounds();
         diceBag = DiceBag.getInstance();
@@ -66,8 +65,8 @@ public class Model extends Observable{
 
     /**
      * Singleton
+     * @return instance of Model
      */
-    //TODO: FALLO BENE CIT. DANI
     public static Model getInstance(ArrayList<Player> players){
         if (instance==null){
             instance = new Model(players);
@@ -76,7 +75,7 @@ public class Model extends Observable{
     }
 
     /**
-     * Initialize all 10 rounds with all attributes except Dice (they are extracted every time)
+     * Initializes all 10 rounds with all attributes except draftPool dice (they are extracted every time)
      */
     public ArrayList<Round> createRounds() {
         ArrayList<Round> roundList = new ArrayList<>();
@@ -95,8 +94,8 @@ public class Model extends Observable{
     }
 
     /**
-     * return an ArrayList extracting first card of the windowPatternCardDeck
-     * always need to extract 4 cards together, so no need for a single 'extractOneCard' method
+     * Returns an ArrayList of 4 WindowPatternCards
+     * @return list of extracted cards
      */
     public ArrayList<WindowPatternCard> extractWindowPatternCard(){
         for (int i=0; i<4; i++){
@@ -126,24 +125,36 @@ public class Model extends Observable{
         return roundTrack;
     }
 
+    /**
+     * Adds a player to the disconnected ones
+     * @param pl to be added player
+     */
     public void addDisconnectedPlayer(Player pl){
         disconnectedPlayers.add(pl);
         connectedPlayers.remove(pl);
     }
 
+    /**
+     * Adds a player to the connected ones
+     * @param pl to be added player
+     */
     public void addReconnectedPlayer(Player pl){
         disconnectedPlayers.remove(pl);
         connectedPlayers.add(pl);
     }
 
     /**
-     * Notify methods for Controller
+     * Notifies Controller of Model changes
      */
     public void notifyModelChanges(){
         for (Observer o : observers)
             o.update(this, this);
     }
 
+    /**
+     * Adds an observer
+     * @param o to be added observer
+     */
     public void addObserver(Observer o){
         observers.add(o);
     }

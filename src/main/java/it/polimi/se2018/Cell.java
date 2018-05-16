@@ -14,24 +14,40 @@ public class Cell {
     //ATTENZIONE: E' NECESSARIO CONSIDERARE IL CONTROLLO DEI NUMERI SUI COSTRUTTORI
     //AD ESEMPIO BISOGNA RESTITUIRE UN'ECCEZIONE SE IL value CONSTRAINT E' 7
 
+    /**
+     * Constructor: generates a cell with color and value constraints
+     * @param colorConstraint cell color constraint
+     * @param valueConstraint cell value constraint
+     * */
     public Cell(COLOR colorConstraint, int valueConstraint) {
         this.colorConstraint = colorConstraint;
         this.valueConstraint = valueConstraint;
         this.associatedDie = null;
         }
 
+    /**
+     * Constructor: generates a cell with color constraint
+     * @param colorConstraint cell color constraint
+     * */
     public Cell(COLOR colorConstraint) {
         this.colorConstraint = colorConstraint;
         this.valueConstraint = null;
         this.associatedDie = null;
     }
 
+    /**
+     * Constructor: generates a cell with value constraint
+     * @param valueConstraint cell value constraint
+     * */
     public Cell(int valueConstraint) {
         this.colorConstraint = null;
         this.valueConstraint = valueConstraint;
         this.associatedDie = null;
     }
 
+    /**
+     * Constructor: generates a cell with no constraints
+     * */
     public Cell() {
         this.colorConstraint = null;
         this.valueConstraint = null;
@@ -42,6 +58,11 @@ public class Cell {
         this.associatedDie = toBeSetDie;
     }
 
+    /**
+     * Removes the associated die from the cell
+     * @return old cell's associated die
+     * @throws NullPointerException if the removed die is null
+     * */
     public Optional<Die> removeDie(){
         try{
             Die temp = this.associatedDie;
@@ -52,7 +73,11 @@ public class Cell {
             return Optional.empty();
         }
     }
-
+    /**
+     * Switches the cell's associated die with another one
+     * @param toSwitchDie new cell's associated die
+     * @return old cell's associated die
+     * */
     public Die switchDie(Die toSwitchDie){
         Die temp = this.associatedDie;
         associatedDie = toSwitchDie;

@@ -7,6 +7,9 @@ public class RoundTrack {
 
     private ArrayList<Cell> roundCells;
 
+    /**
+     * Constructor: generates a roundTrack
+     */
     public RoundTrack() {
         this.roundCells = new ArrayList<>();
         for (int i = 0; i < 10; i++){
@@ -14,6 +17,12 @@ public class RoundTrack {
         }
     }
 
+    /**
+     * Removes a die from the roundTrack
+     * @param diePosition position from which the die is taken
+     * @return removed die
+     * @throws IndexOutOfBoundsException if there is no die in diePosition
+     */
     public Optional<Die> removeDie(int diePosition){
         try{
             return roundCells.get(diePosition).removeDie();
@@ -24,11 +33,22 @@ public class RoundTrack {
         }
     }
 
+    /**
+     * Switches a die with a given one
+     * @param diePosition position from which the die is taken
+     * @param toBeSwitched new die in roundTrack
+     * @return old die from roundTrack
+     */
     public Die switchDie(int diePosition, Die toBeSwitched){
         return roundCells.get(diePosition).switchDie(toBeSwitched);
     }
 
-    //Cosa succede se ci sono due dadi da mettere contemporaneamente sul roundTrack?
+    //Cosa succede se ci sono due dadi da mettere contemporaneamente sul roundTrack? Si mette prima uno e poi l'altro
+
+    /**
+     * Places a die on the roundTrack (in last position)
+     * @param toBePlaced to be placed on the roundTrack die
+     */
     public void placeDie(Die toBePlaced) {
         for (int i = 0; i < 10; i++) {
             if (!roundCells.get(i).getAssociatedDie().isPresent()) {
@@ -38,6 +58,10 @@ public class RoundTrack {
         }
     }
 
+    /**
+     * Returns the number of dice on the roundTrack
+     * @return dice number
+     */
     public int diceInTrack(){
         int n = 0;
         for (int i = 0; i < 10; i++){

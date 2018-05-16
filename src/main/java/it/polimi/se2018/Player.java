@@ -6,7 +6,10 @@ public class Player {
     private String username;
     private int tokens;
 
-
+    /**
+     * Constructor: generates a player
+     * @param username player username
+     */
     public Player(String username) {
         this.windowPatternCard = null;
         this.username = username;
@@ -38,6 +41,10 @@ public class Player {
         this.tokens = this.windowPatternCard.getDifficulty();
     }
 
+    /**
+     * Decreases the number of the player tokens
+     * @param toBeDecreased to be decreased number of tokens
+     */
     public void decreaseTokens(int toBeDecreased){
         tokens -= toBeDecreased;
     }
