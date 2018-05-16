@@ -7,7 +7,10 @@ public class DiceBag {
     private ArrayList<Die> dice;
     private static DiceBag instance = null;
 
-    //Singleton
+    /**
+     * Singleton
+     * @return instance of DiceBag
+     * */
     public static DiceBag getInstance(){
         if (instance == null) {
             instance = new DiceBag();
@@ -15,6 +18,9 @@ public class DiceBag {
             return instance;
     }
 
+    /**
+     * Constructor: generates a diceBag with 90 dice, 18 for each of the 5 colors
+     * */
     private DiceBag(){
         dice = new ArrayList<>();
         for (int i=0; i<90; i+=5){
@@ -26,18 +32,28 @@ public class DiceBag {
         }
     }
 
-    //extract a random die from the bag
+    /**
+     * Extracts a random die from the bag
+     * @return extracted die
+     * */
     public Die extractDie(){
         int index = ThreadLocalRandom.current().nextInt(0,  dice.size());
         return dice.remove(index);
     }
 
-    //insert a die in the diceBag (queued in last position)
+    /**
+     * Inserts a die in the diceBag (queued in last position)
+     * @param die to be inserted in the bag
+    */
     public void insertDie(Die die){
         dice.add(die);
     }
 
-    //switch a toBeSwitched die with a random die in diceBag
+    /**
+     * Switches a die with a random die in diceBag
+     * @param toBeSwitched to be put in the bag die
+     * @return extracted from the bag die
+     */
     public Die switchDie (Die toBeSwitched){
         int index = ThreadLocalRandom.current().nextInt(0,  dice.size());
         Die temp = dice.get(index);

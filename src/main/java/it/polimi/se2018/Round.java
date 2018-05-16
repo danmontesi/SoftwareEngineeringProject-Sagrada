@@ -18,7 +18,17 @@ public class Round {
     private DiceBag diceBag;
 
     // TODO: Il costruttore deve Inizializzare i dadi della DraftPool e tutti gli attributi
-    //
+
+    /**
+     * Constructor: generates a round by instantiating
+     * a diceBag
+     * a HashMap and turn counter that keep count of the played turns
+     * first player to help the rounds transitions
+     * @param roundNumber round number
+     * @param firstPlayer first player of the round
+     * @param gamePlayers list of game players
+     * @param diceBag diceBag
+     */
     public Round(int roundNumber, Player firstPlayer, ArrayList<Player> gamePlayers, DiceBag diceBag){
         this.roundNumber = roundNumber;
         this.firstPlayer = firstPlayer;
