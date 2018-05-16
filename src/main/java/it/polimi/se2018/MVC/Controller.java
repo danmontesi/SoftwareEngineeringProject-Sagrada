@@ -6,6 +6,9 @@ import it.polimi.se2018.Player;
 import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.network.Server;
+import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
+import it.polimi.se2018.toolcards.CircularCutter;
+import it.polimi.se2018.toolcards.ToolCard;
 
 import java.lang.reflect.Array;
 import java.sql.Connection;
@@ -88,13 +91,93 @@ public class Controller extends Observable implements Observer {
      * -> set first player and
      */
     public void startNewRound() {
+
+        // inglobo metodo del MODEL
+        //TODO Controllo che i rounds fatti siano meno di 10, se no chiamo un nuovo round
+        // dalla lista dei round sul Model, e gli assegno dei Dice.
+        /*
+    public void nextRound() {
+        if (gameRounds.size() == 0) {
+            //notifyWinner();
+        } else {
+            currentRound = gameRounds.remove(0);
+            currentRound.nextPlayer();
+        }
     }
+    }
+    */
+    }
+        /**
+         * Has to start a turn of a new player in a round.
+         * if the round has still 2*n turns played, i have to call starNewRound()
+         */
+
+
+    public void startNewTurn(){
+        // calls nextPlayer
+    }
+
+    /**
+     *      *  Assign next currentPlayer to round
+     *      *  if currentPlayer == null, currentPlayer will be the first player
+     *      *  non serve l'eccezione del doppio turno in quanto può essere applicata solo nella seconda metà del round
+     *      *  se siamo nella prima metà del round currentPlayer sarà il successivo nella lista di giocatori;
+     *      *
+     *      *  se siamo nella seconda metà del round currentPlayer sarà il precedente nella lista di giocatori;
+     *      *  se ha già giocato 2 turni si passerà al giocatore ancora dopo
+     *      *
+
+     */
+
+    public void nextPlayer() {
+        /*
+        int i=0;
+        while (!firstPlayer.getUsername().equals(gamePlayers.get(i).getUsername())){
+            i++;
+        }
+        if (currentPlayer == null){
+            currentPlayer = firstPlayer; //primo giocatore
+        } else if (turnCount == 2*gamePlayers.size()){ //se siamo a fine round
+            firstPlayer = gamePlayers.get(i+1); //predispone firstPlayer per il prossimo round
+            currentPlayer = null; //curretnPlayer torna ad essere null (così al prossimo round gli verrà assegnato firstPlayer)
+            instance.nextRound(); //chiama il round successivo
+        } else if (turnCount < gamePlayers.size()){ //se siamo nella prima metà del round/il primo turno di ogni giocatore
+            if (gamePlayers.get(i+1) == null){ //se siamo arrivati a fine lista gamePlayers (lista dei giocatori)
+                currentPlayer = gamePlayers.get(0); //currentPlayer sarà il primo giocatore in gamePlayers
+            } else {
+                currentPlayer = gamePlayers.get(i+1); //currentPlayer sarà il successivo giocatore in gamePlayers
+            }
+        } else if (turnCount > gamePlayers.size()){ //se siamo nella seconda metà del round/il secondo turno di ogni giocatore
+            if (gamePlayers.get(i-1) == null){ //se siamo arrivati all'inizio di gamePlayers
+                currentPlayer = gamePlayers.get(gamePlayers.size()); //currentPlayer sarà l'ultimo giocatore in gamePlayers (dato che stiamo andando a ritroso)
+            } else {
+                currentPlayer = gamePlayers.get(i-1); //altrimenti currentPlayer sarà il giocatore precedente in gamePlayers
+            }
+            if (countPlayersTurns.get(currentPlayer) > 1){ //se il currentPlayer designato ha già giocato 2 turni
+                if (gamePlayers.get(i-1) == null){ //si passa a quello ancora dopo, con i soliti controlli di fine lista
+                    currentPlayer = gamePlayers.get(gamePlayers.size());
+                } else {
+                    currentPlayer = gamePlayers.get(i-1);
+                }
+            }
+        }
+        countPlayersTurns.put((currentPlayer), countPlayersTurns.get(currentPlayer)+1);
+        turnCount ++;
+    }
+    */
+    }
+
 
     /**
      * Calculate total score of players and determine who is the winner
      */
     public void endGame() {
+        // Calls calculatePlayersScore for each player
+        //notifies to players if they win or lose
+    }
 
+    public int calculatePlayerScore(Player player){
+        // PublicObj + PrivateObj - Penalization
     }
 
     /**
@@ -166,6 +249,12 @@ public class Controller extends Observable implements Observer {
     }
 
 
+    // TODO : All methods connected to the using of Tool
+
+    public void useTool(CircularCutter toolCard){
+        // Applied automatically to the CurrentPlayer
+    }
+    //TODO ... For every Tool card
 /*
     public void startGame(ArrayList<Player> orderedPlayers) {
         // assegno i players al model e l'ordine di gioco

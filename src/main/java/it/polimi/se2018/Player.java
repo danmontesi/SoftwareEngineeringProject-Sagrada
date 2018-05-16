@@ -13,32 +13,6 @@ public class Player {
         this.tokens = 0;
     }
 
-    /*CONTROLLER
-    public int calcuateTotalScore(){
-        return calculatePrivateObjectiveScore() - calculatePointPenalization() + tokens;
-    }
-    */
-
-    /* CONTROLLER
-    public int calculatePrivateObjectiveScore(){
-        return privateObjectiveCard.calculateScore(windowPatternCard);
-    }
-    */
-
-    /** EDIT:
-     * Spostato calculatePublicObjScore nel model, in quanto serve il model per sapere le carte pubbliche.
-     * aggiunto calculatePenalizationScore()
-     */
-
-    //PROBABILMENTE QUESTO VA SPOSTATO NEL CONTROLLER
-    public int calculatePointPenalization(){
-        int pointsToDecrease=0;
-        for (Cell c : this.windowPatternCard.getSchema()){
-            pointsToDecrease += (c.getAssociatedDie()== null ? 1 : 0);
-        }
-        return pointsToDecrease;
-    }
-
     public WindowPatternCard getWindowPatternCard(){
         return windowPatternCard;
     }

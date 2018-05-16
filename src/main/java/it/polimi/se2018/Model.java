@@ -61,7 +61,7 @@ public class Model extends Observable{
         gameRounds = createRounds();
         diceBag = DiceBag.getInstance();
         roundTrack = new RoundTrack();
-        // TODO CREATE ALL CARDS
+        // TODO CREATE ALL CARDS FROM JSON FILES
     }
 
     /**
@@ -74,47 +74,6 @@ public class Model extends Observable{
         }
         return instance;
     }
-
-    /* CONTROLLER
-     * Calculates total score of a given player
-     *
-
-    public int playerScore(Player player) {
-        int publicObjectiveScore = 0;
-        for (int i=0; i<3; i++){
-            publicObjectiveScore += extractedPublicObjectiveCard.get(i).calculateScore(player.getWindowPatternCard());
-        }
-        return player.calcuateTotalScore() + publicObjectiveScore;
-    }
-    */
-
-    /* CONTROLLER
-     * Calculates all scores of any player
-     * saves them in a HashMap, and returns it
-     *
-     * Scores of any player are calculated summing each Player.calculateTotalScore() and every score of
-     * the PublicObjectiveCards of extractedPublicObjectiveCard, calculated on each player
-     *
-
-    public HashMap<Player,Integer> playersScore() {
-        HashMap<Player, Integer> playersScore = new HashMap<>();
-        for (int i=0; i<gamePlayers.size(); i++){
-            playersScore.put(gamePlayers.get(i), playerScore(gamePlayers.get(i)));
-        }
-        return playersScore;
-    }
-    */
-
-    /* CONTROLLER
-    public void nextRound() {
-        if (gameRounds.size() == 0) {
-            //notifyWinner();
-        } else {
-            currentRound = gameRounds.remove(0);
-            currentRound.nextPlayer();
-        }
-    }
-    */
 
     /**
      * Initialize all 10 rounds with all attributes except Dice (they are extracted every time)

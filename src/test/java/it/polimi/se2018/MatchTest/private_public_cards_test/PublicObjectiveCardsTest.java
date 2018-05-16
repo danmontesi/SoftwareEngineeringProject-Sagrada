@@ -101,7 +101,7 @@ public class PublicObjectiveCardsTest {
     public void testAll(){
         Integer[] correctPoints = new Integer[cards.size()];
         int counter= 0;
-        System.out.println("Ok");
+        //System.out.println("Ok");
 
         //TODO Assegna i valori corretti all'array per il controllo del corretto calcolo score
         //ColorDiagonals

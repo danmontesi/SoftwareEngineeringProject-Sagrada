@@ -13,6 +13,4 @@ public abstract class ToolCard {
     public void increaseTokens(){
         tokenCounts +=1;
     }
-
-    public abstract void useToolCard(Player player);
 }
