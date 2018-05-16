@@ -7,7 +7,7 @@ public class Die {
     private int value;
 
     /**
-     * Constructor: generates a random value die with given color
+     * Constructor: generates a die with a random value and a given color
      * @param color die color
      */
     public Die(COLOR color) {

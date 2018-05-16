@@ -44,15 +44,11 @@ public class Model extends Observable{
     private ArrayList<Round> gameRounds;
     public static Model instance;
 
-
-    /*Constructor must
-     * - call createRound()
-     * - initialize all attributes (creating new ones)
-     * - NOT TODO: initialize the decks-> we will do it later in the project
-     */
-
     /**
-     * Constructor: generates a game
+     * Constructor: generates a game by
+     * uploading all WindowPatternCards, PublicObjectiveCards, PrivateObjectiveCards and ToolCards
+     * extracting 3 PublicObjectiveCards, creating 10 rounds
+     * initializing the diceBag, the game players list, the roundTrack
      * @param players list of game players
      */
     private Model(ArrayList<Player> players){

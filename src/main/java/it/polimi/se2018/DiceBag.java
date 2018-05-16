@@ -19,7 +19,7 @@ public class DiceBag {
     }
 
     /**
-     * Constructor
+     * Constructor: generates a diceBag with 90 dice, 18 for each of the 5 colors
      * */
     private DiceBag(){
         dice = new ArrayList<>();

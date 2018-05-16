@@ -8,7 +8,7 @@ public class DraftPool {
     private DiceBag diceBag;
 
     /**
-     * Constructor: generates a draftPool
+     * Constructor: generates a draftPool by taking from the dicebag 2 dice for each player + 1
      * @param diceBag diceBag from which the dies are extracted
      * @param playersNumber number of players
      */

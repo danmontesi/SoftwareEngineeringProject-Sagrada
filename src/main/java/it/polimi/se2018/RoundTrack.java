@@ -8,7 +8,7 @@ public class RoundTrack {
     private ArrayList<Cell> roundCells;
 
     /**
-     * Constructor: generates a roundTrack
+     * Constructor: generates a roundTrack by creating a list of 10 cells
      */
     public RoundTrack() {
         this.roundCells = new ArrayList<>();

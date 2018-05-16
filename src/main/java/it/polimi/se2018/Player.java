@@ -7,7 +7,8 @@ public class Player {
     private int tokens;
 
     /**
-     * Constructor: generates a player
+     * Constructor: generates a player with a username, a WindowPatternCard (to be set)
+     * and a corresponding amount of tokens
      * @param username player username
      */
     public Player(String username) {
