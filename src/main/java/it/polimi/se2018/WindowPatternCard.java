@@ -2,7 +2,6 @@
 package it.polimi.se2018;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Optional;
 
 public class WindowPatternCard {
@@ -14,6 +13,19 @@ public class WindowPatternCard {
         this.schema = schema;
         this.difficulty = difficulty;
         this.name = name;
+    }
+
+    /**
+     * Create an empty WindowPatternCard with plain numbered cells from 0 to 19
+     */
+    public WindowPatternCard(){
+        this.difficulty = 0;
+        this.name = null;
+        ArrayList<Cell> cells = new ArrayList<>();
+        for (int i = 0; i < 20; i++){
+            cells.add(new Cell(i));
+        }
+        this.schema = cells;
     }
 
     public boolean isEmpty() {
@@ -37,7 +49,7 @@ public class WindowPatternCard {
      */
     public boolean placeDie(Die d, int row, int column, boolean colorRestriction, boolean valueRestriction,
     boolean placementRestriction){
-        if (this.getCell(row,column).getAssociatedDie()!= null) { return false; }
+        if (this.getCell(row,column).getAssociatedDie().isPresent()) { return false; }
         if (colorRestriction) {
             if (!checkColorRestricion(this.getCell(row, column), d)) {
                 return false;
@@ -134,7 +146,7 @@ public class WindowPatternCard {
             return false;
     }
 
-    public boolean checkAllValueRestriction(){
+/*    public boolean checkAllValueRestriction(){
         Iterator<Cell> iterator = schema.iterator();
         while(iterator.hasNext()){
             Cell temp = iterator.next();
@@ -143,9 +155,9 @@ public class WindowPatternCard {
             }
         }
         return true;
-    }
+    }*/
 
-    public boolean checkAllColorRestriction(){
+ /*   public boolean checkAllColorRestriction(){
         Iterator<Cell> iterator = schema.iterator();
         while(iterator.hasNext()){
             Cell temp = iterator.next();
@@ -154,7 +166,7 @@ public class WindowPatternCard {
             }
         }
         return true;
-    }
+    }*/
 
     public String getCardName(){
         return this.name;
@@ -176,5 +188,17 @@ public class WindowPatternCard {
     //retrieve cell by linear index
     public Cell getCell(int index){
         return schema.get(index);
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSchema(ArrayList<Cell> schema) {
+        this.schema = schema;
     }
 }

@@ -18,7 +18,7 @@ public class CellTest {
     @Before
     public void setUp(){
         die = new Die(COLOR.RED);
-        cell = new Cell();
+        cell = new Cell(0);
         cell.setAssociatedDie(die);
     }
 

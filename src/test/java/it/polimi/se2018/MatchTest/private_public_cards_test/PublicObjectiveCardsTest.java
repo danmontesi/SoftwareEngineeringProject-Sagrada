@@ -37,7 +37,7 @@ public class PublicObjectiveCardsTest {
         ArrayList<Cell> schema = new ArrayList<>();
 
         for (int i = 0; i < 20; i++) {
-            schema.add(new Cell());
+            schema.add(new Cell(i));
         }
 
         int counter=0;

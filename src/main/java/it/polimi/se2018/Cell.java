@@ -14,28 +14,32 @@ public class Cell {
     //ATTENZIONE: E' NECESSARIO CONSIDERARE IL CONTROLLO DEI NUMERI SUI COSTRUTTORI
     //AD ESEMPIO BISOGNA RESTITUIRE UN'ECCEZIONE SE IL value CONSTRAINT E' 7
 
-    public Cell(COLOR colorConstraint, int valueConstraint) {
+    public Cell(COLOR colorConstraint, int valueConstraint, int index) {
         this.colorConstraint = colorConstraint;
         this.valueConstraint = valueConstraint;
         this.associatedDie = null;
+        this.index = index;
         }
 
-    public Cell(COLOR colorConstraint) {
+    public Cell(COLOR colorConstraint, int index) {
         this.colorConstraint = colorConstraint;
         this.valueConstraint = null;
         this.associatedDie = null;
+        this.index = index;
     }
 
-    public Cell(int valueConstraint) {
+    public Cell(int valueConstraint, int index) {
         this.colorConstraint = null;
         this.valueConstraint = valueConstraint;
         this.associatedDie = null;
+        this.index = index;
     }
 
-    public Cell() {
+    public Cell(int index) {
         this.colorConstraint = null;
         this.valueConstraint = null;
         this.associatedDie = null;
+        this.index = index;
     }
 
     public void setAssociatedDie(Die toBeSetDie){
@@ -49,7 +53,7 @@ public class Cell {
             return Optional.of(temp);
         }
         catch(NullPointerException e){
-            return Optional.empty();
+            return null;
         }
     }
 
@@ -78,5 +82,13 @@ public class Cell {
 
     public int getIndex() {
         return index;
+    }
+
+    public void setColorConstraint(COLOR colorConstraint) {
+        this.colorConstraint = colorConstraint;
+    }
+
+    public void setValueConstraint(Integer valueConstraint) {
+        this.valueConstraint = valueConstraint;
     }
 }

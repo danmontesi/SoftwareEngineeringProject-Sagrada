@@ -10,7 +10,7 @@ public class RoundTrack {
     public RoundTrack() {
         this.roundCells = new ArrayList<>();
         for (int i = 0; i < 10; i++){
-            roundCells.add(new Cell());
+            roundCells.add(new Cell(i));
         }
     }
 

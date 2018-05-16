@@ -1,16 +1,11 @@
 package it.polimi.se2018.MVC;
 
-import it.polimi.se2018.Die;
 import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
-import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.network.Server;
-import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.toolcards.CircularCutter;
-import it.polimi.se2018.toolcards.ToolCard;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -171,7 +166,7 @@ public class Controller extends Observable implements Observer {
     /**
      * Calculate total score of players and determine who is the winner
      */
-    public void endGame() {
+ /*   public void endGame() {
         // Calls calculatePlayersScore for each player
         //notifies to players if they win or lose
     }
@@ -179,7 +174,7 @@ public class Controller extends Observable implements Observer {
     public int calculatePlayerScore(Player player){
         // PublicObj + PrivateObj - Penalization
     }
-
+*/
     /**
      * Generally returns true if need ad allowance to perform a command
      * @return
