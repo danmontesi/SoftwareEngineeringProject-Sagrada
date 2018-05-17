@@ -1,142 +1,1649 @@
 {
 	"WindowPatternCards":[
       {
-          "name": "Virtus",
-          "difficulty":  5,
-          "schema": [
-            {
-              "row": 0,
-              "column": 0,
-              "valueConstraint": 4
-            },
-            {
-              "row": 0,
-              "column": 2,
-              "valueConstraint": 2
-            },
-            {
-              "row": 0,
-              "column": 3,
-              "valueConstraint": 5
-            },
-            {
-              "row": 0,
-              "column": 4,
-              "colorConstraint": "GREEN"
-            },
-            {
-              "row": 1,
-              "column": 2,
-              "valueConstraint": 6
-            },
-            {
-              "row": 1,
-              "column": 3,
-              "colorConstraint": "GREEN"
-            },
-            {
-              "row": 1,
-              "column": 4,
-              "valueConstraint": 2
-            },
-            {
-              "row": 2,
-              "column": 1,
-              "valueConstraint": 3
-            },
-            {
-              "row": 2,
-              "column": 2,
-              "colorConstraint": "GREEN"
-            },
-            {
-              "row": 2,
-              "column": 3,
-              "valueConstraint": 4
-            },
-            {
-              "row": 3,
-              "column": 0,
-              "valueConstraint": 5
-            },
-            {
-              "row": 3,
-              "column": 1,
-              "colorConstraint": "GREEN"
-            },
-            {
-              "row": 3,
-              "column": 2,
-              "valueConstraint": 1
-            }
+        "name": "Virtus",
+        "difficulty":  5,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "valueConstraint": 4
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "valueConstraint": 2
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "valueConstraint": 5
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "valueConstraint": 6
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "valueConstraint": 2
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "valueConstraint": 3
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "valueConstraint": 4
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "valueConstraint": 1
+          }
 
-          ]
+        ]
+    },
+      {
+        "name": "Via Lux",
+        "difficulty":  4,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "valueConstraint": 6
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "valueConstraint": 1
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "valueConstraint": 2
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "valueConstraint": 3
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "valueConstraint": 4
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "valueConstraint": 3
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "colorConstraint": "RED"
+          }
+        ]
+    },
+    {
+      "name": "Bellesguard",
+      "difficulty": 3,
+      "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "valueConstraint": 6
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "valueConstraint": 3
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "valueConstraint": 5
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "valueConstraint": 6
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "valueConstraint": 2
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "valueConstraint": 4
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "valueConstraint": 1
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "colorConstraint": "GREEN"
+          }
+        ]
       },
       {
-          "name": "Via Lux",
-          "difficulty":  4,
-          "schema": [
-            {
-              "row": 0,
-              "column": 0,
-              "colorConstraint": "YELLOW"
-            },
-            {
-              "row": 0,
-              "column": 2,
-              "valueConstraint": 6
-            },
-            {
-              "row": 1,
-              "column": 1,
-              "valueConstraint": 1
-            },
-            {
-              "row": 1,
-              "column": 2,
-              "valueConstraint": 5
-            },
-            {
-              "row": 1,
-              "column": 4,
-              "valueConstraint": 2
-            },
-            {
-              "row": 2,
-              "column": 0,
-              "valueConstraint": 3
-            },
-            {
-              "row": 2,
-              "column": 1,
-              "colorConstraint": "YELLOW"
-            },
-            {
-              "row": 2,
-              "column": 2,
-              "colorConstraint": "RED"
-            },
-            {
-              "row": 2,
-              "column": 3,
-              "colorConstraint": "VIOLET"
-            },
-            {
-              "row": 3,
-              "column": 2,
-              "valueConstraint": 4
-            },
-            {
-              "row": 3,
-              "column": 3,
-              "valueConstraint": 3
-            },
-            {
-              "row": 3,
-              "column": 4,
-              "colorConstraint": "RED"
-            }
-          ]
+        "name": "Kaleidoscopic Dream",
+        "difficulty": 4,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 1
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "valueConstraint": 4
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "valueConstraint": 3
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "valueConstraint": 2
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "colorConstraint": "YELLOW"
+          }
+        ]
+      },
+      {
+        "name": "Aurorae Magnificus",
+        "difficulty": 5,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "valueConstraint": 5
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 2
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "valueConstraint": 6
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "valueConstraint": 1
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "valueConstraint": 4
+          }
+        ]
+      },
+      {
+        "name": "Sun Catcher",
+        "difficulty": 3,
+        "schema": [
+          {
+            "row": 0,
+            "column": 1,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "valueConstraint": 2
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "valueConstraint": 4
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "valueConstraint": 3
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "colorConstraint": "VIOLET"
+          }
+        ]
+      },
+      {
+        "name": "Batllo",
+        "difficulty": 5,
+        "schema": [
+          {
+            "row": 0,
+            "column": 2,
+            "valueConstraint": 6
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "valueConstraint": 4
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "valueConstraint": 3
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "valueConstraint": 2
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "valueConstraint": 1
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "valueConstraint": 4
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "valueConstraint": 3
+          }
+        ]
+      },
+      {
+        "name": "Industria",
+        "difficulty": 5,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "valueConstraint": 1
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "valueConstraint": 3
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 6
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "valueConstraint": 4
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "valueConstraint": 2
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "valueConstraint": 1
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "valueConstraint": 3
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "colorConstraint": "RED"
+          }
+        ]
+      },
+      {
+        "name": "Symphony of Light",
+        "difficulty": 6,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "valueConstraint": 2
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 1
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "valueConstraint": 6
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "valueConstraint": 2
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "valueConstraint": 4
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "valueConstraint": 3
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "valueConstraint": 5
+          }
+        ]
+      },
+      {
+        "name": "Firmitas",
+        "difficulty": 5,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "valueConstraint": 6
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 3
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "valueConstraint": 3
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "valueConstraint": 2
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "valueConstraint": 1
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "valueConstraint": 1
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "valueConstraint": 4
+          }
+        ]
+      },
+      {
+        "name": "Aurora Sagradis",
+        "difficulty": 4,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "valueConstraint": 4
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "valueConstraint": 3
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "valueConstraint": 2
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "valueConstraint": 1
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "valueConstraint": 6
+          }
+        ]
+      },
+      {
+        "name": "Shadow Thief",
+        "difficulty": 5,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "valueConstraint": 6
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "valueConstraint": 6
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "valueConstraint": 4
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "valueConstraint": 3
+          }
+        ]
+      },
+      {
+        "name": "Fractal Drops",
+        "difficulty": 3,
+        "schema": [
+          {
+            "row": 0,
+            "column": 1,
+            "valueConstraint": 4
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 6
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "valueConstraint": 2
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "valueConstraint": 1
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "colorConstraint": "YELLOW"
+          }
+        ]
+      },
+      {
+        "name": "Chromatic Splendor",
+        "difficulty": 4,
+        "schema": [
+          {
+            "row": 0,
+            "column": 2,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "valueConstraint": 2
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "valueConstraint": 1
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "valueConstraint": 3
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "valueConstraint": 1
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "valueConstraint": 6
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "valueConstraint": 4
+          }
+        ]
+      },
+      {
+        "name": "Luz Celestial",
+        "difficulty": 3,
+        "schema": [
+          {
+            "row": 0,
+            "column": 2,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "valueConstraint": 4
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "valueConstraint": 3
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "valueConstraint": 6
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "valueConstraint": 2
+          }
+        ]
+      },
+      {
+        "name": "Gravitas",
+        "difficulty": 5,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "valueConstraint": 1
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "valueConstraint": 3
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "valueConstraint": 2
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "valueConstraint": 6
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "valueConstraint": 4
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "valueConstraint": 2
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "valueConstraint": 1
+          }
+        ]
+      },
+      {
+        "name": "Lux Astram",
+        "difficulty": 5,
+        "schema": [
+          {
+            "row": 0,
+            "column": 1,
+            "valueConstraint": 1
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 4
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "valueConstraint": 6
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "valueConstraint": 2
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "valueConstraint": 1
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "valueConstraint": 3
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "colorConstraint": "VIOLET"
+          }
+        ]
+      },
+      {
+        "name": "Firelight",
+        "difficulty": 5,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "valueConstraint": 3
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "valueConstraint": 4
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "valueConstraint": 1
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "valueConstraint": 6
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "valueConstraint": 2
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "valueConstraint": 6
+          }
+        ]
+      },
+      {
+        "name": "Ripples of Light",
+        "difficulty": 5,
+        "schema": [
+          {
+            "row": 0,
+            "column": 3,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "valueConstraint": 4
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "valueConstraint": 3
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "valueConstraint": 6
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "valueConstraint": 2
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "valueConstraint": 1
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "colorConstraint": "RED"
+          }
+        ]
+      },
+      {
+        "name": "Comiitas",
+        "difficulty": 5,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "valueConstraint": 2
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 6
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "valueConstraint": 4
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "valueConstraint": 1
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "valueConstraint": 2
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "valueConstraint": 3
+          }
+        ]
+      },
+      {
+        "name": "Fulgor del Cielo",
+        "difficulty": 5,
+        "schema": [
+          {
+            "row": 0,
+            "column": 1,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "valueConstraint": 4
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "valueConstraint": 2
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "valueConstraint": 6
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "valueConstraint": 3
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "valueConstraint": 1
+          }
+        ]
+      },
+      {
+        "name": "Water of Life",
+        "difficulty": 6,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "valueConstraint": 6
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 1
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "valueConstraint": 4
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "valueConstraint": 2
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "valueConstraint": 6
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "valueConstraint": 3
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "colorConstraint": "VIOLET"
+          }
+        ]
+      },
+      {
+        "name": "Lux Mundi",
+        "difficulty": 6,
+        "schema": [
+          {
+            "row": 0,
+            "column": 2,
+            "valueConstraint": 1
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "valueConstraint": 1
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "valueConstraint": 3
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "valueConstraint": 2
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "valueConstraint": 5
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "valueConstraint": 4
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "valueConstraint": 6
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "colorConstraint": "GREEN"
+          }
+        ]
+      },
+      {
+        "name": "Sun's Glory",
+        "difficulty": 6,
+        "schema": [
+          {
+            "row": 0,
+            "column": 0,
+            "valueConstraint": 1
+          },
+          {
+            "row": 0,
+            "column": 1,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 0,
+            "column": 2,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 4
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "valueConstraint": 6
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "valueConstraint": 5
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "valueConstraint": 3
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "valueConstraint": 4
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "valueConstraint": 2
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "valueConstraint": 1
+          }
+        ]
       }
 	]
 }

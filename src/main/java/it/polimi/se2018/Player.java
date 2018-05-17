@@ -42,6 +42,10 @@ public class Player {
         this.tokens = this.windowPatternCard.getDifficulty();
     }
 
+    public void setTokens(){
+        this.tokens = this.windowPatternCard.getDifficulty();
+    }
+
     /**
      * Decreases the number of the player tokens
      * @param toBeDecreased to be decreased number of tokens
