@@ -3,14 +3,23 @@ package it.polimi.se2018.toolcards;
 import it.polimi.se2018.Player;
 
 public abstract class ToolCard {
+    private String name;
     private String description;
-    private int tokenCounts;
+    private int tokenCount;
 
-    public int getTokenCounts(){
-        return tokenCounts;
+    public int getTokenCount(){
+        return tokenCount;
     }
 
     public void increaseTokens(){
-        tokenCounts +=1;
+        tokenCount +=1;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

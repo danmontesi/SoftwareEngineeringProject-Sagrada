@@ -4,6 +4,7 @@ import it.polimi.se2018.Exceptions.EmptyCellException;
 
 public class PrivateObjectiveCard {
 
+    private String name;
     private String description;
     private COLOR color;
 
@@ -22,4 +23,7 @@ public class PrivateObjectiveCard {
         return description;
     }
 
+    public String getName() {
+        return name;
+    }
 }

@@ -1,0 +1,55 @@
+{
+  "PublicObjectiveCards":[
+    {
+      "name": "Row Color Variety",
+      "description": "Rows with no repeated colors.",
+      "score": 6
+    },
+    {
+      "name": "Column Color Variety",
+      "description": "Columns with no repeated colors.",
+      "score": 5
+    },
+
+    {
+      "name": "Column Shade Variety",
+      "description": "Columns with no repeated values.",
+      "score": 4
+    },
+    {
+      "name": "Row Shade Variety",
+      "description": "Rows with no repeated values.",
+      "score": 5
+    },
+    {
+      "name": "Color Variety",
+      "description": "Sets of one of each color anywhere.",
+      "score": 4
+    },
+    {
+      "name": "Shade Variety",
+      "description": "Sets of one of each value anywhere.",
+      "score": 5
+    },
+    {
+      "name": "Deep Shades",
+      "description": "Sets of 5 & 6 values anywhere.",
+      "score": 2
+    },
+    {
+      "name": "Medium Shades",
+      "description": "Sets of 3 & 4 values anywhere.",
+      "score": 2
+    },
+    {
+      "name": "Light Shades",
+      "description": "Sets of 1 & 2 values anywhere.",
+      "score": 2
+    },
+    {
+      "name": "Color Diagonals",
+      "description": "Count of diagonally adjacent same color dice.",
+      "score": 0
+    }
+  ]
+}
