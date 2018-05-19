@@ -14,7 +14,7 @@ public class DraftPool {
      */
     public DraftPool(DiceBag diceBag, int playersNumber) {
         this.diceBag = diceBag;
-        for (int i=0; i<playersNumber; i++){
+        for (int i=0; i<playersNumber*2+1; i++){
             this.dice.add(diceBag.extractDie());
         }
     }
@@ -69,5 +69,22 @@ public class DraftPool {
         for (Die aDice : dice) {
             aDice.roll();
         }
+    }
+
+    /**
+     *
+     * @return numbers of dice in Draft Pool
+     */
+    public int draftPoolSize(){
+        return dice.size();
+    }
+
+    /**
+     *
+     * @param index
+     * @return Die at given index
+     */
+    public Die getDie(int index){
+        return dice.get(index);
     }
 }

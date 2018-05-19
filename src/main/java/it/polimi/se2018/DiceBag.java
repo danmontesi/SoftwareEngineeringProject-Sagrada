@@ -64,4 +64,8 @@ public class DiceBag {
     public ArrayList<Die> getDice() {
         return dice;
     }
+
+    public int size(){
+        return dice.size();
+    }
 }
