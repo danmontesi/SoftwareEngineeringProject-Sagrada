@@ -1,0 +1,29 @@
+{
+  "PrivateObjectiveCards":[
+    {
+      "name": "Shades of Purple",
+      "description": "Sum of values on purple dice",
+      "color": "PURPLE"
+    },
+    {
+      "name": "Shades of Red",
+      "description": "Sum of values on red dice",
+      "color": "RED"
+    },
+    {
+      "name": "Shades of Yellow",
+      "description": "Sum of values on yellow dice",
+      "color": "YELLOW"
+    },
+    {
+      "name": "Shades of Green",
+      "description": "Sum of values on green dice",
+      "color": "GREEN"
+    },
+    {
+      "name": "Shades of Blue",
+      "description": "Sum of values on blue dice",
+      "color": "BLUE"
+    }
+  ]
+}
