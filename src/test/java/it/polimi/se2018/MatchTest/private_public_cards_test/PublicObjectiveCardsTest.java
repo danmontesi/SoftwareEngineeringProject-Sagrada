@@ -3,6 +3,7 @@ package it.polimi.se2018.MatchTest.private_public_cards_test;
 import it.polimi.se2018.COLOR;
 import it.polimi.se2018.Cell;
 import it.polimi.se2018.Die;
+import it.polimi.se2018.Exceptions.EmptyCellException;
 import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.public_obj_cards.*;
 import org.junit.Before;
@@ -89,7 +90,11 @@ public class PublicObjectiveCardsTest {
         //FOURTH ROW
 
         for (int i = 0; i < 20; i++) {
-            schema.get(i).getAssociatedDie().get().setValue(1);
+            try {
+                schema.get(i).getAssociatedDie().setValue(1);
+            } catch (EmptyCellException e) {
+                continue;
+            }
         }
 
         myWPCard = new WindowPatternCard(schema, 2, "WP1");

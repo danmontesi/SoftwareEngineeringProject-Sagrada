@@ -2,11 +2,10 @@ package it.polimi.se2018.MatchTest;
 
 import it.polimi.se2018.COLOR;
 import it.polimi.se2018.Die;
+import it.polimi.se2018.Exceptions.EmptyCellException;
 import it.polimi.se2018.RoundTrack;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -23,14 +22,17 @@ public class RoundTrackTest{
     @Test
     public void setUpTest(){
         assertEquals(10, rt.getRoundCells().size());
-        assertEquals(Optional.empty(), rt.getDie(3));
+        assertTrue(rt.getCell(2).isEmpty());
     }
 
     @Test
     public void removeDieTest(){
-        rt.removeDie(1);
-        rt.removeDie(5);
-        assertEquals(1, rt.diceInTrack());
+        try {
+            rt.removeDie(1);
+            rt.removeDie(5);
+            assertEquals(1, rt.diceInTrack());
+        } catch (EmptyCellException e) {
+        }
     }
 
     @Test
@@ -45,7 +47,11 @@ public class RoundTrackTest{
 
     @Test
     public void getDieTest(){
-        assertNotNull(rt.getDie(0));
-        assertFalse(rt.getDie(4).isPresent());
+        try {
+            assertNotNull(rt.getDie(0));
+            rt.getDie(4);
+        } catch (EmptyCellException e) {
+            assertTrue(true);
+        }
     }
 }

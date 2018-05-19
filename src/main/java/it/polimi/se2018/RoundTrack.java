@@ -1,7 +1,8 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.Exceptions.EmptyCellException;
+
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class RoundTrack {
 
@@ -23,23 +24,17 @@ public class RoundTrack {
      * @return removed die
      * @throws IndexOutOfBoundsException if there is no die in diePosition
      */
-    public Optional<Die> removeDie(int diePosition){
-        try{
+    public Die removeDie(int diePosition) throws EmptyCellException {
             return roundCells.get(diePosition).removeDie();
-        }
-        catch(IndexOutOfBoundsException e){
-            System.out.println("There is no die at such index");
-            return Optional.empty();
-        }
     }
 
     /**
-     * Switches a die with a given one
+     * Switches a die with a given one in the RoundTrack
      * @param diePosition position from which the die is taken
      * @param toBeSwitched new die in roundTrack
      * @return old die from roundTrack
      */
-    public Die switchDie(int diePosition, Die toBeSwitched){
+    public Die switchDie(int diePosition, Die toBeSwitched) throws EmptyCellException {
         return roundCells.get(diePosition).switchDie(toBeSwitched);
     }
 
@@ -51,7 +46,7 @@ public class RoundTrack {
      */
     public void placeDie(Die toBePlaced) {
         for (int i = 0; i < 10; i++) {
-            if (!roundCells.get(i).getAssociatedDie().isPresent()) {
+            if (roundCells.get(i).isEmpty()){
                 roundCells.get(i).setAssociatedDie(toBePlaced);
                 return;
             }
@@ -60,20 +55,24 @@ public class RoundTrack {
 
     /**
      * Returns the number of dice on the roundTrack
-     * @return dice number
+     * @return number of dice in round track
      */
     public int diceInTrack(){
         int n = 0;
-        for (int i = 0; i < 10; i++){
-            if(roundCells.get(i).getAssociatedDie().isPresent()){
-                n +=1;
+        for (int i = 0; i < 10; i++) {
+            if (roundCells.get(i).hasDie()){
+                n+=1;
             }
         }
         return n;
     }
 
-    public Optional<Die> getDie(int cellNumber){
+    public Die getDie(int cellNumber) throws EmptyCellException {
         return roundCells.get(cellNumber).getAssociatedDie();
+    }
+
+    public Cell getCell(int cellNumber){
+        return roundCells.get(cellNumber);
     }
 
     public ArrayList<Cell> getRoundCells() {

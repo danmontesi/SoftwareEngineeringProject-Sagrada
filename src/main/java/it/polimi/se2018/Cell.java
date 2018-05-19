@@ -1,6 +1,6 @@
 package it.polimi.se2018;
 
-import java.util.Optional;
+import it.polimi.se2018.Exceptions.EmptyCellException;
 
 public class Cell {
     private COLOR colorConstraint;
@@ -69,34 +69,36 @@ public class Cell {
      * @return old cell's associated die
      * @throws NullPointerException if the removed die is null
      * */
-    public Optional<Die> removeDie(){
-        try{
-            Die temp = this.associatedDie;
-            associatedDie = null;
-            return Optional.of(temp);
+    public Die removeDie() throws  EmptyCellException{
+        if (associatedDie == null){
+            throw new EmptyCellException();
         }
-        catch(NullPointerException e){
-            return Optional.empty();
-        }
+        Die temp = this.associatedDie;
+        this.associatedDie = null;
+        return temp;
+
     }
     /**
      * Switches the cell's associated die with another one
+     * You cannot switch a die with an empty cell
      * @param toSwitchDie new cell's associated die
      * @return old cell's associated die
+     * @throws  EmptyCellException
      * */
-    public Die switchDie(Die toSwitchDie){
+    public Die switchDie(Die toSwitchDie) throws EmptyCellException {
+        if (associatedDie == null){
+            throw new EmptyCellException();
+        }
         Die temp = this.associatedDie;
         associatedDie = toSwitchDie;
         return temp;
     }
 
-    public Optional<Die> getAssociatedDie(){
-        try{
-            return Optional.of(associatedDie);
+    public Die getAssociatedDie() throws EmptyCellException {
+        if (associatedDie == null){
+            throw new EmptyCellException();
         }
-        catch (NullPointerException e){
-            return Optional.empty();
-        }
+            return this.associatedDie;
     }
 
     public COLOR getColorConstraint(){
@@ -117,5 +119,13 @@ public class Cell {
 
     public void setValueConstraint(Integer valueConstraint) {
         this.valueConstraint = valueConstraint;
+    }
+
+    public boolean isEmpty(){
+        return this.associatedDie == null;
+    }
+
+    public boolean hasDie(){
+        return this.associatedDie != null;
     }
 }

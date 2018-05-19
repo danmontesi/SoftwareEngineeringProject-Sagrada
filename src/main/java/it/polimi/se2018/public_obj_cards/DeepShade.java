@@ -1,5 +1,6 @@
 package it.polimi.se2018.public_obj_cards;
 
+import it.polimi.se2018.Exceptions.EmptyCellException;
 import it.polimi.se2018.WindowPatternCard;
 
 public class DeepShade extends PublicObjectiveCard{
@@ -12,11 +13,15 @@ public class DeepShade extends PublicObjectiveCard{
         //Check the number of 5 and 6 in window pattern card and save it in numbers
         for (int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
-                if (w.getCell(i, j).getAssociatedDie().isPresent()) {
-                    if (w.getCell(i, j).getAssociatedDie().get().getValue() == 5) {
-                        numbers[0] += 1;
-                    } else if (w.getCell(i, j).getAssociatedDie().get().getValue() == 6) {
-                        numbers[1] += 1;
+                if (w.getCell(i, j).hasDie()) {
+                    try {
+                        if (w.getCell(i, j).getAssociatedDie().getValue() == 5) {
+                            numbers[0] += 1;
+                        } else if (w.getCell(i, j).getAssociatedDie().getValue() == 6) {
+                            numbers[1] += 1;
+                        }
+                    } catch (EmptyCellException e) {
+
                     }
                 }
             }

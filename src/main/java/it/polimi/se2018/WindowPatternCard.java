@@ -1,8 +1,9 @@
 
 package it.polimi.se2018;
 
+import it.polimi.se2018.Exceptions.EmptyCellException;
+
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class WindowPatternCard {
     private ArrayList<Cell> schema;
@@ -49,7 +50,7 @@ public class WindowPatternCard {
      */
     public boolean placeDie(Die d, int row, int column, boolean colorRestriction, boolean valueRestriction,
     boolean placementRestriction){
-        if (this.getCell(row,column).getAssociatedDie().isPresent()) { return false; }
+        if (this.getCell(row,column).hasDie()) { return false; }
         if (colorRestriction) {
             if (!checkColorRestricion(this.getCell(row, column), d)) {
                 return false;
@@ -70,7 +71,7 @@ public class WindowPatternCard {
     }
 
     //What if the index is not valid? -> The controller checks it :)
-    public Optional<Die> removeDie(int row, int column){
+    public Die removeDie(int row, int column) throws EmptyCellException {
         return schema.get(row*5+column).removeDie();
     }
 
@@ -120,7 +121,7 @@ public class WindowPatternCard {
         }
 
         for (int adjIndex : adjacentCells){
-            if(this.schema.get(adjIndex).getAssociatedDie() != null){
+            if(this.schema.get(adjIndex).hasDie()){
                 return true;
             }
         }

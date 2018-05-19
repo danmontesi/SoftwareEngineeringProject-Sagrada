@@ -1,5 +1,6 @@
 package it.polimi.se2018.public_obj_cards;
 
+import it.polimi.se2018.Exceptions.EmptyCellException;
 import it.polimi.se2018.WindowPatternCard;
 
 import java.util.HashSet;
@@ -11,11 +12,11 @@ public class ShadeVariety extends PublicObjectiveCard{
         HashSet<Integer> numbers = new HashSet<>();
         for (int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
-
-                //DA RIVEDERE E DA INSERIRE IN UN BLOCCO
-                //TRY/CATCH
-                if (w.getCell(i, j).getAssociatedDie().isPresent())
-                    numbers.add(w.getCell(i, j).getAssociatedDie().get().getValue());
+                try {
+                    numbers.add(w.getCell(i, j).getAssociatedDie().getValue());
+                } catch (EmptyCellException e) {
+                    continue;
+                }
             }
             if(numbers.size() == 6){
                 total += score;

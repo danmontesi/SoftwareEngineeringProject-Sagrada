@@ -7,6 +7,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertEquals;
+
 public class ParseWPCTest {
 
     ParserWindowPatternCard pwpc = new ParserWindowPatternCard();
@@ -22,7 +24,7 @@ public class ParseWPCTest {
         //You must write, instead of 2, the number of cards in wpc.json
         //The class works correctly
         //Thank God
-        //assertEquals(2, mycards.size());
+        assertEquals(24, mycards.size());
     }
 
 }

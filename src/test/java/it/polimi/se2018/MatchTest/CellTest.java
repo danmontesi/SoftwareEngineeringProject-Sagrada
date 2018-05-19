@@ -3,12 +3,13 @@ package it.polimi.se2018.MatchTest;
 import it.polimi.se2018.COLOR;
 import it.polimi.se2018.Cell;
 import it.polimi.se2018.Die;
+import it.polimi.se2018.Exceptions.EmptyCellException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Optional;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class CellTest {
 
@@ -24,18 +25,31 @@ public class CellTest {
 
     @Test
     public void testRemoveDie(){
-        Die temp = cell.getAssociatedDie().get();
-        Optional<Die> temp2 = cell.removeDie();
-        assertFalse(cell.getAssociatedDie().isPresent());
-        assertEquals(temp, temp2.get());
+        try{
+            Die temp = cell.getAssociatedDie();
+            Die temp2 = cell.removeDie();
+            assertNull(cell.getAssociatedDie());
+            assertEquals(temp, temp2);
+            cell.removeDie();
+        } catch (EmptyCellException e){
+            assertTrue(true);
+
+        }
+
     }
 
     @Test
     public void testSwitchDie(){
-        Die toSwitchDie =new Die(COLOR.YELLOW);
-        Die temp = cell.getAssociatedDie().get();
-        Die temp2 = cell.switchDie(toSwitchDie);
-        assertEquals(toSwitchDie, cell.getAssociatedDie().get());
-        assertEquals(temp, temp2);
-    }
+        try{
+            Die toSwitchDie = new Die(COLOR.YELLOW);
+            Die temp = cell.getAssociatedDie();
+            Die temp2 = cell.switchDie(toSwitchDie);
+            assertEquals(toSwitchDie, cell.getAssociatedDie());
+            assertEquals(temp, temp2);
+            cell.removeDie();
+            cell.switchDie(new Die(COLOR.GREEN));
+        } catch (EmptyCellException e){
+            assertTrue(true);
+        }
+        }
 }

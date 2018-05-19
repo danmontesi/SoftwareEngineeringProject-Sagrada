@@ -1,5 +1,7 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.Exceptions.EmptyCellException;
+
 public class PrivateObjectiveCard {
 
     private String description;
@@ -8,7 +10,10 @@ public class PrivateObjectiveCard {
     public int calculateScore(WindowPatternCard w){
         int score = 0;
         for (Cell c : w.getSchema()){
-            score += (c.getAssociatedDie().get().getColor() == color? 1 : 0);
+            try {
+                score += (c.getAssociatedDie().getColor() == color? 1 : 0);
+            } catch (EmptyCellException e) {
+            }
         }
         return score;
     }

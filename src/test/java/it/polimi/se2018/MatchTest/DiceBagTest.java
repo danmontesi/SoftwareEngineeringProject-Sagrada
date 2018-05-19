@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class TestDiceBag {
+public class DiceBagTest {
 
     private DiceBag diceBag;
 
