@@ -8,16 +8,14 @@ public class Cell {
     private Die associatedDie;
     private int index;
 
-    //Ale:
-    //ATTENZIONE: Ho cambiato numberConstraint con valueConstraint per coerenza con le altre classi
-
-    //ATTENZIONE: E' NECESSARIO CONSIDERARE IL CONTROLLO DEI NUMERI SUI COSTRUTTORI
-    //AD ESEMPIO BISOGNA RESTITUIRE UN'ECCEZIONE SE IL value CONSTRAINT E' 7
+    //ATTENZIONE: E' NECESSARIO CONSIDERARE IL CONTROLLO DEI NUMERI SUI COSTRUTTORI?
+    //AD ESEMPIO BISOGNA RESTITUIRE UN'ECCEZIONE SE IL value CONSTRAINT E' 7?
 
     /**
      * Constructor: generates a cell with color and value constraints
      * @param colorConstraint cell color constraint
      * @param valueConstraint cell value constraint
+     * @param index cell index (between 0 and 19)
      * */
     public Cell(COLOR colorConstraint, int valueConstraint, int index) {
         this.colorConstraint = colorConstraint;
@@ -29,6 +27,7 @@ public class Cell {
     /**
      * Constructor: generates a cell with color constraint
      * @param colorConstraint cell color constraint
+     * @param index cell index (between 0 and 19)
      * */
     public Cell(COLOR colorConstraint, int index) {
         this.colorConstraint = colorConstraint;
@@ -41,6 +40,7 @@ public class Cell {
     /**
      * Constructor: generates a cell with value constraint
      * @param valueConstraint cell value constraint
+     * @param index cell index (between 0 and 19)
      * */
     public Cell(int valueConstraint, int index) {
         this.colorConstraint = null;
@@ -52,6 +52,7 @@ public class Cell {
 
     /**
      * Constructor: generates a cell with no constraints
+     * @param index cell index (between 0 and 19)
      * */
     public Cell(int index) {
         this.colorConstraint = null;
@@ -94,6 +95,11 @@ public class Cell {
         return temp;
     }
 
+    /**
+     *
+     * @return Die in Cell
+     * @throws EmptyCellException
+     */
     public Die getAssociatedDie() throws EmptyCellException {
         if (associatedDie == null){
             throw new EmptyCellException();
@@ -101,30 +107,58 @@ public class Cell {
             return this.associatedDie;
     }
 
+    /**
+     *
+     * @return Color constraint for the cell, null if there is no constraint for color
+     */
     public COLOR getColorConstraint(){
         return colorConstraint;
     }
 
+    /**
+     *
+     * @return Value constraint for the cell, null if there is no constraint for value
+     */
     public Integer getValueConstraint(){
         return valueConstraint;
     }
 
+    /**
+     *
+     * @return Cell index
+     */
     public int getIndex() {
         return index;
     }
 
+    /**
+     * Set Cell color constraint
+     * @param colorConstraint
+     */
     public void setColorConstraint(COLOR colorConstraint) {
         this.colorConstraint = colorConstraint;
     }
 
+    /**
+     * Set value constraint for the cell
+     * @param valueConstraint
+     */
     public void setValueConstraint(Integer valueConstraint) {
         this.valueConstraint = valueConstraint;
     }
 
+    /**
+     *
+     * @return true if there is no Die on the cell, false otherwise
+     */
     public boolean isEmpty(){
         return this.associatedDie == null;
     }
 
+    /**
+     *
+     * @return true if there is a die on the cell, false otherwise
+     */
     public boolean hasDie(){
         return this.associatedDie != null;
     }

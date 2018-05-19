@@ -7,9 +7,7 @@ import it.polimi.se2018.Exceptions.EmptyCellException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class CellTest {
 
@@ -24,6 +22,28 @@ public class CellTest {
     }
 
     @Test
+    public void testConstructor1(){
+        cell = new Cell(COLOR.VIOLET, 3, 0);
+        assertEquals(new Integer(3), cell.getValueConstraint());
+        assertEquals(COLOR.VIOLET, cell.getColorConstraint());
+        assertEquals(0, cell.getIndex());
+    }
+
+    @Test
+    public void testConstructor2(){
+        cell = new Cell(COLOR.GREEN, 17);
+        assertEquals(COLOR.GREEN, cell.getColorConstraint());
+        assertEquals(17, cell.getIndex());
+    }
+
+    @Test
+    public void testConstructor3(){
+        cell = new Cell(4, 16);
+        assertEquals(new Integer(4), cell.getValueConstraint());
+        assertEquals(16, cell.getIndex());
+    }
+
+    @Test
     public void testRemoveDie(){
         try{
             Die temp = cell.getAssociatedDie();
@@ -31,6 +51,7 @@ public class CellTest {
             assertNull(cell.getAssociatedDie());
             assertEquals(temp, temp2);
             cell.removeDie();
+            fail();
         } catch (EmptyCellException e){
             assertTrue(true);
 
@@ -48,6 +69,7 @@ public class CellTest {
             assertEquals(temp, temp2);
             cell.removeDie();
             cell.switchDie(new Die(COLOR.GREEN));
+            fail();
         } catch (EmptyCellException e){
             assertTrue(true);
         }

@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author danmontesi
@@ -44,49 +44,49 @@ public class PublicObjectiveCardsTest {
         int counter=0;
         schema.get(counter).setAssociatedDie(new Die(COLOR.RED));
         counter++;
-        schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.YELLOW));
         counter++;
-        schema.get(counter).setAssociatedDie(new Die(COLOR.VIOLET));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.YELLOW));
         counter++;
-        schema.get(counter).setAssociatedDie(new Die(COLOR.VIOLET));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.YELLOW));
         counter++;
-        schema.get(counter).setAssociatedDie(new Die(COLOR.VIOLET));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.YELLOW));
         counter++;
 
         //FIRST ROW
+        schema.get(counter).setAssociatedDie(new Die(COLOR.GREEN));
+        counter++;
+        schema.get(counter).setAssociatedDie(new Die(COLOR.RED));
+        counter++;
         schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
         counter++;
-        schema.get(counter).setAssociatedDie(new Die(COLOR.GREEN));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
         counter++;
-        schema.get(counter).setAssociatedDie(new Die(COLOR.GREEN));
-        counter++;
-        schema.get(counter).setAssociatedDie(new Die(COLOR.GREEN));
-        counter++;
-        schema.get(counter).setAssociatedDie(new Die(COLOR.GREEN));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
         counter++;
 
         //SECOND ROW
-        schema.get(counter).setAssociatedDie(new Die(COLOR.YELLOW));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.GREEN));
         counter++;
-        schema.get(counter).setAssociatedDie(new Die(COLOR.YELLOW));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.GREEN));
         counter++;
         schema.get(counter).setAssociatedDie(new Die(COLOR.RED));
         counter++;
         schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
         counter++;
-        schema.get(counter).setAssociatedDie(new Die(COLOR.RED));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
         counter++;
 
         //THIRD ROW
+        schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
+        counter++;
         schema.get(counter).setAssociatedDie(new Die(COLOR.RED));
         counter++;
         schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
         counter++;
         schema.get(counter).setAssociatedDie(new Die(COLOR.YELLOW));
         counter++;
-        schema.get(counter).setAssociatedDie(new Die(COLOR.BLUE));
-        counter++;
-        schema.get(counter).setAssociatedDie(new Die(COLOR.GREEN));
+        schema.get(counter).setAssociatedDie(new Die(COLOR.YELLOW));
         //FOURTH ROW
 
         for (int i = 0; i < 20; i++) {
@@ -138,9 +138,10 @@ public class PublicObjectiveCardsTest {
         counter++;
         //ShadeVariety
         correctPoints[counter]=0;
-        counter++;
 
-        assertEquals(correctPoints[0] , (Integer) cards.get(0).calculateScore(myWPCard) );
+
+        assertEquals(12, cards.get(0).calculateScore(myWPCard));
+    //    assertEquals(correctPoints[0] , (Integer) cards.get(0).calculateScore(myWPCard) );
 
     }
 
