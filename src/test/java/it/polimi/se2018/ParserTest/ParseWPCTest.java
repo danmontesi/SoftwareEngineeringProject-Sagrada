@@ -1,4 +1,4 @@
-package it.polimi.se2018.MatchTest;
+package it.polimi.se2018.ParserTest;
 
 import it.polimi.se2018.Parser.ParserWindowPatternCard;
 import it.polimi.se2018.WindowPatternCard;

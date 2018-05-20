@@ -8,6 +8,12 @@ public class PrivateObjectiveCard {
     private String description;
     private COLOR color;
 
+    public PrivateObjectiveCard(String name, String description, COLOR color) {
+        this.name = name;
+        this.description = description;
+        this.color = color;
+    }
+
     public int calculateScore(WindowPatternCard w){
         int score = 0;
         for (Cell c : w.getSchema()){

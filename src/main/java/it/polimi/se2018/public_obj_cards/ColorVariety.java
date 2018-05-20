@@ -7,7 +7,10 @@ import it.polimi.se2018.WindowPatternCard;
 import java.util.HashSet;
 
 public class ColorVariety extends PublicObjectiveCard {
-    private final int score = 4;
+    int score;
+    public ColorVariety(String name, String description, int score) {
+        super(name, description, score);
+    }
 
     public int calculateScore(WindowPatternCard w) {
         int total = 0;

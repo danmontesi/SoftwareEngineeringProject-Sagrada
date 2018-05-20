@@ -1,25 +1,12 @@
 package it.polimi.se2018.MatchTest.private_public_cards_test;
 
-import it.polimi.se2018.COLOR;
-import it.polimi.se2018.Cell;
-import it.polimi.se2018.Die;
-import it.polimi.se2018.Exceptions.EmptyCellException;
-import it.polimi.se2018.WindowPatternCard;
-import it.polimi.se2018.public_obj_cards.*;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.ArrayList;
-
-import static org.junit.Assert.assertEquals;
-
 /**
  * @author danmontesi
  */
 
 public class PublicObjectiveCardsTest {
 
-    private ArrayList<PublicObjectiveCard> cards = new ArrayList<>();
+ /*   private ArrayList<PublicObjectiveCard> cards = new ArrayList<>();
     private WindowPatternCard myWPCard;
 
     @Before
@@ -144,6 +131,6 @@ public class PublicObjectiveCardsTest {
     //    assertEquals(correctPoints[0] , (Integer) cards.get(0).calculateScore(myWPCard) );
 
     }
-
+*/
 
 }
