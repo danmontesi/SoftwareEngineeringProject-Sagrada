@@ -58,4 +58,11 @@ public class Die {
     public int getValue(){
         return value;
     }
+
+    public String toString(){
+        String toBePrinted = color.toString();
+        Integer i = value;
+        toBePrinted = toBePrinted + "num:" + i.toString();
+        return toBePrinted;
+    }
 }

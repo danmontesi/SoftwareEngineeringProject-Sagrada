@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author danmontesi
  */
-
+/*
 public class PublicObjectiveCardsTest {
 
     private ArrayList<PublicObjectiveCard> cards = new ArrayList<>();
@@ -166,4 +166,6 @@ public class PublicObjectiveCardsTest {
     }
 
 
+
 }
+*/
