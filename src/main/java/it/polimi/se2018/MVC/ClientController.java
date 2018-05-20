@@ -1,8 +1,5 @@
 package it.polimi.se2018.MVC;
 
-import com.sun.deploy.util.SessionState;
-import it.polimi.se2018.network.SocketClientConnecter;
-
 public class ClientController {
 
     /**

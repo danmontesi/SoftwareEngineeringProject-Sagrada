@@ -234,6 +234,8 @@ public class Controller extends Observable implements Observer {
     /**
      * Those are methods that apply commands arriving from the Client
      * There are 1 method for every class for every command
+     *
+     * If a command is invalid, I catch an exception and send to the client itself a new AskMoveCommand()
      */
     public void applyClientCommand(ChosenToolCardCommand command){
 
