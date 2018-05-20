@@ -65,6 +65,10 @@ public class DiceBag {
         return dice;
     }
 
+    /**
+     * Returns how many dice remain in the bag
+     * @return DiceBag size
+     */
     public int size(){
         return dice.size();
     }
