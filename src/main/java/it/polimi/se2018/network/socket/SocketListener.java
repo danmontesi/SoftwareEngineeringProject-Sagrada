@@ -1,13 +1,12 @@
-package it.polimi.se2018.network;
+package it.polimi.se2018.network.socket;
 
-public class SocketConnectionAccepter {
+public class SocketListener {
 
-    /** Is a SocketListener of connections.
-     * Server has one for each kind of network (RMI and Socket)
-     */
-
-    // TODO Is a ServerSocketListener
+/** Is a SocketListener of connections.
+ * Server has one for each kind of network (RMI and Socket)
+ */
 }
+
 
 
 /*

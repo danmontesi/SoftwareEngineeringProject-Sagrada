@@ -1,5 +1,8 @@
 package it.polimi.se2018.MVC;
 
+import it.polimi.se2018.client_to_server_command.*;
+import it.polimi.se2018.server_to_client_command.*;
+
 public class ClientController {
 
     /**

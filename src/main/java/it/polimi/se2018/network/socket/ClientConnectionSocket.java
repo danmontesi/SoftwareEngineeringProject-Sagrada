@@ -1,11 +1,21 @@
-package it.polimi.se2018.network;
+package it.polimi.se2018.network.socket;
 
-public class SocketClientConnecter { // implements ClientConnecterInterface
+import it.polimi.se2018.MVC.ClientController;
+import it.polimi.se2018.network.ClientConnection;
+
+import java.io.BufferedReader;
+import java.net.Socket;
+
+public class ClientConnectionSocket implements ClientConnection { // implements ClientConnecterInterface
 
 
     /**
      * This class establish a connection from Client with the server
      */
+
+    Socket socket;
+    BufferedReader bufferedReader;
+    ClientController clientController;
 
     // TODO CALLED: CLientSocketInterface -> Invia comandi al serve
 /*

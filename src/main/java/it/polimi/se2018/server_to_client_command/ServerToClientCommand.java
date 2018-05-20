@@ -1,4 +1,4 @@
-package it.polimi.se2018.MVC;
+package it.polimi.se2018.server_to_client_command;
 
 import it.polimi.se2018.network.ClientConnection;
 
@@ -37,31 +37,7 @@ class ChooseToolCardCommand{
 
 }
 
-class InitializeMatchCommand{
-
-}
-
 class InitializeTurnCommand{
-
-}
-
-class WinCommand{
-
-}
-
-class LoseCommand{
-
-}
-
-class StartTurnCommand{
-
-}
-
-class CloseClientCommand{
-
-}
-
-class InvalidInputCommand{
 
 }
 

@@ -2,8 +2,10 @@ package it.polimi.se2018.MVC;
 
 import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
+import it.polimi.se2018.client_to_server_command.*;
 import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.network.Server;
+import it.polimi.se2018.server_to_client_command.*;
 import it.polimi.se2018.toolcards.CircularCutter;
 
 import java.sql.Connection;

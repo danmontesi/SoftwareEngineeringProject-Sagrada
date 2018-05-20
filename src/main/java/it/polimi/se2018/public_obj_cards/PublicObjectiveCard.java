@@ -14,6 +14,9 @@ public abstract class PublicObjectiveCard { //Probably has to be an Interface fo
         this.score = score;
     }
 
+    public PublicObjectiveCard(){
+
+    }
     /**
      * Calculates the score for a WindowPatternCard given.
      * That is connected to the points assigned for the PublicObjectiveCard, that varies depending from the type of Card
