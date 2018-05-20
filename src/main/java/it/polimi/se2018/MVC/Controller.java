@@ -2,8 +2,10 @@ package it.polimi.se2018.MVC;
 
 import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
+import it.polimi.se2018.client_to_server_command.*;
 import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.network.Server;
+import it.polimi.se2018.server_to_client_command.*;
 import it.polimi.se2018.toolcards.CircularCutter;
 
 import java.sql.Connection;
@@ -234,6 +236,8 @@ public class Controller extends Observable implements Observer {
     /**
      * Those are methods that apply commands arriving from the Client
      * There are 1 method for every class for every command
+     *
+     * If a command is invalid, I catch an exception and send to the client itself a new AskMoveCommand()
      */
     public void applyClientCommand(ChosenToolCardCommand command){
 

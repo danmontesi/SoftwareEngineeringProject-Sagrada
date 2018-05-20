@@ -1,16 +1,33 @@
 package it.polimi.se2018.MatchTest.private_public_cards_test;
 
+import it.polimi.se2018.COLOR;
+import it.polimi.se2018.Cell;
+import it.polimi.se2018.Die;
+import it.polimi.se2018.Exceptions.EmptyCellException;
+import it.polimi.se2018.Parser.ParserWindowPatternCard;
+import it.polimi.se2018.WindowPatternCard;
+import it.polimi.se2018.public_obj_cards.*;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
+
 /**
  * @author danmontesi
  */
 
 public class PublicObjectiveCardsTest {
 
- /*   private ArrayList<PublicObjectiveCard> cards = new ArrayList<>();
+    private ArrayList<PublicObjectiveCard> cards = new ArrayList<>();
     private WindowPatternCard myWPCard;
 
+    String p = "prova";
     @Before
     public void setUp(){
+        /* TODO Has to be replaced with the correct Parser of PublicObjCards
         cards.add(new ColorDiagonals());
         cards.add(new ColorVariety());
         cards.add(new ColumnColorVariety());
@@ -21,12 +38,20 @@ public class PublicObjectiveCardsTest {
         cards.add(new RowColorVariety());
         cards.add(new RowShadeVariety());
         cards.add(new ShadeVariety());
+        */
 
         ArrayList<Cell> schema = new ArrayList<>();
 
-        for (int i = 0; i < 20; i++) {
-            schema.add(new Cell(i));
+        ArrayList<WindowPatternCard> mycards = null;
+
+        ParserWindowPatternCard pwpc = new ParserWindowPatternCard();
+        try {
+            mycards = pwpc.parseWindowPatternCards();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        schema = mycards.get(0).getSchema();
 
         int counter=0;
         schema.get(counter).setAssociatedDie(new Die(COLOR.RED));
@@ -87,10 +112,24 @@ public class PublicObjectiveCardsTest {
         myWPCard = new WindowPatternCard(schema, 2, "WP1");
 
         //TODO: print della WindowPatternCard (fare un metodo toString)
+        for (int i = 0; i < 20; i++) {
+
+            try {
+                System.out.printf(schema.get(i).getAssociatedDie().toString());
+            } catch (EmptyCellException e) {
+                e.printStackTrace();
+            }
+            if ( (i+1)%5 == 0){
+                System.out.println();
+            }
+        }
     }
+
 
     @Test
     public void testAll(){
+
+        /*
         Integer[] correctPoints = new Integer[cards.size()];
         int counter= 0;
         //System.out.println("Ok");
@@ -127,10 +166,14 @@ public class PublicObjectiveCardsTest {
         correctPoints[counter]=0;
 
 
-        assertEquals(12, cards.get(0).calculateScore(myWPCard));
+        //assertEquals(12, cards.get(0).calculateScore(myWPCard));
     //    assertEquals(correctPoints[0] , (Integer) cards.get(0).calculateScore(myWPCard) );
 
+         */
+        assertEquals(1,1);
     }
-*/
+
+
 
 }
+

@@ -3,14 +3,10 @@ package it.polimi.se2018.MVC;
 import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
 import it.polimi.se2018.WindowPatternCard;
-import it.polimi.se2018.toolcards.CircularCutter;
-import it.polimi.se2018.toolcards.Gavel;
-import it.polimi.se2018.toolcards.RoughingForceps;
+import it.polimi.se2018.client_to_server_command.ChosenToolCardCommand;
 import it.polimi.se2018.toolcards.ToolCard;
-import javafx.beans.Observable;
 
 import java.util.ArrayList;
-import java.util.Observer;
 import java.util.Scanner;
 
 public class CLIView extends View{
@@ -103,7 +99,7 @@ public class CLIView extends View{
         cards.toString(); // TODO better toString
         System.out.println("Which one you want to use?");
         //TODO scanner
-        clientController.sendCommand(new ChosenToolCardCommand(2));
+        //clientController.sendCommand(new ChosenToolCardCommand(2));
     }
 
 
