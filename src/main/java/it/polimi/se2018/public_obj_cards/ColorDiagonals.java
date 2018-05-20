@@ -7,8 +7,9 @@ import it.polimi.se2018.WindowPatternCard;
 
 public class ColorDiagonals extends PublicObjectiveCard {
 
-        public ColorDiagonals(){
-        }
+    public ColorDiagonals(String name, String description, int score) {
+        super(name, description, score);
+    }
 
     /**
      * Calculate score for Public Objective "Color Diagonals"

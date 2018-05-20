@@ -37,6 +37,13 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>2.7.1</version>
+            <type>maven-plugin</type>
+        </dependency>
+
+        <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
@@ -74,7 +81,7 @@
                     </archive>
                 </configuration>
             </plugin>
- 
+
             <!-- Jacoco is a code coverage library that allows basic report creation -->
             <plugin>
                 <groupId>org.jacoco</groupId>

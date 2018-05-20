@@ -7,8 +7,11 @@ import it.polimi.se2018.WindowPatternCard;
 import java.util.HashSet;
 
 public class ColumnColorVariety extends PublicObjectiveCard{
-    private int score = 5;
-    //what if a cell is empty?
+    int score;
+    public ColumnColorVariety(String name, String description, int score) {
+        super(name, description, score);
+    }
+
     public int calculateScore(WindowPatternCard w){
         int total = 0;
         for (int j = 0; j < 5; j++){
