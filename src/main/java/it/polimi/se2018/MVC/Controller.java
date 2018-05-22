@@ -239,6 +239,14 @@ public class Controller extends Observable implements Observer {
      *
      * If a command is invalid, I catch an exception and send to the client itself a new AskMoveCommand()
      */
+    public void applyClientCommand(ClientToServerCommand command){
+
+    }
+
+    public void applyClientCommand(UpdateUsernameCommand command){
+        System.out.println("Arrivato username che si chiama"+ command.getUsername());
+    }
+
     public void applyClientCommand(ChosenToolCardCommand command){
 
     }

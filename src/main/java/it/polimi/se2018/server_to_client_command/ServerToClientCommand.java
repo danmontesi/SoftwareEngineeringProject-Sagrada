@@ -12,12 +12,6 @@ public abstract class ServerToClientCommand implements Serializable {
         /** The Constant serialVersionUID. */
         private static final long serialVersionUID = -6460847901998831472L;
 
-        /**
-         * Process command.
-         *
-         * @param connection the client command handler
-         */
-        public abstract void processCommand(ClientConnection connection);
 
     }
 

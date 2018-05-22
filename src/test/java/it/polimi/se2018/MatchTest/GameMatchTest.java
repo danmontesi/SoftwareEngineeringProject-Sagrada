@@ -17,12 +17,12 @@ public class GameMatchTest {
    Player p1 = new Player("Gabriele");
    Player p2 = new Player("Antonio");
 
-   @Before
+   @Test
     public void setUp(){
        ArrayList<Player> arrayPlayer = new ArrayList<>();
        arrayPlayer.add(p1);
        arrayPlayer.add(p2);
-       model = Model.getInstance(arrayPlayer);
+       model = new Model(arrayPlayer);
 
        assertEquals(2, model.getGamePlayers().size());
        assertEquals(2, model.getConnectedPlayers().size());

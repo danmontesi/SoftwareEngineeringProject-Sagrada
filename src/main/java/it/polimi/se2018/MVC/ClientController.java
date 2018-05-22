@@ -1,6 +1,8 @@
 package it.polimi.se2018.MVC;
 
 import it.polimi.se2018.client_to_server_command.*;
+import it.polimi.se2018.network.ClientConnection;
+import it.polimi.se2018.network.Server;
 import it.polimi.se2018.server_to_client_command.*;
 
 public class ClientController {
@@ -19,18 +21,23 @@ public class ClientController {
 
     // TODO CALLED: CLientCommandHandler
 
-    private View userInterface;
+    private View view;
 
+    private ClientConnection connection;
     /** The network interface. */
     //private ClientConnecter clientConnecterInterface;
 
 
 
+    public ClientController(View view){
+        this.view = view;
+    }
     // Main method for sending commands to Server
 
     public void sendCommand(ClientToServerCommand command) {
         try {
-            //clientConnecterInterface.sendCommand(command);
+            System.out.println("entro nel send ClientController"); // NOn ci entro
+             connection.sendCommand(command);
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -46,22 +53,36 @@ public class ClientController {
      * I have multiple methods called applyCommand with a different command as parameter
      * Through Binding, java will execute the correct one
      * Those methods interact with userInterface (the View)
-     * @param invalidCommand
+     * @param
      */
 
+    public void applyCommand(ServerToClientCommand command){
+        System.out.println("Funziona?");
+        if (command instanceof NotifyCredentialsNeeded)
+            System.out.println("Dinamicamente ok");
+        view.showAskUsernamePanel();
+
+    }
 
     public void applyCommand(InvalidInputCommand invalidCommand) {
         //userInterface.commandNotValid();
 
     }
 
+    public void applyCommand(NotifyCredentialsNeeded command){
+        view.showAskUsernamePanel();
+    }
+
+    public void addConnection(ClientConnection connection){
+        this.connection = connection;
+    }
     /**
      * Apply command.
      *
      * @param startTurnCommand the start turn command
      */
     public void applyCommand(StartTurnCommand startTurnCommand) {
-        userInterface.startTurn();
+        view.startTurn();
 
     }
 

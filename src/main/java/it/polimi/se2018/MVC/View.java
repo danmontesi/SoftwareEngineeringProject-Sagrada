@@ -39,6 +39,10 @@ public abstract class View implements Observer{
 
     }
 
+    public void showAskUsernamePanel(){
+
+    }
+
     public void askToolCardToUse(ArrayList<ToolCard> cards){
 
     }

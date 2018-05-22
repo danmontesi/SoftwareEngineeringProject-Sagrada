@@ -42,7 +42,6 @@ public class Model extends Observable{
     private RoundTrack roundTrack;
     private Round currentRound;
     private ArrayList<Round> gameRounds;
-    public static Model instance;
 
     /**
      * Constructor: generates a game by
@@ -51,7 +50,7 @@ public class Model extends Observable{
      * initializing the diceBag, the game players list, the roundTrack
      * @param players list of game players
      */
-    private Model(ArrayList<Player> players){
+    public Model(ArrayList<Player> players){
         gamePlayers = players;
         gameRounds = createRounds();
         diceBag = DiceBag.getInstance();
@@ -59,16 +58,6 @@ public class Model extends Observable{
         // TODO CREATE ALL CARDS FROM JSON FILES
     }
 
-    /**
-     * Singleton
-     * @return instance of Model
-     */
-    public static Model getInstance(ArrayList<Player> players){
-        if (instance==null){
-            instance = new Model(players);
-        }
-        return instance;
-    }
 
     /**
      * Initializes all 10 rounds with all attributes except draftPool dice (they are extracted every time)

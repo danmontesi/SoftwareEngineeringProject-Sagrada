@@ -4,6 +4,7 @@ import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
 import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.client_to_server_command.ChosenToolCardCommand;
+import it.polimi.se2018.client_to_server_command.UpdateUsernameCommand;
 import it.polimi.se2018.toolcards.ToolCard;
 
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ public class CLIView extends View{
 
     private String playerUsername;
     private Model currentModel;
+    private Scanner scan = new Scanner(System.in);
+
 
     private ClientController clientController;
 
@@ -102,6 +105,15 @@ public class CLIView extends View{
         //clientController.sendCommand(new ChosenToolCardCommand(2));
     }
 
+    public void showAskUsernamePanel(){
+        System.out.println("Insert a username:");
+        Scanner i = new Scanner(System.in);
+        String username = i.next();
+        //EDIT
+        System.out.println("Faccio send Update...");
+
+        clientController.sendCommand(new UpdateUsernameCommand(username));
+    }
 
     public void showWin(){
 
