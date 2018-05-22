@@ -6,6 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * Tests DiceBag methods.
+ * @author Nives Migotto
+ */
 public class DiceBagTest {
 
     private DiceBag diceBag;

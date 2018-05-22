@@ -2,6 +2,10 @@ package it.polimi.se2018;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Describes Die behavior. A die can be flipped or rolled; its value can be increased or decreased by 1.
+ * @author Alessio Molinari
+ */
 public class Die {
     private COLOR color;
     private int value;

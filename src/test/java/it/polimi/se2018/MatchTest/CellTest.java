@@ -9,6 +9,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests Cell methods.
+ * @author Nives Migotto
+ */
 public class CellTest {
 
     private Cell cell;
@@ -54,9 +58,7 @@ public class CellTest {
             fail();
         } catch (EmptyCellException e){
             assertTrue(true);
-
         }
-
     }
 
     @Test
@@ -73,5 +75,5 @@ public class CellTest {
         } catch (EmptyCellException e){
             assertTrue(true);
         }
-        }
+    }
 }

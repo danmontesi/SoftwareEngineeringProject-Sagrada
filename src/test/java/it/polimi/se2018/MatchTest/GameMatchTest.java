@@ -10,45 +10,40 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests Game operation.
+ * @author Nives Migotto
+ */
 public class GameMatchTest {
 
    Model model;
 
    Player p1 = new Player("Gabriele");
    Player p2 = new Player("Antonio");
+   Player p3 = new Player("Marta");
+   ArrayList<Player> arrayPlayer = new ArrayList<>();
 
    @Before
     public void setUp(){
-       ArrayList<Player> arrayPlayer = new ArrayList<>();
        arrayPlayer.add(p1);
        arrayPlayer.add(p2);
-       model = Model.getInstance(arrayPlayer);
-
-       assertEquals(2, model.getGamePlayers().size());
-       assertEquals(2, model.getConnectedPlayers().size());
-       assertEquals(3, model.getExtractedPublicObjectiveCard());
-       assertEquals(3, model.getExtractedToolCard());
-       assertEquals(10, model.getGameRounds());
-   }
-
-   /*@Test
-    public void newTurn(){
-        model.nextRound();
-
-        assertEquals(9, model.getGameRounds().size());
+       arrayPlayer.add(p3);
    }
 
    @Test
-    public void newTurn2(){
-        model.nextRound();
+    public void testConstructor(){
+      model = Model.getInstance(arrayPlayer);
+      assertEquals(3, model.getGamePlayers().size());
+      assertEquals(3, model.getConnectedPlayers().size());
+      assertEquals(3, model.getExtractedPublicObjectiveCard());
+      assertEquals(3, model.getExtractedToolCard());
+      assertEquals(10, model.getGameRounds());
+   }
 
-        assertEquals(8, model.getGameRounds().size());
-   }*/
-
-   //Testing Player
+   /*Testing Player
    @Before
     public void assignCardsToPlayers(){
 
-   }
+   }*/
 
 }

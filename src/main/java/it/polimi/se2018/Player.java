@@ -1,5 +1,10 @@
 package it.polimi.se2018;
 
+/**
+ * Describes Player behavior. Token number can be decreased when they are used. Beside this and the constructor
+ * the class only contains getters and setters.
+ * @author Daniele Montesi
+ */
 public class Player {
     private WindowPatternCard windowPatternCard;
     private PrivateObjectiveCard privateObjectiveCard;

@@ -9,6 +9,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Tests DraftPool methods.
+ * @author Alessio Molinari
+ */
 public class DraftPoolTest {
 
     DraftPool dp;

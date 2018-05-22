@@ -5,6 +5,10 @@ import it.polimi.se2018.Exceptions.EmptyCellException;
 
 import java.util.ArrayList;
 
+/**
+ * Describes WindowPatternCard behavior. Dice can be placed on it, after checking restrictions.
+ * @author Alessio Molinari
+ */
 public class WindowPatternCard {
     private ArrayList<Cell> schema;
     private int difficulty;
@@ -40,13 +44,13 @@ public class WindowPatternCard {
      * if it returns false (= incorrect placement), model doesn't change and i will be able to notify the view of the incorrect
      * move and restart the player's turn
      *
-     * @param d
-     * @param row
-     * @param column
-     * @param colorRestriction
-     * @param valueRestriction
-     * @param placementRestriction
-     * @return
+     * @param d to be placed die
+     * @param row cell row number
+     * @param column cell column number
+     * @param colorRestriction cell color restriction
+     * @param valueRestriction cell value restriction
+     * @param placementRestriction placement restriction
+     * @return true if restrictions are respected and die is place, false otherwise
      */
     public boolean placeDie(Die d, int row, int column, boolean colorRestriction, boolean valueRestriction,
     boolean placementRestriction){
