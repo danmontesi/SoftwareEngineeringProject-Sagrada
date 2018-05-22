@@ -12,6 +12,11 @@ public class ColumnColorVariety extends PublicObjectiveCard{
         super(name, description, score);
     }
 
+    /**
+     * Columns with no repeated colors
+     * @param w WindowPatternCard for which you want to calculate the score
+     * @return columnColorVariety score
+     */
     public int calculateScore(WindowPatternCard w){
         int total = 0;
         for (int j = 0; j < 5; j++){

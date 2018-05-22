@@ -9,6 +9,11 @@ public class LightShade extends PublicObjectiveCard{
         super(name, description, score);
     }
 
+    /**
+     * Sets of 1 & 2 values anywhere
+     * @param w WindowPatternCard for which you want to calculate the score
+     * @return lightShade score
+     */
     public int calculateScore(WindowPatternCard w){
         int total = 0;
         int[] numbers = new int[2];

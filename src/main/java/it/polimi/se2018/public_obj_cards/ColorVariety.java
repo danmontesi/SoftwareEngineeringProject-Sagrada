@@ -12,6 +12,11 @@ public class ColorVariety extends PublicObjectiveCard {
         super(name, description, score);
     }
 
+    /**
+     * Sets of one of each color anywhere
+     * @param w WindowPatternCard for which you want to calculate the score
+     * @return colorVariety score
+     */
     public int calculateScore(WindowPatternCard w) {
         int total = 0;
         HashSet<COLOR> colors = new HashSet<>();

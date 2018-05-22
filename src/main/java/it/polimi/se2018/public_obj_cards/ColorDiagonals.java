@@ -12,7 +12,7 @@ public class ColorDiagonals extends PublicObjectiveCard {
     }
 
     /**
-     * Calculate score for Public Objective "Color Diagonals"
+     * Count of diagonally adjacent same color dice
      * @param w WindowPatternCard for which you want to calculate score
      * @return number of diagonally adjacent dice of the same color
      */

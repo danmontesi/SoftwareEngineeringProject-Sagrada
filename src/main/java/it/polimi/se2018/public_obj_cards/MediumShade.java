@@ -9,6 +9,11 @@ public class MediumShade extends PublicObjectiveCard{
         super(name, description, score);
     }
 
+    /**
+     * Sets of 3 & 4 values anywhere
+     * @param w WindowPatternCard for which you want to calculate the score
+     * @return mediumShade score
+     */
     public int calculateScore(WindowPatternCard w){
         int total = 0;
         int[] numbers = new int[2];

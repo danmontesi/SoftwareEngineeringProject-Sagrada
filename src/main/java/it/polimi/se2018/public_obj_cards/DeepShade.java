@@ -10,6 +10,11 @@ public class DeepShade extends PublicObjectiveCard{
         super(name, description, score);
     }
 
+    /**
+     * Sets of 5 & 6 values anywhere
+     * @param w WindowPatternCard for which you want to calculate the score
+     * @return deepShade score
+     */
     public int calculateScore(WindowPatternCard w){
         int total = 0;
         int[] numbers = new int[2];

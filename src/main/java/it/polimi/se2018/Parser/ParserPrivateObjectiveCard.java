@@ -9,11 +9,21 @@ import it.polimi.se2018.PrivateObjectiveCard;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * @author Alessio
+ * Class that instantiates all the PrivateObjectiveCards
+ *
+ */
 public class ParserPrivateObjectiveCard {
     private static final String PATH_NAME = "privateoc.json";
 
     private ParserSettings settings;
 
+    /**
+     *
+     * @return ArrayList of all PrivateObjectiveCards in json file
+     * @throws IOException
+     */
     public ArrayList<PrivateObjectiveCard> parseCards() throws IOException {
         settings = new ParserSettings();
         JsonObject json = settings.extractJsonObject(PATH_NAME);
