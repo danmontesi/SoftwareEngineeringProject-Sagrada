@@ -8,9 +8,9 @@ import it.polimi.se2018.WindowPatternCard;
  */
 public abstract class PublicObjectiveCard { //Probably has to be an Interface for correcting binding methods
 
-    private String name;
-    private String description;
-    private int score;
+    protected String name;
+    protected String description;
+    protected int score;
 
     public PublicObjectiveCard(String name, String description, int score) {
         this.name = name;

@@ -7,7 +7,6 @@ import it.polimi.se2018.WindowPatternCard;
 import java.util.HashSet;
 
 public class RowColorVariety extends PublicObjectiveCard{
-    int score;
     public RowColorVariety(String name, String description, int score) {
         super(name, description, score);
     }

@@ -17,7 +17,6 @@ public class ColorDiagonals extends PublicObjectiveCard {
      * @return number of diagonally adjacent dice of the same color
      */
     public int calculateScore(WindowPatternCard w){
-            int score = 0;
             COLOR currentColor;
             boolean checked[] = new boolean[20];
             for (boolean i : checked){

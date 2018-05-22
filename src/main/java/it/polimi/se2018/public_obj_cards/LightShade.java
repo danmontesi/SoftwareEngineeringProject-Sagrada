@@ -4,7 +4,6 @@ import it.polimi.se2018.Exceptions.EmptyCellException;
 import it.polimi.se2018.WindowPatternCard;
 
 public class LightShade extends PublicObjectiveCard{
-    int score;
     public LightShade(String name, String description, int score) {
         super(name, description, score);
     }
