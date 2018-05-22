@@ -17,6 +17,8 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * The controller directly modifies the Model.
  *
+ * @author Nives Migotto, Daniele Montesi
+ *
  */
 
 public class Model extends Observable{
@@ -61,6 +63,7 @@ public class Model extends Observable{
 
     /**
      * Singleton
+     * @param players game players list
      * @return instance of Model
      */
     public static Model getInstance(ArrayList<Player> players){
@@ -72,6 +75,7 @@ public class Model extends Observable{
 
     /**
      * Initializes all 10 rounds with all attributes except draftPool dice (they are extracted every time)
+     * @return 10 rounds list
      */
     public ArrayList<Round> createRounds() {
         ArrayList<Round> roundList = new ArrayList<>();

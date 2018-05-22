@@ -2,6 +2,10 @@ package it.polimi.se2018.public_obj_cards;
 
 import it.polimi.se2018.WindowPatternCard;
 
+/**
+ * Describes PublicObjectiveCards and their behavior. Calculates score depending on WindowPatternCard.
+ * @author Alessio Molinari
+ */
 public abstract class PublicObjectiveCard { //Probably has to be an Interface for correcting binding methods
 
     private String name;
@@ -18,11 +22,11 @@ public abstract class PublicObjectiveCard { //Probably has to be an Interface fo
 
     }
     /**
-     * Calculates the score for a WindowPatternCard given.
+     * Calculates the score for a given WindowPatternCard.
      * That is connected to the points assigned for the PublicObjectiveCard, that varies depending from the type of Card
      * The method is called from the Controller during the final score calculation
-     * @param w
-     * @return
+     * @param w given WindowPatternCard
+     * @return associated score
      */
     public int calculateScore(WindowPatternCard w){
         return 0;

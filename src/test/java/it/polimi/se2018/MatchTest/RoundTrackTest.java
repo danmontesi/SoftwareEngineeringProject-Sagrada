@@ -9,6 +9,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests RoundTrack methods.
+ * @author Alessio Molinari
+ */
 public class RoundTrackTest{
     RoundTrack rt;
 

@@ -7,6 +7,10 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Tests PublicObjectiveCardsParser methods.
+ * @author Alessio Molinari
+ */
 public class ParsePuOCTest {
     ParserPublicObjectiveCard ppoc = new ParserPublicObjectiveCard();
     ArrayList<PublicObjectiveCard> testCards;

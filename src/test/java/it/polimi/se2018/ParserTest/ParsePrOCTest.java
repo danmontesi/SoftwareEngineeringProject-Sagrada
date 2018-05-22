@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Tests PrivateObjectiveCardsParser methods.
+ * @author Alessio Molinari
+ */
 public class ParsePrOCTest {
     ParserPrivateObjectiveCard ppoc = new ParserPrivateObjectiveCard();
     ArrayList<PrivateObjectiveCard> testCards;

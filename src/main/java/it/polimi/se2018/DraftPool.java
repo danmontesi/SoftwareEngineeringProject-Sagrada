@@ -3,6 +3,11 @@ package it.polimi.se2018;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Describes DraftPool behavior. A die can be placed in the draftPool, removed from it, rolled or switched with
+ * another one (not in de draftPool). The number of present dice can be returned as well.
+ * @author Alessio Molinari, Nives Migotto
+ */
 public class DraftPool {
     private ArrayList<Die> dice = new ArrayList<>(10);
     private DiceBag diceBag;
@@ -81,7 +86,7 @@ public class DraftPool {
 
     /**
      *
-     * @param index
+     * @param index draftPool index
      * @return Die at given index
      */
     public Die getDie(int index){

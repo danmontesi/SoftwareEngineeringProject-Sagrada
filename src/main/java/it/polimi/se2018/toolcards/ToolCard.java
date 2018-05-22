@@ -2,6 +2,10 @@ package it.polimi.se2018.toolcards;
 
 import it.polimi.se2018.Player;
 
+/**
+ * Describes ToolCards and their behavior.
+ * @author Daniele Montesi
+ */
 public abstract class ToolCard {
     private String name;
     private String description;

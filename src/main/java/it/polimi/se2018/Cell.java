@@ -2,6 +2,11 @@ package it.polimi.se2018;
 
 import it.polimi.se2018.Exceptions.EmptyCellException;
 
+/**
+ * Describes Cell behavior. A cell can be created with or without color and/or value restrictions.
+ * A die can be associated with a cell, removed from it or switched with another die.
+ * @author Alessio Molinari
+ */
 public class Cell {
     private COLOR colorConstraint;
     private Integer valueConstraint;
@@ -68,7 +73,7 @@ public class Cell {
     /**
      * Removes the associated die from the cell
      * @return old cell's associated die
-     * @throws NullPointerException if the removed die is null
+     * @throws EmptyCellException if the cell is empty
      * */
     public Die removeDie() throws  EmptyCellException{
         if (associatedDie == null){
@@ -84,7 +89,7 @@ public class Cell {
      * You cannot switch a die with an empty cell
      * @param toSwitchDie new cell's associated die
      * @return old cell's associated die
-     * @throws  EmptyCellException
+     * @throws  EmptyCellException if the cell is empty
      * */
     public Die switchDie(Die toSwitchDie) throws EmptyCellException {
         if (associatedDie == null){
@@ -98,7 +103,7 @@ public class Cell {
     /**
      *
      * @return Die in Cell
-     * @throws EmptyCellException
+     * @throws EmptyCellException if the cell is empty
      */
     public Die getAssociatedDie() throws EmptyCellException {
         if (associatedDie == null){
@@ -133,7 +138,7 @@ public class Cell {
 
     /**
      * Set Cell color constraint
-     * @param colorConstraint
+     * @param colorConstraint cell color constraint
      */
     public void setColorConstraint(COLOR colorConstraint) {
         this.colorConstraint = colorConstraint;
@@ -141,7 +146,7 @@ public class Cell {
 
     /**
      * Set value constraint for the cell
-     * @param valueConstraint
+     * @param valueConstraint cell value constraint
      */
     public void setValueConstraint(Integer valueConstraint) {
         this.valueConstraint = valueConstraint;

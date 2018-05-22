@@ -2,6 +2,10 @@ package it.polimi.se2018;
 
 import it.polimi.se2018.Exceptions.EmptyCellException;
 
+/**
+ * Describes PrivateObjectiveCards behavior. Calculates score depending on WindowPatternCard.
+ * @author Alessio Molinari
+ */
 public class PrivateObjectiveCard {
 
     private String name;

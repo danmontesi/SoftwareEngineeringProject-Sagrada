@@ -5,7 +5,10 @@ import java.util.HashMap;
 
 import static it.polimi.se2018.Model.instance;
 
-
+/**
+ * Describes Round behavior. Besides the constructor, the class only contains getters and setters.
+ * @author Nives Migotto
+ */
 public class Round {
 
     private int roundNumber;
