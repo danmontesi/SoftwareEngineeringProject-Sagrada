@@ -9,11 +9,20 @@ import it.polimi.se2018.WindowPatternCard;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * @author Alessio
+ * Class that instantiates Window Pattern Cards
+ */
 public class ParserWindowPatternCard {
     private static final String WPC_JSON = "wpc.json";
 
     private ParserSettings settings;
 
+    /**
+     *
+     * @return ArrayList of all WindowPatternCards contained in json file
+     * @throws IOException
+     */
     public ArrayList<WindowPatternCard> parseWindowPatternCards() throws IOException {
         settings = new ParserSettings();
         JsonObject WPCCards = settings.extractJsonObject(WPC_JSON);

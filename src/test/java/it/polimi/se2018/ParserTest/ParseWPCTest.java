@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Tests WindowPatternCardsParser methods.
+ * @author Alessio Molinari
+ */
 public class ParseWPCTest {
 
     ParserWindowPatternCard pwpc = new ParserWindowPatternCard();

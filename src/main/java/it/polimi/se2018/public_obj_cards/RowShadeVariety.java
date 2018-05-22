@@ -6,11 +6,15 @@ import it.polimi.se2018.WindowPatternCard;
 import java.util.HashSet;
 
 public class RowShadeVariety extends PublicObjectiveCard{
-    int score;
     public RowShadeVariety(String name, String description, int score) {
         super(name, description, score);
     }
 
+    /**
+     * Rows with no repeated values
+     * @param w WindowPatternCard for which you want to calculate the score
+     * @return rowShadeVariety score
+     */
     public int calculateScore(WindowPatternCard w){
         int total = 0;
         for (int i = 0; i < 4; i++){

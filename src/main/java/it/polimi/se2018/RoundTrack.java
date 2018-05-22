@@ -4,6 +4,11 @@ import it.polimi.se2018.Exceptions.EmptyCellException;
 
 import java.util.ArrayList;
 
+/**
+ * Describes RoundTrack behavior. A die can be placed in the roundTrack, removed from it or switched with another one
+ * (not on the roundTrack). The number of present dice can be returned as well.
+ * @author Nives Migotto
+ */
 public class RoundTrack {
 
     private ArrayList<Cell> roundCells;
@@ -22,7 +27,7 @@ public class RoundTrack {
      * Removes a die from the roundTrack
      * @param diePosition position from which the die is taken
      * @return removed die
-     * @throws IndexOutOfBoundsException if there is no die in diePosition
+     * @throws EmptyCellException if there is no die in diePosition
      */
     public Die removeDie(int diePosition) throws EmptyCellException {
             return roundCells.get(diePosition).removeDie();
@@ -33,6 +38,7 @@ public class RoundTrack {
      * @param diePosition position from which the die is taken
      * @param toBeSwitched new die in roundTrack
      * @return old die from roundTrack
+     * @throws EmptyCellException if there is no die in diePosition
      */
     public Die switchDie(int diePosition, Die toBeSwitched) throws EmptyCellException {
         return roundCells.get(diePosition).switchDie(toBeSwitched);
@@ -67,6 +73,12 @@ public class RoundTrack {
         return n;
     }
 
+    /**
+     * Returns associated die
+     * @param cellNumber cell number
+     * @return associated die
+     * @throws EmptyCellException if the cell is empty
+     */
     public Die getDie(int cellNumber) throws EmptyCellException {
         return roundCells.get(cellNumber).getAssociatedDie();
     }

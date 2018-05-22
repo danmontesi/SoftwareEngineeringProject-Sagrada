@@ -5,6 +5,10 @@ it.polimi.se2018.MatchTest
 it.polimi.se2018.MatchTest.private_public_cards_test
 it.polimi.se2018.Parser
 it.polimi.se2018.ParserTest
+it.polimi.se2018.client_to_server_command
 it.polimi.se2018.network
+it.polimi.se2018.network.rmi
+it.polimi.se2018.network.socket
 it.polimi.se2018.public_obj_cards
+it.polimi.se2018.server_to_client_command
 it.polimi.se2018.toolcards

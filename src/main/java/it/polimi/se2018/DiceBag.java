@@ -3,6 +3,11 @@ package it.polimi.se2018;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Describes DiceBag behavior. A die can be extracted from the bag, inserted in it or switch with another one
+ * (not in the bag)
+ * @author Alessio Molinari, Nives Migotto
+ */
 public class DiceBag {
     private ArrayList<Die> dice;
     private static DiceBag instance = null;

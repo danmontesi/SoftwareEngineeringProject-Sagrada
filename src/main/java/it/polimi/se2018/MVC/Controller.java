@@ -83,9 +83,9 @@ public class Controller extends Observable implements Observer {
 
     /**
      * Calls method for initializing a new round
-     * -> send to all players a new RefreshBoardCommand
-     * -> extract Dices ..
-     * -> set first player and
+     * - send to all players a new RefreshBoardCommand
+     * - extract Dice ..
+     * - set first player and
      */
     public void startNewRound() {
 

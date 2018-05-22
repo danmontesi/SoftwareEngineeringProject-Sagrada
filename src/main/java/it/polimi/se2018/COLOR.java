@@ -2,6 +2,10 @@ package it.polimi.se2018;
 
 import it.polimi.se2018.Exceptions.NoSuchColorException;
 
+/**
+ * Die colors enumeration.
+ * @author Alessio Molinari
+ */
 public enum COLOR {
     VIOLET, RED, YELLOW, GREEN, BLUE;
 

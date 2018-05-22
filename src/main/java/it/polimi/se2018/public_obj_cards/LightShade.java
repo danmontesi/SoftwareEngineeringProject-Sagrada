@@ -4,11 +4,15 @@ import it.polimi.se2018.Exceptions.EmptyCellException;
 import it.polimi.se2018.WindowPatternCard;
 
 public class LightShade extends PublicObjectiveCard{
-    int score;
     public LightShade(String name, String description, int score) {
         super(name, description, score);
     }
 
+    /**
+     * Sets of 1 & 2 values anywhere
+     * @param w WindowPatternCard for which you want to calculate the score
+     * @return lightShade score
+     */
     public int calculateScore(WindowPatternCard w){
         int total = 0;
         int[] numbers = new int[2];

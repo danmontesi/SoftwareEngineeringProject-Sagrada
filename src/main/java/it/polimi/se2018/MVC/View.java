@@ -59,7 +59,7 @@ public abstract class View implements Observer{
 
     }
 
-    /** use to refresh board & else
+    /** use to refresh board and else
      *
      */
     public void notifyOtherPlayerMove(){

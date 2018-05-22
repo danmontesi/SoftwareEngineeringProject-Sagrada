@@ -4,12 +4,15 @@ import it.polimi.se2018.Exceptions.EmptyCellException;
 import it.polimi.se2018.WindowPatternCard;
 
 public class DeepShade extends PublicObjectiveCard{
-    int score;
-
     public DeepShade(String name, String description, int score) {
         super(name, description, score);
     }
 
+    /**
+     * Sets of 5 & 6 values anywhere
+     * @param w WindowPatternCard for which you want to calculate the score
+     * @return deepShade score
+     */
     public int calculateScore(WindowPatternCard w){
         int total = 0;
         int[] numbers = new int[2];

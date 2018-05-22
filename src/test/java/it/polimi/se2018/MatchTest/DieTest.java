@@ -7,6 +7,10 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.*;
 
+/**
+ * Tests Die methods.
+ * @author Alessio Molinari
+ */
 public class DieTest {
     Die die;
 
