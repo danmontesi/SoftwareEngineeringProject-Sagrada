@@ -46,7 +46,7 @@ public class PublicObjectiveCardsTest {
 
         ParserWindowPatternCard pwpc = new ParserWindowPatternCard();
         try {
-            mycards = pwpc.parseWindowPatternCards();
+            mycards = pwpc.parseCards();
         } catch (IOException e) {
             e.printStackTrace();
         }

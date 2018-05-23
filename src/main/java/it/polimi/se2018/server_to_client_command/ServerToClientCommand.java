@@ -23,10 +23,6 @@ class AuthenticatedCorrectlyCommand{
 
 }
 
-class ChooseWindowPatternCardCommand{
-
-}
-
 class ChooseToolCardCommand{
 
 }

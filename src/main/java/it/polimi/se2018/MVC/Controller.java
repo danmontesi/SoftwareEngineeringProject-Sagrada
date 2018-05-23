@@ -5,10 +5,11 @@ import it.polimi.se2018.Player;
 import it.polimi.se2018.client_to_server_command.*;
 import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.network.Server;
+import it.polimi.se2018.network.ServerConnection;
 import it.polimi.se2018.server_to_client_command.*;
 import it.polimi.se2018.toolcards.CircularCutter;
 
-import java.sql.Connection;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -26,25 +27,34 @@ public class Controller extends Observable implements Observer {
      */
     private Model model; //Always updated through notify() method of the Model, called every time it is modified
 
-    private HashMap<Player, Connection> playerClientConnectionMap;
+    private HashMap<Player, ServerConnection> playerClientConnectionMap;
     private ArrayList<Player> orderedPlayers;
 
-    private ArrayList<ClientConnection> connectedClients;
-    private ArrayList<ClientConnection> disconnectedClients;
+    private ArrayList<ServerConnection> connectedClients;
+    private ArrayList<ServerConnection> disconnectedClients;
 
     private int roundNumber;
     private Server server;
 
-    public Controller(Model model, ArrayList<Player> orderedPlayers, ArrayList<ClientConnection> connectedClients, int roundNumber, Server server) {
-        this.model = model;
-        this.orderedPlayers = orderedPlayers;
-        this.connectedClients = connectedClients;
-        this.roundNumber = roundNumber;
+    public Controller(ArrayList<ServerConnection> connectedClients, Server server) {
+        // Creo l'hashmap
+        playerClientConnectionMap = new HashMap<>();
+        int i = 0;
+        orderedPlayers = new ArrayList<>();
+        //TODO vedi se funziona
+        this.connectedClients = (ArrayList<ServerConnection>) connectedClients.clone();
+        while (!connectedClients.isEmpty()){
+            System.out.println("Entra n"+ i);
+            orderedPlayers.add(new Player(connectedClients.get(0).getUsername()));
+            playerClientConnectionMap.put(orderedPlayers.get(i), connectedClients.remove(0));
+            i++;
+        }
+        this.model = new Model(orderedPlayers);
+        this.roundNumber = 0;
         this.server = server;
-    }
-    //TODO Prova, da eliminare
-    public Controller(){
 
+        // Now I will start each player's View
+        initializeGame();
     }
 
 
@@ -54,10 +64,12 @@ public class Controller extends Observable implements Observer {
      */
 
     /**
-     * Create a match with 4 players. It calls initializePlayers() and setInitialPlayer()
+     * It calls initializePlayers() and setInitialPlayer()
      */
     public void initializeGame() {
-
+        //TODO Deve iviare un comando che avvia la View e fa scegliere agli utenti Le WindowPatternCard
+        ServerToClientCommand command = new ChooseWindowPatternCardCommand();
+        sendCommandToAllPlayers(command);
     }
 
     /**
@@ -190,7 +202,12 @@ public class Controller extends Observable implements Observer {
     }
 
     public void sendCommandToAllPlayers(ServerToClientCommand command){
-
+        for (ServerConnection connection : connectedClients)
+            try {
+                connection.sendCommand(command);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 
     public void sendCommandToPlayer(Player player, ServerToClientCommand command){

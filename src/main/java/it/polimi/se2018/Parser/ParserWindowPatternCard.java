@@ -23,7 +23,7 @@ public class ParserWindowPatternCard {
      * @return ArrayList of all WindowPatternCards contained in json file
      * @throws IOException
      */
-    public ArrayList<WindowPatternCard> parseWindowPatternCards() throws IOException {
+    public ArrayList<WindowPatternCard> parseCards() throws IOException {
         settings = new ParserSettings();
         JsonObject WPCCards = settings.extractJsonObject(WPC_JSON);
         JsonArray cards = WPCCards.get("WindowPatternCards").getAsJsonArray();

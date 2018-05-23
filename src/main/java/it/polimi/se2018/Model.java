@@ -1,12 +1,13 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.Parser.ParserPrivateObjectiveCard;
+import it.polimi.se2018.Parser.ParserPublicObjectiveCard;
+import it.polimi.se2018.Parser.ParserWindowPatternCard;
 import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.toolcards.ToolCard;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
+import java.io.IOException;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -56,6 +57,35 @@ public class Model extends Observable{
         diceBag = DiceBag.getInstance();
         roundTrack = new RoundTrack();
         // TODO CREATE ALL CARDS FROM JSON FILES
+        ParserPrivateObjectiveCard parserPrivateObjectiveCard = new ParserPrivateObjectiveCard();
+        ParserPublicObjectiveCard parserPublicObjectiveCard = new ParserPublicObjectiveCard();
+        ParserWindowPatternCard parserWindowPatternCard = new ParserWindowPatternCard();
+
+        try {
+            windowPatternCardDeck = parserWindowPatternCard.parseCards();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            privateObjectiveCardDeck = parserPrivateObjectiveCard.parseCards();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            publicObjectiveCardDeck = parserPublicObjectiveCard.parseCards();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Extracting three cards
+        Collections.shuffle(publicObjectiveCardDeck);
+        extractedPublicObjectiveCard = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            extractedPublicObjectiveCard.add(publicObjectiveCardDeck.remove(0));
+        }
+        // ora aspetto che il controller esegua comandi
     }
 
 

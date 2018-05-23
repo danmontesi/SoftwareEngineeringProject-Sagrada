@@ -21,7 +21,7 @@ public class ParseWPCTest {
     @Test
     public void iHopeItWorks(){
         try {
-            mycards = pwpc.parseWindowPatternCards();
+            mycards = pwpc.parseCards();
         } catch (IOException e) {
             e.printStackTrace();
         }

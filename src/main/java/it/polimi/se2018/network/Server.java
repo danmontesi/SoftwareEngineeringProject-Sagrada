@@ -96,17 +96,22 @@ public class Server {
         // Iniziale per capire come va implementato il controllo username
         incorrectConnections.add(connection);
 
-         if (waitingServerConnections.size()==2){
-             ;//runMatch();
-         }
-
     }
 
-    public void receiveCredentialFromConnection(ClientToServerCommand command, ServerConnection connection){
-        UpdateUsernameCommand toBeUsed = (UpdateUsernameCommand) command;
-        System.out.println("Va bene! Assegnato con casting");
+    public void runMatch(){
+        ArrayList<ServerConnection> temp = new ArrayList<>();
+        while( (waitingServerConnections.size() > 0) && temp.size() < 4){
+            temp.add(waitingServerConnections.remove(0));
+        }
 
-        String username= toBeUsed.getUsername();
+        // Creo Controller che crea Model, e avvio le VIEW degli altri
+        controller = new Controller(temp, this);
+        controller.initializeGame();
+    }
+
+    public void receiveCredentialFromConnection(String username, ServerConnection connection){
+        String toBeAssigned = username;
+
         //TODO Controllo che l'username vada bene...
 
         connection.setUsername(username);
@@ -114,10 +119,13 @@ public class Server {
         incorrectConnections.remove(connection);
         waitingServerConnections.add(connection);
         System.out.println("Fatto l'add!!");
+        if (waitingServerConnections.size() == 2){
+            runMatch();
+        }
     }
 
     public static void main(String args[]) {
-        Server s = new Server(1000);
+        Server s = new Server(1111);
 
     }
 }
