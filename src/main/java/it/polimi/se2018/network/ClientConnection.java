@@ -7,9 +7,17 @@ import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
  * Interface for connection
  * can me SocketConnection or RMIConnection
  */
-public interface ClientConnection {
+public abstract class ClientConnection implements Runnable{
 
-    void run();
+    public void run(){
 
-    void sendCommand(ClientToServerCommand command);
+    };
+
+    public void sendCommand(ClientToServerCommand command){
+
+    };
+
+    public void startThread(){
+
+    }
 }

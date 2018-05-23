@@ -36,6 +36,9 @@ public class CLIView extends View{
     private String playerState;
 
 
+    public void addController(ClientController controller){
+        this.clientController = controller;
+    }
     /**
      * Initialize Graphic or Command Line User Interface
      */

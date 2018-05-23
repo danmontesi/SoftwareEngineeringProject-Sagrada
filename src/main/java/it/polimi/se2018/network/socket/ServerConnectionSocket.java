@@ -14,7 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ServerConnectionSocket implements ServerConnection {
+public class ServerConnectionSocket extends ServerConnection {
 
     private ObjectInputStream inSocket;
 
@@ -25,7 +25,6 @@ public class ServerConnectionSocket implements ServerConnection {
     private Server server;
 
     //Represents the username of the client
-    private String username;
 
     private boolean operative;
 
@@ -33,9 +32,13 @@ public class ServerConnectionSocket implements ServerConnection {
 
     private ClientConnectionSocket client;
 
+    private Thread thread;
+
     public ServerConnectionSocket(Socket socket, Server server) throws IOException {
+        System.out.println("Entrato nella classe ServerConnectionSocket");
         this.socket = socket;
         this.server = server;
+
         try {
             inSocket = new ObjectInputStream(this.socket.getInputStream());
             outSocket = new ObjectOutputStream(this.socket.getOutputStream());
@@ -44,7 +47,9 @@ public class ServerConnectionSocket implements ServerConnection {
             e.printStackTrace();
         }
 
-
+        thread = new Thread(this);
+        thread.start();
+        System.out.println("Ho startato");
         sendCommand(new NotifyCredentialsNeeded());
 
     }
@@ -75,17 +80,19 @@ public class ServerConnectionSocket implements ServerConnection {
      * Reveices commands from Client
      */
     public void run() {
+        System.out.println("Sono dentro run"); // non entra
         ClientToServerCommand command;
         operative = true;
         while (operative != false) {
+            System.out.println("Receiver di ClientToServerCommand: operativo");
             command = null;
             try {
                 command = (ClientToServerCommand) inSocket.readObject();
-                controller.applyClientCommand(command);
-                System.out.println(" Arrivato a ServerConnection ");
-                //TODO c0ntonua
+                System.out.println("arrivato a server un nuovo command");
+                controller = new Controller();
+                command.execute(controller);
+                //server.receiveCredentialFromConnection(command, this);
 
-//				System.out.println(command.getClass().getName());
 
             } catch (ClassNotFoundException | IOException e) {
                 // TODO Close...

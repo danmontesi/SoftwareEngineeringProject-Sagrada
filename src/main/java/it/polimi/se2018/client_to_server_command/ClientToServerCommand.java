@@ -1,5 +1,7 @@
 package it.polimi.se2018.client_to_server_command;
 
+import it.polimi.se2018.MVC.Controller;
+
 import java.io.Serializable;
 
 public class ClientToServerCommand implements Serializable {
@@ -11,6 +13,10 @@ public class ClientToServerCommand implements Serializable {
      *
      */
 
+
+    public void execute(Controller controller){
+        controller.applyClientCommand(this);
+    }
 
 }
 

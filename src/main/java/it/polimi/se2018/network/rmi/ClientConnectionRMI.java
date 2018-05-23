@@ -7,7 +7,7 @@ import it.polimi.se2018.network.ClientConnection;
 import java.io.BufferedReader;
 import java.rmi.registry.Registry;
 
-public class ClientConnectionRMI implements ClientConnection {
+public class ClientConnectionRMI extends ClientConnection {
 
     private BufferedReader reader;
     private ClientController client;

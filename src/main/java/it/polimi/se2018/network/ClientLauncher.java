@@ -42,9 +42,10 @@ public class ClientLauncher {
             connection = new ClientConnectionSocket("localhost", 1111, controller);
 
         controller.addConnection(connection);
+        view.addController(controller);
 
         try {
-            connection.run();
+            connection.startThread();
         } catch (Exception e) {
             System.err.println("YOU can't connect");
             e.printStackTrace();

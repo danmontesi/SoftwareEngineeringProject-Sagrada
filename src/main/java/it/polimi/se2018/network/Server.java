@@ -2,6 +2,8 @@ package it.polimi.se2018.network;
 
 import it.polimi.se2018.MVC.Controller;
 import it.polimi.se2018.Model;
+import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
+import it.polimi.se2018.client_to_server_command.UpdateUsernameCommand;
 import it.polimi.se2018.network.rmi.RMIListener;
 import it.polimi.se2018.network.socket.SocketListener;
 
@@ -98,6 +100,20 @@ public class Server {
              ;//runMatch();
          }
 
+    }
+
+    public void receiveCredentialFromConnection(ClientToServerCommand command, ServerConnection connection){
+        UpdateUsernameCommand toBeUsed = (UpdateUsernameCommand) command;
+        System.out.println("Va bene! Assegnato con casting");
+
+        String username= toBeUsed.getUsername();
+        //TODO Controllo che l'username vada bene...
+
+        connection.setUsername(username);
+        //assegnamento a ServerConnection
+        incorrectConnections.remove(connection);
+        waitingServerConnections.add(connection);
+        System.out.println("Fatto l'add!!");
     }
 
     public static void main(String args[]) {

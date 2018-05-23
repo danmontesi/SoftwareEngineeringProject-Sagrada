@@ -42,6 +42,10 @@ public class Controller extends Observable implements Observer {
         this.roundNumber = roundNumber;
         this.server = server;
     }
+    //TODO Prova, da eliminare
+    public Controller(){
+
+    }
 
 
     /**
@@ -240,6 +244,7 @@ public class Controller extends Observable implements Observer {
      * If a command is invalid, I catch an exception and send to the client itself a new AskMoveCommand()
      */
     public void applyClientCommand(ClientToServerCommand command){
+        System.out.println("Chiamato questo...");
 
     }
 

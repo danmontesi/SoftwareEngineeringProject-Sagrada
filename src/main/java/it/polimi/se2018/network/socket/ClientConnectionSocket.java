@@ -9,7 +9,7 @@ import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
 import java.io.*;
 import java.net.Socket;
 
-public class ClientConnectionSocket implements ClientConnection { // implements ClientConnecterInterface
+public class ClientConnectionSocket extends ClientConnection { // implements ClientConnecterInterface
 
 
     /**
@@ -20,6 +20,7 @@ public class ClientConnectionSocket implements ClientConnection { // implements 
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private ClientController clientController;
+    private Thread thread;
 
     public ClientConnectionSocket(String host, int port, ClientController controller){
         this.clientController = controller;
@@ -38,9 +39,16 @@ public class ClientConnectionSocket implements ClientConnection { // implements 
             System.out.println("Connection Error.");
             e.printStackTrace();
         }
+
+
+
     }
 
 
+    public void startThread(){
+        thread = new Thread(this);
+        thread.start();
+    }
     //per ricevere commands
     public void run () {
         System.out.println("Listening for messages from the Server. ");
@@ -67,6 +75,7 @@ public class ClientConnectionSocket implements ClientConnection { // implements 
             output.writeObject(command);
             output.flush();
             output.reset();
+            System.out.println("Inviato da connectionSocket");
         } catch (IOException e) {
             e.printStackTrace();
         }

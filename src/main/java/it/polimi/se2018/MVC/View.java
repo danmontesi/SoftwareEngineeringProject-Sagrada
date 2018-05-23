@@ -12,6 +12,9 @@ public abstract class View implements Observer{
     private ClientController clientController;
     private String playerUsername;
 
+    public void addController(ClientController controller){
+
+    }
 
     /**
      * Initialize Graphic or Command Line User Interface
