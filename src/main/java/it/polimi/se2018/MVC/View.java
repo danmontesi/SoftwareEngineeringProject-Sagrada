@@ -1,18 +1,21 @@
 package it.polimi.se2018.MVC;
 
+import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
 import it.polimi.se2018.WindowPatternCard;
+import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.toolcards.ToolCard;
 
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-public abstract class View implements Observer{
-    private ClientController clientController;
+public abstract class View extends Observable implements Observer{ //VIEW: Osservata da Controller, Osserva Model
+    private ClientNetworkHandler clientNetworkHandler;
     private String playerUsername;
+    private ClientNetworkHandler observer;
 
-    public void addController(ClientController controller){
+    public void addController(ClientNetworkHandler controller){
 
     }
 
@@ -97,15 +100,18 @@ public abstract class View implements Observer{
 
     }
 
-    public void refreshBoard(){
+    public void refreshBoard(Model model){
 
     }
-    public void update(Observable o, Object obj){
-
+    public void update(Model obj){ //Osserva il Model e con Update, fa l'update del model locale
+        refreshBoard(obj);
     }
 
-    public void addObserver(){
+    public void notify(ClientToServerCommand command){ //da passare all'observer
+        observer.update(command);
+    }
 
+    public void addObserver(){ //Used just to set the connectionHandler
     }
 
     public void showWaitForYourTurn(){

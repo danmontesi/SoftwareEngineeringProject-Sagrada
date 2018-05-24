@@ -89,10 +89,11 @@ public class ServerConnectionSocket extends ServerConnection {
             try {
                 command = (ClientToServerCommand) inSocket.readObject();
                 System.out.println("arrivato a server un nuovo command");
-                controller = new Controller();
-                command.execute(controller);
+                if (command instanceof UpdateUsernameCommand) //Case-> is a request of a username (The controller doesn't exist yet)
+                    server.receiveCredentialFromConnection(((UpdateUsernameCommand) command).getUsername(), this);
+                else
+                    command.execute(this, controller); //Execute arriva a chiamare il metodo applyCommand() dal controller, poi sfrutterà il binding dinamico su ApplyCommand
                 //server.receiveCredentialFromConnection(command, this);
-
 
             } catch (ClassNotFoundException | IOException e) {
                 // TODO Close...
