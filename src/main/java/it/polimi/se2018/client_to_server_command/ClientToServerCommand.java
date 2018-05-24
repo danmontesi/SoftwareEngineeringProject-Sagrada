@@ -1,6 +1,7 @@
 package it.polimi.se2018.client_to_server_command;
 
 import it.polimi.se2018.MVC.Controller;
+import it.polimi.se2018.network.ServerConnection;
 
 import java.io.Serializable;
 
@@ -14,15 +15,9 @@ public class ClientToServerCommand implements Serializable {
      */
 
 
-    public void execute(Controller controller){
-        controller.applyClientCommand(this);
+    public void execute(ServerConnection connection, Controller controller){
+        controller.applyClientCommand(connection, this);
     }
 
 }
 
-
-//... Many others
-
-class ChosenUsernameCommand{
-
-}

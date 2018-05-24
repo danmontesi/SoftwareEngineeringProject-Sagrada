@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Controller extends Observable implements Observer {
+public class Controller implements Observer { //Observer perchè osserva la View
 
     /**
      * This is the main controller of the game
@@ -30,10 +30,14 @@ public class Controller extends Observable implements Observer {
     private HashMap<Player, ServerConnection> playerClientConnectionMap;
     private ArrayList<Player> orderedPlayers;
 
-    private ArrayList<ServerConnection> connectedClients;
+    private ArrayList<ServerConnection> connectedClients; //TODO PER ALE: le ServerConnection , chiamate connectedCLientappresentano 2 cose:
+                                                            // SIA gli Observable di Controller (le connessioni, infatti, dovranno far arrivare le scelte del client (view) sino al controller)
+                                                            // SIA il modo con cui il controller SELEZIONA la view. Infatti, essendo remota, la view non può essere invocata, e devo perciò comunicare tramite eventi (ServerToClientCommand) che invio grazie al metodo sendCommand() di ServerConnection
+                                                            // in particolare: selezionare la view significa scegliere le cose da mostrare. All'inizio della partita, ad esempio, verranno mostrate le schermate per la scelta delle windowPatternCard. la view riceve il comando, visualizza, e sceglie la carta rispondendo con un nuovo comando che arriva al CONTROLLER, perchè deve essere VALIDATO (può andare bene oppure no). Il controller CONTROLLA proprio perchè convalida le mosse del giocatore. Questo l'aveva detto anche Gulino quando parlava del Controller
     private ArrayList<ServerConnection> disconnectedClients;
 
     private int roundNumber;
+
     private Server server;
 
     public Controller(ArrayList<ServerConnection> connectedClients, Server server) {
@@ -226,10 +230,9 @@ public class Controller extends Observable implements Observer {
      * update is called by the Model only
      * i have to update every client's model
      */
-    @Override
-    public void update(Observable o, Object arg) {
-        // to all ClientConnections->
-        // sendToAllPlayers( new refreshBoardCommand();
+    @Override //TODO PER ALE: metodo dell'observer: lui fa l'update
+    public void update(Observable a, Object o) { //Metodo dell'Observer (controller) che è notificato dalla view. Sempre per il discorso che la view è remota e non accesibile, il metodo update è chiamato dalle connessioni (ServerConnection) che riceve i comandi tramite ClientConnection (che, a sua volta li ha ricevuti da ClientNetworkHandler che a sua volta li ha ricevuti da View)
+        //ATTENZIONE: Questo metodo è implementato IN TUTTI I METODI DI TIPO APPLYCOMMAND!!!!! (il discorso del BindingDinamico)
     }
 
     public void notifyWinner(Player p){
@@ -241,7 +244,7 @@ public class Controller extends Observable implements Observer {
     }
 
 
-    // NETWORK METHODS
+    // TODO NETWORK METHODS
     public void run(){
 
     }
@@ -260,20 +263,20 @@ public class Controller extends Observable implements Observer {
      *
      * If a command is invalid, I catch an exception and send to the client itself a new AskMoveCommand()
      */
-    public void applyClientCommand(ClientToServerCommand command){
+    public void applyClientCommand(Observable serverConnection, ClientToServerCommand command){
         System.out.println("Chiamato questo...");
 
     }
 
-    public void applyClientCommand(UpdateUsernameCommand command){
+    public void applyClientCommand(Observable serverConnection, UpdateUsernameCommand command){
         System.out.println("Arrivato username che si chiama"+ command.getUsername());
     }
 
-    public void applyClientCommand(ChosenToolCardCommand command){
+    public void applyClientCommand(Observable serverConnection, ChosenToolCardCommand command){
 
     }
 
-    public void applyClientCommand(ChosenWindowPatternCardCommand command){
+    public void applyClientCommand(Observable serverConnection,ChosenWindowPatternCardCommand command){
 
     }
 
@@ -284,7 +287,11 @@ public class Controller extends Observable implements Observer {
         // Applied automatically to the CurrentPlayer
     }
     //TODO ... For every Tool card
-/*
+
+
+
+
+    /* Suggestions:
     public void startGame(ArrayList<Player> orderedPlayers) {
         // assegno i players al model e l'ordine di gioco
         this.orderedPlayers = orderedPlayers;

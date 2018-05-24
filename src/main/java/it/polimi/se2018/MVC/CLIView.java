@@ -8,9 +8,10 @@ import it.polimi.se2018.client_to_server_command.UpdateUsernameCommand;
 import it.polimi.se2018.toolcards.ToolCard;
 
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.Scanner;
 
-public class CLIView extends View{
+public class CLIView extends View {
 
     /**
      * CliView receives a clone of current model each time it's Player's turn
@@ -21,7 +22,7 @@ public class CLIView extends View{
     private Scanner scan = new Scanner(System.in);
 
 
-    private ClientController clientController;
+    private ClientNetworkHandler observer; //L'observer della view è il Controller, che però deve essere raggiunto dal network(ClientNetworkHandler) (ovvero, dalle ClientConnection e ServerConnection)
 
     /**
      * Can be used for mark the status as :
@@ -36,8 +37,8 @@ public class CLIView extends View{
     private String playerState;
 
 
-    public void addController(ClientController controller){
-        this.clientController = controller;
+    public void addController(ClientNetworkHandler controller){
+        this.observer = controller;
     }
     /**
      * Initialize Graphic or Command Line User Interface
@@ -115,7 +116,7 @@ public class CLIView extends View{
         //EDIT
         System.out.println("Faccio send Update...");
 
-        clientController.sendCommand(new UpdateUsernameCommand(username));
+        observer.sendCommand(new UpdateUsernameCommand(username));
     }
 
     public void showWin(){

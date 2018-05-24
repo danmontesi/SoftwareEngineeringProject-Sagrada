@@ -1,7 +1,7 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.MVC.CLIView;
-import it.polimi.se2018.MVC.ClientController;
+import it.polimi.se2018.MVC.ClientNetworkHandler;
 import it.polimi.se2018.MVC.GUIView;
 import it.polimi.se2018.MVC.View;
 import it.polimi.se2018.network.rmi.ClientConnectionRMI;
@@ -14,7 +14,7 @@ public class ClientLauncher {
     public static void main(String args[]){
         ClientConnection connection;
         View view;
-        ClientController controller;
+        ClientNetworkHandler clientNetworkHandler;
 
         Scanner i = new Scanner(System.in);
 
@@ -28,7 +28,7 @@ public class ClientLauncher {
         else
             view = new CLIView();
 
-        controller = new ClientController(view);
+        clientNetworkHandler = new ClientNetworkHandler(view);
 
         System.out.println("Select which is the connection you prefere: \n1 - Socket\n2 - RMI ");
 
@@ -36,13 +36,13 @@ public class ClientLauncher {
         chosen  = i.nextInt();
 
         if (chosen == 2)
-            connection = new ClientConnectionSocket("localhost", 1111, controller);
+            connection = new ClientConnectionSocket("localhost", 1111, clientNetworkHandler);
             //connection = new ClientConnectionRMI(controller);
         else
-            connection = new ClientConnectionSocket("localhost", 1111, controller);
+            connection = new ClientConnectionSocket("localhost", 1111, clientNetworkHandler);
 
-        controller.addConnection(connection);
-        view.addController(controller);
+        clientNetworkHandler.addConnection(connection);
+        view.addController(clientNetworkHandler);
 
         try {
             connection.startThread();

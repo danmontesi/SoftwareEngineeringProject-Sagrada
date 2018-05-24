@@ -92,7 +92,7 @@ public class ServerConnectionSocket extends ServerConnection {
                 if (command instanceof UpdateUsernameCommand) //Case-> is a request of a username (The controller doesn't exist yet)
                     server.receiveCredentialFromConnection(((UpdateUsernameCommand) command).getUsername(), this);
                 else
-                    command.execute(controller);
+                    command.execute(this, controller); //Execute arriva a chiamare il metodo applyCommand() dal controller, poi sfrutterà il binding dinamico su ApplyCommand
                 //server.receiveCredentialFromConnection(command, this);
 
             } catch (ClassNotFoundException | IOException e) {

@@ -2,17 +2,18 @@ package it.polimi.se2018.MVC;
 
 import it.polimi.se2018.Player;
 import it.polimi.se2018.WindowPatternCard;
+import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.toolcards.ToolCard;
 
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-public abstract class View implements Observer{
-    private ClientController clientController;
+public abstract class View extends Observable implements Observer{
+    private ClientNetworkHandler clientNetworkHandler;
     private String playerUsername;
 
-    public void addController(ClientController controller){
+    public void addController(ClientNetworkHandler controller){
 
     }
 
@@ -104,8 +105,11 @@ public abstract class View implements Observer{
 
     }
 
-    public void addObserver(){
+    public void notify(ClientToServerCommand command){
 
+    }
+
+    public void addObserver(){ //Used just to set the connectionHandler
     }
 
     public void showWaitForYourTurn(){

@@ -1,6 +1,6 @@
 package it.polimi.se2018.network.socket;
 
-import it.polimi.se2018.MVC.ClientController;
+import it.polimi.se2018.MVC.ClientNetworkHandler;
 import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.network.Server;
@@ -8,8 +8,9 @@ import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Observable;
 
-public class ClientConnectionSocket extends ClientConnection { // implements ClientConnecterInterface
+public class ClientConnectionSocket extends ClientConnection {
 
 
     /**
@@ -19,11 +20,11 @@ public class ClientConnectionSocket extends ClientConnection { // implements Cli
     private Socket socket;
     private ObjectInputStream input;
     private ObjectOutputStream output;
-    private ClientController clientController;
+    private ClientNetworkHandler clientController;
     private Thread thread;
 
-    public ClientConnectionSocket(String host, int port, ClientController controller){
-        this.clientController = controller;
+    public ClientConnectionSocket(String host, int port, ClientNetworkHandler clientNetworkHandler){
+        this.clientController = clientNetworkHandler;
         try {
             this.socket = new Socket(host, port);
         }
@@ -82,4 +83,7 @@ public class ClientConnectionSocket extends ClientConnection { // implements Cli
 
     }
 
+    public void update(ClientToServerCommand command) { //Chiamato dal ClientConnection, fa l'update su lcontroller -> invia un evento di risposta
+        sendCommand(command);
+    }
 }
