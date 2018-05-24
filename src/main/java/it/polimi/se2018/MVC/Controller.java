@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Controller implements Observer { //Observer perchè osserva la View
+public class Controller implements Observer { //Observer perchè osserva la View tramite le classi di mezzo (ServerConnection)
 
     /**
      * This is the main controller of the game

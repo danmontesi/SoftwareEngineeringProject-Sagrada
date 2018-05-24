@@ -59,6 +59,10 @@ public class ClientNetworkHandler {
 
     }
 
+    public void update(ClientToServerCommand command){ //Osserva la View per conto del Model:
+        sendCommand(command);
+    }
+
     public void applyCommand(InvalidInputCommand invalidCommand) {
         //userInterface.commandNotValid();
 

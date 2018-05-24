@@ -154,8 +154,9 @@ public class CLIView extends View {
     public void showActionPerformed(){
 
     }
-    public void update(java.util.Observable o, Object obj){
 
+    public void update(Model updatedModel){ //Osserva il Model e con Update, fa l'update del model locale
+        refreshBoard(updatedModel);
     }
 
     public void addObserver(){
@@ -199,5 +200,8 @@ public class CLIView extends View {
     }
 
 
+    @Override
+    public void update(Observable o, Object arg) {
 
+    }
 }
