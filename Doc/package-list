@@ -1,9 +1,9 @@
 it.polimi.se2018
-it.polimi.se2018.Exceptions
+it.polimi.se2018.exceptions
 it.polimi.se2018.MVC
 it.polimi.se2018.MatchTest
 it.polimi.se2018.MatchTest.private_public_cards_test
-it.polimi.se2018.Parser
+it.polimi.se2018.parser
 it.polimi.se2018.ParserTest
 it.polimi.se2018.client_to_server_command
 it.polimi.se2018.network

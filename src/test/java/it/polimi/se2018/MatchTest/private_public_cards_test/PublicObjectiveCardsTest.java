@@ -3,8 +3,8 @@ package it.polimi.se2018.MatchTest.private_public_cards_test;
 import it.polimi.se2018.COLOR;
 import it.polimi.se2018.Cell;
 import it.polimi.se2018.Die;
-import it.polimi.se2018.Exceptions.EmptyCellException;
-import it.polimi.se2018.Parser.ParserWindowPatternCard;
+import it.polimi.se2018.exceptions.EmptyCellException;
+import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.public_obj_cards.*;
 import org.junit.Before;
@@ -27,7 +27,7 @@ public class PublicObjectiveCardsTest {
     String p = "prova";
     @Before
     public void setUp(){
-        /* TODO Has to be replaced with the correct Parser of PublicObjCards
+        /* TODO Has to be replaced with the correct parser of PublicObjCards
         cards.add(new ColorDiagonals());
         cards.add(new ColorVariety());
         cards.add(new ColumnColorVariety());

@@ -1,6 +1,6 @@
 package it.polimi.se2018;
 
-import it.polimi.se2018.Exceptions.NoSuchColorException;
+import it.polimi.se2018.exceptions.NoSuchColorException;
 
 /**
  * Die colors enumeration.

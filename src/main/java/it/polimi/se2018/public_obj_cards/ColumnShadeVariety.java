@@ -1,12 +1,12 @@
 package it.polimi.se2018.public_obj_cards;
 
-import it.polimi.se2018.Exceptions.EmptyCellException;
+import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.WindowPatternCard;
 
 import java.util.HashSet;
 
 public class ColumnShadeVariety extends PublicObjectiveCard{
-    public ColumnShadeVariety(String name, String description, int score) {
+    public ColumnShadeVariety(String name, String description, Integer score) {
         super(name, description, score);
     }
 

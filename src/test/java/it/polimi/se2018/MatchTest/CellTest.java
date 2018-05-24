@@ -3,7 +3,7 @@ package it.polimi.se2018.MatchTest;
 import it.polimi.se2018.COLOR;
 import it.polimi.se2018.Cell;
 import it.polimi.se2018.Die;
-import it.polimi.se2018.Exceptions.EmptyCellException;
+import it.polimi.se2018.exceptions.EmptyCellException;
 import org.junit.Before;
 import org.junit.Test;
 

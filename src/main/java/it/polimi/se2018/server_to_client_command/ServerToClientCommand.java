@@ -1,10 +1,8 @@
 package it.polimi.se2018.server_to_client_command;
 
-import it.polimi.se2018.network.ClientConnection;
-
 import java.io.Serializable;
 
-public abstract class ServerToClientCommand implements Serializable {
+public abstract class  ServerToClientCommand implements Serializable {
     /**
      * This is the abstract class representing all possible command from Server to Client
      */
