@@ -1,5 +1,6 @@
 package it.polimi.se2018.MVC;
 
+import com.sun.corba.se.pept.transport.ContactInfo;
 import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
 import it.polimi.se2018.client_to_server_command.*;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Controller implements Observer { //Observer perchè osserva la View tramite le classi di mezzo (ServerConnection)
+public class Controller implements Observer{ //Observer perchè osserva la View tramite le classi di mezzo (ServerConnection)
 
     /**
      * This is the main controller of the game

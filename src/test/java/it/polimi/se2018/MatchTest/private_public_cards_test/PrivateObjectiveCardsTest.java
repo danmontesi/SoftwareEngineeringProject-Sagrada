@@ -1,13 +1,11 @@
 package it.polimi.se2018.MatchTest.private_public_cards_test;
 
-import it.polimi.se2018.COLOR;
-import it.polimi.se2018.Cell;
-import it.polimi.se2018.Die;
+import it.polimi.se2018.*;
 import it.polimi.se2018.Exceptions.EmptyCellException;
+import it.polimi.se2018.Parser.ParserPrivateObjectiveCard;
 import it.polimi.se2018.Parser.ParserPublicObjectiveCard;
 import it.polimi.se2018.Parser.ParserWindowPatternCard;
-import it.polimi.se2018.WindowPatternCard;
-import it.polimi.se2018.public_obj_cards.*;
+import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,22 +14,17 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * @author danmontesi
- */
+public class PrivateObjectiveCardsTest {
 
-public class PublicObjectiveCardsTest {
-
-    ParserPublicObjectiveCard ppoc = new ParserPublicObjectiveCard();
-    ArrayList<PublicObjectiveCard> testCards;
+    ParserPrivateObjectiveCard proc = new ParserPrivateObjectiveCard();
+    ArrayList<PrivateObjectiveCard> testCards;
 
     private WindowPatternCard myWPCard;
 
+    Integer[] correctPoints;
 
     @Before
     public void setUp() {
-
-
         ArrayList<Cell> schema = new ArrayList<>();
 
         ArrayList<WindowPatternCard> mycards = null;
@@ -102,14 +95,16 @@ public class PublicObjectiveCardsTest {
         }
 
         myWPCard = mycards.get(0);
+
         System.out.println(mycards.get(0).toString());
+
     }
 
-/*
-    @Test
+
+    @Before
     public void setTestCards() {
         try {
-            testCards = ppoc.parseCards();
+            testCards = proc.parseCards();
         } catch (IOException e) {
             System.out.println("problemino");
         }
@@ -118,49 +113,60 @@ public class PublicObjectiveCardsTest {
     @Test
     public void testAll(){
 
-        Integer[] correctPoints = new Integer[testCards.size()];
+        correctPoints = new Integer[testCards.size()];
         int counter= 0;
         //System.out.println("Ok");
 
         //TODO Assegna i valori corretti all'array per il controllo del corretto calcolo score
-        //ColorDiagonals
+        //Color purple
         correctPoints[counter]=0;
         counter++;
-        //ColorVariety
-        correctPoints[counter]=0;
+        //green
+        correctPoints[counter]=3;
         counter++;
-        //ColumnColorVariety
-        correctPoints[counter]=0;
+        //yellow
+        correctPoints[counter]=6;
         counter++;
-        //ColumnShadeVariety
-        correctPoints[counter]=0;
+        //red
+        correctPoints[counter]=4;
         counter++;
-        //DeepShade
-        correctPoints[counter]=0;
+        //blu
+        correctPoints[counter]=8;
         counter++;
-        //LightShade
-        correctPoints[counter]=0;
-        counter++;
-        //MediumShade
-        correctPoints[counter]=0;
-        counter++;
-        //RowColorVariety
-        correctPoints[counter]=0;
-        counter++;
-        //RowShadeVariety
-        correctPoints[counter]=0;
-        counter++;
-        //ShadeVariety
-        correctPoints[counter]=0;
+
+        assertEquals(correctPoints[0], (Integer) testCards.get(0).calculateScore(myWPCard));
 
 
-        assertEquals(12, testCards.get(0).calculateScore(myWPCard));
-        assertEquals(correctPoints[0] , (Integer) testCards.get(0).calculateScore(myWPCard) );
-
-
-        assertEquals(1,1);
     }
 
-*/
-}
+    @Test
+    public void testSecond(){
 
+        assertEquals(correctPoints[1], (Integer) testCards.get(1).calculateScore(myWPCard));
+
+    }
+
+    @Test
+    public void testThird(){
+
+        assertEquals(correctPoints[2], (Integer) testCards.get(2).calculateScore(myWPCard));
+
+    }
+
+    @Test
+    public void testFourth(){
+
+        assertEquals(correctPoints[3], (Integer) testCards.get(3).calculateScore(myWPCard));
+
+    }
+
+    @Test
+    public void testFirth(){
+
+        assertEquals(correctPoints[4], (Integer) testCards.get(4).calculateScore(myWPCard));
+
+    }
+
+
+
+}
