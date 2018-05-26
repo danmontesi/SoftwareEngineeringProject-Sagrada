@@ -81,24 +81,21 @@ public class WindowPatternCard {
         return schema.get(row * 5 + column).removeDie();
     }
 
+    /**
+     * edit @danmontesi
+     * Instead of considering an Array of int, consider an ArrayList when I insert new numbers of adjacent
+     * adjacent are 8 only if the cell is internal (and so the cell passes all the controls)
+     *
+     * if i find at least an adjacent -> return true
+     */
     public boolean checkPlacementRestriction(WindowPatternCard w, Cell c) { // 'w' can be replaced with 'this'
         int index = c.getIndex();
         if (w.isEmpty()) {
             // if cell is internal -> false
-            if (((index % 5) > 0) && ((index % 5) < 4)
-                    && ((index / 5) > 0) && ((index / 5) < 3)) {
-                return false;
-            } else
-                return true;
-
+            return !(((index % 5) > 0) && ((index % 5) < 4) && ((index / 5) > 0) && ((index / 5) < 3));
         }
-        /**
-         * edit @danmontesi
-         * Instead of considering an Array of int, consider an ArrayList when I insert new numbers of adjacent
-         * adjacent are 8 only if the cell is internal (and so the cell passes all the controls)
-         *
-         * if i find at least an adjacent -> return true
-         */
+
+        //in w isn't empty -> Check adjacency to other placed dice
         ArrayList<Integer> adjacentCells = new ArrayList<>();
 
         // 6 chained if clauses to determine if exists an adjacent cell
@@ -139,20 +136,15 @@ public class WindowPatternCard {
         if (c.getColorConstraint() == null) {
             return true;
         }
-        if (c.getColorConstraint().equals(d.getColor())) {
-            return true;
-        } else
-            return false;
+        return (c.getColorConstraint().equals(d.getColor()));
     }
 
     public boolean checkValueRestriction(Cell c, Die d) {
         if (c.getValueConstraint() == null) {
             return true;
         }
-        if (c.getValueConstraint() == d.getValue()) {
-            return true;
-        } else
-            return false;
+        return (c.getValueConstraint() == d.getValue());
+
     }
 
 /*    public boolean checkAllValueRestriction(){

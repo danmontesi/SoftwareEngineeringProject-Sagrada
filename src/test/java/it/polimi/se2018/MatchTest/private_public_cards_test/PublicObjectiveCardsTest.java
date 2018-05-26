@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author danmontesi
  */
-
+/*
 public class PublicObjectiveCardsTest {
 
     ParserPublicObjectiveCard ppoc = new ParserPublicObjectiveCard();
@@ -30,8 +30,6 @@ public class PublicObjectiveCardsTest {
 
     @Before
     public void setUp() {
-
-
         ArrayList<Cell> schema = new ArrayList<>();
 
         ArrayList<WindowPatternCard> mycards = null;
@@ -161,6 +159,6 @@ public class PublicObjectiveCardsTest {
         assertEquals(1,1);
     }
 
-*/
-}
 
+}
+*/
