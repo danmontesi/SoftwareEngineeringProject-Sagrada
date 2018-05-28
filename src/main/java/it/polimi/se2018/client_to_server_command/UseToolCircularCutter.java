@@ -1,6 +1,6 @@
 package it.polimi.se2018.client_to_server_command;
 
-public class UseToolCircularCutter{
+public class UseToolCircularCutter extends ClientToServerCommand{
     /**
      * Scambio dado con quello nel Roundtrack
      *
@@ -13,7 +13,7 @@ public class UseToolCircularCutter{
 
     private String message;
 
-    private Integer dieValue;
+    private Integer dieDraftPoolPosition;
 
     private Integer dieRoundTrackPosition;
 

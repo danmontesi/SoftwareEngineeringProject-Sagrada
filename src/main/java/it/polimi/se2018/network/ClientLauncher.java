@@ -38,8 +38,10 @@ public class ClientLauncher {
         if (chosen == 2)
             connection = new ClientConnectionSocket("localhost", 1111, clientNetworkHandler);
             //connection = new ClientConnectionRMI(controller);
-        else
+        else{
             connection = new ClientConnectionSocket("localhost", 1111, clientNetworkHandler);
+            System.out.println("andrebbe sostituito da RMI");
+        }
 
         clientNetworkHandler.addConnection(connection);
         view.addController(clientNetworkHandler);
@@ -52,4 +54,6 @@ public class ClientLauncher {
         }
 
     }
+
+
 }

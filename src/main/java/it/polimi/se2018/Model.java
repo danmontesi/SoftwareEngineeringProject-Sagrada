@@ -197,4 +197,29 @@ public class Model extends Observable{
     }
 
 
+    public String stringModelRepresentationForPlayer(Player player){
+        String string = "";
+        //4 blocks
+        //1- DraftPool
+        //2- toolcard
+        //3- publicobjective
+        //4- private Objective(dependent to Player)
+        //5- WindowPatternCard
+        //6- roundtrack
+        //7- number of players (2,3,4)
+        //8- each player's roundtrack (first is the player's)
+        //different cards separated by comma",". sections separated by "-"
+
+        //DraftPool
+        string += "";
+
+
+
+        string += "";
+
+        return string;
+
+
+    }
+
 }

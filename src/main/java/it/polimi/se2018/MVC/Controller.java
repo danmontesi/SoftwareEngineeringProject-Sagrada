@@ -86,8 +86,8 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
      */
     public void initializeGame() {
         //TODO Deve inviare un comando che avvia la View e fa scegliere agli utenti Le WindowPatternCard
-        ServerToClientCommand command = new ChooseWindowPatternCardCommand();
-        sendCommandToAllPlayers(command);
+        //ServerToClientCommand command = new ChooseWindowPatternCardCommand();
+        //sendCommandToAllPlayers(command);
     }
 
     //Le view per ogni giocatore sono le stesse, con l'eccezione che viene passata senza le PrivateObjectiveCard dell'avversario e
@@ -281,57 +281,6 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
 
     }
 
-    /**
-     * Those are methods that apply commands arriving from the Client
-     * There are 1 method for every class for every command
-     *
-     * If a command is invalid, I catch an exception and send to the client itself a new AskMoveCommand()
-     */
-
-    public void update(ServerConnection connection, ClientToServerCommand command){
-        String words[] = command.getMessage().split(" ");
-        //TODO complete
-        switch(words[1]){
-            case("Passa Turn"):
-                ;
-                break;
-            case("ok"):
-                //applyClientCommand.....//TODO: cambio da serverConnection a Player ogni metodo applyCommand
-                ;
-                break;
-            default:
-                ;//InvalidInput
-                break;
-        }
-
-    }
-
-    public void applyClientCommand(Observable serverConnection, ClientToServerCommand command){
-        System.out.println("Chiamato questo...");
-
-    }
-
-    public void applyClientCommand(Observable serverConnection, UpdateUsernameCommand command){
-        System.out.println("Arrivato username che si chiama"+ command.getMessage());
-    }
-
-    public void applyClientCommand(Observable serverConnection, MoveChoiceToolCardCommand command){
-        //check if the move is correct
-
-        Player player = serverConnectionPlayerMap.get(serverConnection);
-        if (isAllowed(player)){
-            //Check if correct move
-            //command.ge
-            //Catch null pointer.. (se il dado non è presente nella draftpool
-            //player.getWindowPatternCard().placeDie()//TODO...
-
-        }
-
-    }
-
-    public void applyClientCommand(Observable serverConnection,ChosenWindowPatternCardCommand command){
-
-    }
 
 
     // TODO : All methods connected to the using of Tool
@@ -408,6 +357,171 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
 
 
     */
+
+
+    //Commands sent by client, to be picked and let the player know if he can or not
+
+
+    /**
+     * Those are methods that apply commands arriving from the Client
+     * There are 1 method for every class for every command
+     *
+     * If a command is invalid, I catch an exception and send to the client itself a new AskMoveCommand()
+     */
+
+    public void update(ServerConnection connection, ClientToServerCommand command){
+        String words[] = command.getMessage().split(" ");
+        //TODO complete
+        switch(words[1]){
+            case("UseToolCopperFoilReamer"):
+                ;
+                break;
+            case("UseToolCorkLine"):
+                ;
+                break;
+            case("UseToolDiamondSwab"):
+                ;
+                break;
+            case("UseToolEglomiseBrush"):
+                ;
+                break;
+            case("UseToolFirmPastryBrush"):
+                ;
+                break;
+            case("UseToolFirmPastryThinner1"):
+                ;
+                break;
+            case("UseToolFirmPastryThinner2"):
+                ;
+                break;
+            case("UseToolGavel"):
+                ;
+                break;
+            case("UseToolLathekin"):
+                ;
+                break;
+            case("UseToolManualCutter"):
+                ;
+                break;
+            case("UseToolRoughingForceps"):
+                ;
+                break;
+            case("UseToolWheelsPincher"):
+                ;
+                break;
+            case("ChosenWindowPatternCard"):
+                ;
+                break;
+            case("MoveChoiceToolCard"):
+                ;
+                break;
+        }
+
+    }
+
+
+
+
+
+    public void applyCommand(Observable serverConnection, MoveChoiceToolCard command){
+        //check if the move is correct
+
+        Player player = serverConnectionPlayerMap.get(serverConnection);
+        if (isAllowed(player)){
+            //Check if correct move
+            //command.ge
+            //Catch null pointer.. (se il dado non è presente nella draftpool
+            //player.getWindowPatternCard().placeDie()//TODO...
+
+        }
+
+    }
+
+    public void applyCommand(Observable serverConnection, ChosenWindowPatternCard command){
+
+    }
+
+
+
+
+
+
+
+    /**
+     * Applies commands coming from the Client, answering with correct/incorrect command responses
+     */
+    public void applyCommand(ServerConnection connection, UseToolCopperFoilReamer command){
+        String message = command.getMessage();
+
+    }
+    /**
+     * Applies commands coming from the Client, answering with correct/incorrect command responses
+     */
+    public void applyCommand(ServerConnection connection,UseToolCorkLine command){
+
+    }
+    /**
+     * Applies commands coming from the Client, answering with correct/incorrect command responses
+     */
+    public void applyCommand(ServerConnection connection,UseToolDiamondSwab command){
+
+    }
+    /**
+     * Applies commands coming from the Client, answering with correct/incorrect command responses
+     */
+    public void applyCommand(ServerConnection connection,UseToolEglomiseBrush command){
+
+    }
+    /**
+     * Applies commands coming from the Client, answering with correct/incorrect command responses
+     */
+    public void applyCommand(ServerConnection connection,UseToolFirmPastryBrush command){
+
+    }
+    /**
+     * Applies commands coming from the Client, answering with correct/incorrect command responses
+     */
+    public void applyCommand(ServerConnection connection,UseToolFirmPastryThinner1 command){
+
+    }
+
+    /**
+     * Applies commands coming from the Client, answering with correct/incorrect command responses
+     */
+    public void applyCommand(ServerConnection connection,UseToolFirmPastryThinner2 command){
+
+    }
+
+    /**
+     * Applies commands coming from the Client, answering with correct/incorrect command responses
+     */
+    public void applyCommand(ServerConnection connection,UseToolGavel command){
+
+    }
+    /**
+     * Applies commands coming from the Client, answering with correct/incorrect command responses
+     */
+    public void applyCommand(ServerConnection connection,UseToolLathekin command){
+
+    }
+    /**
+     * Applies commands coming from the Client, answering with correct/incorrect command responses
+     */
+    public void applyCommand(ServerConnection connection,UseToolManualCutter command){
+
+    }
+    /**
+     * Applies commands coming from the Client, answering with correct/incorrect command responses
+     */
+    public void applyCommand(ServerConnection connection,UseToolRoughingForceps command){
+
+    }
+    /**
+     * Applies commands coming from the Client, answering with correct/incorrect command responses
+     */
+    public void applyCommand(ServerConnection connection,UseToolWheelsPincher command){
+
+    }
 
 
 }
