@@ -272,47 +272,37 @@
           {
             "row": 0,
             "column": 0,
-            "valueConstraint": 5
+            "valueConstraint": 4
           },
           {
             "row": 0,
+            "column": 4,
+            "valueConstraint": 1
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 1,
             "column": 1,
             "colorConstraint": "GREEN"
           },
           {
-            "row": 0,
-            "column": 2,
-            "colorConstraint": "BLUE"
-          },
-          {
-            "row": 0,
-            "column": 3,
-            "colorConstraint": "VIOLET"
-          },
-          {
-            "row": 0,
-            "column": 4,
-            "valueConstraint": 2
-          },
-          {
             "row": 1,
-            "column": 0,
-            "colorConstraint": "VIOLET"
-          },
-          {
-            "row": 1,
-            "column": 4,
-            "colorConstraint": "YELLOW"
-          },
-          {
-            "row": 2,
-            "column": 0,
-            "colorConstraint": "YELLOW"
-          },
-          {
-            "row": 2,
             "column": 2,
             "valueConstraint": 6
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "colorConstraint": "YELLOW"
           },
           {
             "row": 2,
@@ -322,7 +312,17 @@
           {
             "row": 3,
             "column": 0,
-            "valueConstraint": 1
+            "valueConstraint": 2
+          },
+          {
+            "row": 3,
+            "column": 1,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "colorConstraint": "BLUE"
           },
           {
             "row": 3,
@@ -332,7 +332,7 @@
           {
             "row": 3,
             "column": 4,
-            "valueConstraint": 4
+            "valueConstraint": 5
           }
         ]
       },
@@ -398,73 +398,73 @@
         "schema": [
           {
             "row": 0,
-            "column": 2,
-            "valueConstraint": 6
-          },
-          {
-            "row": 1,
-            "column": 1,
-            "valueConstraint": 5
-          },
-          {
-            "row": 1,
-            "column": 2,
-            "colorConstraint": "BLUE"
-          },
-          {
-            "row": 1,
-            "column": 3,
-            "valueConstraint": 4
-          },
-          {
-            "row": 2,
             "column": 0,
             "valueConstraint": 3
           },
           {
-            "row": 2,
+            "row": 0,
             "column": 1,
-            "colorConstraint": "GREEN"
+            "valueConstraint": 5
           },
           {
-            "row": 2,
-            "column": 2,
-            "colorConstraint": "YELLOW"
-          },
-          {
-            "row": 2,
-            "column": 3,
-            "colorConstraint": "VIOLET"
-          },
-          {
-            "row": 2,
-            "column": 4,
-            "valueConstraint": 2
-          },
-          {
-            "row": 3,
-            "column": 0,
-            "valueConstraint": 1
-          },
-          {
-            "row": 3,
-            "column": 1,
-            "valueConstraint": 4
-          },
-          {
-            "row": 3,
+            "row": 0,
             "column": 2,
             "colorConstraint": "RED"
           },
           {
-            "row": 3,
+            "row": 0,
+            "column": 3,
+            "valueConstraint": 4
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 1
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "valueConstraint": 2
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "valueConstraint": 3
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "valueConstraint": 4
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
             "column": 3,
             "valueConstraint": 5
           },
           {
             "row": 3,
-            "column": 4,
-            "valueConstraint": 3
+            "column": 2,
+            "valueConstraint": 6
           }
         ]
       },
@@ -475,67 +475,67 @@
           {
             "row": 0,
             "column": 0,
-            "valueConstraint": 1
-          },
-          {
-            "row": 0,
-            "column": 1,
             "colorConstraint": "RED"
           },
           {
             "row": 0,
-            "column": 2,
+            "column": 1,
             "valueConstraint": 3
-          },
-          {
-            "row": 0,
-            "column": 4,
-            "valueConstraint": 6
           },
           {
             "row": 1,
             "column": 0,
-            "valueConstraint": 5
+            "valueConstraint": 1
           },
           {
             "row": 1,
             "column": 1,
-            "valueConstraint": 4
-          },
-          {
-            "row": 1,
-            "column": 2,
             "colorConstraint": "RED"
           },
           {
             "row": 1,
-            "column": 3,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 2,
+            "column": 1,
             "valueConstraint": 2
           },
           {
             "row": 2,
             "column": 2,
-            "valueConstraint": 5
-          },
-          {
-            "row": 2,
-            "column": 3,
             "colorConstraint": "RED"
           },
           {
             "row": 2,
+            "column": 3,
+            "valueConstraint": 4
+          },
+          {
+            "row": 2,
             "column": 4,
-            "valueConstraint": 1
+            "valueConstraint": 5
           },
           {
             "row": 3,
-            "column": 3,
+            "column": 0,
+            "valueConstraint": 6
+          },
+          {
+            "row": 3,
+            "column": 2,
             "valueConstraint": 3
           },
           {
             "row": 3,
-            "column": 4,
+            "column": 3,
             "colorConstraint": "RED"
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "valueConstraint": 1
           }
         ]
       },
@@ -545,68 +545,68 @@
         "schema": [
           {
             "row": 0,
-            "column": 0,
-            "valueConstraint": 2
-          },
-          {
-            "row": 0,
-            "column": 2,
+            "column": 1,
             "valueConstraint": 5
           },
           {
             "row": 0,
-            "column": 4,
-            "valueConstraint": 1
-          },
-          {
-            "row": 1,
-            "column": 0,
-            "colorConstraint": "YELLOW"
+            "column": 3,
+            "valueConstraint": 3
           },
           {
             "row": 1,
             "column": 1,
-            "valueConstraint": 6
+            "colorConstraint": "GREEN"
           },
           {
             "row": 1,
             "column": 2,
-            "colorConstraint": "VIOLET"
+            "valueConstraint": 4
           },
           {
             "row": 1,
             "column": 3,
-            "valueConstraint": 2
+            "colorConstraint": "BLUE"
           },
           {
-            "row": 1,
-            "column": 4,
+            "row": 2,
+            "column": 0,
             "colorConstraint": "RED"
           },
           {
             "row": 2,
             "column": 1,
-            "colorConstraint": "BLUE"
+            "valueConstraint": 2
           },
           {
             "row": 2,
             "column": 2,
-            "valueConstraint": 4
+            "colorConstraint": "VIOLET"
           },
           {
             "row": 2,
             "column": 3,
-            "colorConstraint": "GREEN"
+            "valueConstraint": 6
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "colorConstraint": "YELLOW"
           },
           {
             "row": 3,
-            "column": 1,
-            "valueConstraint": 3
+            "column": 0,
+            "valueConstraint": 1
           },
           {
             "row": 3,
-            "column": 3,
+            "column": 2,
             "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 4,
+            "valueConstraint": 2
           }
         ]
       },
@@ -617,67 +617,67 @@
           {
             "row": 0,
             "column": 0,
-            "colorConstraint": "VIOLET"
+            "valueConstraint": 4
           },
           {
             "row": 0,
             "column": 1,
-            "valueConstraint": 6
+            "colorConstraint": "VIOLET"
           },
           {
             "row": 0,
-            "column": 4,
-            "valueConstraint": 3
-          },
-          {
-            "row": 1,
-            "column": 0,
+            "column": 2,
             "valueConstraint": 5
           },
           {
+            "row": 0,
+            "column": 3,
+            "valueConstraint": 1
+          },
+          {
             "row": 1,
             "column": 1,
-            "colorConstraint": "VIOLET"
+            "valueConstraint": 1
           },
           {
             "row": 1,
             "column": 2,
-            "valueConstraint": 3
+            "colorConstraint": "VIOLET"
           },
           {
-            "row": 2,
-            "column": 1,
+            "row": 1,
+            "column": 3,
             "valueConstraint": 2
           },
           {
             "row": 2,
             "column": 2,
-            "colorConstraint": "VIOLET"
+            "valueConstraint": 3
           },
           {
             "row": 2,
             "column": 3,
-            "valueConstraint": 1
+            "colorConstraint": "VIOLET"
           },
           {
-            "row": 3,
-            "column": 1,
-            "valueConstraint": 1
-          },
-          {
-            "row": 3,
-            "column": 2,
+            "row": 2,
+            "column": 4,
             "valueConstraint": 5
           },
           {
             "row": 3,
+            "column": 0,
+            "valueConstraint": 3
+          },
+          {
+            "row": 3,
             "column": 3,
-            "colorConstraint": "VIOLET"
+            "valueConstraint": 6
           },
           {
             "row": 3,
             "column": 4,
-            "valueConstraint": 4
+            "colorConstraint": "VIOLET"
           }
         ]
       },
@@ -749,67 +749,67 @@
           {
             "row": 0,
             "column": 0,
-            "valueConstraint": 6
+            "valueConstraint": 3
           },
           {
             "row": 0,
             "column": 1,
-            "colorConstraint": "VIOLET"
-          },
-          {
-            "row": 0,
-            "column": 4,
-            "valueConstraint": 5
-          },
-          {
-            "row": 1,
-            "column": 0,
-            "valueConstraint": 5
-          },
-          {
-            "row": 1,
-            "column": 2,
-            "colorConstraint": "VIOLET"
-          },
-          {
-            "row": 2,
-            "column": 0,
-            "colorConstraint": "RED"
-          },
-          {
-            "row": 2,
-            "column": 1,
-            "valueConstraint": 6
-          },
-          {
-            "row": 2,
-            "column": 3,
-            "colorConstraint": "VIOLET"
-          },
-          {
-            "row": 3,
-            "column": 0,
-            "colorConstraint": "YELLOW"
-          },
-          {
-            "row": 3,
-            "column": 1,
-            "colorConstraint": "RED"
-          },
-          {
-            "row": 3,
-            "column": 2,
-            "valueConstraint": 5
-          },
-          {
-            "row": 3,
-            "column": 3,
             "valueConstraint": 4
           },
           {
+            "row": 0,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 0,
+            "column": 3,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "valueConstraint": 6
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "colorConstraint": "VIOLET"
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 3,
+            "colorConstraint": "VIOLET"
+          },
+          {
             "row": 3,
             "column": 4,
-            "valueConstraint": 3
+            "valueConstraint": 6
           }
         ]
       },
@@ -1210,139 +1210,139 @@
         "schema": [
           {
             "row": 0,
-            "column": 3,
+            "column": 0,
             "colorConstraint": "RED"
           },
           {
             "row": 0,
-            "column": 4,
-            "valueConstraint": 5
-          },
-          {
-            "row": 1,
-            "column": 2,
-            "colorConstraint": "VIOLET"
-          },
-          {
-            "row": 1,
-            "column": 3,
-            "valueConstraint": 4
-          },
-          {
-            "row": 1,
-            "column": 4,
-            "colorConstraint": "BLUE"
-          },
-          {
-            "row": 2,
             "column": 1,
-            "colorConstraint": "BLUE"
+            "valueConstraint": 1
           },
           {
-            "row": 2,
-            "column": 2,
-            "valueConstraint": 3
-          },
-          {
-            "row": 2,
-            "column": 3,
-            "colorConstraint": "YELLOW"
-          },
-          {
-            "row": 2,
-            "column": 4,
-            "valueConstraint": 6
-          },
-          {
-            "row": 3,
-            "column": 0,
-            "colorConstraint": "YELLOW"
-          },
-          {
-            "row": 3,
-            "column": 1,
-            "valueConstraint": 2
-          },
-          {
-            "row": 3,
+            "row": 0,
             "column": 2,
             "colorConstraint": "GREEN"
           },
           {
-            "row": 3,
+            "row": 0,
             "column": 3,
-            "valueConstraint": 1
+            "valueConstraint": 2
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "valueConstraint": 6
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "valueConstraint": 3
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "valueConstraint": 4
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "colorConstraint": "VIOLET"
           },
           {
             "row": 3,
-            "column": 4,
+            "column": 0,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 1,
             "colorConstraint": "RED"
           }
         ]
       },
       {
-        "name": "Comiitas",
+        "name": "Comitas",
         "difficulty": 5,
         "schema": [
           {
             "row": 0,
-            "column": 0,
-            "colorConstraint": "YELLOW"
+            "column": 1,
+            "valueConstraint": 3
           },
           {
             "row": 0,
             "column": 2,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 0,
+            "column": 3,
             "valueConstraint": 2
           },
           {
             "row": 0,
             "column": 4,
-            "valueConstraint": 6
-          },
-          {
-            "row": 1,
-            "column": 1,
-            "valueConstraint": 4
-          },
-          {
-            "row": 1,
-            "column": 3,
-            "valueConstraint": 5
-          },
-          {
-            "row": 1,
-            "column": 4,
-            "colorConstraint": "YELLOW"
-          },
-          {
-            "row": 2,
-            "column": 3,
-            "colorConstraint": "YELLOW"
-          },
-          {
-            "row": 2,
-            "column": 4,
-            "valueConstraint": 5
-          },
-          {
-            "row": 3,
-            "column": 0,
             "valueConstraint": 1
           },
           {
-            "row": 3,
+            "row": 1,
+            "column": 0,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
             "column": 1,
-            "valueConstraint": 2
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 1,
+            "valueConstraint": 5
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "valueConstraint": 4
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "valueConstraint": 6
           },
           {
             "row": 3,
             "column": 2,
-            "colorConstraint": "YELLOW"
+            "valueConstraint": 2
           },
           {
             "row": 3,
-            "column": 3,
-            "valueConstraint": 3
+            "column": 4,
+            "colorConstraint": "YELLOW"
           }
         ]
       },
@@ -1353,67 +1353,67 @@
           {
             "row": 0,
             "column": 1,
-            "colorConstraint": "BLUE"
+            "valueConstraint": 1
           },
           {
             "row": 0,
             "column": 2,
-            "colorConstraint": "RED"
-          },
-          {
-            "row": 1,
-            "column": 1,
-            "valueConstraint": 4
-          },
-          {
-            "row": 1,
-            "column": 2,
-            "valueConstraint": 5
-          },
-          {
-            "row": 1,
-            "column": 4,
-            "colorConstraint": "BLUE"
-          },
-          {
-            "row": 2,
-            "column": 0,
-            "colorConstraint": "BLUE"
-          },
-          {
-            "row": 2,
-            "column": 1,
-            "valueConstraint": 2
-          },
-          {
-            "row": 2,
-            "column": 3,
-            "colorConstraint": "RED"
-          },
-          {
-            "row": 2,
-            "column": 4,
-            "valueConstraint": 5
-          },
-          {
-            "row": 3,
-            "column": 0,
-            "valueConstraint": 6
-          },
-          {
-            "row": 3,
-            "column": 1,
-            "colorConstraint": "RED"
-          },
-          {
-            "row": 3,
-            "column": 2,
             "valueConstraint": 3
           },
           {
+            "row": 0,
+            "column": 3,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "valueConstraint": 6
+          },
+          {
+            "row": 1,
+            "column": 0,
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "valueConstraint": 2
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 0,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "valueConstraint": 5
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "valueConstraint": 4
+          },
+          {
+            "row": 3,
+            "column": 2,
+            "colorConstraint": "RED"
+          },
+          {
             "row": 3,
             "column": 3,
-            "valueConstraint": 1
+            "colorConstraint": "BLUE"
           }
         ]
       },
@@ -1424,72 +1424,72 @@
           {
             "row": 0,
             "column": 0,
-            "valueConstraint": 6
+            "colorConstraint": "VIOLET"
           },
           {
             "row": 0,
             "column": 1,
-            "colorConstraint": "BLUE"
+            "valueConstraint": 3
           },
           {
             "row": 0,
-            "column": 4,
-            "valueConstraint": 1
-          },
-          {
-            "row": 1,
-            "column": 1,
-            "valueConstraint": 5
-          },
-          {
-            "row": 1,
-            "column": 2,
-            "colorConstraint": "BLUE"
-          },
-          {
-            "row": 2,
-            "column": 0,
-            "valueConstraint": 4
-          },
-          {
-            "row": 2,
-            "column": 1,
-            "colorConstraint": "RED"
-          },
-          {
-            "row": 2,
-            "column": 2,
-            "valueConstraint": 2
-          },
-          {
-            "row": 2,
-            "column": 3,
-            "colorConstraint": "BLUE"
-          },
-          {
-            "row": 3,
-            "column": 0,
-            "colorConstraint": "GREEN"
-          },
-          {
-            "row": 3,
-            "column": 1,
-            "valueConstraint": 6
-          },
-          {
-            "row": 3,
             "column": 2,
             "colorConstraint": "YELLOW"
           },
           {
+            "row": 0,
+            "column": 3,
+            "valueConstraint": 6
+          },
+          {
+            "row": 0,
+            "column": 4,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 1,
+            "column": 1,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 1,
+            "column": 2,
+            "valueConstraint": 2
+          },
+          {
+            "row": 1,
+            "column": 3,
+            "colorConstraint": "RED"
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "valueConstraint": 4
+          },
+          {
+            "row": 2,
+            "column": 2,
+            "colorConstraint": "BLUE"
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "valueConstraint": 5
+          },
+          {
+            "row": 3,
+            "column": 0,
+            "valueConstraint": 1
+          },
+          {
             "row": 3,
             "column": 3,
-            "valueConstraint": 3
+            "colorConstraint": "BLUE"
           },
           {
             "row": 3,
             "column": 4,
-            "colorConstraint": "VIOLET"
+            "valueConstraint": 6
           }
         ]
       },
@@ -1499,73 +1499,73 @@
         "schema": [
           {
             "row": 0,
-            "column": 2,
-            "valueConstraint": 1
-          },
-          {
-            "row": 1,
-            "column": 0,
-            "valueConstraint": 1
-          },
-          {
-            "row": 1,
             "column": 1,
             "colorConstraint": "GREEN"
           },
           {
-            "row": 1,
+            "row": 0,
             "column": 2,
-            "valueConstraint": 3
+            "valueConstraint": 5
           },
           {
-            "row": 1,
+            "row": 0,
             "column": 3,
             "colorConstraint": "BLUE"
           },
           {
             "row": 1,
-            "column": 4,
-            "valueConstraint": 2
-          },
-          {
-            "row": 2,
             "column": 0,
-            "colorConstraint": "BLUE"
+            "colorConstraint": "GREEN"
           },
           {
-            "row": 2,
+            "row": 1,
             "column": 1,
-            "valueConstraint": 5
+            "valueConstraint": 6
           },
           {
-            "row": 2,
+            "row": 1,
             "column": 2,
             "valueConstraint": 4
           },
           {
-            "row": 2,
+            "row": 1,
             "column": 3,
-            "valueConstraint": 6
+            "valueConstraint": 5
+          },
+          {
+            "row": 1,
+            "column": 4,
+            "colorConstraint": "BLUE"
           },
           {
             "row": 2,
-            "column": 4,
-            "colorConstraint": "GREEN"
+            "column": 0,
+            "valueConstraint": 2
           },
           {
-            "row": 3,
+            "row": 2,
             "column": 1,
             "colorConstraint": "BLUE"
           },
           {
-            "row": 3,
+            "row": 2,
             "column": 2,
-            "valueConstraint": 5
+            "valueConstraint": 3
+          },
+          {
+            "row": 2,
+            "column": 3,
+            "colorConstraint": "GREEN"
+          },
+          {
+            "row": 2,
+            "column": 4,
+            "valueConstraint": 1
           },
           {
             "row": 3,
-            "column": 3,
-            "colorConstraint": "GREEN"
+            "column": 2,
+            "valueConstraint": 1
           }
         ]
       },
@@ -1581,62 +1581,62 @@
           {
             "row": 0,
             "column": 1,
-            "colorConstraint": "VIOLET"
+            "valueConstraint": 2
           },
           {
             "row": 0,
             "column": 2,
-            "colorConstraint": "YELLOW"
+            "valueConstraint": 4
           },
           {
             "row": 0,
-            "column": 4,
-            "valueConstraint": 4
+            "column": 3,
+            "valueConstraint": 5
           },
           {
             "row": 1,
             "column": 0,
-            "colorConstraint": "VIOLET"
+            "valueConstraint": 3
           },
           {
             "row": 1,
             "column": 1,
-            "colorConstraint": "YELLOW"
+            "valueConstraint": 5
           },
           {
             "row": 1,
             "column": 4,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 2,
+            "column": 0,
             "valueConstraint": 6
           },
           {
             "row": 2,
-            "column": 0,
+            "column": 3,
             "colorConstraint": "YELLOW"
           },
           {
             "row": 2,
-            "column": 3,
-            "valueConstraint": 5
-          },
-          {
-            "row": 2,
             "column": 4,
-            "valueConstraint": 3
+            "colorConstraint": "VIOLET"
           },
           {
             "row": 3,
-            "column": 1,
-            "valueConstraint": 5
-          },
-          {
-            "row": 3,
-            "column": 2,
+            "column": 0,
             "valueConstraint": 4
           },
           {
             "row": 3,
+            "column": 2,
+            "colorConstraint": "YELLOW"
+          },
+          {
+            "row": 3,
             "column": 3,
-            "valueConstraint": 2
+            "colorConstraint": "VIOLET"
           },
           {
             "row": 3,
