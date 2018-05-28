@@ -17,42 +17,42 @@ public class ColorDiagonals extends PublicObjectiveCard {
      * @return number of diagonally adjacent dice of the same color
      */
     public int calculateScore(WindowPatternCard w){
-            COLOR currentColor;
-            boolean checked[] = new boolean[20];
-            for (boolean i : checked){
-                i = false;
-            }
-            for (int row = 0; row < 3; row++){
-                for (int col = 0; col < 5; col++){
-                    int index = row*5+col;
-                    int indexDx = (row+1)*5+col+1;
-                    int indexSx = (row+1)*5+col-1;
-                        try {
-                            currentColor = w.getSchema().get(index).getAssociatedDie().getColor();
-                            if ((col > 0)&&(w.getSchema().get(indexSx).getAssociatedDie().getColor().equals(currentColor))){
-                                score+=2;
-                                if (checked[index]){
-                                    score-=1;
-                                }
-                                if (checked[indexSx]){
-                                    score -=1;
-                                }
-                                checked[index] = true;
-                                checked[indexSx] = true;
+        COLOR currentColor;
+        boolean checked[] = new boolean[20];
+        for (int i = 0; i < 20; i++) {
+            checked[i] = false;
+        }
+        for (int row = 0; row < 3; row++){
+            for (int col = 0; col < 5; col++){
+                int index = row*5+col;
+                int indexDx = (row+1)*5+col+1;
+                int indexSx = (row+1)*5+col-1;
+                    try {
+                        currentColor = w.getSchema().get(index).getAssociatedDie().getColor();
+                        if ((col > 0)&&(w.getSchema().get(indexSx).getAssociatedDie().getColor().equals(currentColor))){
+                            score+=2;
+                            if (checked[index]){
+                                score-=1;
                             }
-                            if ((col < 4)&&(w.getSchema().get(indexDx).getAssociatedDie().getColor().equals(currentColor))){
-                                score+=2;
-                                if (checked[index]){
-                                    score-=1;
-                                }
-                                if (checked[indexDx]){
-                                    score -=1;
-                                }
-                                checked[index] = true;
-                                checked[indexDx] = true;
+                            if (checked[indexSx]){
+                                score -=1;
                             }
-                        } catch (EmptyCellException ignored) {
+                            checked[index] = true;
+                            checked[indexSx] = true;
                         }
+                        if ((col < 4)&&(w.getSchema().get(indexDx).getAssociatedDie().getColor().equals(currentColor))){
+                            score+=2;
+                            if (checked[index]){
+                                score-=1;
+                            }
+                            if (checked[indexDx]){
+                                score -=1;
+                            }
+                            checked[index] = true;
+                            checked[indexDx] = true;
+                        }
+                    } catch (EmptyCellException ignored) {
+                    }
 
                 }
             }

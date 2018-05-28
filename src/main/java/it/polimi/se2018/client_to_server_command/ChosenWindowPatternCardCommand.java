@@ -6,10 +6,6 @@ import it.polimi.se2018.network.ServerConnection;
 public class ChosenWindowPatternCardCommand {
 
 
-    public void execute(ServerConnection connection, Controller controller){
-        controller.applyClientCommand(connection, this);
-    }
-
 
 }
 

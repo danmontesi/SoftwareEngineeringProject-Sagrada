@@ -3,7 +3,7 @@ package it.polimi.se2018.MVC;
 import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
 import it.polimi.se2018.WindowPatternCard;
-import it.polimi.se2018.client_to_server_command.ChosenToolCardCommand;
+import it.polimi.se2018.client_to_server_command.MoveChoiceToolCardCommand;
 import it.polimi.se2018.client_to_server_command.UpdateUsernameCommand;
 import it.polimi.se2018.toolcards.ToolCard;
 
@@ -87,7 +87,7 @@ public class CLIView extends View {
 
     }
 
-    private void askWindowPatternCard(ArrayList<WindowPatternCard> cards){
+    public void askWindowPatternCard(ArrayList<WindowPatternCard> cards){
         for (WindowPatternCard p : cards) {
             p.toString();
         }

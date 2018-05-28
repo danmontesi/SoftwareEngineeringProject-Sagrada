@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Controller implements Observer{ //Observer perchè osserva la View tramite le classi di mezzo (ServerConnection)
+public class Controller { //Observer perchè osserva la View tramite le classi di mezzo (ServerConnection)
 
     /**
      * This is the main controller of the game
@@ -28,33 +28,52 @@ public class Controller implements Observer{ //Observer perchè osserva la View 
      */
     private Model model; //Always updated through notify() method of the Model, called every time it is modified
 
-    private HashMap<Player, ServerConnection> playerClientConnectionMap;
-    private ArrayList<Player> orderedPlayers;
+    private HashMap<Player, ServerConnection> playerServerConnectionMap;
+    private HashMap<ServerConnection, Player> serverConnectionPlayerMap;
 
-    private ArrayList<ServerConnection> connectedClients; //TODO PER ALE: le ServerConnection , chiamate connectedCLientappresentano 2 cose:
-                                                            // SIA gli Observable di Controller (le connessioni, infatti, dovranno far arrivare le scelte del client (view) sino al controller)
-                                                            // SIA il modo con cui il controller SELEZIONA la view. Infatti, essendo remota, la view non può essere invocata, e devo perciò comunicare tramite eventi (ServerToClientCommand) che invio grazie al metodo sendCommand() di ServerConnection
-                                                            // in particolare: selezionare la view significa scegliere le cose da mostrare. All'inizio della partita, ad esempio, verranno mostrate le schermate per la scelta delle windowPatternCard. la view riceve il comando, visualizza, e sceglie la carta rispondendo con un nuovo comando che arriva al CONTROLLER, perchè deve essere VALIDATO (può andare bene oppure no). Il controller CONTROLLA proprio perchè convalida le mosse del giocatore. Questo l'aveva detto anche Gulino quando parlava del Controller
+    private ArrayList<Player> orderedPlayers;
+    private ArrayList<Player> unitializedOrderedPlayers;
+
+    private ArrayList<ServerConnection> connectedClients; //le ServerConnection , chiamate connectedCLientappresentano 2 cose:
+    // SIA gli Observable di Controller (le connessioni, infatti, dovranno far arrivare le scelte del client (view) sino al controlle// SIA il modo con cui il controller SELEZIONA la view. Infatti, essendo remota, la view non può essere invocata, e devo perciò comunicare tramite eventi (ServerToClientCommand) che invio grazie al metodo sendCommand() di ServerConnection
+    // in particolare: selezionare la view significa scegliere le cose da mostrare. All'inizio della partita, ad esempio, verranno mostrate le schermate per la scelta delle windowPatternCard. la view riceve il comando, visualizza, e sceglie la carta rispondendo con un nuovo comando che arriva al CONTROLLER, perchè deve essere VALIDATO (può andare bene oppure no). Il controller CONTROLLA proprio perchè convalida le mosse del giocatore. Questo l'aveva detto anche Gulino quando parlava del Controller
+    /**
+     * ArrayList contains clients which are temporally disconnected and pass automatically their turn
+     */
+
+    /**
+     * Represent current player. That is necessary to know which is the player i'm expecting an answer
+     */
+    private Player currentPlayer;
+
     private ArrayList<ServerConnection> disconnectedClients;
 
     private int roundNumber;
 
     private Server server;
 
+
     public Controller(ArrayList<ServerConnection> connectedClients, Server server) {
         // Creo l'hashmap
-        playerClientConnectionMap = new HashMap<>();
+        playerServerConnectionMap = new HashMap<>();
+        serverConnectionPlayerMap = new HashMap<>();
+
         int i = 0;
-        orderedPlayers = new ArrayList<>();
+        unitializedOrderedPlayers = new ArrayList<>();
         //TODO vedi se funziona
         this.connectedClients = (ArrayList<ServerConnection>) connectedClients.clone();
         while (!connectedClients.isEmpty()){
             System.out.println("Entra n"+ i);
             orderedPlayers.add(new Player(connectedClients.get(0).getUsername()));
-            playerClientConnectionMap.put(orderedPlayers.get(i), connectedClients.remove(0));
+            playerServerConnectionMap.put(orderedPlayers.get(i), connectedClients.remove(0));
             i++;
         }
-        this.model = new Model(orderedPlayers);
+        //Filling the other map
+        for(HashMap.Entry<Player, ServerConnection> entry : playerServerConnectionMap.entrySet()){
+            serverConnectionPlayerMap.put(entry.getValue(), entry.getKey());
+        }
+
+        this.model = new Model(unitializedOrderedPlayers);
         this.roundNumber = 0;
         this.server = server;
 
@@ -62,20 +81,26 @@ public class Controller implements Observer{ //Observer perchè osserva la View 
         initializeGame();
     }
 
-
-    /**
-     * do per scontato che il Model sia già stato costruito
-     * @param orderedPlayers
-     */
-
     /**
      * It calls initializePlayers() and setInitialPlayer()
      */
     public void initializeGame() {
-        //TODO Deve iviare un comando che avvia la View e fa scegliere agli utenti Le WindowPatternCard
+        //TODO Deve inviare un comando che avvia la View e fa scegliere agli utenti Le WindowPatternCard
         ServerToClientCommand command = new ChooseWindowPatternCardCommand();
         sendCommandToAllPlayers(command);
     }
+
+    //Le view per ogni giocatore sono le stesse, con l'eccezione che viene passata senza le PrivateObjectiveCard dell'avversario e
+    //senza la dicebag
+
+    /**
+     * Method that uses the Model to update view's personal model
+     * @param model
+     */
+    public void update(Model model){
+        sendCommandToAllPlayers(new RefreshBoardCommand(model, "RefreshBoardCommand"));
+    }
+
 
     /**
      * Call methods for starting the board of each player
@@ -84,7 +109,7 @@ public class Controller implements Observer{ //Observer perchè osserva la View 
      * ...
      */
     public void initializePlayers() {
-
+        //sendCommandToAllPlayers(new Choos..);
     }
 
     /**
@@ -92,6 +117,7 @@ public class Controller implements Observer{ //Observer perchè osserva la View 
      * eventually, if every player played twice, it calls passRound()
      */
     public void passTurn() {
+
     }
 
     /**
@@ -99,6 +125,7 @@ public class Controller implements Observer{ //Observer perchè osserva la View 
      * eventually calls endGame if rounds are 10
      */
     public void passRound() {
+
     }
 
 
@@ -202,8 +229,8 @@ public class Controller implements Observer{ //Observer perchè osserva la View 
      * Generally returns true if need ad allowance to perform a command
      * @return
      */
-    public boolean isAllowed(){
-        return true;
+    public boolean isAllowed(Player player){
+        return player==currentPlayer;
     }
 
     public void sendCommandToAllPlayers(ServerToClientCommand command){
@@ -231,10 +258,6 @@ public class Controller implements Observer{ //Observer perchè osserva la View 
      * update is called by the Model only
      * i have to update every client's model
      */
-    @Override //TODO PER ALE: metodo dell'observer: lui fa l'update
-    public void update(Observable a, Object o) { //Metodo dell'Observer (controller) che è notificato dalla view. Sempre per il discorso che la view è remota e non accesibile, il metodo update è chiamato dalle connessioni (ServerConnection) che riceve i comandi tramite ClientConnection (che, a sua volta li ha ricevuti da ClientNetworkHandler che a sua volta li ha ricevuti da View)
-        //ATTENZIONE: Questo metodo è implementato IN TUTTI I METODI DI TIPO APPLYCOMMAND!!!!! (il discorso del BindingDinamico)
-    }
 
     public void notifyWinner(Player p){
 
@@ -264,16 +287,45 @@ public class Controller implements Observer{ //Observer perchè osserva la View 
      *
      * If a command is invalid, I catch an exception and send to the client itself a new AskMoveCommand()
      */
+
+    public void update(ServerConnection connection, ClientToServerCommand command){
+        String words[] = command.getMessage().split(" ");
+        //TODO complete
+        switch(words[1]){
+            case("Passa Turn"):
+                ;
+                break;
+            case("ok"):
+                //applyClientCommand.....//TODO: cambio da serverConnection a Player ogni metodo applyCommand
+                ;
+                break;
+            default:
+                ;//InvalidInput
+                break;
+        }
+
+    }
+
     public void applyClientCommand(Observable serverConnection, ClientToServerCommand command){
         System.out.println("Chiamato questo...");
 
     }
 
     public void applyClientCommand(Observable serverConnection, UpdateUsernameCommand command){
-        System.out.println("Arrivato username che si chiama"+ command.getUsername());
+        System.out.println("Arrivato username che si chiama"+ command.getMessage());
     }
 
-    public void applyClientCommand(Observable serverConnection, ChosenToolCardCommand command){
+    public void applyClientCommand(Observable serverConnection, MoveChoiceToolCardCommand command){
+        //check if the move is correct
+
+        Player player = serverConnectionPlayerMap.get(serverConnection);
+        if (isAllowed(player)){
+            //Check if correct move
+            //command.ge
+            //Catch null pointer.. (se il dado non è presente nella draftpool
+            //player.getWindowPatternCard().placeDie()//TODO...
+
+        }
 
     }
 

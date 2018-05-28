@@ -208,17 +208,17 @@ public class WindowPatternCard {
         for (int i = 0; i < schema.size(); i++) {
             try {
                 if (schema.get(i).getAssociatedDie() == null) {
-                    printedCard.concat("noDie");
+                    printedCard+= "noDie";
                 } else {
-                    printedCard.concat(schema.get(i).getAssociatedDie().getColor() + "," + schema.get(i).getAssociatedDie().getValue());
+                    printedCard += schema.get(i).getAssociatedDie().getColor() + "," + schema.get(i).getAssociatedDie().getValue();
                 }
             } catch (EmptyCellException e) {
                 e.printStackTrace();
             }
             if ((i + 1) % 5 == 0) {
-                printedCard.concat("\n");
+                printedCard += "\n";
             }
-            printedCard.concat("\t");
+            printedCard += "\t";
         }
         return printedCard;
     }
