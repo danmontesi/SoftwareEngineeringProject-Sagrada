@@ -30,16 +30,7 @@ public class ParserPublicObjectiveCard {
                 Constructor<?> constructor = clazz.getConstructor(String.class, String.class, Integer.class);
                 PublicObjectiveCard instance = (PublicObjectiveCard)constructor.newInstance(name, description, score);
                 cards.add(instance);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         }

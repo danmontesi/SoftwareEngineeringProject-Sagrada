@@ -18,12 +18,13 @@ public class GameMatchTest {
    Player p2 = new Player("Antonio");
 
    @Test
-    public void setUp(){
-       ArrayList<Player> arrayPlayer = new ArrayList<>();
-       arrayPlayer.add(p1);
-       arrayPlayer.add(p2);
-       model = new Model(arrayPlayer);
-
+    public void setUp() {
+      ArrayList<Player> arrayPlayer = new ArrayList<>();
+      arrayPlayer.add(p1);
+      arrayPlayer.add(p2);
+   }
+       //model = new Model(arrayPlayer);
+/*
        assertEquals(2, model.getGamePlayers().size());
        assertEquals(2, model.getConnectedPlayers().size());
        assertEquals(3, model.getExtractedPublicObjectiveCard());
@@ -43,12 +44,12 @@ public class GameMatchTest {
         model.nextRound();
 
         assertEquals(8, model.getGameRounds().size());
-   }*/
+   }
 
    //Testing Player
    @Before
     public void assignCardsToPlayers(){
 
    }
-
+*/
 }

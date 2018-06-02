@@ -1,67 +1,42 @@
 package it.polimi.se2018.server_to_client_command;
 
+import com.sun.org.apache.regexp.internal.RE;
+import it.polimi.se2018.Model;
+import it.polimi.se2018.network.ClientConnection;
+
 import java.io.Serializable;
 
-public abstract class  ServerToClientCommand implements Serializable {
+public abstract class ServerToClientCommand implements Serializable {
     /**
      * This is the abstract class representing all possible command from Server to Client
      */
+    private String message;
 
-        /** The Constant serialVersionUID. */
-        private static final long serialVersionUID = -6460847901998831472L;
+    /** The Constant serialVersionUID. */
+    private static final long serialVersionUID = -6460847901998831472L;
+
+    public String getMessage(){
+        return message;
+    }
 
 
     }
 
-class AskAuthenticationCommand{
 
-}
-
-class AuthenticatedCorrectlyCommand{
-
-}
-
-class ChooseToolCardCommand{
-
-}
-
-class InitializeTurnCommand{
-
-}
-
-
-/** Eccetera
- *
- */
 /*
-    AskAuthenticationCommand.java
-        AskFinishRoundOrDiscardCommand.java	IMPLEMENTED leader cards activation requirements control and ADDED so…	10 months ago
-        AskForExcommunicationPaymentCommand.java	IMPLEMENTED leader cards activation requirements control and ADDED so…	10 months ago
-        AskForReconnectionCommand.java	SOLVING RECONNECTION errors	10 months ago
-        AskMoveCommand.java	IMPLEMENTED leader cards activation requirements control and ADDED so…	10 months ago
-        AskPrivilegeChoiceCommand.java	Moved tests, Created Automatic Javadoc to Improve later	10 months ago
-        AskSatanMoveCommand.java	FIXED fifth player bug	10 months ago
-        AssignColorCommand.java	IMPLEMENTED leader cards activation requirements control and ADDED so…	10 months ago
-        AuthenticatedCorrectlyCommand.java	Finished implementing creation and refresh of accounts	10 months ago
-        ChatMessageServerCommand.java	Moved tests, Created Automatic Javadoc to Improve later	10 months ago
-        ChooseLeaderCardCommand.java	Moved tests, Created Automatic Javadoc to Improve later	10 months ago
-        ChooseProductionExchangeEffectsCommand.java	Moved tests, Created Automatic Javadoc to Improve later	10 months ago
-        CloseClientCommand.java	Moved tests, Created Automatic Javadoc to Improve later	10 months ago
-        InitializeMatchCommand.java	IMPLEMENTED leader cards activation requirements control and ADDED so…	10 months ago
-        InitializeTurnCommand.java	GUI branch compromised, do not merge into master from that branch, st…	10 months ago
-        InvalidActionCommand.java	Moved tests, Created Automatic Javadoc to Improve later	10 months ago
-        InvalidCommand.java	Moved tests, Created Automatic Javadoc to Improve later	10 months ago
-        LoseCommand.java	Moved tests, Created Automatic Javadoc to Improve later	10 months ago
-        NotifyExcommunicationCommand.java	Moved tests, Created Automatic Javadoc to Improve later	10 months ago
-        NotifySatanActionCommand.java	GUI branch compromised, do not merge into master from that branch, st…	10 months ago
-        OpponentStatusChangeCommand.java	GUI branch compromised, do not merge into master from that branch, st…	10 months ago
-        PlayerDisconnectedCommand.java	MODIFIED: you can take more than 1 privilege in GUI now, saved gamepl…	10 months ago
-        PlayerStatusChangeCommand.java	GUI branch compromised, do not merge into master from that branch, st…	10 months ago
-        RefreshBoardCommand.java	IMPLEMENTED leader cards activation requirements control and ADDED so…	10 months ago
-        RoundTimerExpiredCommand.java	IMPLEMENTED leader cards activation requirements control and ADDED so…	10 months ago
-        ServerToClientCommand.java	Moved tests, Created Automatic Javadoc to Improve later	10 months ago
-        StartTurnCommand.java	Moved tests, Created Automatic Javadoc to Improve later	10 months ago
-        WinCommand.java	Moved tests, Created Automatic Javadoc to Improve later	10 months ago
-        WrongPasswordCommand.java
+LEGENDA TOOL
+Tool1: aumenta il valore di un dado che scegli dalla riserva di 1
+Tool2 : Muovo un dado senza restrizioni di colore
+Tool3: " " senza restizioni di valore (numero) del dado
+Tool4: Muovi 2 dadi con tutte le restrizioni standard
+Tool5: scambio un dado della riserva con uno del roundTrack
+Tool6: scegli un dado della riserva e ritiralo, poi devi posizionarlo
+Tool7: rilancio i dadi della riserva
+Tool8: anticipa il secondo turno del round
+Tool9: pongo(dalla riserva) un dado senza restrizione di Adiacenza
+Tool10: flip the die
+Tool11: metti un dado nel sacco dadi, poi prendine uno e scegli il valore, poi piazzalo!
+Tool12: muovi uno o due dadi dello stesso colore di un dado a scelta del RoundTrack,  sul tuo Pattern in un'altra posizione che rispetti tutte le restrizioni
+*/
 
-        */
+

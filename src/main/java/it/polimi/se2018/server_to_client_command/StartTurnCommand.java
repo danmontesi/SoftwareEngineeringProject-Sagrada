@@ -1,5 +1,8 @@
 package it.polimi.se2018.server_to_client_command;
 
 public class StartTurnCommand{
+    /**
+     * String containents the Name of the command
+     */
 
 }
