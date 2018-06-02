@@ -1,13 +1,9 @@
-package it.polimi.se2018.MVC;
+package it.polimi.se2018.MVC.deprecated_files;
 
-import com.sun.corba.se.pept.transport.ContactInfo;
 import it.polimi.se2018.*;
-import it.polimi.se2018.Exceptions.EmptyCellException;
-import it.polimi.se2018.Parser.ParserWindowPatternCard;
+import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.client_to_server_command.*;
-import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.network.Server;
-import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.server_to_client_command.*;
 import it.polimi.se2018.toolcards.CircularCutter;

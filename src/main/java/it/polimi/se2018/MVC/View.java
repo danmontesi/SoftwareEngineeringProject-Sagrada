@@ -4,6 +4,7 @@ import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
 import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
+import it.polimi.se2018.network.client.ClientController;
 import it.polimi.se2018.toolcards.ToolCard;
 
 import java.util.ArrayList;
@@ -11,11 +12,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class View extends Observable implements Observer{ //VIEW: Osservata da Controller, Osserva Model
-    private ClientNetworkHandler clientNetworkHandler;
+    private ClientController clientNetworkHandler;
     private String playerUsername;
-    private ClientNetworkHandler observer;
+    private ClientController observer;
 
-    public void addController(ClientNetworkHandler controller){
+    public void addController(ClientController controller){
 
     }
 
@@ -31,6 +32,10 @@ public class View extends Observable implements Observer{ //VIEW: Osservata da C
      */
     public void initializeRound(){
 
+
+    }
+
+    public void setPlayerModel(String modelString){
 
     }
 

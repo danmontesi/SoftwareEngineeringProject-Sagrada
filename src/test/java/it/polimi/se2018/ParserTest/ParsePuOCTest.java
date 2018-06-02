@@ -1,6 +1,6 @@
 package it.polimi.se2018.ParserTest;
 
-import it.polimi.se2018.Parser.ParserPublicObjectiveCard;
+import it.polimi.se2018.parser.ParserPublicObjectiveCard;
 import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import org.junit.Test;
 

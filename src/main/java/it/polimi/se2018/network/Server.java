@@ -1,6 +1,6 @@
 package it.polimi.se2018.network;
 
-import it.polimi.se2018.MVC.Controller;
+import it.polimi.se2018.MVC.deprecated_files.Controller;
 import it.polimi.se2018.network.server.ServerConnection;
 
 import java.util.ArrayList;

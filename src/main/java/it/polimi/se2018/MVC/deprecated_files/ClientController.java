@@ -1,16 +1,13 @@
-package it.polimi.se2018.MVC;
+package it.polimi.se2018.MVC.deprecated_files;
 
-import it.polimi.se2018.Die;
+import it.polimi.se2018.MVC.View;
 import it.polimi.se2018.Model;
-import it.polimi.se2018.Parser.ParserWindowPatternCard;
-import it.polimi.se2018.Player;
+import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.client_to_server_command.*;
-import it.polimi.se2018.network.ServerConnection;
-import it.polimi.se2018.network.Server;
+import it.polimi.se2018.network.server.ServerConnection;
 import it.polimi.se2018.server_to_client_command.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class ClientController {

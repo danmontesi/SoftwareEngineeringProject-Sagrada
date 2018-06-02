@@ -2,7 +2,7 @@ package it.polimi.se2018.MatchTest;
 
 import it.polimi.se2018.COLOR;
 import it.polimi.se2018.Die;
-import it.polimi.se2018.Parser.ParserWindowPatternCard;
+import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.WindowPatternCard;
 import org.junit.Before;
 import org.junit.Test;

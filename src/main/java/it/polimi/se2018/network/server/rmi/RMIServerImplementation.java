@@ -11,14 +11,13 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RMIServerImplementation extends UnicastRemoteObject implements RMIServerInterface {
 
-    private Controller controller;
+    //TODO devo hashmap - controller della partita
+
 
     public RMIServerImplementation() throws RemoteException {
         //port:0 means port is chosen automatically
         super(0);
     }
-
-
 
     @Override
     public void addClient(RMIClientInterface client) throws RemoteException {
@@ -29,8 +28,12 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIS
 
     public void send(ClientToServerCommand command) {
         //TODO: Da verificarne la fattibilità
-        Controller.stampa(command);
+
+        //TODO Bisogna prendere il controller dalla hashmap del server
+        //L'hashmap è fatta così: HashMap<ClientConnection, Controller> , per ogni connessione, il suo controller
+        Controller.update(this, command);
     }
+
     @Override
     public void rmiSend(ClientToServerCommand command) throws RemoteException {
         send(command);

@@ -1,14 +1,10 @@
 package it.polimi.se2018.MatchTest;
 
 import it.polimi.se2018.*;
-import it.polimi.se2018.MVC.Controller;
 import it.polimi.se2018.network.ClientConnection;
-import org.junit.Before;
 import org.junit.Test;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
 
 public class GameMatchTest {
 

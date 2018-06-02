@@ -1,16 +1,10 @@
 package it.polimi.se2018.network;
 
-import it.polimi.se2018.MVC.CLIView;
-import it.polimi.se2018.MVC.ClientNetworkHandler;
-import it.polimi.se2018.MVC.GUIView;
-import it.polimi.se2018.MVC.View;
-import it.polimi.se2018.network.rmi.ClientConnectionRMI;
-import it.polimi.se2018.network.socket.ClientConnectionSocket;
-
 import java.util.Scanner;
 
+//TODO: To do better, is an example of connection from a client
 public class ClientLauncher {
-
+/*
     public static void main(String args[]){
         ClientConnection connection;
         View view;
@@ -43,7 +37,7 @@ public class ClientLauncher {
             System.out.println("andrebbe sostituito da RMI");
         }
 
-        clientNetworkHandler.addConnection(connection);
+        //clientNetworkHandler.(connection);
         view.addController(clientNetworkHandler);
 
         try {
@@ -55,5 +49,5 @@ public class ClientLauncher {
 
     }
 
-
+*/
 }

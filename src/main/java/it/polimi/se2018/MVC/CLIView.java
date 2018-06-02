@@ -4,6 +4,7 @@ import it.polimi.se2018.Model;
 import it.polimi.se2018.Player;
 import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.client_to_server_command.UpdateUsernameCommand;
+import it.polimi.se2018.network.client.ClientController;
 import it.polimi.se2018.toolcards.ToolCard;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class CLIView extends View {
     private Scanner scan = new Scanner(System.in);
 
 
-    private ClientNetworkHandler observer; //L'observer della view è il Controller, che però deve essere raggiunto dal network(ClientNetworkHandler) (ovvero, dalle ClientConnection e ServerConnection)
+    private ClientController observer; //L'observer della view è il Controller, che però deve essere raggiunto dal network(ClientNetworkHandler) (ovvero, dalle ClientConnection e ServerConnection)
 
     /**
      * Can be used for mark the status as :
@@ -36,7 +37,7 @@ public class CLIView extends View {
     private String playerState;
 
 
-    public void addController(ClientNetworkHandler controller){
+    public void addController(ClientController controller){
         this.observer = controller;
     }
     /**
@@ -155,7 +156,7 @@ public class CLIView extends View {
     }
 
     public void update(Model updatedModel){ //Osserva il Model e con Update, fa l'update del model locale
-        refreshBoard(updatedModel);
+        //refreshBoard(updatedModel);
     }
 
     public void addObserver(){
@@ -174,7 +175,7 @@ public class CLIView extends View {
 
     public void askPlayerMove(){
         System.out.println("Chose which die you prefere to pick from the DraftPool");
-        currentModel.getCurrentRound().getDraftPool().toString();
+        //currentModel.getCurrentRound().getDraftPool().toString();
         Scanner scan = new Scanner(System.in);
         int dieChoose = scan.nextInt();
 
@@ -195,7 +196,7 @@ public class CLIView extends View {
 
     public void showWaitForYourTurn(Model model){
         model.toString();
-        System.out.println("You have to wait until player" + model.getCurrentRound().getCurrentPlayer() + "finishes");
+        //System.out.println("You have to wait until player" + model.getCurrentRound().getCurrentPlayer() + "finishes");
     }
 
 

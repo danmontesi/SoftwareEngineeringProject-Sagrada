@@ -18,7 +18,6 @@ public class SocketVirtualClient extends Thread  implements ClientConnection {
     ObjectOutputStream output;
     ObjectInputStream input;
 
-
     public SocketVirtualClient(Socket socket) {
         this.socket = socket;
         try {
@@ -47,8 +46,8 @@ public class SocketVirtualClient extends Thread  implements ClientConnection {
         while(!socket.isClosed()){
             try {
                 ClientToServerCommand command = (ClientToServerCommand) input.readObject();
-                Controller.stampa(command);
-                //TODO:gestione comando
+                Controller.update(this, command);
+                //TODO : gestione comando -> prendo il controller dall'hash map nel server, (Come in RMIServerImplementation)
             } catch (IOException e) {
                 //if the connection has not been stopped compliantly but consequently to
                 //a thrown exception, it is necessary to close the connection with socket.close()
