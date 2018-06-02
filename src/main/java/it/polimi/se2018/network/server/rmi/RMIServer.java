@@ -1,4 +1,4 @@
-package server.rmi;
+package it.polimi.se2018.network.server.rmi;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

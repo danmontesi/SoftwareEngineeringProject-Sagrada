@@ -1,7 +1,8 @@
-package client.socket;
+package it.polimi.se2018.network.client.socket;
 
-import commands.ClientToServerCommand;
-import server.ServerConnection;
+
+import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
+import it.polimi.se2018.network.server.ServerConnection;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

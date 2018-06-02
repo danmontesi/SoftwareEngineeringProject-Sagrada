@@ -1,9 +1,10 @@
-package server.rmi;
+package it.polimi.se2018.network.server.rmi;
 
-import client.ClientConnection;
-import client.rmi.RMIClientInterface;
-import commands.ServerToClientCommand;
-import server.Server;
+
+import it.polimi.se2018.network.client.ClientConnection;
+import it.polimi.se2018.network.client.rmi.RMIClientInterface;
+import it.polimi.se2018.network.server.Server;
+import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
 
 import java.rmi.RemoteException;
 

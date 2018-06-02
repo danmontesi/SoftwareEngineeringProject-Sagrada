@@ -1,8 +1,8 @@
 package it.polimi.se2018;
 
-import it.polimi.se2018.Parser.ParserPrivateObjectiveCard;
-import it.polimi.se2018.Parser.ParserPublicObjectiveCard;
-import it.polimi.se2018.Parser.ParserWindowPatternCard;
+import it.polimi.se2018.parser.ParserPrivateObjectiveCard;
+import it.polimi.se2018.parser.ParserPublicObjectiveCard;
+import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.toolcards.ToolCard;
 

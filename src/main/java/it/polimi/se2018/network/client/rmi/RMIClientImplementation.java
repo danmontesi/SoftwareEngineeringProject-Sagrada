@@ -1,6 +1,7 @@
-package client.rmi;
+package it.polimi.se2018.network.client.rmi;
 
-import commands.ServerToClientCommand;
+
+import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
 
 import java.util.Observable;
 

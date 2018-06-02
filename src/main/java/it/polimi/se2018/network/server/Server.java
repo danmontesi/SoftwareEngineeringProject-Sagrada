@@ -1,11 +1,12 @@
-package server;
+package it.polimi.se2018.network.server;
 
-import client.ClientConnection;
-import client.rmi.RMIClientInterface;
-import server.rmi.RMIServer;
-import server.rmi.RMIVirtualClient;
-import server.socket.SocketServer;
-import server.socket.VirtualClient;
+
+import it.polimi.se2018.network.client.ClientConnection;
+import it.polimi.se2018.network.client.rmi.RMIClientInterface;
+import it.polimi.se2018.network.server.rmi.RMIVirtualClient;
+import it.polimi.se2018.network.server.rmi.RMIServer;
+import it.polimi.se2018.network.server.socket.SocketServer;
+import it.polimi.se2018.network.server.socket.SocketVirtualClient;
 
 import java.net.Socket;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class Server {
     }
 
     public static void addClientInterface(Socket socket){
-        VirtualClient vc = new VirtualClient(socket);
+        SocketVirtualClient vc = new SocketVirtualClient(socket);
         clients.add(vc);
         vc.start();
     }

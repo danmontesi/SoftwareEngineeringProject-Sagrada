@@ -1,9 +1,5 @@
 package it.polimi.se2018.server_to_client_command;
 
-import com.sun.org.apache.regexp.internal.RE;
-import it.polimi.se2018.Model;
-import it.polimi.se2018.network.ClientConnection;
-
 import java.io.Serializable;
 
 public abstract class ServerToClientCommand implements Serializable {

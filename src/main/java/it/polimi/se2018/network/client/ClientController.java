@@ -1,4 +1,4 @@
-package client;
+package it.polimi.se2018.network.client;
 
 import java.util.Observable;
 import java.util.Observer;

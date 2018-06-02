@@ -25,5 +25,6 @@ public class ParsePuOCTest {
         } catch (IOException e) {
             System.out.println("problemino");
         }
+        System.out.println("ciao");
     }
 }

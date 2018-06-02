@@ -1,9 +1,9 @@
-package client;
+package it.polimi.se2018.network.client;
 
-import client.rmi.RMIClient;
-import client.socket.SocketClient;
-import commands.LoginRequest;
-import server.ServerConnection;
+
+import it.polimi.se2018.network.client.rmi.RMIClient;
+import it.polimi.se2018.network.client.socket.SocketClient;
+import it.polimi.se2018.network.server.ServerConnection;
 
 import java.util.Scanner;
 
@@ -26,10 +26,6 @@ public class Client {
                 System.out.println("Connected with RMI");
                 break;
         }
-
-        String username = scanner.nextLine();
-        server.send(new LoginRequest(username));
-
 
 
     }

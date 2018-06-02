@@ -1,7 +1,8 @@
-package client.socket;
+package it.polimi.se2018.network.client.socket;
 
-import client.ClientConnection;
-import commands.ServerToClientCommand;
+
+import it.polimi.se2018.network.client.ClientConnection;
+import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
 
 public class SocketClientImplementation implements ClientConnection {
 

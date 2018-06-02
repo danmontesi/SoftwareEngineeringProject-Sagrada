@@ -1,24 +1,25 @@
 package it.polimi.se2018.network.server.socket;
 
-import client.ClientConnection;
-import commands.ClientToServerCommand;
-import commands.ServerToClientCommand;
-import server.Controller;
-import server.Server;
+
+import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
+import it.polimi.se2018.network.client.ClientConnection;
+import it.polimi.se2018.network.server.Controller;
+import it.polimi.se2018.network.server.Server;
+import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class VirtualClient extends Thread  implements ClientConnection {
+public class SocketVirtualClient extends Thread  implements ClientConnection {
 
     Socket socket;
     ObjectOutputStream output;
     ObjectInputStream input;
 
 
-    public VirtualClient(Socket socket) {
+    public SocketVirtualClient(Socket socket) {
         this.socket = socket;
         try {
             output = new ObjectOutputStream(socket.getOutputStream());
