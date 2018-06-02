@@ -6,6 +6,8 @@ public abstract class ClientToServerCommand implements Serializable {
 
     private String message;
 
+    private String username;
+
     private static final long serialVersionUID = -6460847931998831472L;
     /**
      * Represent all possible methods from Client to Server
@@ -18,6 +20,14 @@ public abstract class ClientToServerCommand implements Serializable {
 
     public String getMessage(){
         return message;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
 

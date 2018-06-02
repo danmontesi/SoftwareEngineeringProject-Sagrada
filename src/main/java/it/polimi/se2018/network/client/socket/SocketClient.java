@@ -15,10 +15,13 @@ public class SocketClient implements ServerConnection {
     Socket socket;
     ObjectOutputStream output;
     ObjectInputStream input;
+    //username identificativo
+    String username;
 
     @Override
     public void send(ClientToServerCommand command) {
         try {
+            command.setUsername(username);
             output.writeObject(command);
             output.flush();
         } catch (IOException e) {
@@ -36,7 +39,7 @@ public class SocketClient implements ServerConnection {
                 while (true){
                     try {
                         input.readObject();
-                        //bisogna passare questo comando al controller
+                        //TODO: bisogna passare questo comando al controller
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {

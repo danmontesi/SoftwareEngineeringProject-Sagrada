@@ -15,10 +15,14 @@ public class RMIClient implements ServerConnection {
 
     Registry registry;
     RMIServerInterface server;
+    //username identificativo
+    String username;
 
     @Override
     public void send(ClientToServerCommand command) {
         try {
+            //TODO: Gestire l'username nullo
+            command.setUsername(username);
             server.rmiSend(command);
         } catch (RemoteException e) {
             e.printStackTrace();

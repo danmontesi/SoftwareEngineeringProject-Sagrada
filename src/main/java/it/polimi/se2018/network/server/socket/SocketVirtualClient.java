@@ -3,7 +3,6 @@ package it.polimi.se2018.network.server.socket;
 
 import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.network.client.ClientConnection;
-import it.polimi.se2018.network.server.Controller;
 import it.polimi.se2018.network.server.Server;
 import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
 
@@ -46,8 +45,7 @@ public class SocketVirtualClient extends Thread  implements ClientConnection {
         while(!socket.isClosed()){
             try {
                 ClientToServerCommand command = (ClientToServerCommand) input.readObject();
-                Controller.update(this, command);
-                //TODO : gestione comando -> prendo il controller dall'hash map nel server, (Come in RMIServerImplementation)
+                Server.handle(command);
             } catch (IOException e) {
                 //if the connection has not been stopped compliantly but consequently to
                 //a thrown exception, it is necessary to close the connection with socket.close()
