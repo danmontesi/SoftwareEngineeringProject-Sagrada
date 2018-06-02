@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author danmontesi
  */
-/*
+
 public class PublicObjectiveCardsTest {
 
     ParserPublicObjectiveCard ppoc = new ParserPublicObjectiveCard();
@@ -30,7 +30,7 @@ public class PublicObjectiveCardsTest {
 
     @Before
     public void setUp() {
-        ArrayList<Cell> schema = new ArrayList<>();
+        ArrayList<Cell> schema;
 
         ArrayList<WindowPatternCard> mycards = null;
 
@@ -103,7 +103,7 @@ public class PublicObjectiveCardsTest {
         System.out.println(mycards.get(0).toString());
     }
 
-/*
+
     @Test
     public void setTestCards() {
         try {
@@ -111,6 +111,7 @@ public class PublicObjectiveCardsTest {
         } catch (IOException e) {
             System.out.println("problemino");
         }
+        System.out.println("ciao");
     }
 
     @Test
@@ -161,4 +162,4 @@ public class PublicObjectiveCardsTest {
 
 
 }
-*/
+

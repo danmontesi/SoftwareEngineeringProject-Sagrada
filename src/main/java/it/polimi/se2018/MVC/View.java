@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-public abstract class View extends Observable implements Observer{ //VIEW: Osservata da Controller, Osserva Model
+public class View extends Observable implements Observer{ //VIEW: Osservata da Controller, Osserva Model
     private ClientNetworkHandler clientNetworkHandler;
     private String playerUsername;
     private ClientNetworkHandler observer;
@@ -22,7 +22,7 @@ public abstract class View extends Observable implements Observer{ //VIEW: Osser
     /**
      * Initialize Graphic or Command Line User Interface
      */
-    public void initializeGame(){
+    public void showStartTurnMessageBox(){
         //Calls chooseWindowPatternCard(..)
     }
 
@@ -49,19 +49,20 @@ public abstract class View extends Observable implements Observer{ //VIEW: Osser
 
     }
 
-    public void askToolCardToUse(ArrayList<ToolCard> cards){
+    public void showChooseToolCardPanel(ArrayList<WindowPatternCard> wpc){
 
     }
+
 
     public void askPlayerMove(){
 
     }
 
-    public void showWin(String rankingString){
+    public void showWin(ArrayList<String> scores){
 
     }
 
-    public void showLose(String rankingString){
+    public void showLose(Integer position, ArrayList<String> scores){
 
     }
 
@@ -81,7 +82,7 @@ public abstract class View extends Observable implements Observer{ //VIEW: Osser
     }
 
 
-    public void showIncorrectAuthenthication(String username){
+    public void showIncorrectAuthenthication(String message){
 
     }
 
@@ -100,15 +101,14 @@ public abstract class View extends Observable implements Observer{ //VIEW: Osser
 
     }
 
-    public void refreshBoard(Model model){
-
-    }
-    public void update(Model obj){ //Osserva il Model e con Update, fa l'update del model locale
-        refreshBoard(obj);
+    public void update(Model playerModel){ //Osserva il Model e con Update, fa l'update del model locale
+        //Calls the right method to update the Graphical Board;
+        //The model is already updated by the ClientController, no worries about that
+        //In case there is a CLI, does anything
     }
 
     public void notify(ClientToServerCommand command){ //da passare all'observer
-        observer.update(command);
+        //observer.update(command);
     }
 
     public void addObserver(){ //Used just to set the connectionHandler
@@ -117,7 +117,14 @@ public abstract class View extends Observable implements Observer{ //VIEW: Osser
     public void showWaitForYourTurn(){
 
     }
+    public void showInvalidInput(String message){
 
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }
 /*
 <<Interface>>

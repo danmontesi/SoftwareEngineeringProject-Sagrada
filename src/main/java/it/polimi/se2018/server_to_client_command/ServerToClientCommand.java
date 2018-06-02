@@ -6,19 +6,19 @@ import it.polimi.se2018.network.ClientConnection;
 
 import java.io.Serializable;
 
-public abstract class ServerToClientCommand implements Serializable {
+public class ServerToClientCommand implements Serializable {
     /**
      * This is the abstract class representing all possible command from Server to Client
      */
-    private String message;
+    protected String message;
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -6460847901998831472L;
 
+
     public String getMessage(){
         return message;
     }
-
 
     }
 

@@ -1,6 +1,6 @@
 package it.polimi.se2018.server_to_client_command;
 
-public class InvalidUseToolFirmPastryThinner extends ServerToClientCommand{
+public class InvalidUseToolFirmPastryThinner1 extends ServerToClientCommand{
     /**
      * Here, the player decides the value of the picked Die
      *

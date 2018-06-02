@@ -1,6 +1,6 @@
 package it.polimi.se2018.client_to_server_command;
 
-public class UseToolFirmPastryThinner1 extends ClientToServerCommand{
+public class UseToolFirmPastryThinner extends ClientToServerCommand{
     /**
      *
      * I HAVE TO GIVE THE PLAYER THE DIE PICKED FROM DICEBAG
@@ -16,9 +16,19 @@ public class UseToolFirmPastryThinner1 extends ClientToServerCommand{
      * Integer position(from 0 to 20)
      *
      */
+
+    /**
+     * Contains nameClass DRAFTPOOL/SCHEMA dieColor
+     */
     private String message;
 
-    public UseToolFirmPastryThinner1(String message) {
+    private Integer dieNewValue;
+
+    private Integer diePosition; //DraftPool/Schema
+
+    public UseToolFirmPastryThinner(String message, Integer dieNewValue, Integer diePosition) {
         this.message = message;
+        this.dieNewValue = dieNewValue;
+        this.diePosition = diePosition;
     }
 }

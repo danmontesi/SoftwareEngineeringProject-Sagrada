@@ -9,6 +9,7 @@ import it.polimi.se2018.toolcards.ToolCard;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
 
 
 /**
@@ -37,12 +38,20 @@ public class Model extends Observable{
 
     //Changed from ClientConnection to Players (The conotroller knows to which player correspond its Client)
     private ArrayList<Player> connectedPlayers;
-    private ArrayList<Player> disconnectedPlayers;
 
     private ArrayList<Player> gamePlayers;
+
     private RoundTrack roundTrack;
-    private Round currentRound;
-    private ArrayList<Round> gameRounds;
+
+    public DraftPool getDraftPool() {
+        return draftPool;
+    }
+
+    private DraftPool draftPool;
+
+    public void setDraftPool(ArrayList<Die> dice) {
+        this.draftPool = new DraftPool(dice);
+    }
 
     /**
      * Constructor: generates a game by
@@ -53,8 +62,7 @@ public class Model extends Observable{
      */
     public Model(ArrayList<Player> players){
         gamePlayers = players;
-        gameRounds = createRounds();
-        diceBag = DiceBag.getInstance();
+        diceBag = new DiceBag();
         roundTrack = new RoundTrack();
         // TODO CREATE ALL CARDS FROM JSON FILES
         ParserPrivateObjectiveCard parserPrivateObjectiveCard = new ParserPrivateObjectiveCard();
@@ -85,20 +93,10 @@ public class Model extends Observable{
         for (int i = 0; i < 3; i++) {
             extractedPublicObjectiveCard.add(publicObjectiveCardDeck.remove(0));
         }
+
         // ora aspetto che il controller esegua comandi
     }
 
-
-    /**
-     * Initializes all 10 rounds with all attributes except draftPool dice (they are extracted every time)
-     */
-    public ArrayList<Round> createRounds() {
-        ArrayList<Round> roundList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            roundList.add(new Round(i+1, gamePlayers.get(((i+1)%4)-1), gamePlayers, diceBag));
-        }
-        return roundList;
-    }
 
     public ArrayList<PublicObjectiveCard> getExtractedPublicObjectiveCard(){
         for (int i=0; i<3; i++){
@@ -106,6 +104,14 @@ public class Model extends Observable{
             extractedPublicObjectiveCard.set(i, publicObjectiveCardDeck.remove(index));
         }
         return extractedPublicObjectiveCard;
+    }
+
+    public ArrayList<Die> extractDraftPoolDice(int numPlayers){
+        ArrayList<Die> temp = new ArrayList<>();
+        for (int i = 0; i < 2*numPlayers+1; i++) {
+            temp.add(diceBag.extractDie());
+        }
+        return temp;
     }
 
     /**
@@ -128,34 +134,8 @@ public class Model extends Observable{
         return extractedToolCard;
     }
 
-    public Round getCurrentRound(){
-        return currentRound;
-    }
-
-    public Round getRound(int roundNumber){
-        return gameRounds.get(roundNumber);
-    }
-
     public RoundTrack getRoundTrack(){
         return roundTrack;
-    }
-
-    /**
-     * Adds a player to the disconnected ones
-     * @param pl to be added player
-     */
-    public void addDisconnectedPlayer(Player pl){
-        disconnectedPlayers.add(pl);
-        connectedPlayers.remove(pl);
-    }
-
-    /**
-     * Adds a player to the connected ones
-     * @param pl to be added player
-     */
-    public void addReconnectedPlayer(Player pl){
-        disconnectedPlayers.remove(pl);
-        connectedPlayers.add(pl);
     }
 
     /**
@@ -179,22 +159,10 @@ public class Model extends Observable{
         return gamePlayers;
     }
 
-    public ArrayList<Round> getGameRounds() {
-        return gameRounds;
-    }
-
     public DiceBag getDiceBag() {
         return diceBag;
     }
 
-
-    public ArrayList<Player> getConnectedPlayers() {
-        return connectedPlayers;
-    }
-
-    public ArrayList<Player> getDisconnectedPlayers() {
-        return disconnectedPlayers;
-    }
 
 
     public String stringModelRepresentationForPlayer(Player player){

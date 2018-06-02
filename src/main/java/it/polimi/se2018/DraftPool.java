@@ -9,19 +9,14 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Alessio Molinari, Nives Migotto
  */
 public class DraftPool {
-    private ArrayList<Die> dice = new ArrayList<>(10);
-    private DiceBag diceBag;
+    private ArrayList<Die> dice;
 
     /**
      * Constructor: generates a draftPool by taking from the dicebag 2 dice for each player + 1
-     * @param diceBag diceBag from which the dies are extracted
-     * @param playersNumber number of players
+     * @param dice dice to assign
      */
-    public DraftPool(DiceBag diceBag, int playersNumber) {
-        this.diceBag = diceBag;
-        for (int i=0; i<playersNumber*2+1; i++){
-            this.dice.add(diceBag.extractDie());
-        }
+    public DraftPool(ArrayList<Die> dice) {
+        this.dice = dice;
     }
 
     /**

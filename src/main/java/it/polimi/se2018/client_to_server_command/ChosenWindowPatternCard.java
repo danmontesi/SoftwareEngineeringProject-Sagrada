@@ -5,12 +5,12 @@ import it.polimi.se2018.network.ServerConnection;
 
 public class ChosenWindowPatternCard extends ClientToServerCommand{
 
-    private Integer toolNumberChosen;
-
+    /**
+     * Contains the message with NameClass + toolCardName
+     */
     private String message;
 
-    public ChosenWindowPatternCard(Integer toolNumberChosen, String message) {
-        this.toolNumberChosen = toolNumberChosen;
+    public ChosenWindowPatternCard(String message) {
         this.message = message;
     }
 }

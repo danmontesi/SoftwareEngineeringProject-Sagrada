@@ -18,11 +18,21 @@ public class ParserWindowPatternCard {
 
     private ParserSettings settings;
 
+    private ArrayList<WindowPatternCard> allCards;
+
     /**
      *
      * @return ArrayList of all WindowPatternCards contained in json file
      * @throws IOException
      */
+
+    public ParserWindowPatternCard(){
+        try {
+            this.allCards = parseCards();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public ArrayList<WindowPatternCard> parseCards() throws IOException {
         settings = new ParserSettings();
         JsonObject WPCCards = settings.extractJsonObject(WPC_JSON);
@@ -69,5 +79,15 @@ public class ParserWindowPatternCard {
             windowPatternCards.add(wpc);
         }
         return windowPatternCards;
+    }
+
+    public WindowPatternCard getCardFromName(String cardName) {
+        for (WindowPatternCard card : allCards) {
+            if (card.getCardName() == cardName)
+                return card;
+        }
+        //DEFAULT (non deve accadere
+        System.out.println("Problema: nome carda scorretto, torno la prima");
+        return allCards.get(0);
     }
 }

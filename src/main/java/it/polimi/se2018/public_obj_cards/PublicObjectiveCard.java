@@ -10,9 +10,9 @@ public abstract class PublicObjectiveCard { //Probably has to be an Interface fo
 
     protected String name;
     protected String description;
-    protected int score;
+    protected Integer score;
 
-    public PublicObjectiveCard(String name, String description, int score) {
+    public PublicObjectiveCard(String name, String description, Integer score) {
         this.name = name;
         this.description = description;
         this.score = score;

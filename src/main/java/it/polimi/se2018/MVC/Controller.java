@@ -1,22 +1,21 @@
 package it.polimi.se2018.MVC;
 
 import com.sun.corba.se.pept.transport.ContactInfo;
-import it.polimi.se2018.Model;
-import it.polimi.se2018.Player;
+import it.polimi.se2018.*;
+import it.polimi.se2018.Exceptions.EmptyCellException;
+import it.polimi.se2018.Parser.ParserWindowPatternCard;
 import it.polimi.se2018.client_to_server_command.*;
 import it.polimi.se2018.network.ClientConnection;
 import it.polimi.se2018.network.Server;
-import it.polimi.se2018.network.ServerConnection;
+import it.polimi.se2018.network.ClientConnection;
+import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.server_to_client_command.*;
 import it.polimi.se2018.toolcards.CircularCutter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
-public class Controller { //Observer perchè osserva la View tramite le classi di mezzo (ServerConnection)
+public class Controller { //Observer perchè osserva la View tramite le classi di mezzo (ClientConnection)
 
     /**
      * This is the main controller of the game
@@ -28,14 +27,25 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
      */
     private Model model; //Always updated through notify() method of the Model, called every time it is modified
 
-    private HashMap<Player, ServerConnection> playerServerConnectionMap;
-    private HashMap<ServerConnection, Player> serverConnectionPlayerMap;
+    private HashMap<Player, ClientConnection> playerClientConnectionMap;
+    private HashMap<ClientConnection, Player> clientConnectionPlayerMap;
 
     private ArrayList<Player> orderedPlayers;
+
     private ArrayList<Player> unitializedOrderedPlayers;
 
-    private ArrayList<ServerConnection> connectedClients; //le ServerConnection , chiamate connectedCLientappresentano 2 cose:
-    // SIA gli Observable di Controller (le connessioni, infatti, dovranno far arrivare le scelte del client (view) sino al controlle// SIA il modo con cui il controller SELEZIONA la view. Infatti, essendo remota, la view non può essere invocata, e devo perciò comunicare tramite eventi (ServerToClientCommand) che invio grazie al metodo sendCommand() di ServerConnection
+    private Thread waitingWPCChoiceThread;
+
+    /**
+     * ArrayList that contains the ordered players that has to play
+     * is created by the model in its constructor
+     */
+    private ArrayList<ArrayList<Player>> orderedRoundPlayers;
+
+    private ArrayList<Player> currentRoundOrderedPlayers;
+
+    private ArrayList<ClientConnection> connectedClients; //le ClientConnection , chiamate connectedCLientappresentano 2 cose:
+    // SIA gli Observable di Controller (le connessioni, infatti, dovranno far arrivare le scelte del client (view) sino al controlle// SIA il modo con cui il controller SELEZIONA la view. Infatti, essendo remota, la view non può essere invocata, e devo perciò comunicare tramite eventi (ServerToClientCommand) che invio grazie al metodo sendCommand() di ClientConnection
     // in particolare: selezionare la view significa scegliere le cose da mostrare. All'inizio della partita, ad esempio, verranno mostrate le schermate per la scelta delle windowPatternCard. la view riceve il comando, visualizza, e sceglie la carta rispondendo con un nuovo comando che arriva al CONTROLLER, perchè deve essere VALIDATO (può andare bene oppure no). Il controller CONTROLLA proprio perchè convalida le mosse del giocatore. Questo l'aveva detto anche Gulino quando parlava del Controller
     /**
      * ArrayList contains clients which are temporally disconnected and pass automatically their turn
@@ -46,31 +56,31 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
      */
     private Player currentPlayer;
 
-    private ArrayList<ServerConnection> disconnectedClients;
+    private ArrayList<ClientConnection> disconnectedClients;
 
     private int roundNumber;
 
     private Server server;
 
 
-    public Controller(ArrayList<ServerConnection> connectedClients, Server server) {
+    public Controller(ArrayList<ClientConnection> connectedClients, Server server) {
         // Creo l'hashmap
-        playerServerConnectionMap = new HashMap<>();
-        serverConnectionPlayerMap = new HashMap<>();
+        playerClientConnectionMap = new HashMap<>();
+        clientConnectionPlayerMap = new HashMap<>();
 
         int i = 0;
         unitializedOrderedPlayers = new ArrayList<>();
         //TODO vedi se funziona
-        this.connectedClients = (ArrayList<ServerConnection>) connectedClients.clone();
+        this.connectedClients = (ArrayList<ClientConnection>) connectedClients.clone();
         while (!connectedClients.isEmpty()){
             System.out.println("Entra n"+ i);
             orderedPlayers.add(new Player(connectedClients.get(0).getUsername()));
-            playerServerConnectionMap.put(orderedPlayers.get(i), connectedClients.remove(0));
+            playerClientConnectionMap.put(orderedPlayers.get(i), connectedClients.remove(0));
             i++;
         }
         //Filling the other map
-        for(HashMap.Entry<Player, ServerConnection> entry : playerServerConnectionMap.entrySet()){
-            serverConnectionPlayerMap.put(entry.getValue(), entry.getKey());
+        for(HashMap.Entry<Player, ClientConnection> entry : playerClientConnectionMap.entrySet()){
+            clientConnectionPlayerMap.put(entry.getValue(), entry.getKey());
         }
 
         this.model = new Model(unitializedOrderedPlayers);
@@ -85,9 +95,70 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
      * It calls initializePlayers() and setInitialPlayer()
      */
     public void initializeGame() {
-        //TODO Deve inviare un comando che avvia la View e fa scegliere agli utenti Le WindowPatternCard
-        //ServerToClientCommand command = new ChooseWindowPatternCardCommand();
-        //sendCommandToAllPlayers(command);
+
+        //Let people chose their Wpc, and call a method that waits until all chose theirs.
+        //Once i receive all -> move to orderedPlayers List
+        ArrayList<WindowPatternCard> localWpc = model.extractWindowPatternCard();
+        String localNamesWpc= "";
+        //TODO ascolto i players in un metodo
+        for(Player p: unitializedOrderedPlayers){
+            localNamesWpc = "";
+            // For every client, i create a local variable that containes the 4 extracted wpc
+            // I give the cards (in strings) to the command, and to the method that waits until all players finishes to chose
+            localWpc = model.extractWindowPatternCard();
+
+            for (WindowPatternCard card : localWpc)
+                localNamesWpc += card.getCardName() + " ";
+            sendCommandToPlayer(p, new ChooseWindowPatternCardCommand(localNamesWpc));
+        }
+    }
+
+
+    /**
+     * Initializes all Lists of players for each round, ordered.
+     */
+    public void assignRoundPlayers(ArrayList<Player> orderedPlayers){
+        if (orderedPlayers.size()==4) {
+            Player c0 = orderedPlayers.get(0),
+                    c1 = orderedPlayers.get(1), c2 = orderedPlayers.get(2), c3 = orderedPlayers.get(3);
+            ArrayList<Player> temp0 = new ArrayList<>(), temp1 = new ArrayList<>(), temp2 = new ArrayList<>(),
+                    temp3 = new ArrayList<>(), temp4 = new ArrayList<>();
+            temp0.add(c0);temp0.add(c1);temp0.add(c2);temp0.add(c3);temp0.add(c3);temp0.add(c2);temp0.add(c1);temp0.add(c0);
+            temp1.add(c1);temp1.add(c2);temp1.add(c3);temp1.add(c0);temp1.add(c0);temp1.add(c3);temp1.add(c2);temp1.add(c1);
+            temp2.add(c2);temp2.add(c3);temp2.add(c0);temp2.add(c1);temp2.add(c1);temp2.add(c0);temp2.add(c3);temp2.add(c2);
+            temp3.add(c3);temp3.add(c0);temp3.add(c1);temp3.add(c2);temp3.add(c2);temp3.add(c1);temp3.add(c0);temp3.add(c3);
+            orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp2);
+            orderedRoundPlayers.add(temp3);orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);
+            orderedRoundPlayers.add(temp2);orderedRoundPlayers.add(temp3);orderedRoundPlayers.add(temp0);
+            orderedRoundPlayers.add(temp1);
+
+        }
+        else if (orderedPlayers.size()==3) {
+            Player c0 = orderedPlayers.get(0), c1 = orderedPlayers.get(1), c2 = orderedPlayers.get(2);
+            ArrayList<Player> temp0 = new ArrayList<>(), temp1 = new ArrayList<>(), temp2 = new ArrayList<>(),
+                    temp3 = new ArrayList<>();
+            temp0.add(c0);temp0.add(c1);temp0.add(c2);temp0.add(c2);temp0.add(c1);temp0.add(c0);
+            temp1.add(c1);temp1.add(c2);temp1.add(c0);temp1.add(c0);temp1.add(c1);temp1.add(c2);
+            temp2.add(c2);temp2.add(c0);temp2.add(c1);temp2.add(c1);temp2.add(c0);temp2.add(c2);
+            orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp2);
+            orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp2);
+            orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp2);
+            orderedRoundPlayers.add(temp0);
+
+        }
+        else if (orderedPlayers.size()==2) {
+            Player c0 = orderedPlayers.get(0), c1 = orderedPlayers.get(1), c2 = orderedPlayers.get(2);
+            ArrayList<Player> temp0 = new ArrayList<>(), temp1 = new ArrayList<>(), temp2 = new ArrayList<>();
+            temp0.add(c0);temp0.add(c1);temp0.add(c1);temp0.add(c0);
+            temp1.add(c1);temp1.add(c0);temp1.add(c0);temp1.add(c1);
+            orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp0);
+            orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);
+            orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp0);
+            orderedRoundPlayers.add(temp1);
+        }
+        else{
+            System.out.println("problema");
+        }
     }
 
     //Le view per ogni giocatore sono le stesse, con l'eccezione che viene passata senza le PrivateObjectiveCard dell'avversario e
@@ -98,7 +169,8 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
      * @param model
      */
     public void update(Model model){
-        sendCommandToAllPlayers(new RefreshBoardCommand(model, "RefreshBoardCommand"));
+        sendCommandToAllPlayers(new RefreshBoardCommand(model,
+                "RefreshBoardCommand"));
     }
 
 
@@ -108,25 +180,75 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
      * choose the WPattern Card
      * ...
      */
-    public void initializePlayers() {
-        //sendCommandToAllPlayers(new Choos..);
+    public void startGame() {
+        assignRoundPlayers(orderedPlayers);
+        startNewRound();
     }
 
-    /**
-     * Inizialise the next player for the turn
-     * eventually, if every player played twice, it calls passRound()
-     */
-    public void passTurn() {
 
+    public void endGame(){
+        //For each player, create an HashMap calling on every player a Win/Lose command
+        HashMap<Player, Integer> playerScoreMap = new HashMap();
+        Integer tempScore;
+        for (Player player : orderedPlayers) {
+            tempScore=0;
+            for (PublicObjectiveCard card :model.getExtractedPublicObjectiveCard()){
+                tempScore+= card.calculateScore(player.getWindowPatternCard());
+            }
+            tempScore-= penalityScore(player.getWindowPatternCard());
+            playerScoreMap.put(player, tempScore);
+            //TODO: Manca altro da calcolare? come facciamo con i punteggi sul tabellone?
+        }
+        LinkedHashMap<Player, Integer> orderedPlayerScores = new LinkedHashMap<>();
+        for (int i = 0; i < orderedPlayers.size(); i++) {
+            int maxValueInMap=(Collections.max(playerScoreMap.values()));// This will return max value in the Hashmap
+            for (Map.Entry<Player, Integer> entry : playerScoreMap.entrySet()) {  // Iterates through hashmap
+                if (entry.getValue() == maxValueInMap) {
+                    orderedPlayerScores.put(entry.getKey(), playerScoreMap.remove(entry.getKey()));   // Assign a new Entry in the LinkedHashMap
+                }
+                break; //Exit for new research of max
+            }
+        }
+        sendResultToPlayers(orderedPlayerScores);
     }
 
-    /**
-     * Initialize next Round.
-     * eventually calls endGame if rounds are 10
-     */
-    public void passRound() {
+    private void sendResultToPlayers(LinkedHashMap<Player, Integer> orderedPlayerScores) {
+        Set set = orderedPlayerScores.entrySet();
+        // Get an iterator
+        String scores = "";
 
+        Iterator i0 = set.iterator();
+        while (i0.hasNext()) {
+            Map.Entry entry = (Map.Entry) i0.next();
+            // Player Username + player score //TODO Controlla se funziona!!
+            scores += entry.getKey().toString() + "," + entry.getValue().toString();
+        }
+
+        Iterator i = set.iterator();
+        Integer counter=0;
+        while (i.hasNext()) {
+            Map.Entry me = (Map.Entry) i.next();
+            if (counter == 0)
+                sendCommandToPlayer((Player) me.getKey(), new WinCommand(scores, (Integer) me.getValue()));
+            else
+                sendCommandToPlayer((Player) me.getKey(), new LoseCommand(scores, (Integer) me.getValue(), counter));
+            counter++;
+        }
     }
+
+    private Integer penalityScore(WindowPatternCard card){
+        //Counting all empty blocks
+        int tempScore=0;
+        for(Cell c : card.getSchema()){
+            try {
+                tempScore += c.getAssociatedDie()==null? 1 : 0;
+            } catch (EmptyCellException e) {
+                e.printStackTrace();
+            }
+        }
+        return tempScore;
+    }
+
 
 
     /**
@@ -135,31 +257,37 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
      * - extract Dice ..
      * - set first player and
      */
-    public void startNewRound() {
-
-        // inglobo metodo del MODEL
+    private void startNewRound() {
         //TODO Controllo che i rounds fatti siano meno di 10, se no chiamo un nuovo round
-        // dalla lista dei round sul Model, e gli assegno dei Dice.
-        /*
-    public void nextRound() {
-        if (gameRounds.size() == 0) {
-            //notifyWinner();
-        } else {
-            currentRound = gameRounds.remove(0);
-            currentRound.nextPlayer();
+        if (orderedRoundPlayers.size()==0){
+            endGame();
         }
-    }
-    }
-    */
+        else{
+            //initialize DraftPool
+            model.setDraftPool(model.extractDraftPoolDice(orderedPlayers.size()));
+            //Start a new round-> pick the first of the RoundList
+            currentRoundOrderedPlayers=orderedRoundPlayers.remove(0);
+            currentPlayer=currentRoundOrderedPlayers.remove(0);
+
+            update(model);
+            //first player
+            sendCommandToPlayer(currentPlayer, new StartPlayerTurnCommand());
+        }
     }
         /**
          * Has to start a turn of a new player in a round.
          * if the round has still 2*n turns played, i have to call starNewRound()
          */
-
-
-    public void startNewTurn(){
-        // calls nextPlayer
+    private void startNewTurn(){
+        update(model);
+        //Case that everybody has played in the round
+        if (currentRoundOrderedPlayers.size()==0){
+            startNewRound();
+        }
+        else{
+            currentPlayer=currentRoundOrderedPlayers.remove(0);
+            sendCommandToPlayer(currentPlayer, new StartPlayerTurnCommand());
+        }
     }
 
     /**
@@ -234,7 +362,7 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
     }
 
     public void sendCommandToAllPlayers(ServerToClientCommand command){
-        for (ServerConnection connection : connectedClients)
+        for (ClientConnection connection : connectedClients)
             try {
                 connection.sendCommand(command);
             } catch (IOException e) {
@@ -293,42 +421,9 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
 
 
 
-    /* Suggestions:
-    public void startGame(ArrayList<Player> orderedPlayers) {
-        // assegno i players al model e l'ordine di gioco
-        this.orderedPlayers = orderedPlayers;
-
-        // start i game di tutti (i players sono già salvati, e di standard il primo ad effettuare il turno sarà il primo che si è connesso
-        view.initializeAllGames(orderedPlayers.get(0));
-
-        for (Player p : orderedPlayers) { //TODO concurrent
-            if (p == orderedPlayers.get(0)) {
-                model.nextRound();
-                view.startTurn(p);
-            } else
-                view.waitForYourTurn(p);
-        }
-
-        playerViewHashMap.get(playerToInitializeGame).initializeGame();
-    }
-        // Methods that calls the Client's View...
-        // decido chi comincia per primo e chiamo il metodo del suo view
 
 
-        // Inizializzo la schermata dei giocatori
-
-        // faccio schegliere la carta Pattern a ogni giocatore
-
-        //viewPlayerHashMap.put(one, new Player())...
-
-        // la assegno
-
-
-
-
-
-
-
+/*
     public void performMoveToServer(Die dieToPlace, int row, int column, Player player) {
         if (model.getCurrentRound.getCurrentPlayer() == player) {
             WindowPatternCard patternCardWhereToPlaceDie = model.getCurrentRound.getCurrentPlayer().getWindowPatternCard();
@@ -369,7 +464,7 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
      * If a command is invalid, I catch an exception and send to the client itself a new AskMoveCommand()
      */
 
-    public void update(ServerConnection connection, ClientToServerCommand command){
+    public void update(ClientConnection connection, ClientToServerCommand command){
         String words[] = command.getMessage().split(" ");
         //TODO complete
         switch(words[1]){
@@ -385,7 +480,10 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
             case("UseToolEglomiseBrush"):
                 ;
                 break;
-            case("UseToolFirmPastryBrush"):
+            case("UseToolFirmPastryBrush1"):
+                ;
+                break;
+            case("UseToolFirmPastryBrush2"):
                 ;
                 break;
             case("UseToolFirmPastryThinner1"):
@@ -423,10 +521,10 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
 
 
 
-    public void applyCommand(Observable serverConnection, MoveChoiceToolCard command){
+    public void applyCommand(Observable clientConnection, MoveChoiceToolCard command){
         //check if the move is correct
 
-        Player player = serverConnectionPlayerMap.get(serverConnection);
+        Player player = clientConnectionPlayerMap.get(clientConnection);
         if (isAllowed(player)){
             //Check if correct move
             //command.ge
@@ -437,12 +535,23 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
 
     }
 
-    public void applyCommand(Observable serverConnection, ChosenWindowPatternCard command){
+    /**
+     * The choice of wpc is always right
+     * That method removes the player that chooses its card, and moves it to the List of initialized player.
+     * Checks if all players are initialized to call the next Controller Method
+     * @param clientConnection
+     * @param command
+     */
+    public void applyCommand(ClientConnection clientConnection, ChosenWindowPatternCard command){
+        String[] words = command.getMessage().split(" ");
+        ParserWindowPatternCard parser = new ParserWindowPatternCard();
+        clientConnectionPlayerMap.get(clientConnection).setWindowPatternCard(parser.getCardFromName(words[1]));
+        unitializedOrderedPlayers.remove(clientConnectionPlayerMap.get(clientConnection)); //TODO what happens can't find it?
+        orderedPlayers.add(clientConnectionPlayerMap.get(clientConnection));
 
+        if (unitializedOrderedPlayers.size()==0)
+            startGame();
     }
-
-
-
 
 
 
@@ -450,76 +559,69 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(ServerConnection connection, UseToolCopperFoilReamer command){
+    public void applyCommand(ClientConnection connection, UseToolCopperFoilReamer command){
         String message = command.getMessage();
 
     }
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(ServerConnection connection,UseToolCorkLine command){
+    public void applyCommand(ClientConnection connection,UseToolCorkLine command){
 
     }
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(ServerConnection connection,UseToolDiamondSwab command){
+    public void applyCommand(ClientConnection connection,UseToolDiamondSwab command){
 
     }
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(ServerConnection connection,UseToolEglomiseBrush command){
+    public void applyCommand(ClientConnection connection,UseToolEglomiseBrush command){
 
     }
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(ServerConnection connection,UseToolFirmPastryBrush command){
+    public void applyCommand(ClientConnection connection,UseToolFirmPastryBrush command){
 
     }
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(ServerConnection connection,UseToolFirmPastryThinner1 command){
-
-    }
-
-    /**
-     * Applies commands coming from the Client, answering with correct/incorrect command responses
-     */
-    public void applyCommand(ServerConnection connection,UseToolFirmPastryThinner2 command){
+    public void applyCommand(ClientConnection connection, UseToolFirmPastryThinner command){
 
     }
 
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(ServerConnection connection,UseToolGavel command){
+    public void applyCommand(ClientConnection connection,UseToolGavel command){
 
     }
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(ServerConnection connection,UseToolLathekin command){
+    public void applyCommand(ClientConnection connection,UseToolLathekin command){
 
     }
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(ServerConnection connection,UseToolManualCutter command){
+    public void applyCommand(ClientConnection connection,UseToolManualCutter command){
 
     }
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(ServerConnection connection,UseToolRoughingForceps command){
+    public void applyCommand(ClientConnection connection,UseToolRoughingForceps command){
 
     }
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(ServerConnection connection,UseToolWheelsPincher command){
+    public void applyCommand(ClientConnection connection,UseToolWheelsPincher command){
 
     }
 

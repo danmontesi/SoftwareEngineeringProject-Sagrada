@@ -6,7 +6,7 @@ import it.polimi.se2018.WindowPatternCard;
 import java.util.HashSet;
 
 public class ShadeVariety extends PublicObjectiveCard{
-    public ShadeVariety(String name, String description, int score) {
+    public ShadeVariety(String name, String description, Integer score) {
         super(name, description, score);
     }
 

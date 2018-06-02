@@ -10,23 +10,11 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class DiceBag {
     private ArrayList<Die> dice;
-    private static DiceBag instance = null;
-
-    /**
-     * Singleton
-     * @return instance of DiceBag
-     * */
-    public static DiceBag getInstance(){
-        if (instance == null) {
-            instance = new DiceBag();
-        }
-            return instance;
-    }
 
     /**
      * Constructor: generates a diceBag with 90 dice, 18 for each of the 5 colors
      * */
-    private DiceBag(){
+    public DiceBag(){
         dice = new ArrayList<>();
         for (int i=0; i<90; i+=5){
             dice.add(new Die(COLOR.RED));

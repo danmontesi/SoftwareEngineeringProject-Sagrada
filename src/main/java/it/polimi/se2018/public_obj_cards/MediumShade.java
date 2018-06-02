@@ -4,7 +4,7 @@ import it.polimi.se2018.Exceptions.EmptyCellException;
 import it.polimi.se2018.WindowPatternCard;
 
 public class MediumShade extends PublicObjectiveCard{
-    public MediumShade(String name, String description, int score) {
+    public MediumShade(String name, String description, Integer score) {
         super(name, description, score);
     }
 
