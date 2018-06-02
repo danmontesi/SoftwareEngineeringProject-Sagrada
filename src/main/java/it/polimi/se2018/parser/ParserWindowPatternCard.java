@@ -1,9 +1,9 @@
-package it.polimi.se2018.Parser;
+package it.polimi.se2018.parser;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.se2018.COLOR;
-import it.polimi.se2018.Exceptions.NoSuchColorException;
+import it.polimi.se2018.exceptions.NoSuchColorException;
 import it.polimi.se2018.WindowPatternCard;
 
 import java.io.IOException;

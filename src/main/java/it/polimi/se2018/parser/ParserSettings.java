@@ -1,4 +1,4 @@
-package it.polimi.se2018.Parser;
+package it.polimi.se2018.parser;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

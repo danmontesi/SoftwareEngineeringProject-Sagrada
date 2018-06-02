@@ -1,6 +1,6 @@
 package it.polimi.se2018;
 
-import it.polimi.se2018.Exceptions.EmptyCellException;
+import it.polimi.se2018.exceptions.EmptyCellException;
 
 /**
  * Describes Cell behavior. A cell can be created with or without color and/or value restrictions.

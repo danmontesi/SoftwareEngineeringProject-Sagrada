@@ -1,16 +1,9 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.MVC.Controller;
-import it.polimi.se2018.Model;
-import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
-import it.polimi.se2018.client_to_server_command.UpdateUsernameCommand;
-import it.polimi.se2018.network.rmi.RMIListener;
-import it.polimi.se2018.network.socket.SocketListener;
+import it.polimi.se2018.network.server.ServerConnection;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class Server {
 
@@ -32,8 +25,8 @@ public class Server {
 
     private int port;
 
-    private SocketListener socketListener;
-    private RMIListener rmiListener;
+ //   private SocketListener socketListener;
+   /* private RMIListener rmiListener;
 
     private static Server instance = null;
 
@@ -47,11 +40,11 @@ public class Server {
         socketListener = new SocketListener(this, 1111);
     }
 
-    /**
+    *//**
      * Gets the single instance of Server.
      *
      * @return single instance of Server
-     */
+     *//*
     public static synchronized Server getInstance() {
         if ( instance == null) {
             return new Server(1111); //TODO cambia
@@ -59,18 +52,18 @@ public class Server {
             return instance;
     }
 
-    /*
+    *//*
      * (non-Javadoc)
      *
      * @see java.lang.Runnable#run()
-     */
+     *//*
     public void run() {
         startServer();
     }
 
-    /**
+    *//**
      * Start server.
-     */
+     *//*
     private void startServer() {
 
         socketListener = new SocketListener(this, port);
@@ -128,6 +121,7 @@ public class Server {
         Server s = new Server(1111);
 
     }
+    */
 }
 /*
     private boolean disconnectedClientInMatch() {

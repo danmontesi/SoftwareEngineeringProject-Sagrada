@@ -1,7 +1,7 @@
 
 package it.polimi.se2018;
 
-import it.polimi.se2018.Exceptions.EmptyCellException;
+import it.polimi.se2018.exceptions.EmptyCellException;
 
 import java.util.ArrayList;
 
