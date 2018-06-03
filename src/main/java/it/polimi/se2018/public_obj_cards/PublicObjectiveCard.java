@@ -31,6 +31,18 @@ public abstract class PublicObjectiveCard { //Probably has to be an Interface fo
     public int calculateScore(WindowPatternCard w){
         return 0;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
 }
 
 
