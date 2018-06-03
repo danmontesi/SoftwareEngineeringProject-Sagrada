@@ -71,15 +71,18 @@ public class Server {
 
     public static void handle(ClientToServerCommand command){
         //TODO: Se il comando è un login si gestisce aggiungendo l'user ai connectedClients, altrimenti...
-        if (command.getMessage().split(" ")[0].equals("UpdateUsernameCommand")){
-            System.out.println("ARRIVATO COMMAND " + command.getMessage());
+        String[] words = command.getMessage().split(" ");
+        if (words[0].equals("UpdateUsernameCommand")){
+            System.out.println("ARRIVATO COMMAND " + command.getMessage()); //stringa fatta da 3 parole: 0) nomeClass 1) oldUsernameSetByServer 2) newUsernameFromClient
+            //TODO controllo se l'username va bene (ovvero words[2]), se no NE ASSEGNO UNO
+            //Se sì, faccio
+            usernameConnectionMap.put(words[2], usernameConnectionMap.remove(words[1]));
+            System.out.println(usernameConnectionMap.toString());
         }
         else {
             String username = command.getUsername();
             //Obtains the right controller from the map, and calls the method on it
             userMap.get(username).distinguishClientCommand(username, command);
-            //TODO: conflitto String/ClientConnection come parametro di update
-            //Ti prego rinomina il metodo update <3
         }
     }
 
@@ -89,11 +92,14 @@ public class Server {
      * They are later moved from waitingClients to connnectedClients when they are connected with their user.
      * @param client
      */
-    public static void addClientInterface(RMIClientInterface client){
+    public synchronized static void addClientInterface(RMIClientInterface client){
         RMIVirtualClient vc = new RMIVirtualClient(client);
         waitingClients.add(waitingClients.size(), vc);
+        String tempConnectionId = usernameConnectionMap.size()+"";
+        //Insert the connection in the hashmap with the tempId
+        usernameConnectionMap.put(tempConnectionId, vc);
         // Viene fatta partire la richiesta di username subito dopo la connessione, che prende direttament l'username dal parametro deciso al momento della connessione
-        vc.notifyClient(new AskAuthenticationCommand("rAnDoMStRing")); //TODO Random string
+        vc.notifyClient(new AskAuthenticationCommand(usernameConnectionMap.size() + "") ); //l'id è la dimensione del
     }
 
     //TODO fai lo stesso fatto con l'RMI per il socket

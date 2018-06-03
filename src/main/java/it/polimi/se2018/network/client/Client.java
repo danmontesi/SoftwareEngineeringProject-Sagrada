@@ -11,19 +11,19 @@ public class Client {
     public static void main(String[] args) {
         ServerConnection server;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Seleziona\n1) Socket\n2) RMI");
+        System.out.println("Select \n1) Socket\n2) RMI");
         int choice = scanner.nextInt();
-
-        String provaUsername = "temp";
+        System.out.println("Type your username:");
+        String username = scanner.next();
 
         switch (choice){
             case 1:
-                server = new SocketClient(provaUsername);
+                server = new SocketClient(username);
                 server.startConnection();
                 System.out.println("Connected with Socket");
                 break;
             default:
-                server = new RMIClient(provaUsername);
+                server = new RMIClient(username);
                 server.startConnection();
                 System.out.println("Connected with RMI");
                 break;
