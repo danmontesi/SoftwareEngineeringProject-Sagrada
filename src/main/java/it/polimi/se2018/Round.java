@@ -32,16 +32,7 @@ public class Round {
      * @param diceBag diceBag
      */
     public Round(int roundNumber, Player firstPlayer, ArrayList<Player> gamePlayers, DiceBag diceBag){
-        this.roundNumber = roundNumber;
-        this.firstPlayer = firstPlayer;
-        this.gamePlayers = gamePlayers;
-        this.diceBag = diceBag;
-        currentPlayer = null;
-        countPlayersTurns = new HashMap<>();
-        for (int i=0; i<gamePlayers.size(); i++){
-            countPlayersTurns.put(gamePlayers.get(i), 0);
-        }
-        draftPool = new DraftPool(diceBag, gamePlayers.size());
+
     }
 
     public int getRoundNumber() {

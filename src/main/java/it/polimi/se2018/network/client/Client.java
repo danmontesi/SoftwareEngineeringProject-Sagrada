@@ -14,14 +14,16 @@ public class Client {
         System.out.println("Seleziona\n1) Socket\n2) RMI");
         int choice = scanner.nextInt();
 
+        String provaUsername = "temp";
+
         switch (choice){
             case 1:
-                server = new SocketClient();
+                server = new SocketClient(provaUsername);
                 server.startConnection();
                 System.out.println("Connected with Socket");
                 break;
             default:
-                server = new RMIClient();
+                server = new RMIClient(provaUsername);
                 server.startConnection();
                 System.out.println("Connected with RMI");
                 break;

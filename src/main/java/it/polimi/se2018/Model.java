@@ -32,12 +32,10 @@ public class Model extends Observable{
     private ArrayList<PublicObjectiveCard> extractedPublicObjectiveCard;
 
     private ArrayList<ToolCard> toolCardDeck;
+
     private ArrayList<ToolCard> extractedToolCard;
 
     private ArrayList<WindowPatternCard> windowPatternCardDeck;
-
-    //Changed from ClientConnection to Players (The conotroller knows to which player correspond its Client)
-    private ArrayList<Player> connectedPlayers;
 
     private ArrayList<Player> gamePlayers;
 
@@ -64,7 +62,6 @@ public class Model extends Observable{
         gamePlayers = players;
         diceBag = new DiceBag();
         roundTrack = new RoundTrack();
-        // TODO CREATE ALL CARDS FROM JSON FILES
         ParserPrivateObjectiveCard parserPrivateObjectiveCard = new ParserPrivateObjectiveCard();
         ParserPublicObjectiveCard parserPublicObjectiveCard = new ParserPublicObjectiveCard();
         ParserWindowPatternCard parserWindowPatternCard = new ParserWindowPatternCard();
@@ -119,13 +116,18 @@ public class Model extends Observable{
      * @return list of extracted cards
      */
     public ArrayList<WindowPatternCard> extractWindowPatternCard(){
+        ArrayList<WindowPatternCard> toReturn = new ArrayList<>();
         for (int i=0; i<4; i++){
             int index = ThreadLocalRandom.current().nextInt(0,  windowPatternCardDeck.size());
-            extractWindowPatternCard().set(i, windowPatternCardDeck.remove(index));
+            toReturn.set(i, windowPatternCardDeck.remove(index));
         }
-        return extractWindowPatternCard();
+        return toReturn;
     }
 
+    /**
+     * Returns an ArrayList of 3 ToolCard
+     * @return list of extracted cards
+     */
     public ArrayList<ToolCard> getExtractedToolCard(){
         for (int i=0; i<3; i++){
             int index = ThreadLocalRandom.current().nextInt(0,  toolCardDeck.size());

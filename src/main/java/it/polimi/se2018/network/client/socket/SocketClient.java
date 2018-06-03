@@ -18,6 +18,9 @@ public class SocketClient implements ServerConnection {
     //username identificativo
     String username;
 
+    public SocketClient(String username){
+        this.username = username;
+    }
     @Override
     public void send(ClientToServerCommand command) {
         try {

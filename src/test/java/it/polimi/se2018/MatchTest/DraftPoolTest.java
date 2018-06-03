@@ -7,6 +7,8 @@ import it.polimi.se2018.DraftPool;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -18,14 +20,26 @@ public class DraftPoolTest {
     DraftPool dp;
     @Before
     public void setUp(){
-        dp = new DraftPool(DiceBag.getInstance(), 4);
+        ArrayList<Die> dice = new ArrayList<>();
+        dice.add(new Die(COLOR.BLUE));
+        dice.add(new Die(COLOR.GREEN));
+        dice.add(new Die(COLOR.BLUE));
+        dice.add(new Die(COLOR.RED));
+        dice.add(new Die(COLOR.BLUE));
+        dp = new DraftPool(dice);
     }
 
     @Test
     public void draftPoolTest(){
         assertEquals(9, dp.draftPoolSize());
         //assertEquals(81, DiceBag.getInstance().size());
-        DraftPool dp2 = new DraftPool(DiceBag.getInstance(), 2);
+        ArrayList<Die> dice = new ArrayList<>();
+        dice.add(new Die(COLOR.BLUE));
+        dice.add(new Die(COLOR.GREEN));
+        dice.add(new Die(COLOR.BLUE));
+        dice.add(new Die(COLOR.RED));
+        dice.add(new Die(COLOR.BLUE));
+        DraftPool dp2 = new DraftPool(dice);
         //assertEquals(76, DiceBag.getInstance().size());
     }
 

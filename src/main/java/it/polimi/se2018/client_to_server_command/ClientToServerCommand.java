@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public abstract class ClientToServerCommand implements Serializable {
 
-    private String message;
+    protected String message;
 
     private String username;
 

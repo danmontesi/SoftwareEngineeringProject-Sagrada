@@ -19,6 +19,7 @@ public class RMIVirtualClient implements ClientConnection {
     @Override
     public void notifyClient(ServerToClientCommand command) {
         try{
+            System.out.println("entro nel RMIVirtualClient");
             rmiClientInterface.rmiNotifyClient(command);
         } catch (RemoteException e){
             Server.removeClient(this);

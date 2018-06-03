@@ -6,7 +6,7 @@ public class ServerToClientCommand implements Serializable {
     /**
      * This is the abstract class representing all possible command from Server to Client
      */
-    protected String message;
+    public String message;
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -6460847901998831472L;

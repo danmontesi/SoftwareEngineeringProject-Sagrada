@@ -16,7 +16,7 @@ public class DiceBagTest {
 
     @Before
     public void setUp(){
-        diceBag = DiceBag.getInstance();
+        diceBag = new DiceBag();
     }
 
     @Test

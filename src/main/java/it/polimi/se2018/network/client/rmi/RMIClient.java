@@ -18,9 +18,14 @@ public class RMIClient implements ServerConnection {
     //username identificativo
     String username;
 
+    public RMIClient(String username){
+        this.username = username;
+    }
+
     @Override
     public void send(ClientToServerCommand command) {
         try {
+            System.out.println("Sending " + command.getMessage());
             //TODO: Gestire l'username nullo
             command.setUsername(username);
             server.rmiSend(command);
@@ -34,7 +39,7 @@ public class RMIClient implements ServerConnection {
         try {
             registry = LocateRegistry.getRegistry(1099);
             server = (RMIServerInterface)registry.lookup("RMIImplementation");
-            RMIClientImplementation client = new RMIClientImplementation();
+            RMIClientImplementation client = new RMIClientImplementation(username, this);//Viene passato anche this così può rispondere nel caso in cui riceve un AskUsernameCommand
             RMIClientInterface remoteRef = (RMIClientInterface) UnicastRemoteObject.exportObject(client, 0);
             server.addClient(remoteRef);
         } catch (RemoteException e) {

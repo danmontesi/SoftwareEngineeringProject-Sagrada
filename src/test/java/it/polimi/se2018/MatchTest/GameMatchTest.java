@@ -1,7 +1,6 @@
 package it.polimi.se2018.MatchTest;
 
 import it.polimi.se2018.*;
-import it.polimi.se2018.network.ClientConnection;
 import org.junit.Test;
 
 import java.util.ArrayList;

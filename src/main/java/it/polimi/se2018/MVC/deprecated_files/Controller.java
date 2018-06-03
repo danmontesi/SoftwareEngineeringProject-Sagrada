@@ -75,7 +75,7 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
         this.connectedClients = (ArrayList<ClientConnection>) connectedClients.clone();
         while (!connectedClients.isEmpty()){
             System.out.println("Entra n"+ i);
-            orderedPlayers.add(new Player(connectedClients.get(0).getUsername()));
+            //orderedPlayers.add(new Player(connectedClients.get(0).getUsername()));
             playerClientConnectionMap.put(orderedPlayers.get(i), connectedClients.remove(0));
             i++;
         }
@@ -363,12 +363,12 @@ public class Controller { //Observer perchè osserva la View tramite le classi d
     }
 
     public void sendCommandToAllPlayers(ServerToClientCommand command){
-        for (ClientConnection connection : connectedClients)
+        for (ClientConnection connection : connectedClients);/*
             try {
-                connection.sendCommand(command);
+                //connection.sendCommand(command);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
     }
 
     public void sendCommandToPlayer(Player player, ServerToClientCommand command){

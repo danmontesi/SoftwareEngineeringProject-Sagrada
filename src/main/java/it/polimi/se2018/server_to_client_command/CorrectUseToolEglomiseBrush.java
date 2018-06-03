@@ -23,7 +23,5 @@ public class CorrectUseToolEglomiseBrush extends ServerToClientCommand{
 
     private Integer nextPosition;
 
-    public CorrectUseToolEglomiseBrush(String message) {
-        super(message);
-    }
+
 }

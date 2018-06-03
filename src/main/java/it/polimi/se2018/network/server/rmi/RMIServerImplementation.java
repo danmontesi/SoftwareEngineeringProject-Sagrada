@@ -10,9 +10,6 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RMIServerImplementation extends UnicastRemoteObject implements RMIServerInterface {
 
-    //TODO devo hashmap - controller della partita
-
-
     public RMIServerImplementation() throws RemoteException {
         //port:0 means port is chosen automatically
         super(0);
