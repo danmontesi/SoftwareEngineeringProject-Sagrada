@@ -28,8 +28,15 @@ public class CorrectUseToolFirmPastryThinner1 extends ServerToClientCommand{
     /**
      * Contains nameClass + dieColor
      */
-    private String message;
 
     private Integer dieValue;
 
+    public Integer getDieValue() {
+        return dieValue;
+    }
+
+    public CorrectUseToolFirmPastryThinner1(String message, Integer dieValue) {
+        this.message = "CorrectUseToolFirmPastryThinner1 " + message;
+        this.dieValue = dieValue;
+    }
 }

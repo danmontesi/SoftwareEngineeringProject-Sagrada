@@ -27,8 +27,6 @@ public class CorrectUseToolFirmPastryThinner2 extends ServerToClientCommand{
     /**
      *
      */
-    private String message; //nameClass DRAFTPOOL/SCHEMA dieColor
-
     private Integer dieValue;
 
     private Integer diePosition; // in Draftpool or Schema

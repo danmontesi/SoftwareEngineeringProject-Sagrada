@@ -1,6 +1,6 @@
 package it.polimi.se2018.server_to_client_command;
 
-public class AllowedUseToolCommand {
+public class AllowedUseToolCommand extends ServerToClientCommand{
     /**
      * The generic Server response to client that wants to use a tool
      * This command just gives to the Client the ok for using tool.

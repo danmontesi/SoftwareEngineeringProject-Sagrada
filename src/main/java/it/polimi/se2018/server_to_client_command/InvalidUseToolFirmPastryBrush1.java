@@ -8,5 +8,10 @@ public class InvalidUseToolFirmPastryBrush1 extends ServerToClientCommand{
      * Integer dieValue
      */
 
+    private Integer dieValue;
 
+    public InvalidUseToolFirmPastryBrush1(String message, Integer dieValue) {
+        this.dieValue = dieValue;
+        this.message = message;
+    }
 }

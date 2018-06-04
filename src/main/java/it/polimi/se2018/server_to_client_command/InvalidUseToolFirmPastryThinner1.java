@@ -10,4 +10,12 @@ public class InvalidUseToolFirmPastryThinner1 extends ServerToClientCommand{
      * Integer position(from 0 to 20)
      *
      */
+
+
+    private Integer newValue;
+
+    public InvalidUseToolFirmPastryThinner1(String message, Integer newValue) {
+        this.newValue = newValue;
+        this.message = "InvalidUseToolFirmPastryThinner1" + " " + message;
+    }
 }

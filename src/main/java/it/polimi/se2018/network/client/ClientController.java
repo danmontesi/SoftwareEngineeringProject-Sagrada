@@ -1,5 +1,7 @@
 package it.polimi.se2018.network.client;
 
+import it.polimi.se2018.COLOR;
+import it.polimi.se2018.Die;
 import it.polimi.se2018.MVC.View;
 import it.polimi.se2018.Model;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
@@ -84,6 +86,35 @@ public class ClientController {
         sendCommand(new ChosenWindowPatternCard(card.getCardName()));
     }
 
+    public void useToolFirmPastryBrushDRAFTPOOL(Integer dieNewValue, Integer dieOldPosition){
+        //Gives the chosen DraftPoolDie (position)
+        //and the second word says DRAFTPOOL
+        sendCommand(new UseToolFirmPastryBrush("DRAFTPOOL", dieNewValue, dieOldPosition , null));
+
+    }
+    public void useToolFirmPastryBrushMOVE(Integer dieNewValue, Integer dieOldPosition, Integer diePosition){
+        //Gives the old position of the chosen die from DraftPool
+        //Gives the new position in the Schema
+        //if gives the new Value (received from the server before!!)
+        //and the second word says MOVE
+        sendCommand(new UseToolFirmPastryBrush("MOVE", dieNewValue, dieOldPosition, diePosition));
+    }
+
+    public void useToolFirmPastryThinnerMOVE(Integer dieNewValue, Integer dieOldPosition, Integer diePosition){
+        //Gives the position of the old die in the DraftPool (to reinsert in the diceBag
+        //Gives the new position in the Schema
+        //if gives the new Value (decided by the Client!)
+        //and the second word says MOVE
+        sendCommand(new UseToolFirmPastryThinner("MOVE", dieNewValue, dieOldPosition, diePosition));
+    }
+
+    public void useToolFirmPastryThinnerDRAFTPOOL(Integer dieNewValue, Integer dieOldPosition){
+        //Gives the position of the old die in the DraftPool (to reinsert in the diceBag
+        //Gives the new position in the Schema
+        //if gives the new Value (decided by the Client!)
+        //and the second word says MOVE
+        sendCommand(new UseToolFirmPastryThinner("DRAFTPOOL", dieNewValue, dieOldPosition, null));
+    }
 
     /**
      * Second role of the ClientController is to receive commands from Server and apply them (to Client)
@@ -393,13 +424,17 @@ public class ClientController {
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     public void applyCommand(CorrectUseToolFirmPastryBrush1 command){
+        Integer valueForDraftPoolDie = command.getDieValue();
+        //view.showUseToolFirmPastryBrush1(valueForDraftPoolDie);
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     public void applyCommand(CorrectUseToolFirmPastryThinner1 command){
-
+        String[] words = command.getMessage().split(" ");
+        Die dieFromDiceBag = new Die(COLOR.valueOf(words[1]), command.getDieValue());
+        //view.showUseToolFirmPastryBrush1(dieFromDiceBag)
     }
 
     /**

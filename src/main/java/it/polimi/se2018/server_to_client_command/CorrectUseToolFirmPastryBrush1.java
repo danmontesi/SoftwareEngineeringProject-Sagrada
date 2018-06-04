@@ -18,10 +18,18 @@ public class CorrectUseToolFirmPastryBrush1 extends ServerToClientCommand{
      *  Integer diePosition
      */
 
+    public Integer getDieValue() {
+        return dieValue;
+    }
+
     /**
      * Contains NameClass dieColor
      */
-    private String message;
 
     private Integer dieValue;
+
+    public CorrectUseToolFirmPastryBrush1(String message, Integer dieValue) {
+        this.dieValue = dieValue;
+        this.message = message;
+    }
 }

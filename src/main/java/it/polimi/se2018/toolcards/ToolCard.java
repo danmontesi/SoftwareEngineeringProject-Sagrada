@@ -11,6 +11,12 @@ public abstract class ToolCard {
     private String description;
     private int tokenCount;
 
+    public ToolCard(String name, String description, int tokenCount) {
+        this.name = name;
+        this.description = description;
+        this.tokenCount = tokenCount;
+    }
+
     public int getTokenCount(){
         return tokenCount;
     }

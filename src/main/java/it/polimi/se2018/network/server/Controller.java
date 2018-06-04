@@ -1,9 +1,6 @@
 package it.polimi.se2018.network.server;
 
-import it.polimi.se2018.Cell;
-import it.polimi.se2018.Model;
-import it.polimi.se2018.Player;
-import it.polimi.se2018.WindowPatternCard;
+import it.polimi.se2018.*;
 import it.polimi.se2018.client_to_server_command.*;
 import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.network.client.ClientConnection;
@@ -11,8 +8,10 @@ import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.server_to_client_command.*;
 import it.polimi.se2018.toolcards.CircularCutter;
+import it.polimi.se2018.toolcards.ToolCard;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Controller{ //Observer perchè osserva la View tramite le classi di mezzo (ClientConnection)
 
@@ -25,11 +24,9 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
      * - Connections with the Client (to handle ServerToClientCommands)
      */
 
-    private Model model; //Always updated through notify() method of the Model, called every time it is modified
+    private Model model;
 
     private HashMap<String, Player> usernamePlayerMap;
-
-    //private HashMap<ClientConnection, Player> clientConnectionPlayerMap; // rimpiazzato con la map di Server, arriva solo un username!
 
     private ArrayList<Player> orderedPlayers;
 
@@ -64,14 +61,12 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
      * @param usernameList
      */
     public Controller(ArrayList<String> usernameList) {
-        // Creo l'hashmap
         usernamePlayerMap = new HashMap<>();
 
         int i = 0;
         unitializedOrderedPlayers = new ArrayList<>();
 
         //TODO vedi se funziona
-        //this.connectedClients = (ArrayList<ClientConnection>) connectedClients.clone();
 
         // I have to create the list that connects Usernames and Players
         while (!usernameList.isEmpty()){
@@ -90,11 +85,9 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
      * It calls initializePlayers() and setInitialPlayer()
      */
     public void initializeGame() {
-
         //Let people chose their Wpc, and call a method that waits until all chose theirs.
         //Once i receive all -> move to orderedPlayers List
         ArrayList<WindowPatternCard> localWpc;
-
         //Gives to each a player 4 WindowPatternCard to choose from
         for(Player p: unitializedOrderedPlayers){
             StringBuilder localNamesWpc = new StringBuilder();
@@ -112,10 +105,14 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
      */
     public void assignRoundPlayers(ArrayList<Player> orderedPlayers){
         if (orderedPlayers.size()==4) {
-            Player c0 = orderedPlayers.get(0),
-                    c1 = orderedPlayers.get(1), c2 = orderedPlayers.get(2), c3 = orderedPlayers.get(3);
-            ArrayList<Player> temp0 = new ArrayList<>(), temp1 = new ArrayList<>(), temp2 = new ArrayList<>(),
-                    temp3 = new ArrayList<>();
+            Player c0 = orderedPlayers.get(0);
+            Player c1 = orderedPlayers.get(1);
+            Player c2 = orderedPlayers.get(2);
+            Player c3 = orderedPlayers.get(3);
+            ArrayList<Player> temp0 = new ArrayList<>();
+            ArrayList<Player> temp1 = new ArrayList<>();
+            ArrayList<Player> temp2 = new ArrayList<>();
+            ArrayList<Player> temp3 = new ArrayList<>();
             temp0.add(c0);temp0.add(c1);temp0.add(c2);temp0.add(c3);temp0.add(c3);temp0.add(c2);temp0.add(c1);temp0.add(c0);
             temp1.add(c1);temp1.add(c2);temp1.add(c3);temp1.add(c0);temp1.add(c0);temp1.add(c3);temp1.add(c2);temp1.add(c1);
             temp2.add(c2);temp2.add(c3);temp2.add(c0);temp2.add(c1);temp2.add(c1);temp2.add(c0);temp2.add(c3);temp2.add(c2);
@@ -127,8 +124,12 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
 
         }
         else if (orderedPlayers.size()==3) {
-            Player c0 = orderedPlayers.get(0), c1 = orderedPlayers.get(1), c2 = orderedPlayers.get(2);
-            ArrayList<Player> temp0 = new ArrayList<>(), temp1 = new ArrayList<>(), temp2 = new ArrayList<>();
+            Player c0 = orderedPlayers.get(0);
+            Player c1 = orderedPlayers.get(1);
+            Player c2 = orderedPlayers.get(2);
+            ArrayList<Player> temp0 = new ArrayList<>();
+            ArrayList<Player> temp1 = new ArrayList<>();
+            ArrayList<Player> temp2 = new ArrayList<>();
             temp0.add(c0);temp0.add(c1);temp0.add(c2);temp0.add(c2);temp0.add(c1);temp0.add(c0);
             temp1.add(c1);temp1.add(c2);temp1.add(c0);temp1.add(c0);temp1.add(c1);temp1.add(c2);
             temp2.add(c2);temp2.add(c0);temp2.add(c1);temp2.add(c1);temp2.add(c0);temp2.add(c2);
@@ -139,8 +140,10 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
 
         }
         else if (orderedPlayers.size()==2) {
-            Player c0 = orderedPlayers.get(0), c1 = orderedPlayers.get(1);
-            ArrayList<Player> temp0 = new ArrayList<>(), temp1 = new ArrayList<>();
+            Player c0 = orderedPlayers.get(0);
+            Player c1 = orderedPlayers.get(1);
+            ArrayList<Player> temp0 = new ArrayList<>();
+            ArrayList<Player> temp1 = new ArrayList<>();
             temp0.add(c0);temp0.add(c1);temp0.add(c1);temp0.add(c0);
             temp1.add(c1);temp1.add(c0);temp1.add(c0);temp1.add(c1);
             orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp0);
@@ -152,9 +155,6 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
             System.out.println("problema");
         }
     }
-
-    //Le view per ogni giocatore sono le stesse, con l'eccezione che viene passata senza le PrivateObjectiveCard dell'avversario e
-    //senza la dicebag
 
     /**
      * Method that uses the Model to update view's personal model
@@ -180,7 +180,7 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
 
     public void endGame(){
         //For each player, create an HashMap calling on every player a Win/Lose command
-        HashMap<Player, Integer> playerScoreMap = new HashMap();
+        HashMap<Player, Integer> playerScoreMap = new HashMap<>();
         Integer tempScore;
         for (Player player : orderedPlayers) {
             tempScore=0;
@@ -191,6 +191,7 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
             playerScoreMap.put(player, tempScore);
             //TODO: Manca altro da calcolare? come facciamo con i punteggi sul tabellone?
         }
+
         LinkedHashMap<Player, Integer> orderedPlayerScores = new LinkedHashMap<>();
         for (int i = 0; i < orderedPlayers.size(); i++) {
             int maxValueInMap=(Collections.max(playerScoreMap.values()));// This will return max value in the Hashmap
@@ -250,8 +251,7 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
      * - set first player and
      */
     private void startNewRound() {
-        //TODO Controllo che i rounds fatti siano meno di 10, se no chiamo un nuovo round
-        if (orderedRoundPlayers.size()==0){
+        if (orderedRoundPlayers.isEmpty()){
             endGame();
         }
         else{
@@ -291,7 +291,6 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
      *      *  se siamo nella seconda metà del round currentPlayer sarà il precedente nella lista di giocatori;
      *      *  se ha già giocato 2 turni si passerà al giocatore ancora dopo
      *      *
-
      */
 
     public void nextPlayer() {
@@ -332,7 +331,6 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
     */
     }
 
-
     /**
      * Calculate total score of players and determine who is the winner
      */
@@ -347,52 +345,27 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
 */
     /**
      * Generally returns true if need ad allowance to perform a command
-     * @return
+     * @return true if the currentPlayer is the one given
      */
     public boolean isAllowed(Player player){
         return player==currentPlayer;
     }
 
-    public void sendCommandToAllPlayers(ServerToClientCommand command){
+    private void sendCommandToAllPlayers(ServerToClientCommand command){
         for (ClientConnection connection : Server.getControllerClientConnectionMap().get(this))
                 connection.notifyClient(command);
     }
 
-    public void sendCommandToPlayer(Player player, ServerToClientCommand command){
-        Server.getUsernameConnectionMap().get(player.getUsername()).notifyClient(command);
+    private void sendCommandToPlayer(Player player, ServerToClientCommand command){
+        Server.getConnectedClients().get(player.getUsername()).notifyClient(command);
 
     }
 
-    public void sendCommandToAllPlayersExceptGiven(ServerToClientCommand command, Player p){
-
+    private void sendCommandToAllPlayersExceptGiven(ServerToClientCommand command, Player p){
+        for (ClientConnection connection : Server.getControllerClientConnectionMap().get(this))
+            if (connection != Server.getUsernameConnectionMap().get(p.getUsername()))
+                connection.notifyClient(command);
     }
-
-    public void notifyPlayerDisconnection(Player player){
-
-    }
-
-    /**
-     * update is called by the Model only
-     * i have to update every client's model
-     */
-
-    public void notifyWinner(Player p){
-
-    }
-
-    public void notifyLoser(Player p){
-
-    }
-
-
-    // TODO : All methods connected to the using of Tool
-
-    public void useTool(CircularCutter toolCard){
-        // Applied automatically to the CurrentPlayer
-    }
-    //TODO ... For every Tool card
-
-
 
 
 
@@ -423,13 +396,7 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
                 view.notifyNotAbleToUseTool(player);
             }
     }
-
-
-    */
-
-
-    //Commands sent by client, to be picked and let the player know if he can or not
-
+*/
 
     /**
      * Those are methods that apply commands arriving from the Client
@@ -437,8 +404,7 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
      *
      * If a command is invalid, I catch an exception and send to the client itself a new AskMoveCommand()
      */
-
-    public void distinguishClientCommand(String clientUsername, ClientToServerCommand command){
+    void distinguishClientCommand(String clientUsername, ClientToServerCommand command){
         String words[] = command.getMessage().split(" ");
         //TODO complete
         switch(words[1]){
@@ -486,7 +452,7 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
                 ;
                 break;
             case("MoveChoiceToolCard"):
-                ;
+                applyCommand(clientUsername, (MoveChoiceToolCard) command);
                 break;
         }
 
@@ -501,8 +467,8 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
      * The choice of wpc is always right
      * That method removes the player that chooses its card, and moves it to the List of initialized player.
      * Checks if all players are initialized to call the next Controller Method
-     * @param playerUsername
-     * @param command
+     * @param playerUsername the username who is applying the command
+     * @param command the coming command
      */
     public void applyCommand(String playerUsername, ChosenWindowPatternCard command){
         String[] words = command.getMessage().split(" ");
@@ -515,6 +481,39 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
             startGame();
     }
 
+    /**
+     * The first word is the
+     * @param playerUsername
+     * @param command
+     */
+    //TODO: vedi se è necessario controllare che il player sia Current o non posso fare altre mosse e automaticamente il player da cui ricevo il comando è current
+    public void applyCommand(String playerUsername, MoveChoiceToolCard command){
+        Player current= usernamePlayerMap.get(playerUsername);
+        Integer usedToolNumber = command.getNumberChosen();
+        ToolCard chosen = model.getExtractedToolCard().get(usedToolNumber);
+        int requiredTokens=1;
+        if (chosen.getTokenCount()>0){
+            requiredTokens=2;
+        }
+        if (current.getTokens()>requiredTokens){
+            current.decreaseTokens(requiredTokens);
+            if (chosen.getName().equals("FirmPastryThinner")){
+                // Extract a die
+                Die die = model.getDiceBag().extractDie(); //TODO Dove tengo questa informazione? mi fido del controller?
+                sendCommandToPlayer(current, new CorrectUseToolFirmPastryThinner1(die.getColor().toString() , die.getValue() ));
+            }
+            else if (chosen.getName().equals("FirmPastryBrush")){
+                sendCommandToPlayer(current, new CorrectUseToolFirmPastryBrush1("", ThreadLocalRandom.current().nextInt(1, 7)));
+            }
+            else{
+                sendCommandToPlayer(current, new AllowedUseToolCommand("", usedToolNumber));
+            }
+        }
+        else{
+            sendCommandToPlayer(current, new InvalidMoveCommand("You haven't enough tokens to use this tool"));
+        }
+
+    }
 
 
 
@@ -545,14 +544,29 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
     }
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
+     * BRUSH: decide the new value
      */
     public void applyCommand(String playerUsername ,UseToolFirmPastryBrush command){
-
+        String[] words = command.getMessage().split(" ");
+        if (words[1].equals("MOVE")){
+            //TODO edit the schema, perform the move with the new value of the dice of the DraftPool
+        }
+        else{ //default: draftpool
+            //TODO just change the value die in the DraftPool, call the menu of Player
+        }
     }
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
+     * THINNER: die from DiceBag
      */
     public void applyCommand(String playerUsername , UseToolFirmPastryThinner command){
+        String[] words = command.getMessage().split(" ");
+        if (words[1].equals("MOVE")){
+            //TODO edit the model, reinsert the die in the draftpool in the dicebag
+        }
+        else{ //default: draftpool
+            //TODO change the die in the DraftPool, reinsertt the old one in the diceBag
+        }
 
     }
 

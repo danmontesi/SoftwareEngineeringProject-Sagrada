@@ -19,6 +19,11 @@ public class Die {
         this.value = ThreadLocalRandom.current().nextInt(1, 7);
     }
 
+    public Die(COLOR color, int value) {
+        this.color = color;
+        this.value = ThreadLocalRandom.current().nextInt(1, 7);
+    }
+
     /**
      * Sets the die's value to 7 - the die's value (the value on the die's side opposed to the exposed one)
      */
