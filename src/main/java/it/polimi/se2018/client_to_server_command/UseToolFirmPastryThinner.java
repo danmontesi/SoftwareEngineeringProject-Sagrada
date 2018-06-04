@@ -20,15 +20,17 @@ public class UseToolFirmPastryThinner extends ClientToServerCommand{
     /**
      * Contains nameClass DRAFTPOOL/SCHEMA dieColor
      */
-    private String message;
 
     private Integer dieNewValue;
 
+    private Integer dieOldPosition;
+
     private Integer diePosition; //DraftPool/Schema
 
-    public UseToolFirmPastryThinner(String message, Integer dieNewValue, Integer diePosition) {
+    public UseToolFirmPastryThinner(String message, Integer dieNewValue, Integer dieOldPosition, Integer diePosition) {
         this.message = message;
         this.dieNewValue = dieNewValue;
         this.diePosition = diePosition;
+        this.dieOldPosition = dieOldPosition;
     }
 }
