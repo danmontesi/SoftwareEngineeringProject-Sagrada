@@ -51,5 +51,3 @@ Tool10: flip the die
 Tool11: metti un dado nel sacco dadi, poi prendine uno e scegli il valore, poi piazzalo!
 Tool12: muovi uno o due dadi dello stesso colore di un dado a scelta del RoundTrack,  sul tuo Pattern in un'altra posizione che rispetti tutte le restrizioni
 */
-
-

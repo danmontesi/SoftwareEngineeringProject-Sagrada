@@ -8,4 +8,8 @@ public class CorkLine extends ToolCard {
             "You must obey all other placement restrictions";
 
 
+    public CorkLine(String name, String description, int tokenCount, String description1) {
+        super(name, description, tokenCount);
+        this.description = description1;
+    }
 }

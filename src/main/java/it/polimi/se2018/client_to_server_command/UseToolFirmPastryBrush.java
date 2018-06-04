@@ -1,6 +1,18 @@
 package it.polimi.se2018.client_to_server_command;
 
 public class UseToolFirmPastryBrush extends ClientToServerCommand{
+    public Integer getDieValue() {
+        return dieValue;
+    }
+
+    public Integer getDiePosition() {
+        return diePosition;
+    }
+
+    public Integer getDieOldPosition() {
+        return dieOldPosition;
+    }
+
     /**
      * Decides the die of DraftPool he wants to roll again
      * message = .. dieColor
@@ -18,16 +30,18 @@ public class UseToolFirmPastryBrush extends ClientToServerCommand{
      * - WHere i want to place the die
      * - in which position
      */
-
-    private String message; //nameClass DRAFTPOOL/SCHEMA dieColor
+    //nameClass DRAFTPOOL/SCHEMA dieColor
 
     private Integer dieValue;
 
-    private Integer diePosition; // in Draftpool or Schema
+    private Integer diePosition; // in  Schema ony ( can be null)
 
-    public UseToolFirmPastryBrush(String message, Integer dieValue, Integer diePosition) {
+    private Integer dieOldPosition;
+
+    public UseToolFirmPastryBrush(String message, Integer dieValue, Integer dieOldPosition, Integer diePosition) {
         this.message = message;
         this.dieValue = dieValue;
         this.diePosition = diePosition;
+        this.dieOldPosition = dieOldPosition;
     }
 }
