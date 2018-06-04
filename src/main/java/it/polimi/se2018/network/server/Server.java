@@ -8,9 +8,7 @@ import it.polimi.se2018.network.server.rmi.RMIServer;
 import it.polimi.se2018.network.server.rmi.RMIVirtualClient;
 import it.polimi.se2018.network.server.socket.SocketServer;
 import it.polimi.se2018.network.server.socket.SocketVirtualClient;
-import it.polimi.se2018.server_to_client_command.AskAuthenticationCommand;
 import it.polimi.se2018.server_to_client_command.AuthenticatedCorrectlyCommand;
-import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
 
 import java.net.Socket;
 import java.util.ArrayList;
@@ -54,9 +52,8 @@ public class Server {
     }
 
     public static void handle(ClientToServerCommand command){
-        //TODO: Se il comando è un login si gestisce aggiungendo l'user ai connectedClients, altrimenti...
         String username = command.getUsername();
-        userMap.get(username).update(username, command);
+        userMap.get(username).distinguishClientCommand(username, command);
     }
 
 
@@ -141,10 +138,26 @@ public class Server {
         return waitingClients;
     }
 
+    /**
+     * Remove any reference of a given player from the server
+     * @param username
+     */
     public static void removeClient(String username){
-        //sposto il client da connectedClients a disconnnectedClients
+        if (connectedClients.containsKey(username)){
+            connectedClients.remove(username);
+        }
+        if (waitingClients.contains(username)){
+            waitingClients.remove(username);
+        }
+        if (disconnectedClients.contains(username)){
+            disconnectedClients.remove(username);
+        }
     }
 
+    /**
+     * Disconnect a player from the server: his username is saved in disconnectedClients in case he will reconnect
+     * @param username
+     */
     public static void disconnnectClient(String username){
         if(connectedClients.containsKey(username)){
             connectedClients.remove(username);
@@ -153,5 +166,21 @@ public class Server {
         } else {
             System.out.println("Could not found such client");
         }
+    }
+
+    public static HashMap<String, ClientConnection> getConnectedClients() {
+        return connectedClients;
+    }
+
+    public static ArrayList<String> getDisconnectedClients() {
+        return disconnectedClients;
+    }
+
+    public static ArrayList<Controller> getActiveGames() {
+        return activeGames;
+    }
+
+    public static HashMap<String, Controller> getUserMap() {
+        return userMap;
     }
 }

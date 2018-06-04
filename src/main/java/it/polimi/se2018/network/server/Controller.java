@@ -359,7 +359,7 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
     }
 
     public void sendCommandToPlayer(Player player, ServerToClientCommand command){
-        Server.getUsernameConnectionMap().get(player.getUsername()).notifyClient(command);
+        Server.getConnectedClients().get(player.getUsername()).notifyClient(command);
 
     }
 
