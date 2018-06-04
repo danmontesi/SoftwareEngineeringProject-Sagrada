@@ -3,6 +3,7 @@ package it.polimi.se2018.network.client.socket;
 
 import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.network.server.ServerConnection;
+import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,16 +16,16 @@ public class SocketClient implements ServerConnection {
     Socket socket;
     ObjectOutputStream output;
     ObjectInputStream input;
-    //username identificativo
-    String username;
 
-    public SocketClient(String username){
-        this.username = username;
+    public SocketClient(){
     }
     @Override
     public void send(ClientToServerCommand command) {
         try {
-            command.setUsername(username);
+            if (!command.hasUsername()){
+                System.out.println("Connection not open yet: please start connection first");
+                return;
+            }
             output.writeObject(command);
             output.flush();
         } catch (IOException e) {
@@ -33,16 +34,18 @@ public class SocketClient implements ServerConnection {
     }
 
     @Override
-    public void startConnection() {
+    public void startConnection(String username) {
         try {
             socket = new Socket(host, port);
             output = new ObjectOutputStream(socket.getOutputStream());
+            //invia l'username al server per verificarne la validità
+            output.writeObject(username);
+            output.flush();
             input = new ObjectInputStream(socket.getInputStream());
             new Thread(() -> {
                 while (true){
                     try {
-                        input.readObject();
-                        //TODO: bisogna passare questo comando al controller
+                        ServerToClientCommand command = (ServerToClientCommand) input.readObject();
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {

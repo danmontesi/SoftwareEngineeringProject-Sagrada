@@ -15,19 +15,18 @@ public class RMIClient implements ServerConnection {
 
     Registry registry;
     RMIServerInterface server;
-    //username identificativo
-    String username;
 
-    public RMIClient(String username){
-        this.username = username;
+    public RMIClient(){
     }
 
     @Override
     public void send(ClientToServerCommand command) {
         try {
+            if (!command.hasUsername()){
+                System.out.println("Connection not open yet: please start connection first");
+                return;
+            }
             System.out.println("Sending " + command.getMessage());
-            //TODO: Gestire l'username nullo
-            command.setUsername(username);
             server.rmiSend(command);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -35,13 +34,13 @@ public class RMIClient implements ServerConnection {
     }
 
     @Override
-    public void startConnection() {
+    public void startConnection(String username) {
         try {
             registry = LocateRegistry.getRegistry(1099);
             server = (RMIServerInterface)registry.lookup("RMIImplementation");
             RMIClientImplementation client = new RMIClientImplementation(username, this);//Viene passato anche this così può rispondere nel caso in cui riceve un AskUsernameCommand
             RMIClientInterface remoteRef = (RMIClientInterface) UnicastRemoteObject.exportObject(client, 0);
-            server.addClient(remoteRef);
+            server.addClient(remoteRef, username);
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (NotBoundException e) {

@@ -8,8 +8,7 @@ import it.polimi.se2018.network.server.rmi.RMIServer;
 import it.polimi.se2018.network.server.rmi.RMIVirtualClient;
 import it.polimi.se2018.network.server.socket.SocketServer;
 import it.polimi.se2018.network.server.socket.SocketVirtualClient;
-import it.polimi.se2018.server_to_client_command.AskAuthenticationCommand;
-import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
+import it.polimi.se2018.server_to_client_command.AuthenticatedCorrectlyCommand;
 
 import java.net.Socket;
 import java.util.ArrayList;
@@ -18,48 +17,31 @@ import java.util.HashMap;
 public class Server {
 
     /**
-     * List of clients that waits to play.
-     * When the second is added, a timer should start
-     * When the timer finishes, or there is a fourth player who is waiting, the server has to create a Thread and starting a
-     * new Controller with those players.
-     * //TODO method that creates the Controller and set all the HashMaps
-     * //TODO Timer for start the game
+     * Clients that are waiting for a game to start and saved by username
      */
-    private static ArrayList<ClientConnection> waitingClients = new ArrayList<>();
-
+    private static ArrayList<String> waitingClients = new ArrayList<>();
     /**
-     * The map contains the Usernames and the relative Connection.
-     * Has to be updated every time a player disconnect (removing it, adding to a List of disconnectedPlayers)
-     * and add a new Entry String-ClientConnection when the user reconnect with a different connection
-     * //TODO gestire la disconnessione
+     * Clients connected with their own username and ClientConnection:
+     * ClientConnection is the reference that the server has to contact them
+     * These clients could both be in a game or be waiting for a game to start
      */
-    private static HashMap<String, ClientConnection> usernameConnectionMap = new HashMap<>();
-
+    private static HashMap<String, ClientConnection> connectedClients = new HashMap<>();
     /**
-     * The ArrayList contains the disconnectedClientsUsername that wait to be reassociated to a connection.
+     * Clients that were in a game andd then got disconnected
+     * These clients could be reinserted in a paused game when they reconnect to the server
+     * Clients are saved by their unique username
      */
-    private static ArrayList<String> disconnectedClientsUsername = new ArrayList<>();
-
+    private static ArrayList<String> disconnectedClients = new ArrayList<>();
     /**
-     * Ordered Active Games
+     * List of active games (one Thread for each game)
      */
     private static ArrayList<Controller> activeGames = new ArrayList<>();
-
     /**
-     * The map let the Server to obtain the correct controller given a Username, that is useful in order to apply a Command from Client
+     * Map used to pass a command coming from the network to the right controller (the right game) to manage it
      */
     private static HashMap<String, Controller> userMap = new HashMap<>();
 
-    /**
-     * The map let the Controller know which are the connections of their connected clients.
-     * The map has to remain in the server, that is static, because only the server knows when a Username is Disconnected
-     * //TODO This map has to be updated every time a player disconnects! Replacing / removing the relative username Connection.
-     */
-    private static HashMap<Controller, ArrayList<ClientConnection> > controllerClientConnectionMap = new HashMap<>();
-
     public static void main(String[] args) {
-
-        Server server = new Server();
 
         //pubblica RMI impl server side
         new RMIServer().RMIStartListening();
@@ -70,20 +52,8 @@ public class Server {
     }
 
     public static void handle(ClientToServerCommand command){
-        //TODO: Se il comando è un login si gestisce aggiungendo l'user ai connectedClients, altrimenti...
-        String[] words = command.getMessage().split(" ");
-        if (words[0].equals("UpdateUsernameCommand")){
-            System.out.println("ARRIVATO COMMAND " + command.getMessage()); //stringa fatta da 3 parole: 0) nomeClass 1) oldUsernameSetByServer 2) newUsernameFromClient
-            //TODO controllo se l'username va bene (ovvero words[2]), se no NE ASSEGNO UNO
-            //Se sì, faccio
-            usernameConnectionMap.put(words[2], usernameConnectionMap.remove(words[1]));
-            System.out.println(usernameConnectionMap.toString());
-        }
-        else {
-            String username = command.getUsername();
-            //Obtains the right controller from the map, and calls the method on it
-            userMap.get(username).distinguishClientCommand(username, command);
-        }
+        String username = command.getUsername();
+        userMap.get(username).distinguishClientCommand(username, command);
     }
 
 
@@ -92,38 +62,118 @@ public class Server {
      * They are later moved from waitingClients to connnectedClients when they are connected with their user.
      * @param client
      */
-    public synchronized static void addClientInterface(RMIClientInterface client){
+    public static void addClientInterface(RMIClientInterface client, String username){
+
+        //Create reference to RMIClient
         RMIVirtualClient vc = new RMIVirtualClient(client);
-        waitingClients.add(waitingClients.size(), vc);
-        String tempConnectionId = usernameConnectionMap.size()+"";
-        //Insert the connection in the hashmap with the tempId
-        usernameConnectionMap.put(tempConnectionId, vc);
-        // Viene fatta partire la richiesta di username subito dopo la connessione, che prende direttament l'username dal parametro deciso al momento della connessione
-        vc.notifyClient(new AskAuthenticationCommand(usernameConnectionMap.size() + "") ); //l'id è la dimensione del
+
+        /*
+        Three cases:
+        1) Attempt to reconnect after disconnection
+        2) Correct login request. Client is added to waitingClients (waiting for a game to start)
+        3) Attempt to connect with a user already taken, the server choose a similar valid one and notifies it to the client
+        Every time, a response is sent back to notify success or failure
+         */
+        if (disconnectedClients.contains(username)){
+            disconnectedClients.remove(username);
+            connectedClients.put(username, vc);
+            vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + username));
+        } else if(!connectedClients.containsKey(username)){
+            connectedClients.put(username, vc);
+            waitingClients.add(username);
+            vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + username));
+        } else {
+            int i = 1;
+            while (true){
+                String newUser = username + Character.toChars(i);
+                if(!connectedClients.containsKey(newUser)){
+                    connectedClients.put(newUser, vc);
+                    waitingClients.add(newUser);
+                    vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + newUser));
+                    return;
+                }
+            }
+        }
+
     }
 
-    //TODO fai lo stesso fatto con l'RMI per il socket
-    public static void addClientInterface(Socket socket){
+    public static void addClientInterface(Socket socket, String username){
+
+        //Create reference to Socket Client
         SocketVirtualClient vc = new SocketVirtualClient(socket);
-        waitingClients.add(waitingClients.size(), vc);
-        vc.start();
-        vc.notifyClient(new AskAuthenticationCommand("id")); //TODO HAS TO BE A RANDOM STRING
+        /*
+        Three cases:
+        1) Attempt to reconnect after disconnection
+        2) Correct login request. Client is added to waitingClients (waiting for a game to start)
+        3) Attempt to connect with a user already taken, the server choose a similar valid one and notifies it to the client
+        Every time, a response is sent back to notify success or failure
+         */
+        if (disconnectedClients.contains(username)){
+            disconnectedClients.remove(username);
+            connectedClients.put(username, vc);
+            vc.start();
+            vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + username));
+        }  else if (!connectedClients.containsKey(username)){
+            connectedClients.put(username, vc);
+            waitingClients.add(username);
+            vc.start();
+            vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + username));
+        } else {
+            int i = 1;
+            while (true){
+                String newUser = username + Character.toChars(i);
+                if(!connectedClients.containsKey(newUser)){
+                    connectedClients.put(newUser, vc);
+                    waitingClients.add(newUser);
+                    vc.start();
+                    vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + newUser));
+                    return;
+                }
+            }
+        }
+
     }
 
-    public static ArrayList<ClientConnection> getWaitingClients(){
+    public static ArrayList<String> getWaitingClients(){
         return waitingClients;
     }
 
-    public static void removeClient(ClientConnection client){
-        waitingClients.remove(client);
+    /**
+     * Remove any reference of a given player from the server
+     * @param username
+     */
+    public static void removeClient(String username){
+        if (connectedClients.containsKey(username)){
+            connectedClients.remove(username);
+        }
+        if (waitingClients.contains(username)){
+            waitingClients.remove(username);
+        }
+        if (disconnectedClients.contains(username)){
+            disconnectedClients.remove(username);
+        }
     }
 
-    public static HashMap<String, ClientConnection> getUsernameConnectionMap() {
-        return usernameConnectionMap;
+    /**
+     * Disconnect a player from the server: his username is saved in disconnectedClients in case he will reconnect
+     * @param username
+     */
+    public static void disconnnectClient(String username){
+        if(connectedClients.containsKey(username)){
+            connectedClients.remove(username);
+            disconnectedClients.add(username);
+            System.out.println("Client " + username + " disconnected");
+        } else {
+            System.out.println("Could not found such client");
+        }
     }
 
-    public static ArrayList<String> getDisconnectedClientsUsername() {
-        return disconnectedClientsUsername;
+    public static HashMap<String, ClientConnection> getConnectedClients() {
+        return connectedClients;
+    }
+
+    public static ArrayList<String> getDisconnectedClients() {
+        return disconnectedClients;
     }
 
     public static ArrayList<Controller> getActiveGames() {
@@ -133,9 +183,4 @@ public class Server {
     public static HashMap<String, Controller> getUserMap() {
         return userMap;
     }
-
-    public static HashMap<Controller, ArrayList<ClientConnection>> getControllerClientConnectionMap() {
-        return controllerClientConnectionMap;
-    }
 }
-

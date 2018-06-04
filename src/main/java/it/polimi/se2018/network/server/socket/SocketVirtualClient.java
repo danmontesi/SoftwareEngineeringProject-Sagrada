@@ -41,7 +41,6 @@ public class SocketVirtualClient extends Thread  implements ClientConnection {
 
     @Override
     public void run() {
-        //or maybe !socket.isclosed()
         while(!socket.isClosed()){
             try {
                 ClientToServerCommand command = (ClientToServerCommand) input.readObject();
