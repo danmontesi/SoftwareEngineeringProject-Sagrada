@@ -4,6 +4,7 @@ package it.polimi.se2018.network.server.socket;
 import it.polimi.se2018.network.server.Server;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -22,8 +23,11 @@ public class SocketServer {
                         Socket socket;
                         try {
                             socket = serverSocket.accept();
-                            Server.addClientInterface(socket);
+                            String username = (String) new ObjectInputStream(socket.getInputStream()).readObject();
+                            Server.addClientInterface(socket, username);
                         } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         }
 

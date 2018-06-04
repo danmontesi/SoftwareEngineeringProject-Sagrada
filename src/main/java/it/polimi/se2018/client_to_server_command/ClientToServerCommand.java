@@ -26,6 +26,10 @@ public abstract class ClientToServerCommand implements Serializable {
         return username;
     }
 
+    public boolean hasUsername(){
+        return username != null;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
