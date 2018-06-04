@@ -2,6 +2,7 @@ package it.polimi.se2018.network.client.rmi;
 
 
 import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
+import it.polimi.se2018.network.client.ClientController;
 import it.polimi.se2018.network.server.ServerConnection;
 import it.polimi.se2018.network.server.rmi.RMIServerInterface;
 
@@ -16,7 +17,7 @@ public class RMIClient implements ServerConnection {
     Registry registry;
     RMIServerInterface server;
 
-    public RMIClient(){
+    public RMIClient(ClientController clientController){
     }
 
     @Override
@@ -38,7 +39,7 @@ public class RMIClient implements ServerConnection {
         try {
             registry = LocateRegistry.getRegistry(1099);
             server = (RMIServerInterface)registry.lookup("RMIImplementation");
-            RMIClientImplementation client = new RMIClientImplementation(username, this);//Viene passato anche this così può rispondere nel caso in cui riceve un AskUsernameCommand
+            RMIClientImplementation client = new RMIClientImplementation();
             RMIClientInterface remoteRef = (RMIClientInterface) UnicastRemoteObject.exportObject(client, 0);
             server.addClient(remoteRef, username);
         } catch (RemoteException e) {

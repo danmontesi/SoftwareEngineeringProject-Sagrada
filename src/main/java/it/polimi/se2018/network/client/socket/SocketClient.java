@@ -2,6 +2,7 @@ package it.polimi.se2018.network.client.socket;
 
 
 import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
+import it.polimi.se2018.network.client.ClientController;
 import it.polimi.se2018.network.server.ServerConnection;
 import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
 
@@ -46,6 +47,7 @@ public class SocketClient implements ServerConnection {
                 while (true){
                     try {
                         ServerToClientCommand command = (ServerToClientCommand) input.readObject();
+                        ClientController.update(command);
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {

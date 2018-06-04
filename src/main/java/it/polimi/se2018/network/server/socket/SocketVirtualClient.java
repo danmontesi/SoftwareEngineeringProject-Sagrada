@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Map;
 
 public class SocketVirtualClient extends Thread  implements ClientConnection {
 
@@ -54,9 +55,19 @@ public class SocketVirtualClient extends Thread  implements ClientConnection {
                 } catch (IOException f){
                     //niente
                 }
-                Server.removeClient(this);
-                System.out.println("Client disconnesso");
-
+                 /*
+            Nota: in alternativa, un modo più semplice di ciclare in tutta la mapppa è aggiungere al comando
+            da server a client l'username dell'utente di destinazione (come per l'analogo client to server)
+             */
+                String disconnecting;
+                for (Map.Entry<String, ClientConnection> entry : Server.getConnectedClients().entrySet()) {
+                    if(entry.getValue().equals(this)){
+                        disconnecting = entry.getKey();
+                        Server.disconnnectClient(disconnecting);
+                        System.out.println("Client " + entry.getKey() + " disconnected");
+                        break;
+                    }
+                }
             } catch (ClassNotFoundException e) {
                 continue;
             }

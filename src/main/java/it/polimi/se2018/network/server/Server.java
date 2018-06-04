@@ -13,6 +13,8 @@ import it.polimi.se2018.server_to_client_command.AuthenticatedCorrectlyCommand;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Server {
 
@@ -41,14 +43,25 @@ public class Server {
      */
     private static HashMap<String, Controller> userMap = new HashMap<>();
 
+    private static Timer timer;
+    private static boolean itsTimeToStart = false;
+
     public static void main(String[] args) {
 
+        boolean activeServer = true;
         //pubblica RMI impl server side
         new RMIServer().RMIStartListening();
         System.out.println("Listening RMI");
         //listen socket connections
         new SocketServer().socketStartListening();
         System.out.println("Listening Socket");
+
+        while (activeServer){
+
+            if ((waitingClients.size() >= 4) || (itsTimeToStart)){
+                startNewGame();
+            }
+        }
     }
 
     public static void handle(ClientToServerCommand command){
@@ -80,7 +93,7 @@ public class Server {
             vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + username));
         } else if(!connectedClients.containsKey(username)){
             connectedClients.put(username, vc);
-            waitingClients.add(username);
+            addToWaitingClients(username);
             vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + username));
         } else {
             int i = 1;
@@ -88,7 +101,7 @@ public class Server {
                 String newUser = username + Character.toChars(i);
                 if(!connectedClients.containsKey(newUser)){
                     connectedClients.put(newUser, vc);
-                    waitingClients.add(newUser);
+                    addToWaitingClients(newUser);
                     vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + newUser));
                     return;
                 }
@@ -115,7 +128,7 @@ public class Server {
             vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + username));
         }  else if (!connectedClients.containsKey(username)){
             connectedClients.put(username, vc);
-            waitingClients.add(username);
+            addToWaitingClients(username);
             vc.start();
             vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + username));
         } else {
@@ -124,7 +137,7 @@ public class Server {
                 String newUser = username + Character.toChars(i);
                 if(!connectedClients.containsKey(newUser)){
                     connectedClients.put(newUser, vc);
-                    waitingClients.add(newUser);
+                    addToWaitingClients(newUser);
                     vc.start();
                     vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + newUser));
                     return;
@@ -132,10 +145,6 @@ public class Server {
             }
         }
 
-    }
-
-    public static ArrayList<String> getWaitingClients(){
-        return waitingClients;
     }
 
     /**
@@ -166,6 +175,52 @@ public class Server {
         } else {
             System.out.println("Could not found such client");
         }
+    }
+
+    public static void addToWaitingClients(String username){
+        waitingClients.add(username);
+        if (waitingClients.size() == 2){
+            System.out.println("Starting timer");
+            timer = new Timer();
+            timer.schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            itsTimeToStart = true;
+                        }
+                    },
+                    60000
+            );
+        }
+    }
+
+    public static void startNewGame(){
+
+        ArrayList<String> players = new ArrayList<>();
+
+        for(int i = 0; i < 4; i ++){
+            try {
+                players.add(waitingClients.get(i));
+            } catch (IndexOutOfBoundsException e) {
+                break;
+            }
+        }
+
+        for(String user : players){
+            waitingClients.remove(user);
+        }
+
+        Controller controller = new Controller(players);
+        activeGames.add(controller);
+        for(String user : players){
+            userMap.put(user, controller);
+        }
+        //when a game starts, timer is cancelled
+        timer.cancel();
+    }
+
+    public static ArrayList<String> getWaitingClients(){
+        return waitingClients;
     }
 
     public static HashMap<String, ClientConnection> getConnectedClients() {

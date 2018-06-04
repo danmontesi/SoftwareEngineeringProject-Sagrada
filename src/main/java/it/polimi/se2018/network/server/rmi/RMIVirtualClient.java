@@ -7,6 +7,7 @@ import it.polimi.se2018.network.server.Server;
 import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
 
 import java.rmi.RemoteException;
+import java.util.Map;
 
 public class RMIVirtualClient implements ClientConnection {
 
@@ -18,12 +19,24 @@ public class RMIVirtualClient implements ClientConnection {
 
     @Override
     public void notifyClient(ServerToClientCommand command) {
-        try{
-            System.out.println("entro nel RMIVirtualClient");
+
+        try {
             rmiClientInterface.rmiNotifyClient(command);
-        } catch (RemoteException e){
-            Server.removeClient(this);
-            System.out.println("Client disconnesso");
+        } catch (RemoteException e) {
+            /*
+            Nota: in alternativa, un modo più semplice di ciclare in tutta la mapppa è aggiungere al comando
+            da server a client l'username dell'utente di destinazione (come per l'analogo client to server)
+             */
+            String disconnecting;
+            for (Map.Entry<String, ClientConnection> entry : Server.getConnectedClients().entrySet()) {
+                if(entry.getValue().equals(this)){
+                    disconnecting = entry.getKey();
+                    Server.disconnnectClient(disconnecting);
+                    System.out.println("Client " + entry.getKey() + " disconnected");
+                    break;
+                }
+            }
         }
+
     }
 }

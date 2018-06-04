@@ -13,7 +13,7 @@ import it.polimi.se2018.server_to_client_command.*;
 import java.util.ArrayList;
 
 
-public class ClientController {
+public class ClientController{
 
     /**
      * La classe che viene in contatto con la connessione (Socket o RMI)
