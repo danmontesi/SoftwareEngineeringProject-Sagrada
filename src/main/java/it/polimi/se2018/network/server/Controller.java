@@ -352,19 +352,15 @@ public class Controller{ //Observer perchè osserva la View tramite le classi di
     }
 
     private void sendCommandToAllPlayers(ServerToClientCommand command){
-        for (ClientConnection connection : Server.getControllerClientConnectionMap().get(this))
-                connection.notifyClient(command);
+        for (String username : usernamePlayerMap.keySet() ) {
+            if (Server.getConnectedClients().keySet().contains(username))
+                Server.getConnectedClients().get(username).notifyClient(command);
+        }
     }
 
     private void sendCommandToPlayer(Player player, ServerToClientCommand command){
         Server.getConnectedClients().get(player.getUsername()).notifyClient(command);
 
-    }
-
-    private void sendCommandToAllPlayersExceptGiven(ServerToClientCommand command, Player p){
-        for (ClientConnection connection : Server.getControllerClientConnectionMap().get(this))
-            if (connection != Server.getUsernameConnectionMap().get(p.getUsername()))
-                connection.notifyClient(command);
     }
 
 
