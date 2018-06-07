@@ -1,5 +1,7 @@
 package it.polimi.se2018.client_to_server_command;
 
+import it.polimi.se2018.utils.ControllerServerInterface;
+
 public class MoveChoiceToolCard  extends ClientToServerCommand{
     public int getNumberChosen() {
         return numberChosen;
@@ -16,4 +18,7 @@ public class MoveChoiceToolCard  extends ClientToServerCommand{
         this.message = "MoveChoiceToolCardCommand";
     }
 
+    public void visit(ControllerServerInterface observer){
+        observer.applyCommand(getUsername(), this);
+    }
 }

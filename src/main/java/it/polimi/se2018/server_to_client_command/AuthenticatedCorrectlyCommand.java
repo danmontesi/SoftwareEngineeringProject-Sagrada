@@ -5,8 +5,8 @@ public class AuthenticatedCorrectlyCommand extends ServerToClientCommand{
  * Communicates that the username is correct
  * String with only NameClass
  */
-private String message;
 
+//MESSAGE contains only the new username
     public AuthenticatedCorrectlyCommand(String message) {
         this.message = message;
     }

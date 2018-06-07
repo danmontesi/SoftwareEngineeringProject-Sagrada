@@ -28,8 +28,7 @@ public class CorrectUseToolFirmPastryBrush1 extends ServerToClientCommand{
 
     private Integer dieValue;
 
-    public CorrectUseToolFirmPastryBrush1(String message, Integer dieValue) {
+    public CorrectUseToolFirmPastryBrush1(Integer dieValue) {
         this.dieValue = dieValue;
-        this.message = message;
     }
 }

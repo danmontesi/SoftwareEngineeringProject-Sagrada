@@ -1,6 +1,7 @@
 package it.polimi.se2018.client_to_server_command;
 
 public class UseToolCorkLine extends ClientToServerCommand{
+
     /**
      * As a normal move, no Placement Restriction
      * String contains the die he wants to move and
@@ -20,5 +21,18 @@ public class UseToolCorkLine extends ClientToServerCommand{
         this.message = message;
         this.schemaPosition = schemaPosition;
         this.dieDraftPoolPosition = dieDraftPoolPosition;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    public Integer getSchemaPosition() {
+        return schemaPosition;
+    }
+
+    public Integer getDieDraftPoolPosition() {
+        return dieDraftPoolPosition;
     }
 }

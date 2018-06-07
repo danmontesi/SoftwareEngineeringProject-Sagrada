@@ -11,7 +11,6 @@ public class UseToolCircularCutter extends ClientToServerCommand{
      * Integer dieRoundTrackPosition
      */
 
-    private String message;
 
     private Integer dieDraftPoolPosition;
 

@@ -7,6 +7,4 @@ public class UpdateUsernameCommand extends ClientToServerCommand{
         this.message = "UpdateUsernameCommand" + " " + username;
     }
 
-
-
 }

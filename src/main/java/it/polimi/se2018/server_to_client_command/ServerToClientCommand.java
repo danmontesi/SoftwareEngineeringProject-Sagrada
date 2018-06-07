@@ -1,5 +1,7 @@
 package it.polimi.se2018.server_to_client_command;
 
+import it.polimi.se2018.utils.ControllerClientInterface;
+
 import java.io.Serializable;
 
 public class ServerToClientCommand implements Serializable {
@@ -8,16 +10,22 @@ public class ServerToClientCommand implements Serializable {
      */
     public String message;
 
-    /** The Constant serialVersionUID. */
+    /**
+     * The Constant serialVersionUID.
+     */
     private static final long serialVersionUID = -6460847901998831472L;
 
 
-    public String getMessage(){
+    public String getMessage() {
         return message;
     }
 
+    //TODO: this method in every ServerToClientCommand
+    public void visit(ControllerClientInterface clientController) {
+        clientController.applyCommand(this);
     }
 
+}
 
 /*
 LEGENDA TOOL

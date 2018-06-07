@@ -1,5 +1,7 @@
 package it.polimi.se2018.client_to_server_command;
 
+import it.polimi.se2018.utils.ControllerServerInterface;
+
 public class MoveChoiceDicePlacement extends ClientToServerCommand{
 
     /**
@@ -19,7 +21,6 @@ public class MoveChoiceDicePlacement extends ClientToServerCommand{
      *
      * The controller server-side will check if the die is present in the DraftPool
      */
-    private String message;
 
     private Integer dieSchemaPosition;
 
@@ -29,5 +30,9 @@ public class MoveChoiceDicePlacement extends ClientToServerCommand{
         this.message = message;
         this.dieSchemaPosition = dieSchemaPosition;
         this.dieDraftPoolPosition = dieDraftPoolPosition;
+    }
+
+    public void visit(ControllerServerInterface observer){
+        observer.applyCommand(getUsername(), this);
     }
 }

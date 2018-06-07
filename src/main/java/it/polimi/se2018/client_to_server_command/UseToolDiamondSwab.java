@@ -11,8 +11,6 @@ public class UseToolDiamondSwab extends ClientToServerCommand{
      * Integer diePosition(from 0 to 20)
      */
 
-    private String message;
-
     private Integer schemaPosition;
 
     private Integer dieDraftPoolPosition;

@@ -30,4 +30,5 @@ public class UseToolManualCutter extends ClientToServerCommand{
         this.dieCurrentPosition1 = dieCurrentPosition1;
         this.dieCurrentPosition2 = dieCurrentPosition2;
     }
+
 }

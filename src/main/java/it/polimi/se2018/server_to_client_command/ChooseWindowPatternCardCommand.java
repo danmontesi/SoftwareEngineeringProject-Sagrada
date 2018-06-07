@@ -8,9 +8,8 @@ public class ChooseWindowPatternCardCommand extends ServerToClientCommand{
     /**
      * Contains nameClass + three names of Toolcards
      */
-    private String message;
 
     public ChooseWindowPatternCardCommand(String message) {
-        this.message = "ChooseWindowPatternCardCommand "+ message;
+        this.message = "ChooseWindowPatternCardCommand " + message;
     }
 }

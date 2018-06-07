@@ -1,19 +1,16 @@
 package it.polimi.se2018.server_to_client_command;
 
-public class WinCommand extends ServerToClientCommand{
-    public Integer getScore() {
-        return score;
-    }
+import java.util.ArrayList;
 
-    private Integer score;
+public class WinCommand extends ServerToClientCommand{
+
+    private ArrayList<String> scores;
 
     /**
-     * @param message is in the format NameClass + playerUsername1,score1 + " " + playerUsername2,score2 + " " + ...
-     * @param score
+     * @param scores is in the format NameClass + playerUsername1,score1 + " " + playerUsername2,score2 + " " + ...
      */
-    public WinCommand(String message, Integer score){
-        this.score=score;
-        this.message="WinCommand"+ " " + message;
+    public WinCommand(ArrayList<String> scores){
+        this.scores=scores;
     }
 
 }

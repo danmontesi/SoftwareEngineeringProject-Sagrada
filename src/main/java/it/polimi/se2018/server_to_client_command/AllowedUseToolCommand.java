@@ -9,10 +9,13 @@ public class AllowedUseToolCommand extends ServerToClientCommand{
      * in which the server has to communicate another information to client in order to use the tool
      */
 
+    public Integer getToolCardPosition() {
+        return toolCardPosition;
+    }
+
     /**
      * Contains the position of the toolcard to use
      */
-    private String message;
 
     private Integer toolCardPosition;
 

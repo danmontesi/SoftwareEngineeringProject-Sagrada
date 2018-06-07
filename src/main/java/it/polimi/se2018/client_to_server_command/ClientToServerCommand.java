@@ -1,12 +1,15 @@
 package it.polimi.se2018.client_to_server_command;
 
+import it.polimi.se2018.utils.ControllerServerInterface;
+
 import java.io.Serializable;
 
+//TODO maybe can be final?
 public abstract class ClientToServerCommand implements Serializable {
 
     protected String message;
 
-    private String username;
+    protected String username;
 
     private static final long serialVersionUID = -6460847931998831472L;
     /**
@@ -30,10 +33,20 @@ public abstract class ClientToServerCommand implements Serializable {
         return username != null;
     }
 
+    //TODO Maybe has to be in the constructor? because it can be modified in the server.. with a Set
     public void setUsername(String username) {
         this.username = username;
     }
+
+    //THIS METHOD IS IN EVERY SON
+
+    public void visit(ControllerServerInterface observer){
+        observer.applyCommand(username , this);
+    }
+
 }
+
+
 
 
 /*
