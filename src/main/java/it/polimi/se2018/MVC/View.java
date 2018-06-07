@@ -1,165 +1,124 @@
 package it.polimi.se2018.MVC;
 
-import it.polimi.se2018.Model;
-import it.polimi.se2018.Player;
-import it.polimi.se2018.WindowPatternCard;
-import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
-import it.polimi.se2018.network.client.ClientController;
-import it.polimi.se2018.toolcards.ToolCard;
+import it.polimi.se2018.*;
+import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
+import it.polimi.se2018.utils.Observable;
+import it.polimi.se2018.utils.Observer;
 
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.List;
 
-public class View extends Observable implements Observer{ //VIEW: Osservata da Controller, Osserva Model
-    private ClientController clientNetworkHandler;
-    private String playerUsername;
-    private ClientController observer;
+public abstract class View extends Observable implements Observer { //VIEW: Osserva Model, Osservato da Controller
 
-    public void addController(ClientController controller){
+    /**
+     * OSS: LA VIEW INCAPSULA DEGLI EVENTI! E POI LI MANDA GRAZIE AL CONTROLLER (update..)
+     *
+     */
+
+    public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards){
 
     }
 
-    /**
-     * Initialize Graphic or Command Line User Interface
-     */
-    public void showStartTurnMessageBox(){
+    public void startTurnMenu(){
         //Calls chooseWindowPatternCard(..)
     }
 
-    /**
-     * Set the board for a new Round
-     */
-    public void initializeRound(){
-
+    public void AllowedUseToolMessage(String message){
 
     }
 
-    public void setPlayerModel(String modelString){
+    public void askAuthenticatedCorrectlyMessage(String message){
 
     }
 
-    /**
-     * Start a turn: menu with possible moves options
-     */
-    public void startTurn() {
+    public void continueTurnMenu(boolean move, boolean tool){
 
     }
 
-    private void askWindowPatternCard(ArrayList<WindowPatternCard> cards){
+    public void correctUseTool(int numTool){
+        //Switch che in base al tipo di tool
+        //i possibili metodi sono PRIVATI e sono questi quì
+    }
+
+    public void firmPastryBrushMenu(int value){
 
     }
 
-    public void showAskUsernamePanel(){
+    public void firmPastryThinnerMenu(String color, int value){
 
     }
 
-    public void showChooseToolCardPanel(ArrayList<WindowPatternCard> wpc){
+    private void copperFoilReamerMenu(){
+
+    }
+
+    private void corkLineMenu(){
+
+    }
+
+    private void diamondSwabMenu(){
+
+    }
+
+    private void eglomiseBrushMenu(){
+
+    }
+
+    private void gavelMenu(){
+
+    }
+
+    private void lathekin(){
+
+    }
+
+    private void manuelCutter(){
+
+    }
+
+    private void roughingForceps(){
+
+    }
+
+    private void wheelsPincher(){
+
+    }
+
+    public void invalidActionMessage(String message){
+        //Di qualsiasi tipo:
+        // sia per il tool (seguita da una richiesta di uso del tool, di nuovo)
+        // sia per il piazzamento di un dado scorretto
+        // sia per qualsiasi azione non va bene
+        //OSS: il message contiene il messaggio con le informazioni dell'errore
+    }
+
+    public void loseMessage(Integer position, ArrayList<String> scores){
+
+    }
+
+    public void winMessage(List<String> scores){
+
+    }
+
+    public void correctAuthenthication(String username){
 
     }
 
 
-    public void askPlayerMove(){
+    // Methods for Obs/Obsvb
 
-    }
-
-    public void showWin(ArrayList<String> scores){
-
-    }
-
-    public void showLose(Integer position, ArrayList<String> scores){
-
-    }
-
-    /** use to refresh board and else
-     *
-     */
-    public void notifyOtherPlayerMove(){
-
-    }
-
-    public void showInvalidInput(){
-
-    }
-
-    public void showCorrectAuthenthication(String username){
-
-    }
-
-
-    public void showIncorrectAuthenthication(String message){
-
-    }
-
-    public void showDisconnectedPlayer(Player p){
-
-    }
-
-    public void askLoginInformation(){
-
-    }
-
-    /** Some other player action
-     * or the player's one
-     */
-    public void showActionPerformed(){
-
-    }
-
-    public void update(Model playerModel){ //Osserva il Model e con Update, fa l'update del model locale
+    @Override
+    public void update(Object event) {
+        //Osserva il Model e con Update, fa l'update del model locale
         //Calls the right method to update the Graphical Board;
         //The model is already updated by the ClientController, no worries about that
         //In case there is a CLI, does anything
-    }
-
-    public void notify(ClientToServerCommand command){ //da passare all'observer
-        //observer.update(command);
-    }
-
-    public void addObserver(){ //Used just to set the connectionHandler
-    }
-
-    public void showWaitForYourTurn(){
-
-    }
-    public void showInvalidInput(String message){
-
+        ServerToClientCommand command = (ServerToClientCommand) event;
+        System.out.println("ricevuto "+ command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-
+    public void notify(Object event){ //da passare all'observer
+        //observer.update(command);
     }
 }
-/*
-<<Interface>>
-
-
-// notify the move of a player
-        + playerMove: void
-        + showWin(): void
-        + showLose(): void
-        + askMove(): void
-// Has to show: 1- Place a die 2- Use toolcard- 3- Pass turn
-        + showInvalidInput(): void
-        + refreshBoard(): void
-        + askLoginInformation(): void
-        + showCorrectAuthentication(String username): void
-        + showIncorrectAuthentication(String username): void
-        + showDisconnectedPlayer(Player p): void
-        + showActionPerformed(): void //TO COMPLETE
-        + notify(): void
-//notify() notify something to the server depending from the player status
-
-
-
-        + addObserver()
-
-        + update(): void
-// nel model, va a selezionare le cose da visualizzare.
-
-
-// This is a comment
-// (--) This is a section break
-// Line break (\n) enter in-between text for line break
-*/

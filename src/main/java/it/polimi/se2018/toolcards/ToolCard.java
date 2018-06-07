@@ -21,8 +21,8 @@ public abstract class ToolCard {
         return tokenCount;
     }
 
-    public void increaseTokens(){
-        tokenCount +=1;
+    public void increaseTokens(int toBeIncreased){
+        tokenCount +=toBeIncreased;
     }
 
     public String getName() {

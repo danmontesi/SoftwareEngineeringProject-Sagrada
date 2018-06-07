@@ -5,11 +5,11 @@ import it.polimi.se2018.parser.ParserPublicObjectiveCard;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.toolcards.ToolCard;
+import it.polimi.se2018.utils.Observable;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Logger;
 
 
 /**
@@ -20,22 +20,17 @@ import java.util.logging.Logger;
  * The controller directly modifies the Model.
  *
  */
+public class Model extends Observable { //Observable of View
 
-public class Model extends Observable{
-
-    private ArrayList<Observer> observers;
     private DiceBag diceBag;
 
-    private ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck;
-
-    private ArrayList<PublicObjectiveCard> publicObjectiveCardDeck;
     private ArrayList<PublicObjectiveCard> extractedPublicObjectiveCard;
-
-    private ArrayList<ToolCard> toolCardDeck;
 
     private ArrayList<ToolCard> extractedToolCard;
 
     private ArrayList<WindowPatternCard> windowPatternCardDeck;
+
+    private ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck;
 
     private ArrayList<Player> gamePlayers;
 
@@ -46,6 +41,8 @@ public class Model extends Observable{
     }
 
     private DraftPool draftPool;
+
+    //private ArrayList<Observer> observers; Already in the class thanks to Observable ->le virtual view!
 
     public void setDraftPool(ArrayList<Die> dice) {
         this.draftPool = new DraftPool(dice);
@@ -65,6 +62,9 @@ public class Model extends Observable{
         ParserPrivateObjectiveCard parserPrivateObjectiveCard = new ParserPrivateObjectiveCard();
         ParserPublicObjectiveCard parserPublicObjectiveCard = new ParserPublicObjectiveCard();
         ParserWindowPatternCard parserWindowPatternCard = new ParserWindowPatternCard();
+
+        ArrayList<PublicObjectiveCard> publicObjectiveCardDeck = new ArrayList<>();
+        privateObjectiveCardDeck = new ArrayList<>();
 
         try {
             windowPatternCardDeck = parserWindowPatternCard.parseCards();
@@ -87,20 +87,20 @@ public class Model extends Observable{
         // Extracting three cards
         Collections.shuffle(publicObjectiveCardDeck);
         extractedPublicObjectiveCard = new ArrayList<>();
+
         for (int i = 0; i < 3; i++) {
             extractedPublicObjectiveCard.add(publicObjectiveCardDeck.remove(0));
         }
 
-        // ora aspetto che il controller esegua comandi
-    }
+        //TODO: Create the deck from a json file
+        ArrayList<ToolCard> toolCardDeck = new ArrayList<>();
 
-
-    public ArrayList<PublicObjectiveCard> getExtractedPublicObjectiveCard(){
+        extractedToolCard= new ArrayList<>();
         for (int i=0; i<3; i++){
-            int index = ThreadLocalRandom.current().nextInt(0,  publicObjectiveCardDeck.size());
-            extractedPublicObjectiveCard.set(i, publicObjectiveCardDeck.remove(index));
+            int index = ThreadLocalRandom.current().nextInt(0,  toolCardDeck.size());
+            extractedToolCard.set(i, toolCardDeck.remove(index));
         }
-        return extractedPublicObjectiveCard;
+
     }
 
     public ArrayList<Die> extractDraftPoolDice(int numPlayers){
@@ -111,6 +111,25 @@ public class Model extends Observable{
         return temp;
     }
 
+
+    //Metodo boolean per fare una mossa alla casella X del giocatore Y con il dado D con le condizioni valore, colore, placement
+    // che torna True o False
+
+    //Metodo per get vari dei giocatori
+
+    //...
+
+
+
+
+
+
+
+
+    public ArrayList<PublicObjectiveCard> getExtractedPublicObjectiveCard(){
+        return extractedPublicObjectiveCard;
+    }
+
     /**
      * Returns an ArrayList of 4 WindowPatternCards
      * @return list of extracted cards
@@ -119,7 +138,7 @@ public class Model extends Observable{
         ArrayList<WindowPatternCard> toReturn = new ArrayList<>();
         for (int i=0; i<4; i++){
             int index = ThreadLocalRandom.current().nextInt(0,  windowPatternCardDeck.size());
-            toReturn.set(i, windowPatternCardDeck.remove(index));
+            toReturn.add(i, windowPatternCardDeck.remove(index));
         }
         return toReturn;
     }
@@ -129,10 +148,6 @@ public class Model extends Observable{
      * @return list of extracted cards
      */
     public ArrayList<ToolCard> getExtractedToolCard(){
-        for (int i=0; i<3; i++){
-            int index = ThreadLocalRandom.current().nextInt(0,  toolCardDeck.size());
-            extractedToolCard.set(i, toolCardDeck.remove(index));
-        }
         return extractedToolCard;
     }
 
@@ -140,56 +155,11 @@ public class Model extends Observable{
         return roundTrack;
     }
 
-    /**
-     * Notifies Controller of Model changes
-     */
-    public void notifyModelChanges(){
-        for (Observer o : observers)
-            o.update(this, this);
-    }
-
-    /**
-     * Adds an observer
-     * @param o to be added observer
-     */
-    public void addObserver(Observer o){
-        observers.add(o);
-    }
-
-
-    public ArrayList<Player> getGamePlayers() {
-        return gamePlayers;
-    }
-
     public DiceBag getDiceBag() {
         return diceBag;
     }
 
-
-
-    public String stringModelRepresentationForPlayer(Player player){
-        String string = "";
-        //4 blocks
-        //1- DraftPool
-        //2- toolcard
-        //3- publicobjective
-        //4- private Objective(dependent to Player)
-        //5- WindowPatternCard
-        //6- roundtrack
-        //7- number of players (2,3,4)
-        //8- each player's roundtrack (first is the player's)
-        //different cards separated by comma",". sections separated by "-"
-
-        //DraftPool
-        string += "";
-
-
-
-        string += "";
-
-        return string;
-
-
-    }
+    //Aready has
+    //public void notify(Object event) {
 
 }
