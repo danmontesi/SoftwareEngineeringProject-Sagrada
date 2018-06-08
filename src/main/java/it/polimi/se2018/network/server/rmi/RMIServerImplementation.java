@@ -18,7 +18,6 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIS
     @Override
     public void addClient(RMIClientInterface client, String username) throws RemoteException {
         Server.addClientInterface(client, username);
-
     }
 
     @Override

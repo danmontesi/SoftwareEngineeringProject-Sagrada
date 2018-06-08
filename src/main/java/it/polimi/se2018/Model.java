@@ -6,6 +6,7 @@ import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.toolcards.ToolCard;
 import it.polimi.se2018.utils.Observable;
+import it.polimi.se2018.utils.Observer;
 
 import java.io.IOException;
 import java.util.*;
@@ -94,11 +95,11 @@ public class Model extends Observable { //Observable of View
 
         //TODO: Create the deck from a json file
         ArrayList<ToolCard> toolCardDeck = new ArrayList<>();
-
-        extractedToolCard= new ArrayList<>();
+        extractedToolCard = new ArrayList<>();
+        //extractedToolCard= new ArrayList<>();
         for (int i=0; i<3; i++){
-            int index = ThreadLocalRandom.current().nextInt(0,  toolCardDeck.size());
-            extractedToolCard.set(i, toolCardDeck.remove(index));
+            //int index = ThreadLocalRandom.current().nextInt(0,  toolCardDeck.size());
+            //extractedToolCard.set(i, toolCardDeck.remove(index));
         }
 
     }
@@ -159,6 +160,42 @@ public class Model extends Observable { //Observable of View
         return diceBag;
     }
 
+    public void setGamePlayers(ArrayList<Player> gamePlayers) {
+        this.gamePlayers = gamePlayers;
+        //notifyEditWpcs();
+        notify(this);
+    }
+
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+        for (int i = 0; i < gamePlayers.size(); i++) {
+            string.append("\n" + gamePlayers.get(i).getUsername() + ":" +
+                    "\n" + gamePlayers.get(i).getWindowPatternCard().toString() + "\n");
+            string.append("Tokens: "+ gamePlayers.get(i).getTokens()+ "\n");
+        }
+        string.append("\n ->Toolcards<- \n");
+        for (int i = 0; i < extractedToolCard.size(); i++) {
+            string.append("\nName: " +extractedToolCard.get(i).getName() + "\n" + "Description: " + extractedToolCard.get(i).getDescription()
+                    + "\n TokenCount = " + extractedToolCard.get(i).getTokenCount());
+        }
+
+        for (int i = 0; i < extractedPublicObjectiveCard.size(); i++) {
+            string.append("\nName: " + extractedPublicObjectiveCard.get(i).getName() + "\n" + "Description: " + extractedPublicObjectiveCard.get(i).getDescription() + "\n");
+        }
+        string.append("\n Roundtrack: ");
+        //....
+        return string.toString();
+    }
+
+    //TODO Versione toString, eventualmente da farle tornare il model stesso
+    @Override
+    public void notify(Object obj){
+        Model model = (Model) obj;
+        for (Observer observer : observers) {
+            System.out.println("Notificando una V.V. della new board");
+            observer.update(model.toString());
+        }
+    }
     //Aready has
     //public void notify(Object event) {
 

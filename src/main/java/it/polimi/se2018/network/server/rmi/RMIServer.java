@@ -11,7 +11,6 @@ public class RMIServer {
 
         System.setProperty("java.rmi.server.hostname","127.0.0.1");
 
-
         try {
             Registry registry = LocateRegistry.createRegistry(port);
             RMIServerImplementation serverImplementation = new RMIServerImplementation();

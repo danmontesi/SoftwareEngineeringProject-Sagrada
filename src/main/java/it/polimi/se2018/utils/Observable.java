@@ -1,20 +1,21 @@
 package it.polimi.se2018.utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Observable{
-    public ArrayList<Observer> observers;
+    protected List<Observer> observers = new ArrayList<>();
 
-    protected void notify(Object event){
+    public void notify(Object event){
     for (Observer observer : observers)
         observer.update(event);
     }
 
-    protected void register(Observer observer){
+    public void register(Observer observer){
         observers.add(observer);
     }
 
-    protected void deregister(Observer observer){
+    public void deregister(Observer observer){
         observers.remove(observer);
     }
 }

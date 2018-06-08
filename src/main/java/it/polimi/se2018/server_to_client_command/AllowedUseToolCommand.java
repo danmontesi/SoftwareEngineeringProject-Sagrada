@@ -1,5 +1,7 @@
 package it.polimi.se2018.server_to_client_command;
 
+import it.polimi.se2018.utils.ControllerClientInterface;
+
 public class AllowedUseToolCommand extends ServerToClientCommand{
     /**
      * The generic Server response to client that wants to use a tool
@@ -23,4 +25,13 @@ public class AllowedUseToolCommand extends ServerToClientCommand{
         this.message = message;
         this.toolCardPosition = toolCardPosition;
     }
+
+    /**
+     * Visitor methods, it calls the clientController to perform a move using dynamic binding
+     * @param clientController the parameters who calls the dynamic method
+     */
+    public void visit(ControllerClientInterface clientController) {
+        clientController.applyCommand(this);
+    }
+
 }

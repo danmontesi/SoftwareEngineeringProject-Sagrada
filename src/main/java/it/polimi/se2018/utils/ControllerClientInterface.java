@@ -45,11 +45,6 @@ public interface ControllerClientInterface{
     public void applyCommand(LoseCommand command);
 
     /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(NotifyCredentialsNeeded command);
-
-    /**
      * Refresh the player model and calls a function of the view that modifies the board with the edits
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
@@ -202,5 +197,5 @@ public interface ControllerClientInterface{
      */
     public void applyCommand(InvalidUseToolWheelsPincher command);
 
-    void update(ServerToClientCommand command);
+    void dispatchCommand(Object event);
 }

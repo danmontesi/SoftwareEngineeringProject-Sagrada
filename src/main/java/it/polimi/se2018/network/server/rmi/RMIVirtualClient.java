@@ -20,23 +20,30 @@ public class RMIVirtualClient implements ClientConnection {
     @Override
     public void notifyClient(ServerToClientCommand command) {
 
-        try {
-            rmiClientInterface.rmiNotifyClient(command);
-        } catch (RemoteException e) {
+        //TODO: SENZA THREAD!!!!!
+            new Thread() {
+                public void run() {
+                    try {
+                        rmiClientInterface.rmiNotifyClient(command);
+                    } catch (RemoteException e) {
             /*
             Nota: in alternativa, un modo più semplice di ciclare in tutta la mapppa è aggiungere al comando
             da server a client l'username dell'utente di destinazione (come per l'analogo client to server)
              */
-            String disconnecting;
-            for (Map.Entry<String, ClientConnection> entry : Server.getConnectedClients().entrySet()) {
-                if(entry.getValue().equals(this)){
-                    disconnecting = entry.getKey();
-                    Server.disconnnectClient(disconnecting);
-                    System.out.println("Client " + entry.getKey() + " disconnected");
-                    break;
+                        String disconnecting;
+                        for (Map.Entry<String, ClientConnection> entry : Server.getConnectedClients().entrySet()) {
+                            if (entry.getValue().equals(this)) {
+                                disconnecting = entry.getKey();
+                                Server.disconnnectClient(disconnecting);
+                                System.out.println("Client " + entry.getKey() + " disconnected");
+                                break;
+                            }
+                        }
+                    }
                 }
-            }
-        }
+            }.start();
+            //rmiClientInterface.rmiNotifyClient(command);
+
 
     }
 }

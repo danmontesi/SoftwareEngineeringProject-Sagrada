@@ -235,11 +235,16 @@ public class WindowPatternCard {
     }
 
     public String toString() {
-        String printedCard = new String();
+        String printedCard = "\n - " + name + " - \n";
         for (int i = 0; i < schema.size(); i++) {
             try {
-                if (schema.get(i).getAssociatedDie() == null) {
-                    printedCard+= "noDie";
+                if (schema.get(i).isEmpty()) {
+                    if (schema.get(i).getColorConstraint()!=null)
+                        printedCard+=schema.get(i).getColorConstraint().toString();
+                    else if (schema.get(i).getValueConstraint()!=null)
+                        printedCard+=schema.get(i).getValueConstraint().toString();
+                    else
+                        printedCard+= "noDie";
                 } else {
                     printedCard += schema.get(i).getAssociatedDie().getColor() + "," + schema.get(i).getAssociatedDie().getValue();
                 }
