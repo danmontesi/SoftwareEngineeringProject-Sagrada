@@ -1,5 +1,7 @@
 package it.polimi.se2018.server_to_client_command;
 
+import it.polimi.se2018.utils.ControllerClientInterface;
+
 public class AskAuthenticationCommand extends ServerToClientCommand{
 
     /**
