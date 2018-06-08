@@ -10,6 +10,8 @@ import it.polimi.se2018.network.server.socket.SocketServer;
 import it.polimi.se2018.network.server.socket.SocketVirtualClient;
 import it.polimi.se2018.server_to_client_command.AuthenticatedCorrectlyCommand;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +30,7 @@ public class Server {
      * These clients could both be in a game or be waiting for a game to start
      */
     private static HashMap<String, ClientConnection> connectedClients = new HashMap<>();
+
     /**
      * Clients that were in a game andd then got disconnected
      * These clients could be reinserted in a paused game when they reconnect to the server
@@ -41,7 +44,7 @@ public class Server {
     /**
      * Map used to pass a command coming from the network to the right controller (the right game) to manage it
      */
-    private static HashMap<String, Controller> userMap = new HashMap<>();
+    private static HashMap<String, VirtualView> userMap = new HashMap<>();
 
     private static Timer timer;
     private static boolean itsTimeToStart = false;
@@ -66,7 +69,7 @@ public class Server {
 
     public static void handle(ClientToServerCommand command){
         String username = command.getUsername();
-        userMap.get(username).distinguishClientCommand(username, command);
+        userMap.get(username).notify(command);
     }
 
 
@@ -90,30 +93,33 @@ public class Server {
         if (disconnectedClients.contains(username)){
             disconnectedClients.remove(username);
             connectedClients.put(username, vc);
-            vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + username));
+            vc.notifyClient(new AuthenticatedCorrectlyCommand(username));
         } else if(!connectedClients.containsKey(username)){
             connectedClients.put(username, vc);
             addToWaitingClients(username);
-            vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + username));
+            vc.notifyClient(new AuthenticatedCorrectlyCommand(username));
         } else {
-            int i = 1;
+            Integer i = 1;
             while (true){
-                String newUser = username + Character.toChars(i);
+                String newUser = username + i.toString();
                 if(!connectedClients.containsKey(newUser)){
                     connectedClients.put(newUser, vc);
                     addToWaitingClients(newUser);
-                    vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + newUser));
+                    vc.notifyClient(new AuthenticatedCorrectlyCommand(newUser));
                     return;
                 }
+                i++;
             }
         }
 
     }
 
-    public static void addClientInterface(Socket socket, String username){
+    public static void addClientInterface(Socket socket, ObjectInputStream input, ObjectOutputStream output, String username){
 
         //Create reference to Socket Client
-        SocketVirtualClient vc = new SocketVirtualClient(socket);
+
+        SocketVirtualClient vc = new SocketVirtualClient(socket, input, output);
+
         /*
         Three cases:
         1) Attempt to reconnect after disconnection
@@ -121,27 +127,30 @@ public class Server {
         3) Attempt to connect with a user already taken, the server choose a similar valid one and notifies it to the client
         Every time, a response is sent back to notify success or failure
          */
+        System.out.println("Entro in addClientSocket");
         if (disconnectedClients.contains(username)){
             disconnectedClients.remove(username);
             connectedClients.put(username, vc);
             vc.start();
-            vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + username));
+            vc.notifyClient(new AuthenticatedCorrectlyCommand(username));
         }  else if (!connectedClients.containsKey(username)){
             connectedClients.put(username, vc);
-            addToWaitingClients(username);
+            System.out.println("prima di inviare AuthCommand");
+            vc.notifyClient(new AuthenticatedCorrectlyCommand(username));
             vc.start();
-            vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + username));
+            addToWaitingClients(username);
         } else {
-            int i = 1;
+            Integer i = 1;
             while (true){
-                String newUser = username + Character.toChars(i);
+                String newUser = username + i.toString();
                 if(!connectedClients.containsKey(newUser)){
                     connectedClients.put(newUser, vc);
-                    addToWaitingClients(newUser);
+                    vc.notifyClient(new AuthenticatedCorrectlyCommand(newUser));
                     vc.start();
-                    vc.notifyClient(new AuthenticatedCorrectlyCommand("AuthenticatedCorrectlyCommand " + newUser));
+                    addToWaitingClients(newUser);
                     return;
                 }
+                i++;
             }
         }
 
@@ -179,6 +188,7 @@ public class Server {
 
     public static void addToWaitingClients(String username){
         waitingClients.add(username);
+        System.out.println("Addato "+ username);
         if (waitingClients.size() == 2){
             System.out.println("Starting timer");
             timer = new Timer();
@@ -186,19 +196,23 @@ public class Server {
                     new TimerTask() {
                         @Override
                         public void run() {
-                            itsTimeToStart = true;
+                            itsTimeToStart = true;  //TODO a cosa serve questa variabile? startNewGame() deve essere controllato da questa variabile? deve essere messo in un thread quindi?
+                            System.out.println("Time expired");
+                            startNewGame(); //DA TOGLIERE, l'ho utilizzato solo come prova. il metodo deve essere contorllato dalla variabile itsTimeToStart
                         }
                     },
-                    60000
+                    60
             );
         }
     }
 
     public static void startNewGame(){
+        //when a game starts, timer is cancelled
+        timer.cancel();
 
         ArrayList<String> players = new ArrayList<>();
 
-        for(int i = 0; i < 4; i ++){
+        for(int i = 0; i < waitingClients.size() || i < 4; i ++){
             try {
                 players.add(waitingClients.get(i));
             } catch (IndexOutOfBoundsException e) {
@@ -212,11 +226,7 @@ public class Server {
 
         Controller controller = new Controller(players);
         activeGames.add(controller);
-        for(String user : players){
-            userMap.put(user, controller);
-        }
-        //when a game starts, timer is cancelled
-        timer.cancel();
+
     }
 
     public static ArrayList<String> getWaitingClients(){
@@ -235,7 +245,7 @@ public class Server {
         return activeGames;
     }
 
-    public static HashMap<String, Controller> getUserMap() {
+    public static HashMap<String, VirtualView> getUserMap() {
         return userMap;
     }
 }

@@ -6,27 +6,23 @@ import it.polimi.se2018.network.client.ClientConnection;
 import it.polimi.se2018.network.server.Server;
 import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
-public class SocketVirtualClient extends Thread  implements ClientConnection {
+public class SocketVirtualClient extends Thread implements ClientConnection {
 
     Socket socket;
     ObjectOutputStream output;
     ObjectInputStream input;
+    BufferedReader is;
 
-    public SocketVirtualClient(Socket socket) {
+    public SocketVirtualClient(Socket socket, ObjectInputStream input, ObjectOutputStream output) {
         this.socket = socket;
-        try {
-            output = new ObjectOutputStream(socket.getOutputStream());
-            input = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        this.input = input;
+        this.output = output;
     }
 
     @Override
@@ -73,4 +69,5 @@ public class SocketVirtualClient extends Thread  implements ClientConnection {
             }
         }
     }
+
 }
