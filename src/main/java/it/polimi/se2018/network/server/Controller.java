@@ -7,7 +7,6 @@ import it.polimi.se2018.network.client.ClientConnection;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.server_to_client_command.*;
-import it.polimi.se2018.toolcards.CircularCutter;
 import it.polimi.se2018.toolcards.ToolCard;
 
 import java.util.*;

@@ -42,14 +42,20 @@ public class WindowPatternCardTest {
     }
 
     @Test
-    public void wrongSetOnSide(){
-        assertFalse(wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 0));
+    public void wrongFirstSet(){
+        assertFalse(wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 3));
     }
 
     @Test
     public void setDieAdjacentToAnother(){
         wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 4);
         assertTrue(wpc.placeDie(new Die(COLOR.RED, 3), 1, 3));
+    }
+
+    @Test
+    public void setDieNotAdjacentToAnother(){
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 4);
+        assertFalse(wpc.placeDie(new Die(COLOR.RED, 3), 3, 4));
     }
 
     @Test
@@ -62,6 +68,23 @@ public class WindowPatternCardTest {
     public void setDieOntoAnotherOne(){
         wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 4);
         assertFalse(wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 4));
+    }
+
+    @Test
+    public void setWrongColor(){
+        assertFalse(wpc.placeDie(new Die(COLOR.RED, 3), 0, 0));
+    }
+
+    @Test
+    public void setWrongValue(){
+        assertFalse(wpc.placeDie(new Die(COLOR.RED, 3), 1, 1));
+    }
+
+    @Test
+    public void setDieOnSideButNotAtFirstTurn(){
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 4);
+        assertFalse(wpc.placeDie(new Die(COLOR.RED, 3), 1, 0));
+
     }
 
 

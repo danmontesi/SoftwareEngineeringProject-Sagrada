@@ -569,13 +569,5 @@ public class ClientController{
     public void applyCommand(InvalidUseToolWheelsPincher command){
 
     }
-
-
-
-
-
-
-
-
 }
 
