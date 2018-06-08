@@ -1,19 +1,20 @@
 package it.polimi.se2018.network.client;
 
-import it.polimi.se2018.COLOR;
-import it.polimi.se2018.Die;
+import it.polimi.se2018.*;
+import it.polimi.se2018.MVC.CLIView;
+import it.polimi.se2018.MVC.GUIView;
 import it.polimi.se2018.MVC.View;
-import it.polimi.se2018.Model;
+import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
-import it.polimi.se2018.WindowPatternCard;
-import it.polimi.se2018.client_to_server_command.*;
 import it.polimi.se2018.network.server.ServerConnection;
 import it.polimi.se2018.server_to_client_command.*;
+import it.polimi.se2018.utils.ControllerClientInterface;
+import it.polimi.se2018.utils.Observer;
 
 import java.util.ArrayList;
 
 
-public class ClientController{
+public class ClientController implements Observer, ControllerClientInterface {
 
     /**
      * La classe che viene in contatto con la connessione (Socket o RMI)
@@ -26,62 +27,55 @@ public class ClientController{
 
     private Model playerModel;
 
+    private String username;
+
     private ServerConnection connection;
-    /**
-     * Contructor:
-     * Instantiates the view
-     * @param view The connected view that shows panels to the user
-     */
-    public ClientController(View view){
-        this.view = view;
-    }
-    // Main method for sending commands to Server
 
     /**
-     * The method sendCommand calls the ServerConnection and send the message with the network interface defined in the
-     * very beginning.
-     * ClientController is transparent to the connection type.
-     * @param command
+     * Contructor:
      */
-    public void sendCommand(ClientToServerCommand command) {
+    public ClientController(int viewChoice, ServerConnection connection){
+        this.connection = connection;
+        if (viewChoice==1){
+            this.view = new CLIView(this);
+        }
+        else
+            this.view = new GUIView();
+    }
+
+    public void setUsername(String username){
+        this.username = username;
+    }
+
+    // Main method for sending commands to Server
+
+
+    public void update(Object command) {
         try {
-            System.out.println("entro nel send ClientController"); //
-            connection.send(command);
+            ClientToServerCommand castedCommand = (ClientToServerCommand) command;
+            System.out.println("Sto inviando un command " + castedCommand.getMessage());
+            castedCommand.setUsername(username);
+            connection.send(castedCommand);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
+    /*
 
-    /**
-     * Method called by the view, just perform a move waiting Server validation
-     * @param draftPoolPosition
-     * @param schemaPosition
-     */
     public void performMove(Integer draftPoolPosition, Integer schemaPosition){
         //Create the Command and send to Server to wait for validation
         sendCommand(new MoveChoiceDicePlacement("MoveChoiceDicePlacement", schemaPosition, draftPoolPosition));
     }
 
-    /**
-     * Method called by the view, ask the Server if the user can use a specific toolcard (token)
-     * @param toolNumber
-     */
     public void useToolCard(Integer toolNumber){
         sendCommand(new MoveChoiceToolCard("MoveChoiceToolCard", toolNumber));
     }
 
-    /**
-     * Method called by the view, is just pass the turn
-     */
     public void passTurn(){
         sendCommand(new MoveChoicePassTurn("MoveChoicePassTurn"));
     }
 
-    /**
-     * Method called by the view
-     * @param card
-     */
     public void chosenWindowPatternCard(WindowPatternCard card){
         sendCommand(new ChosenWindowPatternCard(card.getCardName()));
     }
@@ -115,6 +109,23 @@ public class ClientController{
         //and the second word says MOVE
         sendCommand(new UseToolFirmPastryThinner("DRAFTPOOL", dieNewValue, dieOldPosition, null));
     }
+    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Second role of the ClientController is to receive commands from Server and apply them (to Client)
@@ -125,145 +136,8 @@ public class ClientController{
      * @param
      */
 
-    public void update(ServerToClientCommand command){
-        String words[] = command.getMessage().split(" ");
-        //TODO complete
-        switch(words[0]){
-            case("AuthenticatedCorrectlyCommand"): // TODO: Appena ale finisce la network
-                ;
-                break;
-            case("ChooseWindowPatternCardCommand"):
-                applyCommand((ChooseWindowPatternCardCommand) command);
-                //CorrectToolResponse
-                break;
-
-            //Correct use Tool notification
-            case("CorrectUseToolCopperFoilReamer"):
-                ;
-                break;
-            case("CorrectUseToolCorkLine"):
-                ;
-                break;
-            case("CorrectUseToolDiamondSwab"):
-                ;
-                break;
-            case("CorrectUseToolEglomiseBrush"):
-                ;
-                break;
-            case("CorrectUseToolFirmPastryBrush1"):
-                ;
-                break;
-            case("CorrectUseToolFirmPastryBrush2"):
-                ;
-                break;
-            case("CorrectUseToolFirmPastryThinner1"):
-                ;
-                break;
-            case("CorrectUseToolFirmPastryThinner2"):
-                ;
-                break;
-            case("CorrectUseToolGavel"):
-                ;
-                break;
-            case("CorrectUseToolLathekin"):
-                ;
-                break;
-            case("CorrectUseToolManualCutter"):
-                ;
-                break;
-            case("CorrectUseToolRoughingForceps"):
-                ;
-                break;
-            case("CorrectUseToolWheelsPincher"):
-                ;
-                break;
-
-
-
-            //InvalidToolsResponse
-            case("InvalidUseToolCopperFoilReamer"):
-                ;
-                break;
-            case("InvalidUseToolCorkLine"):
-                ;
-                break;
-            case("InvalidUseToolDiamondSwab"):
-                ;
-                break;
-            case("InvalidUseToolEglomiseBrush"):
-                ;
-                break;
-            case("InvalidUseToolFirmPastryBrush1"):
-                ;
-                break;
-            case("InvalidUseToolFirmPastryBrush2"):
-                ;
-                break;
-            case("InvalidUseToolFirmPastryThinner1"):
-                ;
-                break;
-            case("InvalidUseToolFirmPastryThinner2"):
-                ;
-                break;
-            case("InvalidUseToolGavel"):
-                ;
-                break;
-            case("InvalidUseToolLathekin"):
-                ;
-                break;
-            case("InvalidUseToolManualCutter"):
-                ;
-                break;
-            case("InvalidUseToolRoughingForceps"):
-                ;
-                break;
-            case("InvalidUseToolWheelsPincher"):
-                ;
-                break;
-
-
-            case("InitializeTurnCommand"):
-                ;
-                break;
-            case("InvalidCommand"):
-                ;
-                break;
-            case("InvalidInputCommand"):
-                ;
-                break;
-            case("InvalidMoveCommand"):
-                ;
-                break;
-            case("LoseCommand"):
-                ;
-                break;
-            case("NotifyCredentialsNeeded"):
-                ;
-                break;
-            case("RefreshBoardCommand"):
-                ;
-                break;
-            case("ServerToClientCommand"):
-                ;
-                break;
-            case("StartPlayerTurnCommand"):
-                //Called when starts the turn
-                applyCommand((StartPlayerTurnCommand) command);
-                break;
-
-            case("WinCommand"):
-                ;
-                break;
-        }
-
-
-    }
-
     public void applyCommand(ServerToClientCommand command){
-        System.out.println("Funziona?");
-        if (command instanceof NotifyCredentialsNeeded)
-            System.out.println("Dinamicamente ok");
-        view.showAskUsernamePanel();
+        System.out.println("Non dovresti essere qui.");
     }
 
     /**
@@ -285,17 +159,17 @@ public class ClientController{
      */
     public void applyCommand(ChooseWindowPatternCardCommand command){
         //Splitting the string obtaining the correct Wpc
-        String[] words = command.getMessage().split(" ");
+        String[] words = command.getMessage().split(",");
         ArrayList<WindowPatternCard> wpc = new ArrayList<>();
 
         //Parse the entire list of wpc, remove all the non occurences
         ParserWindowPatternCard parser = new ParserWindowPatternCard();
-        wpc.add(0, parser.getCardFromName(words[1]));
-        wpc.add(1, parser.getCardFromName(words[2]));
-        wpc.add(2, parser.getCardFromName(words[3]));
-        wpc.add(3, parser.getCardFromName(words[4]));
+        wpc.add(0, parser.getCardFromName(words[0]));
+        wpc.add(1, parser.getCardFromName(words[1]));
+        wpc.add(2, parser.getCardFromName(words[2]));
+        wpc.add(3, parser.getCardFromName(words[3]));
         //TODO Controlla che funzioni
-        view.showChooseToolCardPanel(wpc);
+        view.chooseWindowPatternCardMenu(wpc);
     }
 
     /**
@@ -304,36 +178,26 @@ public class ClientController{
      * @param command Command received
      */
     public void applyCommand(AuthenticatedCorrectlyCommand command){ //TODO quando ale finisce la rete
-        view.showCorrectAuthenthication(command.getMessage());
+        //AGGIORNO USERNAME
+        this.username = command.getMessage();
+        view.correctAuthenthication(command.getMessage());
     }
 
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     public void applyCommand(InitializeMatchCommand command){
-
-    }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidCommand command){
-        view.showInvalidInput(command.getMessage());
-    }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidInputCommand command){
-        //view.showInvalidInput(command.getMessage());
-    }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidMoveCommand command){
-
     }
 
     /**
-     * The command created an ArrayList of strings in the format "PlayterUsername,playerScore"
+     * Applies commands coming from the Server, calling the right graphical methods of the View
+     */
+    public void applyCommand(InvalidActionCommand command){
+        view.invalidActionMessage(command.getMessage());
+    }
+
+    /**
+     * The command created an ArrayList of strings in the format "PlayerUsername,playerScore"
      * It gives it to the View.
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
@@ -343,7 +207,7 @@ public class ClientController{
         for (int i = 1; i < words.length; i++) {
             scores.add(words[i]);
         }
-        view.showWin(scores);
+        view.winMessage(scores);
 
     }
 
@@ -359,33 +223,29 @@ public class ClientController{
         for (int i = 1; i < words.length; i++) {
             scores.add(words[i]);
         }
-        view.showLose(command.getPosition() , scores);
+        view.loseMessage(command.getPosition() , scores);
 
     }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(NotifyCredentialsNeeded command){
 
-    }
     /**
      * Refresh the player model and calls a function of the view that modifies the board with the edits
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     public void applyCommand(RefreshBoardCommand command) {
-        setPlayerModel(command.getMessage());
-        view.update(playerModel);
+        //setPlayerModel(command.getMessage());
+        view.update(command);
 
     }
 
     public void setPlayerModel(String modelString){
         //TODO: Edit the modelView
     }
+
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     public void applyCommand(StartPlayerTurnCommand command){
-        view.showStartTurnMessageBox();
+        view.startTurnMenu();
     }
 
 
@@ -572,10 +432,11 @@ public class ClientController{
 
 
 
-
-
-
-
+    @Override
+    public void dispatchCommand(Object command) {
+        ServerToClientCommand castedCommand = (ServerToClientCommand) command;
+        castedCommand.visit(this);
+    }
 
 }
 
