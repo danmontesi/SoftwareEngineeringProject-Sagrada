@@ -2,52 +2,68 @@ package it.polimi.se2018.MatchTest;
 
 import it.polimi.se2018.COLOR;
 import it.polimi.se2018.Die;
-import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.WindowPatternCard;
+import it.polimi.se2018.parser.ParserWindowPatternCard;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 
+/**
+ * Author: Alessio
+ */
 public class WindowPatternCardTest {
 
-    private WindowPatternCard myWpc;
+    private WindowPatternCard wpc;
     private Die myDie;
     @Before
     public void setUp(){
-        ArrayList<WindowPatternCard> mycards = new ArrayList<>();
+        ArrayList<WindowPatternCard> myCards = new ArrayList<>();
 
         ParserWindowPatternCard pwpc = new ParserWindowPatternCard();
         try {
-            mycards = pwpc.parseCards();
+            myCards = pwpc.parseCards();
         } catch (IOException e) {
-            e.printStackTrace();
+            Assert.fail();
         }
 
-        myWpc = mycards.get(0);
-        myDie = new Die(COLOR.BLUE);
-        myDie.setValue(4);
-    }
-
-    //TODO DA FARE: NON FUNZIONA BENE IL METODO DI CONTROLLO O IL METODO DI CELL 'getIndex'
-    @Test
-    public void testPlacement(){
-        assertEquals(false, myWpc.placeDie(myDie, 0, 0, false, false, true));
+        //tests on WindowPatternCard: Via Lux
+        wpc = myCards.get(1);
     }
 
     @Test
-    public void testValue(){
-        assertEquals(true, myWpc.placeDie(myDie, 0, 0, false, true, false));
+    public void setOnSide(){
+        assertTrue(wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 0));
     }
 
-    //TODO Da fare: in realtà deve dare True perchè sulla wp0 non ho alcun vincolo colore
     @Test
-    public void testColor(){
-        assertEquals(false, myWpc.placeDie(myDie, 0, 0, true, false, true));
-
-
+    public void wrongSetOnSide(){
+        assertFalse(wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 0));
     }
+
+    @Test
+    public void setDieAdjacentToAnother(){
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 4);
+        assertTrue(wpc.placeDie(new Die(COLOR.RED, 3), 1, 3));
+    }
+
+    @Test
+    public void setDieAdjacentToAnotherButSameColor(){
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 4);
+        assertFalse(wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 3));
+    }
+
+    @Test
+    public void setDieOntoAnotherOne(){
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 4);
+        assertFalse(wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 4));
+    }
+
+
 }
+

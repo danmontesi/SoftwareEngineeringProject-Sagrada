@@ -167,4 +167,12 @@ public class Cell {
     public boolean hasDie(){
         return this.associatedDie != null;
     }
+
+    public int getRow(){
+        return index/5;
+    }
+
+    public int getColumn(){
+        return index%5;
+    }
 }

@@ -58,7 +58,7 @@ public class WindowPatternCard {
             return false;
         }
         if (colorRestriction) {
-            if (!checkColorRestricion(this.getCell(row, column), d)) {
+            if (!checkColorRestriction(this.getCell(row, column), d)) {
                 return false;
             }
         }
@@ -68,7 +68,7 @@ public class WindowPatternCard {
             }
         }
         if (placementRestriction) {
-            if (!checkPlacementRestriction(this, this.getCell(row, column))) {
+            if (!checkPlacementRestriction(getCell(row, column), d)) {
                 return false;
             }
         }
@@ -76,63 +76,94 @@ public class WindowPatternCard {
         return true;
     }
 
-    //What if the index is not valid? -> The controller checks it :)
+    /**
+     * Overloaded method for ordinary moves (without toolcards)
+     * @param d Die to be placed
+     * @param row Cell row
+     * @param column Cell column
+     * @return true if the move is valid
+     */
+    public boolean placeDie(Die d, int row, int column){
+        Cell c = this.getCell(row, column);
+        if(checkColorRestriction(c, d) &&checkPlacementRestriction(c, d) && checkValueRestriction(c, d)){
+            c.setAssociatedDie(d);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public Die removeDie(int row, int column) throws EmptyCellException {
         return schema.get(row * 5 + column).removeDie();
     }
 
-    /**
-     * edit @danmontesi
-     * Instead of considering an Array of int, consider an ArrayList when I insert new numbers of adjacent
-     * adjacent are 8 only if the cell is internal (and so the cell passes all the controls)
-     *
-     * if i find at least an adjacent -> return true
-     */
-    public boolean checkPlacementRestriction(WindowPatternCard w, Cell c) { // 'w' can be replaced with 'this'
-        int index = c.getIndex();
-        if (w.isEmpty()) {
-            // if cell is internal -> false
-            return !(((index % 5) > 0) && ((index % 5) < 4) && ((index / 5) > 0) && ((index / 5) < 3));
-        }
-
-        //in w isn't empty -> Check adjacency to other placed dice
-        ArrayList<Integer> adjacentCells = new ArrayList<>();
-
-        // 6 chained if clauses to determine if exists an adjacent cell
-
-        if (index / 5 > 0) {
-            adjacentCells.add(index / 5 - 1 + index % 5);
-        }
-        if (index / 5 > 0 && index % 5 > 0) {
-            adjacentCells.add(index / 5 - 1 + index % 5 - 1);
-            adjacentCells.add(index / 5 + index - 1);
-        }
-        if (index / 5 > 0 && index % 5 < 4) {
-            adjacentCells.add(index / 5 - 1 + index % 5 + 1);
-            adjacentCells.add(index / 5 + index % 5 + 1);
-        }
-        if (index / 5 < 3) {
-            adjacentCells.add(index / 5 + 1 + index % 5);
-        }
-        if (index / 5 < 3 && index % 5 > 0) { // oss: sto inserendo stessi indici multipli, però non comporta errori (farò il controllo solamente 2 volte in + )
-            adjacentCells.add(index / 5 + 1 + index % 5 - 1);
-            adjacentCells.add(index / 5 + index - 1);
-        }
-        if (index / 5 < 3 && index % 5 < 4) { // vedi commento prec
-            adjacentCells.add(index / 5 + 1 + index % 5 + 1);
-            adjacentCells.add(index / 5 + index % 5 + 1);
-        }
-
-        for (int adjIndex : adjacentCells) {
-            if (this.schema.get(adjIndex).hasDie()) {
+    public boolean checkPlacementRestriction(Cell c, Die d) {
+        int column = c.getColumn();
+        int row = c.getRow();
+        COLOR color = d.getColor();
+        int value = d.getValue();
+        if (this.isEmpty()){
+            if (row == 0 || row == 3 || column == 0 || column == 4){
                 return true;
+            } else {
+                return false;
+            }
+        } else {
+            return (checkAdjacents(c, d) && checkColorsAndValues(c, d));
+        }
+    }
+
+    public boolean checkAdjacents(Cell c, Die d){
+        int row = c.getRow();
+        int column = c.getColumn();
+        for(int i = -1; i <= 1; i++){
+            for(int j = -1; j <= 1; j++){
+                if(i!= 0 && j != 0){
+                    try{
+                        if(this.getCell(row + i, column + j).hasDie()){
+                            return true;
+                        }
+                    } catch (IndexOutOfBoundsException e){
+                        continue;
+                    }
+                }
             }
         }
         return false;
-
     }
 
-    public boolean checkColorRestricion(Cell c, Die d) {
+    public boolean checkColorsAndValues(Cell c, Die d){
+        int row = c.getRow();
+        int column = c.getColumn();
+        int value = d.getValue();
+        COLOR color = d.getColor();
+
+        for(int i = -1; i <= 1; i = i+2){
+            try{
+                Die check = this.getCell(row + i, column).getAssociatedDie();
+                if (check.getValue() == (value) || check.getColor().equals(color)){
+                    return false;
+                }
+            } catch (EmptyCellException e){
+                continue;
+            }
+        }
+        for(int i = -1; i <= 1; i = i+2){
+            try{
+                Die check = this.getCell(row, column + i).getAssociatedDie();
+                if (check.getValue() == (value) || check.getColor().equals(color)){
+                    return false;
+                }
+            } catch (EmptyCellException e){
+                continue;
+            }
+        }
+        return true;
+    }
+
+
+
+    public boolean checkColorRestriction(Cell c, Die d) {
         if (c.getColorConstraint() == null) {
             return true;
         }
