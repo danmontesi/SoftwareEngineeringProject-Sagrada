@@ -39,7 +39,7 @@ public class RMIClient implements Remote, ServerConnection{
     }
 
     public void notifyRMI(ServerToClientCommand command){
-        System.out.println("Updating view with.." + command.getMessage());
+        System.out.println("RMI: arriva comando "+ command.toString());
         clientController.dispatchCommand(command);
     }
 

@@ -8,7 +8,6 @@ public class UseToolRoughingForceps extends ClientToServerCommand{
      *
      * Integer dieValue
      */
-    private String message;
 
     private Integer diePosition;
 

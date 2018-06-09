@@ -21,7 +21,7 @@ public class Die {
 
     public Die(COLOR color, int value) {
         this.color = color;
-        this.value = ThreadLocalRandom.current().nextInt(1, 7);
+        this.value = value;
     }
 
     /**

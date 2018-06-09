@@ -54,6 +54,7 @@ public class SocketClient implements ServerConnection {
                 while (true){
                     try {
                         ServerToClientCommand command = (ServerToClientCommand) input.readObject();
+                        System.out.println("SOCKET: arriva comando "+ command.toString());
                         clientController.dispatchCommand(command);
                     } catch (IOException e) {
                         e.printStackTrace();

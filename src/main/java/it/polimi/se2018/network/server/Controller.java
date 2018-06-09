@@ -478,6 +478,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         //When I arrive here, the move is already performed
         System.out.println("Mossa applicata correttamente");
+        //TODO devo rimuovere il dado mosso dalla draftpool!
+        //model.getDraftPool().getDie(command.getDieDraftPoolPosition());
+
         hasPerformedMove=true;
         model.setGamePlayers(orderedPlayers);
         userViewMap.get(playerUsername).continueTurnMenu(!hasPerformedMove, !hasUsedTool);
