@@ -27,12 +27,13 @@ public class PrivateObjectiveCardsTest {
 
         ArrayList<WindowPatternCard> mycards = new ArrayList<>();
 
-        ParserWindowPatternCard pwpc = new ParserWindowPatternCard();
+        ParserWindowPatternCard pwpc = null;
         try {
-            mycards = pwpc.parseCards();
+            pwpc = new ParserWindowPatternCard();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        mycards = pwpc.parseAllCards();
 
         schema = mycards.get(0).getSchema();
 

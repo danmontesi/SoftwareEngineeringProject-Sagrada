@@ -62,16 +62,18 @@ public class Model extends Observable { //Observable of View
         roundTrack = new RoundTrack();
         ParserPrivateObjectiveCard parserPrivateObjectiveCard = new ParserPrivateObjectiveCard();
         ParserPublicObjectiveCard parserPublicObjectiveCard = new ParserPublicObjectiveCard();
-        ParserWindowPatternCard parserWindowPatternCard = new ParserWindowPatternCard();
+        ParserWindowPatternCard parserWindowPatternCard = null;
+        try {
+            parserWindowPatternCard = new ParserWindowPatternCard();
+        } catch (IOException e) {
+
+        }
 
         ArrayList<PublicObjectiveCard> publicObjectiveCardDeck = new ArrayList<>();
         privateObjectiveCardDeck = new ArrayList<>();
 
-        try {
-            windowPatternCardDeck = parserWindowPatternCard.parseCards();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        windowPatternCardDeck = parserWindowPatternCard.parseAllCards();
+
 
         try {
             privateObjectiveCardDeck = parserPrivateObjectiveCard.parseCards();

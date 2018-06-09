@@ -1,7 +1,9 @@
 package it.polimi.se2018.parser;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.stream.MalformedJsonException;
 import it.polimi.se2018.COLOR;
 import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.exceptions.NoSuchColorException;
@@ -16,9 +18,8 @@ import java.util.ArrayList;
 public class ParserWindowPatternCard {
     private static final String WPC_JSON = "wpc.json";
 
-    private ParserSettings settings;
+    private JsonArray cards;
 
-    private ArrayList<WindowPatternCard> allCards;
 
     /**
      *
@@ -26,70 +27,70 @@ public class ParserWindowPatternCard {
      * @throws IOException
      */
 
-    public ParserWindowPatternCard(){
-        try {
-            this.allCards = parseCards();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public ParserWindowPatternCard() throws IOException {
+        ParserSettings settings = new ParserSettings();
+        JsonObject WPCCards = settings.extractJsonObject(WPC_JSON);
+        cards = WPCCards.get("WindowPatternCards").getAsJsonArray();
     }
 
-    public ArrayList<WindowPatternCard> parseCards() throws IOException {
-        settings = new ParserSettings();
-        JsonObject WPCCards = settings.extractJsonObject(WPC_JSON);
-        JsonArray cards = WPCCards.get("WindowPatternCards").getAsJsonArray();
+    public ArrayList<WindowPatternCard> parseAllCards(){
         //ArrayList which will contain every WindowPatternCard
         ArrayList<WindowPatternCard> windowPatternCards = new ArrayList<>();
 
-        for (int index = 0; index < cards.size(); index++) {
+        for (int i = 0; i < cards.size(); i++) {
             //create an empty WindowPatternCard with 20 numbered plain cells
             WindowPatternCard wpc = new WindowPatternCard();
-            JsonObject card = cards.get(index).getAsJsonObject();
 
-            String name = card.get("name").getAsString();
-            wpc.setName(name);
-
-            int difficulty = card.get("difficulty").getAsInt();
-            wpc.setDifficulty(difficulty);
-
-            JsonArray cells = card.get("schema").getAsJsonArray();
-
-            //set constraints for each non-plain cell
-            for (int i = 0; i < cells.size(); i++) {
-                JsonObject cell = cells.get(i).getAsJsonObject();
-                //set valueConstraint
-                int row = cell.get("row").getAsInt();
-                int column = cell.get("column").getAsInt();
-                try{
-                    Integer valueConstraint = cell.get("valueConstraint").getAsInt();
-                    wpc.getCell(row, column).setValueConstraint(valueConstraint);
-                } catch (NullPointerException e){
-                    wpc.getCell(row, column).setValueConstraint(null);
-                }
-                //set colorConstraint
-                try {
-                    String tempstring = cell.get("colorConstraint").getAsString();
-                    COLOR colorConstraint = COLOR.stringToColor(tempstring);
-                    wpc.getCell(row, column).setColorConstraint(colorConstraint);
-                } catch (NoSuchColorException e) {
-                    System.out.println("Controllare l'ortografia dei colori nel file json");
-                } catch (NullPointerException e){
-                    wpc.getCell(row, column).setColorConstraint(null);
-                }
-            }
+            JsonObject card = cards.get(i).getAsJsonObject();
+            parseSingleCard(wpc, card);
             windowPatternCards.add(wpc);
         }
         return windowPatternCards;
     }
 
-    public WindowPatternCard getCardFromName(String cardName) {
-        System.out.println("Sto cercando" + cardName);
-        for (WindowPatternCard card : allCards) {
-            if (card.getCardName().equals(cardName))
-                return card;
+    public WindowPatternCard parseCardByName(String cardName) throws MalformedJsonException {
+        for(JsonElement card : cards){
+            if (card.getAsJsonObject().get("name").getAsString().equals(cardName)){
+                WindowPatternCard wpc = new WindowPatternCard();
+                parseSingleCard(wpc, card.getAsJsonObject());
+                return wpc;
+            }
         }
-        //DEFAULT (non deve accadere)
-        System.out.println("Problema: nome carta scorretto, torno la prima");
-        return allCards.get(0);
+        throw new MalformedJsonException("Cannot find such card in deck");
     }
+
+    private void parseSingleCard(WindowPatternCard wpc, JsonObject card){
+
+        String name = card.get("name").getAsString();
+        int difficulty = card.get("difficulty").getAsInt();
+        wpc.setName(name);
+        wpc.setDifficulty(difficulty);
+
+        JsonArray cells = card.get("schema").getAsJsonArray();
+
+        //set constraints for each non-plain cell
+        for (int i = 0; i < cells.size(); i++) {
+            JsonObject cell = cells.get(i).getAsJsonObject();
+            //set valueConstraint
+            int row = cell.get("row").getAsInt();
+            int column = cell.get("column").getAsInt();
+            try{
+                Integer valueConstraint = cell.get("valueConstraint").getAsInt();
+                wpc.getCell(row, column).setValueConstraint(valueConstraint);
+            } catch (NullPointerException e){
+                wpc.getCell(row, column).setValueConstraint(null);
+            }
+            //set colorConstraint
+            try {
+                String tempstring = cell.get("colorConstraint").getAsString();
+                COLOR colorConstraint = COLOR.stringToColor(tempstring);
+                wpc.getCell(row, column).setColorConstraint(colorConstraint);
+            } catch (NoSuchColorException e) {
+                System.out.println("Controllare l'ortografia dei colori nel file json");
+            } catch (NullPointerException e){
+                wpc.getCell(row, column).setColorConstraint(null);
+            }
+        }
+    }
+
 }

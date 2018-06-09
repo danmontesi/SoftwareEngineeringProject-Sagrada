@@ -25,9 +25,9 @@ public class WindowPatternCardTest {
     public void setUp(){
         ArrayList<WindowPatternCard> myCards = new ArrayList<>();
 
-        ParserWindowPatternCard pwpc = new ParserWindowPatternCard();
+        ParserWindowPatternCard pwpc = null;
         try {
-            myCards = pwpc.parseCards();
+            pwpc = new ParserWindowPatternCard();
         } catch (IOException e) {
             Assert.fail();
         }

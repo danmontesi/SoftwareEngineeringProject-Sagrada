@@ -11,6 +11,7 @@ import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.toolcards.ToolCard;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -403,8 +404,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * @param command the coming command
      */
     public synchronized void applyCommand(String playerUsername, ChosenWindowPatternCard command){
-        ParserWindowPatternCard parser = new ParserWindowPatternCard();
-        usernamePlayerMap.get(playerUsername).setWindowPatternCard(parser.getCardFromName(command.getMessage()));
+        ParserWindowPatternCard parser = null;
+        try {
+            parser = new ParserWindowPatternCard();
+            usernamePlayerMap.get(playerUsername).setWindowPatternCard(parser.parseCardByName(command.getMessage()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         unitializedOrderedPlayers.remove(usernamePlayerMap.get(playerUsername)); //TODO what happens can't find it?
         orderedPlayers.add(usernamePlayerMap.get(playerUsername));
 

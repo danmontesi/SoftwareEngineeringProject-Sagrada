@@ -1,16 +1,21 @@
 package it.polimi.se2018.network.client;
 
-import it.polimi.se2018.*;
+import com.google.gson.stream.MalformedJsonException;
+import it.polimi.se2018.COLOR;
+import it.polimi.se2018.Die;
 import it.polimi.se2018.MVC.CLIView;
 import it.polimi.se2018.MVC.GUIView;
 import it.polimi.se2018.MVC.View;
+import it.polimi.se2018.Model;
+import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
-import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.network.server.ServerConnection;
+import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.server_to_client_command.*;
 import it.polimi.se2018.utils.ControllerClientInterface;
 import it.polimi.se2018.utils.Observer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -163,12 +168,17 @@ public class ClientController implements Observer, ControllerClientInterface {
         ArrayList<WindowPatternCard> wpc = new ArrayList<>();
 
         //Parse the entire list of wpc, remove all the non occurences
-        ParserWindowPatternCard parser = new ParserWindowPatternCard();
-        wpc.add(0, parser.getCardFromName(words[0]));
-        wpc.add(1, parser.getCardFromName(words[1]));
-        wpc.add(2, parser.getCardFromName(words[2]));
-        wpc.add(3, parser.getCardFromName(words[3]));
-        //TODO Controlla che funzioni
+        try{
+            ParserWindowPatternCard parser = new ParserWindowPatternCard();
+            wpc.add(0, parser.parseCardByName(words[0]));
+            wpc.add(1, parser.parseCardByName(words[1]));
+            wpc.add(2, parser.parseCardByName(words[2]));
+            wpc.add(3, parser.parseCardByName(words[3]));
+        } catch (MalformedJsonException e){
+
+        } catch (IOException e){
+
+        }
         view.chooseWindowPatternCardMenu(wpc);
     }
 

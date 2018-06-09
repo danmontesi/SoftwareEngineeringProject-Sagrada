@@ -2,6 +2,7 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.exceptions.EmptyCellException;
+import it.polimi.se2018.exceptions.WrongCellIndexException;
 
 import java.util.ArrayList;
 
@@ -34,7 +35,12 @@ public class WindowPatternCard {
     }
 
     public boolean isEmpty() {
-        return this.schema.isEmpty();
+        for (Cell cell : schema){
+            if (cell.hasDie()){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -85,7 +91,7 @@ public class WindowPatternCard {
      */
     public boolean placeDie(Die d, int row, int column){
         Cell c = this.getCell(row, column);
-        if(checkColorRestriction(c, d) &&checkPlacementRestriction(c, d) && checkValueRestriction(c, d)){
+        if(checkColorRestriction(c, d) && checkPlacementRestriction(c, d) && checkValueRestriction(c, d)){
             c.setAssociatedDie(d);
             return true;
         } else {
@@ -212,8 +218,19 @@ public class WindowPatternCard {
         return this.difficulty;
     }
 
-    //retrieve cell by row and column
+    /**
+     *
+     * Retrieve cell by row andd column
+     * Throws unchecked WrongCellIndexException
+     * @throws WrongCellIndexException
+     * @param row
+     * @param column
+     * @return
+     */
     public Cell getCell(int row, int column) {
+        if (row < 0 || row > 3 || column < 0 || column > 4){
+            throw new WrongCellIndexException();
+        }
         return schema.get(row * 5 + column);
     }
 

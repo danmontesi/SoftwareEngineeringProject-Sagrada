@@ -3,11 +3,12 @@ package it.polimi.se2018.MatchTest.private_public_cards_test;
 import it.polimi.se2018.COLOR;
 import it.polimi.se2018.Cell;
 import it.polimi.se2018.Die;
+import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.parser.ParserPublicObjectiveCard;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
-import it.polimi.se2018.WindowPatternCard;
-import it.polimi.se2018.public_obj_cards.*;
+import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,12 +35,13 @@ public class PublicObjectiveCardsTest {
 
         ArrayList<WindowPatternCard> mycards = null;
 
-        ParserWindowPatternCard pwpc = new ParserWindowPatternCard();
+        ParserWindowPatternCard pwpc = null;
         try {
-            mycards = pwpc.parseCards();
+            pwpc = new ParserWindowPatternCard();
         } catch (IOException e) {
-            e.printStackTrace();
+            Assert.fail();
         }
+            mycards = pwpc.parseAllCards();
 
         schema = mycards.get(0).getSchema();
 

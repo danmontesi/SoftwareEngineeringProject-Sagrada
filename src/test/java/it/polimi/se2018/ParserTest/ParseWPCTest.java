@@ -1,13 +1,15 @@
 package it.polimi.se2018.ParserTest;
 
+import com.google.gson.stream.MalformedJsonException;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
-import it.polimi.se2018.WindowPatternCard;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 /**
  * Tests WindowPatternCardsParser methods.
@@ -15,20 +17,39 @@ import static org.junit.Assert.assertEquals;
  */
 public class ParseWPCTest {
 
-    ParserWindowPatternCard pwpc = new ParserWindowPatternCard();
-    ArrayList<WindowPatternCard> mycards;
+    ParserWindowPatternCard pwpc;
+
+    @Before
+    public void instantiateParser(){
+        try {
+            pwpc = new ParserWindowPatternCard();
+        } catch (IOException e) {
+            Assert.fail();
+        }
+
+    }
 
     @Test
-    public void iHopeItWorks(){
+    public void parseEveryCard(){
+        assertEquals(24, pwpc.parseAllCards().size());
+    }
+
+    @Test
+    public void parseSingleCard(){
         try {
-            mycards = pwpc.parseCards();
-        } catch (IOException e) {
-            e.printStackTrace();
+            assertEquals("Via Lux", pwpc.parseCardByName("Via Lux").getCardName());
+        } catch (MalformedJsonException e) {
+            Assert.fail();
         }
-        //You must write, instead of 2, the number of cards in wpc.json
-        //The class works correctly
-        //Thank God
-        assertEquals(24, mycards.size());
+    }
+
+    @Test
+    public void parseSingleCardWithWrongSpelling(){
+        try {
+            assertEquals("Via Lux", pwpc.parseCardByName("Via Luxa").getCardName());
+        } catch (MalformedJsonException e) {
+            assertTrue(true);
+        } 
     }
 
 }
