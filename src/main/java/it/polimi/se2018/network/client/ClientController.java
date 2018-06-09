@@ -259,6 +259,13 @@ public class ClientController implements Observer, ControllerClientInterface {
     }
 
 
+    /**
+     * Applies commands coming from the Server, calling the right graphical methods of the View
+     */
+    public void applyCommand(ContinueTurnCommand command){
+        view.continueTurnMenu(command.canShowMove(),command.canShowTool());
+    }
+
 
 
     //Correct use-> performs the move

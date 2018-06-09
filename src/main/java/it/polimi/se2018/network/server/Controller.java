@@ -49,6 +49,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * Represent current player. That is necessary to know which is the player i'm expecting an answer
      */
     private Player currentPlayer;
+    private boolean hasUsedTool;
+    private boolean hasPerformedMove;
 
     private ArrayList<ClientConnection> disconnectedClients;
 
@@ -181,7 +183,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         Integer tempScore;
         for (Player player : orderedPlayers) {
             tempScore=0;
-            for (PublicObjectiveCard card :model.getExtractedPublicObjectiveCard()){
+            for (PublicObjectiveCard card : model.getExtractedPublicObjectiveCard()){
                 tempScore+= card.calculateScore(player.getWindowPatternCard());
             }
             tempScore-= penalityScore(player.getWindowPatternCard());
@@ -257,15 +259,17 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             endGame();
         }
         else{
+            model.setDraftPool(model.extractDraftPoolDice(orderedPlayers.size()));
             model.setGamePlayers(orderedPlayers); //Used for notify eventual modifics of wpcs to the Players
             //initialize DraftPool
-            model.setDraftPool(model.extractDraftPoolDice(orderedPlayers.size()));
             //Start a new round-> pick the first of the RoundList
             currentRoundOrderedPlayers=orderedRoundPlayers.remove(0);
             currentPlayer=currentRoundOrderedPlayers.remove(0);
             // DA FARE???? TODO MODIFICA
             //first player
             System.out.println("Prima di chiamare StartTurnMenu");
+            hasPerformedMove=false;
+            hasUsedTool=false;
             userViewMap.get(currentPlayer.getUsername()).startTurnMenu();
         }
     }
@@ -458,8 +462,25 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
 
     public void applyCommand(String playerUsername, MoveChoiceDicePlacement command){
-        currentPlayer.getWindowPatternCard();
-
+        //TODO Controllo username di current RICORDANDO CHE I VERI PLAYER SONO SALVATI SU orderedPlayers
+        try {
+            Die toPlace = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
+            boolean exit = usernamePlayerMap.get(playerUsername).getWindowPatternCard()
+                    .placeDie(toPlace, command.getDieSchemaRowPosition(), command.getDieSchemaColPosition(), true, true, true);
+            if (!exit){
+                throw new EmptyCellException(); //TODO Funziona? deve eseguire le linee di codice sotto
+            }
+        }catch (EmptyCellException e){
+            e.printStackTrace();
+            System.out.println("Empty cell, sending an IncorrectMoveCommand");
+            userViewMap.get(playerUsername).invalidActionMessage("The Draftpool cell you selected is empty, try again");
+            userViewMap.get(playerUsername).continueTurnMenu(!hasPerformedMove,!hasUsedTool);
+        }
+        //When I arrive here, the move is already performed
+        System.out.println("Mossa applicata correttamente");
+        hasPerformedMove=true;
+        model.setGamePlayers(orderedPlayers);
+        userViewMap.get(playerUsername).continueTurnMenu(!hasPerformedMove, !hasUsedTool);
     }
 
     public void applyCommand(String playerUsername, MoveChoicePassTurn command){
