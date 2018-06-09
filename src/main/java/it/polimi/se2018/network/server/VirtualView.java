@@ -56,7 +56,7 @@ public class VirtualView extends View{
     }
 
     public void AllowedUseToolMessage(String message, Integer toolPosition){
-        Server.getConnectedClients().get(username).notifyClient(new AllowedUseToolCommand("", toolPosition));
+        Server.getConnectedClients().get(username).notifyClient(new AllowedUseToolCommand("Allowed", toolPosition));
     }
 
     public void askAuthenticatedCorrectlyMessage(String message){
@@ -64,6 +64,7 @@ public class VirtualView extends View{
     }
 
     public void continueTurnMenu(boolean move, boolean tool){
+        System.out.println("SENDING CONTINUETURNMENU");
         Server.getConnectedClients().get(username).notifyClient(new ContinueTurnCommand(move, tool));
     }
 
@@ -128,12 +129,12 @@ public class VirtualView extends View{
      */
 
     public void invalidActionMessage(String message){
+        System.out.println("SENDING INVALIDACTION");
         //Di qualsiasi tipo:
         // sia per il tool (seguita da una richiesta di uso del tool, di nuovo)
         // sia per il piazzamento di un dado scorretto
         // sia per qualsiasi azione non va bene
         //OSS: il message contiene il messaggio con le informazioni dell'errore
-
         Server.getConnectedClients().get(username).notifyClient(new InvalidActionCommand(message));
     }
 

@@ -30,6 +30,9 @@ public interface ControllerClientInterface{
      */
     public void applyCommand(InvalidActionCommand command);
 
+
+    public void applyCommand(ContinueTurnCommand command);
+
     /**
      * The command created an ArrayList of strings in the format "PlayterUsername,playerScore"
      * It gives it to the View.

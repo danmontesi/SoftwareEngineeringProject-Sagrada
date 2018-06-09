@@ -9,6 +9,10 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Alessio Molinari, Nives Migotto
  */
 public class DraftPool {
+    /**
+     * The arraylist is a List of Die.
+     * If a Die is picked, the value has to remain NULL in order to let the Graphic to remain the same when a die is removed
+     */
     private ArrayList<Die> dice;
 
     /**
@@ -25,7 +29,9 @@ public class DraftPool {
      * @return removed die
      */
     public Die takeDie(int diePosition){
-        return dice.remove(diePosition);
+        Die temp = dice.get(diePosition);
+        dice.set(diePosition, new Die(COLOR.RED, 0)); //@danmontesi TODO: PER ORA DISTINGUO UN DADO RIMOSSO COME DADO CON VALORE 0 , BISOGNA CAMBIARLO
+        return temp;
     }
 
     /**
@@ -86,5 +92,19 @@ public class DraftPool {
      */
     public Die getDie(int index){
         return dice.get(index);
+    }
+
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < dice.size(); i++) {
+            if (dice.get(i).getValue() == 0) {
+                builder.append(i).append(":- ").append("noDie");
+            } else {
+                builder.append(i).append(":- ").append(dice.get(i).toString());
+            }
+            builder.append("\t");
+        }
+        builder.append("\n");
+        return builder.toString();
     }
 }

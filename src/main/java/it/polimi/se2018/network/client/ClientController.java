@@ -203,6 +203,7 @@ public class ClientController implements Observer, ControllerClientInterface {
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     public void applyCommand(InvalidActionCommand command){
+        System.out.println("arrivo a invalid sul client");
         view.invalidActionMessage(command.getMessage());
     }
 
@@ -258,6 +259,15 @@ public class ClientController implements Observer, ControllerClientInterface {
         view.startTurnMenu();
     }
 
+
+    /**
+     * Applies commands coming from the Server, calling the right graphical methods of the View
+     */
+    @Override
+    public void applyCommand(ContinueTurnCommand command){
+        System.out.println("Arrivo a continueturn sul clientcontr.");
+        view.continueTurnMenu(command.canShowMove(),command.canShowTool());
+    }
 
 
 

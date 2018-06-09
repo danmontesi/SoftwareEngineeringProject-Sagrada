@@ -9,6 +9,7 @@ import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -21,7 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * The controller directly modifies the Model.
  *
  */
-public class Model extends Observable { //Observable of View
+public class Model extends Observable implements Serializable{ //Observable of View
 
     private DiceBag diceBag;
 
@@ -186,6 +187,8 @@ public class Model extends Observable { //Observable of View
         }
         string.append("\n Roundtrack: ");
         //....
+        string.append("\n DraftPool: \n");
+        string.append(draftPool.toString());
         return string.toString();
     }
 

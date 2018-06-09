@@ -1,6 +1,7 @@
 package it.polimi.se2018.MVC;
 
 import it.polimi.se2018.client_to_server_command.ChosenWindowPatternCard;
+import it.polimi.se2018.client_to_server_command.MoveChoiceDicePlacement;
 import it.polimi.se2018.client_to_server_command.MoveChoicePassTurn;
 import it.polimi.se2018.server_to_client_command.ChooseWindowPatternCardCommand;
 import it.polimi.se2018.utils.Observer;
@@ -47,7 +48,11 @@ public class CLIView extends View {
         int choice = scan.nextInt();
         switch(choice){
             case 1:
-                System.out.println("che mossa vuoi fare?");
+                System.out.println("Inserisci rispettivamente");
+                int draftPos = scan.nextInt();
+                int schemaRow = scan.nextInt();
+                int schemaCol = scan.nextInt();
+                notify(new MoveChoiceDicePlacement("",schemaRow,schemaCol,draftPos));
                 break;
             case 2:
                 System.out.println("Which tool want you to use?");
@@ -64,6 +69,26 @@ public class CLIView extends View {
 
     public void continueTurnMenu(boolean move, boolean tool){
         //notify( new MOVE / new TOOLUSE / new PASSTURN )
+        System.out.println("What do you want to do?");
+        System.out.println(move? "1- Place die": "");
+        System.out.println(tool? "2- Use Tool": "");
+        System.out.println("3- Pass Turn");
+        int choice = scan.nextInt();
+        switch(choice){
+            case 1:
+                System.out.println("Inserisci rispettivamente");
+                int draftPos = scan.nextInt();
+                int schemaRow = scan.nextInt();
+                int schemaCol = scan.nextInt();
+                notify(new MoveChoiceDicePlacement("",schemaRow,schemaCol,draftPos));
+                break;
+            case 2:
+                System.out.println("Which tool want you to use?");
+                break;
+            case 3:
+                System.out.println("passed turn");
+                notify(new MoveChoicePassTurn(""));
+        }
     }
 
     public void correctUseTool(int numTool){
@@ -117,6 +142,7 @@ public class CLIView extends View {
     }
 
     public void invalidActionMessage(String message){
+        System.out.println(message);
         //TODO. non contiene niente, mostra solo i messaggio
     }
 

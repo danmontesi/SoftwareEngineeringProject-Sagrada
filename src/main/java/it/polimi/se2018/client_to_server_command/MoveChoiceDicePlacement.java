@@ -22,14 +22,28 @@ public class MoveChoiceDicePlacement extends ClientToServerCommand{
      * The controller server-side will check if the die is present in the DraftPool
      */
 
-    private Integer dieSchemaPosition;
+    private Integer dieSchemaColPosition;
+
+    private Integer dieSchemaRowPosition;
 
     private Integer dieDraftPoolPosition;
 
-    public MoveChoiceDicePlacement(String message, Integer dieSchemaPosition, Integer dieDraftPoolPosition) {
+    public MoveChoiceDicePlacement(String message, Integer dieSchemaRowPosition, Integer dieSchemaColPosition,Integer dieDraftPoolPosition) {
         this.message = message;
-        this.dieSchemaPosition = dieSchemaPosition;
+        this.dieSchemaRowPosition = dieSchemaRowPosition;
         this.dieDraftPoolPosition = dieDraftPoolPosition;
+        this.dieSchemaColPosition = dieSchemaColPosition;
+    }
+    public Integer getDieSchemaRowPosition() {
+        return dieSchemaRowPosition;
+    }
+
+    public Integer getDieSchemaColPosition() {
+        return dieSchemaColPosition;
+    }
+
+    public Integer getDieDraftPoolPosition() {
+        return dieDraftPoolPosition;
     }
 
     public void visit(ControllerServerInterface observer){
