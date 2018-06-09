@@ -1,12 +1,14 @@
 package it.polimi.se2018.ParserTest;
 
 import com.google.gson.stream.MalformedJsonException;
+import it.polimi.se2018.WindowPatternCard;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -31,7 +33,12 @@ public class ParseWPCTest {
 
     @Test
     public void parseEveryCard(){
-        assertEquals(24, pwpc.parseAllCards().size());
+        ArrayList<WindowPatternCard> theCards;
+        theCards = pwpc.parseAllCards();
+        assertEquals(24, theCards.size());
+        assertEquals("Virtus", theCards.get(0).getCardName());
+        assertEquals("Via Lux", theCards.get(1).getCardName());
+
     }
 
     @Test
@@ -49,7 +56,7 @@ public class ParseWPCTest {
             assertEquals("Via Lux", pwpc.parseCardByName("Via Luxa").getCardName());
         } catch (MalformedJsonException e) {
             assertTrue(true);
-        } 
+        }
     }
 
 }

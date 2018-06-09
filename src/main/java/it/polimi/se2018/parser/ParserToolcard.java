@@ -23,7 +23,7 @@ public class ParserToolcard {
         for (int i = 0; i < cards.size(); i++){
             JsonObject jcard =  cards.get(i).getAsJsonObject();
             String name = jcard.get("name").getAsString();
-            String description = jcard.get("name").getAsString();
+            String description = jcard.get("description").getAsString();
             toolCards.add(new ToolCard(name, description));
         }
         return toolCards;
