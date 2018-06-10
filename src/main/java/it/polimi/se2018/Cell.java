@@ -66,6 +66,17 @@ public class Cell {
         this.index = index;
     }
 
+    /**
+     * Constructor: generates a cell with no constraints
+     * @param index cell index (between 0 and 19)
+     * */
+    public Cell(Die associatedDie, int index) {
+        this.colorConstraint = null;
+        this.valueConstraint = null;
+        this.associatedDie = associatedDie;
+        this.index = index;
+    }
+
     public void setAssociatedDie(Die toBeSetDie){
         this.associatedDie = toBeSetDie;
     }

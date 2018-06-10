@@ -4,6 +4,7 @@ import it.polimi.se2018.COLOR;
 import it.polimi.se2018.DiceBag;
 import it.polimi.se2018.Die;
 import it.polimi.se2018.DraftPool;
+import it.polimi.se2018.exceptions.EmptyCellException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 public class DraftPoolTest {
 
     DraftPool dp;
+
     @Before
     public void setUp(){
         ArrayList<Die> dice = new ArrayList<>();
@@ -31,7 +33,7 @@ public class DraftPoolTest {
 
     @Test
     public void draftPoolTest(){
-        assertEquals(9, dp.draftPoolSize());
+        assertEquals(5, dp.draftPoolSize());
         //assertEquals(81, DiceBag.getInstance().size());
         ArrayList<Die> dice = new ArrayList<>();
         dice.add(new Die(COLOR.BLUE));
@@ -44,30 +46,30 @@ public class DraftPoolTest {
     }
 
     @Test
-    public void testRoll(){
+    public void testRoll() throws EmptyCellException {
         dp.rollDice();
-        assertEquals(9, dp.draftPoolSize());
+        assertEquals(5, dp.draftPoolSize());
     }
 
     @Test
-    public void testTakeDie(){
-        Die die = dp.takeDie(5);
-        assertEquals(8, dp.draftPoolSize());
-        Die die1 = dp.takeDie(5);
-        assertEquals(7, dp.draftPoolSize());
+    public void testTakeDie() throws EmptyCellException {
+        Die die = dp.takeDie(0);
+        assertEquals(4, dp.draftPoolSize());
+        Die die1 = dp.takeDie(2);
+        assertEquals(3, dp.draftPoolSize());
     }
 
     @Test
-    public void testSwitchDie(){
+    public void testSwitchDie() throws EmptyCellException {
         dp.switchDie(new Die(COLOR.YELLOW));
-        assertEquals(9, dp.draftPoolSize());
-        dp.switchDie(4, new Die(COLOR.GREEN));
+        assertEquals(3, dp.draftPoolSize());
+        dp.switchDie(3, new Die(COLOR.GREEN));
         assertEquals(COLOR.GREEN, dp.getDie(4).getColor());
     }
 
     @Test
     public void testPlaceDie(){
-        dp.placeDie(new Die(COLOR.GREEN));
-        assertEquals(10, dp.draftPoolSize());
+        dp.placeDie(4, new Die(COLOR.GREEN));
+        assertEquals(4, dp.draftPoolSize());
     }
 }
