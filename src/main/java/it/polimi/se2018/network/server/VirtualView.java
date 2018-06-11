@@ -138,10 +138,12 @@ public class VirtualView extends View{
         Server.getConnectedClients().get(username).notifyClient(new InvalidActionCommand(message));
     }
 
-    public void loseMessage(ArrayList<String> scores, Integer position){
+    @Override
+    public void loseMessage(Integer position, ArrayList<String> scores){
         Server.getConnectedClients().get(username).notifyClient(new LoseCommand(scores,position));
     }
 
+    @Override
     public void winMessage(ArrayList<String> scores) {
         Server.getConnectedClients().get(username).notifyClient(new WinCommand(scores));
     }

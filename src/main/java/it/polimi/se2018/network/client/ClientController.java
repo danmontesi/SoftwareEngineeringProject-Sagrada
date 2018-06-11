@@ -140,7 +140,7 @@ public class ClientController implements Observer, ControllerClientInterface {
      * correct applyCommand() methods
      * @param
      */
-
+    @Override
     public void applyCommand(ServerToClientCommand command){
         System.out.println("Non dovresti essere qui.");
     }
@@ -162,6 +162,7 @@ public class ClientController implements Observer, ControllerClientInterface {
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(ChooseWindowPatternCardCommand command){
         //Splitting the string obtaining the correct Wpc
         String[] words = command.getMessage().split(",");
@@ -187,6 +188,7 @@ public class ClientController implements Observer, ControllerClientInterface {
      * Applies commands coming from the Server, calling the right graphical methods of the View
      * @param command Command received
      */
+    @Override
     public void applyCommand(AuthenticatedCorrectlyCommand command){ //TODO quando ale finisce la rete
         //AGGIORNO USERNAME
         this.username = command.getMessage();
@@ -196,12 +198,14 @@ public class ClientController implements Observer, ControllerClientInterface {
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InitializeMatchCommand command){
     }
 
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidActionCommand command){
         System.out.println("arrivo a invalid sul client");
         view.invalidActionMessage(command.getMessage());
@@ -212,13 +216,9 @@ public class ClientController implements Observer, ControllerClientInterface {
      * It gives it to the View.
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(WinCommand command){
-        String[] words = command.getMessage().split(" ");
-        ArrayList<String> scores = new ArrayList<>();
-        for (int i = 1; i < words.length; i++) {
-            scores.add(words[i]);
-        }
-        view.winMessage(scores);
+        view.winMessage(command.getScores());
 
     }
 
@@ -227,14 +227,9 @@ public class ClientController implements Observer, ControllerClientInterface {
      * It gives it to the View.
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(LoseCommand command){
-        String[] words = command.getMessage().split(" ");
-        ArrayList<String> scores = new ArrayList<>();
-        //Excluding first word (= CommandMessage)
-        for (int i = 1; i < words.length; i++) {
-            scores.add(words[i]);
-        }
-        view.loseMessage(command.getPosition() , scores);
+        view.loseMessage(command.getPosition() , command.getScores());
 
     }
 
@@ -242,12 +237,13 @@ public class ClientController implements Observer, ControllerClientInterface {
      * Refresh the player model and calls a function of the view that modifies the board with the edits
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(RefreshBoardCommand command) {
         //setPlayerModel(command.getMessage());
         view.update(command);
 
     }
-
+    @Override
     public void setPlayerModel(String modelString){
         //TODO: Edit the modelView
     }
@@ -255,6 +251,7 @@ public class ClientController implements Observer, ControllerClientInterface {
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(StartPlayerTurnCommand command){
         view.startTurnMenu();
     }
@@ -279,30 +276,35 @@ public class ClientController implements Observer, ControllerClientInterface {
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(CorrectUseToolCopperFoilReamer command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(CorrectUseToolCorkLine command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(CorrectUseToolDiamondSwab command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(CorrectUseToolEglomiseBrush command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(CorrectUseToolFirmPastryBrush1 command){
         Integer valueForDraftPoolDie = command.getDieValue();
         //view.showUseToolFirmPastryBrush1(valueForDraftPoolDie);
@@ -311,6 +313,7 @@ public class ClientController implements Observer, ControllerClientInterface {
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(CorrectUseToolFirmPastryThinner1 command){
         String[] words = command.getMessage().split(" ");
         Die dieFromDiceBag = new Die(COLOR.valueOf(words[1]), command.getDieValue());
@@ -320,42 +323,49 @@ public class ClientController implements Observer, ControllerClientInterface {
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(CorrectUseToolFirmPastryBrush2 command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(CorrectUseToolFirmPastryThinner2 command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(CorrectUseToolGavel command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(CorrectUseToolLathekin command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(CorrectUseToolManualCutter command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(CorrectUseToolRoughingForceps command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(CorrectUseToolWheelsPincher command){
 
     }
@@ -372,42 +382,49 @@ public class ClientController implements Observer, ControllerClientInterface {
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidUseToolCopperFoilReamer command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidUseToolCorkLine command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidUseToolDiamondSwab command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidUseToolEglomiseBrush command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidUseToolFirmPastryBrush1 command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidUseToolFirmPastryBrush2 command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidUseToolFirmPastryThinner1 command){
 
     }
@@ -415,6 +432,7 @@ public class ClientController implements Observer, ControllerClientInterface {
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidUseToolFirmPastryThinner2 command){
 
     }
@@ -422,30 +440,35 @@ public class ClientController implements Observer, ControllerClientInterface {
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidUseToolGavel command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidUseToolLathekin command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidUseToolManualCutter command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidUseToolRoughingForceps command){
 
     }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
+    @Override
     public void applyCommand(InvalidUseToolWheelsPincher command){
 
     }

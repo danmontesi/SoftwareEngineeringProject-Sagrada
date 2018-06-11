@@ -35,7 +35,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private ArrayList<Player> orderedPlayers;
 
-    private ArrayList<Player> unitializedOrderedPlayers;
+    private ArrayList<Player> uninitializedOrderedPlayers;
 
     /**
      * ArrayList that contains the ordered players that has to play
@@ -67,16 +67,16 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     public Controller(ArrayList<String> usernameList) {
         usernamePlayerMap = new HashMap<>();
-        unitializedOrderedPlayers = new ArrayList<>();
+        uninitializedOrderedPlayers = new ArrayList<>();
         userViewMap = new HashMap<>();
         // I have to create the list that connects Usernames and Players and VirtualViews
         for (String username : usernameList){
             Player temp = new Player(username);
-            unitializedOrderedPlayers.add(temp);
+            uninitializedOrderedPlayers.add(temp);
             usernamePlayerMap.put(username, temp);
         }
 
-        this.model = new Model(unitializedOrderedPlayers);
+        this.model = new Model(uninitializedOrderedPlayers);
 
         for (String username : usernameList) {
             View tempView = new VirtualView(this, model, username);
@@ -99,7 +99,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         //Once i receive all -> move to orderedPlayers List
         ArrayList<WindowPatternCard> localWpc;
         //Gives to each a player 4 WindowPatternCard to choose from
-        for(Player p: unitializedOrderedPlayers){
+        for(Player p: uninitializedOrderedPlayers){
             StringBuilder localNamesWpc = new StringBuilder();
             // I give the cards (in strings) to the command, and to the method that waits until all players finishes to chose
             localWpc = model.extractWindowPatternCard();
@@ -127,10 +127,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             temp1.add(c1);temp1.add(c2);temp1.add(c3);temp1.add(c0);temp1.add(c0);temp1.add(c3);temp1.add(c2);temp1.add(c1);
             temp2.add(c2);temp2.add(c3);temp2.add(c0);temp2.add(c1);temp2.add(c1);temp2.add(c0);temp2.add(c3);temp2.add(c2);
             temp3.add(c3);temp3.add(c0);temp3.add(c1);temp3.add(c2);temp3.add(c2);temp3.add(c1);temp3.add(c0);temp3.add(c3);
-            orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp2);
-            orderedRoundPlayers.add(temp3);orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);
-            orderedRoundPlayers.add(temp2);orderedRoundPlayers.add(temp3);orderedRoundPlayers.add(temp0);
-            orderedRoundPlayers.add(temp1);
+            orderedRoundPlayers.add((ArrayList<Player>)temp0.clone());orderedRoundPlayers.add((ArrayList<Player>)temp1.clone());orderedRoundPlayers.add((ArrayList<Player>)temp2.clone());
+            orderedRoundPlayers.add((ArrayList<Player>)temp3.clone());orderedRoundPlayers.add((ArrayList<Player>)temp0.clone());orderedRoundPlayers.add((ArrayList<Player>)temp1.clone());
+            orderedRoundPlayers.add((ArrayList<Player>)temp2.clone());orderedRoundPlayers.add((ArrayList<Player>)temp3.clone());orderedRoundPlayers.add((ArrayList<Player>)temp0.clone());
+            orderedRoundPlayers.add((ArrayList<Player>)temp1.clone());
         }
         else if (orderedPlayers.size()==3) {
             Player c0 = orderedPlayers.get(0);
@@ -142,10 +142,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             temp0.add(c0);temp0.add(c1);temp0.add(c2);temp0.add(c2);temp0.add(c1);temp0.add(c0);
             temp1.add(c1);temp1.add(c2);temp1.add(c0);temp1.add(c0);temp1.add(c1);temp1.add(c2);
             temp2.add(c2);temp2.add(c0);temp2.add(c1);temp2.add(c1);temp2.add(c0);temp2.add(c2);
-            orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp2);
-            orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp2);
-            orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp2);
-            orderedRoundPlayers.add(temp0);
+            orderedRoundPlayers.add((ArrayList<Player>)temp0.clone());orderedRoundPlayers.add((ArrayList<Player>)temp1.clone());orderedRoundPlayers.add((ArrayList<Player>)temp2.clone());
+            orderedRoundPlayers.add((ArrayList<Player>)temp0.clone());orderedRoundPlayers.add((ArrayList<Player>)temp1.clone());orderedRoundPlayers.add((ArrayList<Player>)temp2.clone());
+            orderedRoundPlayers.add((ArrayList<Player>)temp0.clone());orderedRoundPlayers.add((ArrayList<Player>)temp1.clone());orderedRoundPlayers.add((ArrayList<Player>)temp2.clone());
+            orderedRoundPlayers.add((ArrayList<Player>)temp0.clone());
         }
         else if (orderedPlayers.size()==2) {
             Player c0 = orderedPlayers.get(0);
@@ -154,10 +154,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             ArrayList<Player> temp1 = new ArrayList<>();
             temp0.add(c0);temp0.add(c1);temp0.add(c1);temp0.add(c0);
             temp1.add(c1);temp1.add(c0);temp1.add(c0);temp1.add(c1);
-            orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp0);
-            orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);
-            orderedRoundPlayers.add(temp0);orderedRoundPlayers.add(temp1);orderedRoundPlayers.add(temp0);
-            orderedRoundPlayers.add(temp1);
+            orderedRoundPlayers.add((ArrayList<Player>)temp0.clone());orderedRoundPlayers.add((ArrayList<Player>)temp1.clone());orderedRoundPlayers.add((ArrayList<Player>)temp0.clone());
+            orderedRoundPlayers.add((ArrayList<Player>)temp1.clone());orderedRoundPlayers.add((ArrayList<Player>)temp0.clone());orderedRoundPlayers.add((ArrayList<Player>)temp1.clone());
+            orderedRoundPlayers.add((ArrayList<Player>)temp0.clone());orderedRoundPlayers.add((ArrayList<Player>)temp1.clone());orderedRoundPlayers.add((ArrayList<Player>)temp0.clone());
+            orderedRoundPlayers.add((ArrayList<Player>)temp1.clone());
         }
         else{
             System.out.println("problema");
@@ -179,7 +179,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private void endGame(){
         //For each player, create an HashMap calling on every player a Win/Lose command
-        HashMap<Player, Integer> playerScoreMap = new HashMap<>();
+        HashMap<String, Integer> playerScoreMap = new HashMap<>();
         Integer tempScore;
         for (Player player : orderedPlayers) {
             tempScore=0;
@@ -187,14 +187,14 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 tempScore+= card.calculateScore(player.getWindowPatternCard());
             }
             tempScore-= penalityScore(player.getWindowPatternCard());
-            playerScoreMap.put(player, tempScore);
+            playerScoreMap.put(player.getUsername(), tempScore);
             //TODO: Manca altro da calcolare? come facciamo con i punteggi sul tabellone?
         }
 
-        LinkedHashMap<Player, Integer> orderedPlayerScores = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> orderedPlayerScores = new LinkedHashMap<>();
         for (int i = 0; i < orderedPlayers.size(); i++) {
             int maxValueInMap=(Collections.max(playerScoreMap.values()));// This will return max value in the Hashmap
-            for (Map.Entry<Player, Integer> entry : playerScoreMap.entrySet()) {  // Iterates through hashmap
+            for (Map.Entry<String, Integer> entry : playerScoreMap.entrySet()) {  // Iterates through hashmap
                 if (entry.getValue() == maxValueInMap) {
                     orderedPlayerScores.put(entry.getKey(), playerScoreMap.remove(entry.getKey()));   // Assign a new Entry in the LinkedHashMap
                 }
@@ -204,30 +204,35 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         sendResultToPlayers(orderedPlayerScores);
     }
 
-    private void sendResultToPlayers(LinkedHashMap<Player, Integer> orderedPlayerScores) {
-        Set set = orderedPlayerScores.entrySet();
+    private void sendResultToPlayers(LinkedHashMap<String, Integer> orderedPlayerScores) {
+        Set set1 = orderedPlayerScores.entrySet();
+        Set set2 = orderedPlayerScores.entrySet();
         // Get an iterator
         String scores = "";
 
         ArrayList<String> scoresList = new ArrayList<>();
 
-        Iterator i0 = set.iterator();
+        Iterator i0 = set1.iterator();
+        Iterator i1 = set2.iterator();
+        int tempRank=1;
         while (i0.hasNext()) {
             Map.Entry entry = (Map.Entry) i0.next();
             // Player Username + player score //TODO Controlla se funziona!!
-            scoresList.add(entry.getKey().toString() + "," + entry.getValue().toString());
+            scoresList.add(tempRank + ": " + entry.getKey().toString() + ", scored " + entry.getValue().toString());
+            tempRank++;
         }
 
         //DATE COME ARRAYLIST
-        Iterator i = set.iterator();
+
         Integer counter=0;
-        while (i.hasNext()) {
-            Map.Entry me = (Map.Entry) i.next();
-            if (counter == 0) {
-                userViewMap.get(me).winMessage(scoresList);
+        while (i1.hasNext()) {
+            Map.Entry me = (Map.Entry) i1.next();
+            System.out.println("Io sono: "+ me.getKey() );
+                if (counter == 0) {
+                userViewMap.get(me.getKey().toString()).winMessage(scoresList);
             }
             else {
-                userViewMap.get(me).loseMessage(counter, scoresList);
+                userViewMap.get(me.getKey().toString()).loseMessage(counter+1, scoresList);
             }
             counter++;
         }
@@ -237,11 +242,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         //Counting all empty blocks
         int tempScore=0;
         for(Cell c : card.getSchema()){
-            try {
-                tempScore += c.getAssociatedDie()==null? 1 : 0;
-            } catch (EmptyCellException e) {
-                e.printStackTrace();
-            }
+            tempScore += c.isEmpty()? 1 : 0;
         }
         return tempScore;
     }
@@ -255,17 +256,25 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * - set first player and
      */
     private void startNewRound() {
-        if (orderedRoundPlayers.isEmpty()){
+        if (orderedRoundPlayers.isEmpty() || orderedRoundPlayers.size()==8){ //TODO modifica la prova
             endGame();
         }
         else{
+            System.out.println("Start turn "+ (10-orderedRoundPlayers.size()) );
             model.setDraftPool(model.extractDraftPoolDice(orderedPlayers.size()));
             model.setGamePlayers(orderedPlayers); //Used for notify eventual modifics of wpcs to the Players
             //initialize DraftPool
             //Start a new round-> pick the first of the RoundList
             currentRoundOrderedPlayers=orderedRoundPlayers.remove(0);
-            currentPlayer=currentRoundOrderedPlayers.remove(0);
+
+            System.out.println("La lista turni giocatori sono:");
+            for (Player p : currentRoundOrderedPlayers){
+                System.out.printf(p.getUsername()+ ", ");
+            }
+
+            currentPlayer=currentRoundOrderedPlayers.remove(0); //TODO da' indexOutOfBound al 4° turno
             // DA FARE???? TODO MODIFICA
+            System.out.println("current è " + currentPlayer.getUsername());
             //first player
             System.out.println("Prima di chiamare StartTurnMenu");
             hasPerformedMove=false;
@@ -415,11 +424,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         } catch (IOException e) {
             e.printStackTrace();
         }
-        unitializedOrderedPlayers.remove(usernamePlayerMap.get(playerUsername)); //TODO what happens can't find it?
+        uninitializedOrderedPlayers.remove(usernamePlayerMap.get(playerUsername)); //TODO what happens can't find it?-> disconnection
         orderedPlayers.add(usernamePlayerMap.get(playerUsername));
 
 
-        if (unitializedOrderedPlayers.isEmpty()) {
+        if (uninitializedOrderedPlayers.isEmpty()) {
             startGame();
         }
     }
@@ -463,12 +472,22 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     public void applyCommand(String playerUsername, MoveChoiceDicePlacement command){
         //TODO Controllo username di current RICORDANDO CHE I VERI PLAYER SONO SALVATI SU orderedPlayers
+
         try {
             Die toPlace = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
             boolean exit = usernamePlayerMap.get(playerUsername).getWindowPatternCard()
                     .placeDie(toPlace, command.getDieSchemaRowPosition(), command.getDieSchemaColPosition(), true, true, true);
-            if (!exit){
-                throw new EmptyCellException(); //TODO Funziona? deve eseguire le linee di codice sotto
+            if (!exit) {
+                userViewMap.get(playerUsername).invalidActionMessage("Incorrect move"); //TODO Sarebbe bello scrivere anche il motivo della mossa incorretta, magari creo un metodo apposito per ogni controllo piazzamentog
+                userViewMap.get(playerUsername).continueTurnMenu(!hasPerformedMove, !hasUsedTool);
+            }
+            else {
+                System.out.println("Mossa applicata correttamente");
+                //TODO devo rimuovere il dado mosso dalla draftpool!
+                model.getDraftPool().takeDie(command.getDieDraftPoolPosition());
+                hasPerformedMove = true;
+                model.setGamePlayers(orderedPlayers);
+                userViewMap.get(playerUsername).continueTurnMenu(!hasPerformedMove, !hasUsedTool);
             }
         }catch (EmptyCellException e){
             e.printStackTrace();
@@ -477,13 +496,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(playerUsername).continueTurnMenu(!hasPerformedMove,!hasUsedTool);
         }
         //When I arrive here, the move is already performed
-        System.out.println("Mossa applicata correttamente");
-        //TODO devo rimuovere il dado mosso dalla draftpool!
-        //model.getDraftPool().getDie(command.getDieDraftPoolPosition());
 
-        hasPerformedMove=true;
-        model.setGamePlayers(orderedPlayers);
-        userViewMap.get(playerUsername).continueTurnMenu(!hasPerformedMove, !hasUsedTool);
     }
 
     public void applyCommand(String playerUsername, MoveChoicePassTurn command){

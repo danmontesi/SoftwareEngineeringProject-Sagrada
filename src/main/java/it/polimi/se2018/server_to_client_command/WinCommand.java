@@ -6,6 +6,10 @@ import java.util.ArrayList;
 
 public class WinCommand extends ServerToClientCommand{
 
+    public ArrayList<String> getScores() {
+        return scores;
+    }
+
     private ArrayList<String> scores;
 
     /**
