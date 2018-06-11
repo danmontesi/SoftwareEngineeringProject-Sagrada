@@ -18,7 +18,7 @@ public class ParsePuOCTest {
     ArrayList<PublicObjectiveCard> testCards;
 
     @Test
-    public void setTestCards() {
+    public void setCardsTest() {
         try {
             testCards = ppoc.parseCards();
             assertEquals(12, testCards.size());

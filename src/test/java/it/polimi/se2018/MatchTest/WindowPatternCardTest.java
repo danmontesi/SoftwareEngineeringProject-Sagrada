@@ -20,7 +20,7 @@ import static junit.framework.TestCase.assertTrue;
 public class WindowPatternCardTest {
 
     private WindowPatternCard wpc;
-    private Die myDie;
+    
     @Before
     public void setUp(){
         ArrayList<WindowPatternCard> myCards = new ArrayList<>();
@@ -28,12 +28,14 @@ public class WindowPatternCardTest {
         ParserWindowPatternCard pwpc = null;
         try {
             pwpc = new ParserWindowPatternCard();
+            //tests on WindowPatternCard: Via Lux
+            myCards = pwpc.parseAllCards();
+            wpc = myCards.get(1);
         } catch (IOException e) {
             Assert.fail();
         }
 
-        //tests on WindowPatternCard: Via Lux
-        wpc = myCards.get(1);
+
     }
 
     @Test
@@ -48,20 +50,26 @@ public class WindowPatternCardTest {
 
     @Test
     public void setDieAdjacentToAnother(){
-        wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 4);
-        assertTrue(wpc.placeDie(new Die(COLOR.RED, 3), 1, 3));
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 3);
+        assertTrue(wpc.placeDie(new Die(COLOR.RED, 4), 1, 3));
     }
 
     @Test
     public void setDieNotAdjacentToAnother(){
-        wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 4);
-        assertFalse(wpc.placeDie(new Die(COLOR.RED, 3), 3, 4));
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 3);
+        assertFalse(wpc.placeDie(new Die(COLOR.VIOLET, 3), 2, 3));
     }
 
     @Test
     public void setDieAdjacentToAnotherButSameColor(){
-        wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 4);
-        assertFalse(wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 3));
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 4);
+        assertFalse(wpc.placeDie(new Die(COLOR.YELLOW, 4), 0, 3));
+    }
+
+    @Test
+    public void setDieAdjacentToAnotherButSameValue(){
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 4);
+        assertFalse(wpc.placeDie(new Die(COLOR.RED, 3), 0, 3));
     }
 
     @Test
@@ -82,7 +90,7 @@ public class WindowPatternCardTest {
 
     @Test
     public void setDieOnSideButNotAtFirstTurn(){
-        wpc.placeDie(new Die(COLOR.YELLOW, 3), 1, 4);
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 4);
         assertFalse(wpc.placeDie(new Die(COLOR.RED, 3), 1, 0));
 
     }

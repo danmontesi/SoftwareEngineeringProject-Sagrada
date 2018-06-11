@@ -124,12 +124,12 @@ public class WindowPatternCard {
         int column = c.getColumn();
         for(int i = -1; i <= 1; i++){
             for(int j = -1; j <= 1; j++){
-                if(i!= 0 && j != 0){
+                if(i!= 0 || j != 0){
                     try{
                         if(this.getCell(row + i, column + j).hasDie()){
                             return true;
                         }
-                    } catch (IndexOutOfBoundsException e){
+                    } catch (WrongCellIndexException e){
                         continue;
                     }
                 }
@@ -150,7 +150,7 @@ public class WindowPatternCard {
                 if (check.getValue() == (value) || check.getColor().equals(color)){
                     return false;
                 }
-            } catch (EmptyCellException e){
+            } catch (EmptyCellException | WrongCellIndexException e){
                 continue;
             }
         }
