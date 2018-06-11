@@ -103,7 +103,5 @@ public class WindowPatternCardTest {
         assertFalse(wpc.placeDie(new Die(COLOR.YELLOW, 5), 2, 0));
 
     }
-
-
 }
 

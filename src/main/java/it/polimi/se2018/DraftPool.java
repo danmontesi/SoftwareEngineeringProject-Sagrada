@@ -36,7 +36,13 @@ public class DraftPool {
      * @return removed die
      */
     public Die takeDie(int diePosition) throws EmptyCellException {
-        return cells.get(diePosition).removeDie();
+        //I know it does not make much sense to just rename an exception
+        //It just sounds better to call it like this
+        try{
+            return cells.get(diePosition).removeDie();
+        } catch (IndexOutOfBoundsException e){
+            throw new EmptyCellException();
+        }
     }
 
     /**
@@ -44,16 +50,18 @@ public class DraftPool {
      * @param toBeSwitched new die in draftPool
      * @return old die from draftPool
      */
-    public Die switchDie(Die toBeSwitched) throws EmptyCellException {
-        boolean ok=false;
-        int index=0;
-        while (!ok) {
-            index = ThreadLocalRandom.current().nextInt(0, cells.size());
-            if (cells.get(index).hasDie())
-                ok=true; }
-        Die temp = cells.get(index).removeDie();
-        cells.get(index).setAssociatedDie(toBeSwitched);
-        return temp;
+    public Die switchDie(Die toBeSwitched) {
+        while(true){
+            try{
+                int index = ThreadLocalRandom.current().nextInt(0, cells.size());
+                Die temp = cells.get(index).removeDie();
+                cells.get(index).setAssociatedDie(toBeSwitched);
+                return temp;
+            } catch (EmptyCellException e){
+                //just keep going
+                //DraftPool is guaranteed to be never empty during turn
+            }
+        }
     }
 
     /**
@@ -62,13 +70,9 @@ public class DraftPool {
      * @param toBeSwitched new die in draftPool
      * @return old die from draftPool
      */
-    public Die switchDie(int diePosition, Die toBeSwitched){
-        Die temp = null;
-        try {
-            temp = cells.get(diePosition).removeDie();
-        } catch (EmptyCellException e) {
-            e.printStackTrace();
-        }
+    public Die switchDie(int diePosition, Die toBeSwitched) throws EmptyCellException {
+        Die temp;
+        temp = cells.get(diePosition).removeDie();
         cells.get(diePosition).setAssociatedDie(toBeSwitched);
         return temp;
     }
@@ -81,15 +85,32 @@ public class DraftPool {
         cells.get(index).setAssociatedDie(toBePlaced);
     }
 
-    //roll all dice in the DraftPool
+    /**
+     * Place a die
+     * @param toBePlaced
+     */
+    public void placeDie(Die toBePlaced){
+        for(int i = 0; i < cells.size(); i++){
+            if(cells.get(i).isEmpty()){
+                cells.get(i).setAssociatedDie(toBePlaced);
+                return;
+            }
+        }
+    }
+
 
     /**
      * Rolls all dice in the draftPool (gives all dice a new random value)
      */
-    public void rollDice() throws EmptyCellException {
+    public void rollDice() {
         for (Cell cell : cells) {
-            if (!cells.isEmpty())
-                cell.getAssociatedDie().roll(); //TODO does it change the value in the cell?
+            if (!cell.isEmpty()){
+                try {
+                    cell.getAssociatedDie().roll();
+                } catch (EmptyCellException e) {
+                    //nothing
+                }
+            }
         }
     }
 

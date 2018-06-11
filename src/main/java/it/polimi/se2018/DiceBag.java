@@ -35,6 +35,20 @@ public class DiceBag {
     }
 
     /**
+     * Return the exact number of dice needed to start a turn, given the number of players
+     * @param numberOfPlayers
+     * @return dice needed to start a turn
+     */
+    public ArrayList<Die> extractDice(int numberOfPlayers){
+        ArrayList<Die> result = new ArrayList<>();
+        for (int i = 0; i < numberOfPlayers*2 +1; i++){
+            int index = ThreadLocalRandom.current().nextInt(0,  dice.size());
+            result.add(dice.remove(index));
+        }
+        return result;
+    }
+
+    /**
      * Inserts a die in the diceBag (queued in last position)
      * @param die to be inserted in the bag
     */
