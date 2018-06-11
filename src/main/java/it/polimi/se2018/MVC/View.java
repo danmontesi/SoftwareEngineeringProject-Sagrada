@@ -96,7 +96,7 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
 
     }
 
-    public void winMessage(List<String> scores){
+    public void winMessage(ArrayList<String> scores){
 
     }
 

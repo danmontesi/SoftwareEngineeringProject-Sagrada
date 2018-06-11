@@ -28,6 +28,7 @@ public class CLIView extends View {
 //TODO      PER CHI FA LA VIEW:
 //TODO          OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO.
 //TODO          ognuno dei metodi quì sotto prima chiede l'input dall'utente, poi fa notify(new chosen
+    @Override
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards){
         for (WindowPatternCard card : cards) {
             System.out.println(":- Difficulty = "+ card.getDifficulty()+ "\n");
@@ -39,6 +40,7 @@ public class CLIView extends View {
         notify(new ChosenWindowPatternCard(cards.get(chosen).getCardName()));
     }
 
+    @Override
     public void startTurnMenu(){
         //notify( new MOVE / new TOOLUSE / new PASSTURN )
         System.out.println("What do you want to do?");
@@ -67,6 +69,7 @@ public class CLIView extends View {
         //TODO Questo metodo non invia niente, mostra solo il messaggio
     }
 
+    @Override
     public void continueTurnMenu(boolean move, boolean tool){
         //notify( new MOVE / new TOOLUSE / new PASSTURN )
         System.out.println("What do you want to do?");
@@ -91,15 +94,18 @@ public class CLIView extends View {
         }
     }
 
+    @Override
     public void correctUseTool(int numTool){
         //Switch che in base al tipo di tool
         //i possibili metodi sono PRIVATI e sono questi quì
     }
 
+    @Override
     public void firmPastryBrushMenu(int value){
         //notify( new UseToolFirmyPastryThinner )
     }
 
+    @Override
     public void firmPastryThinnerMenu(String color, int value){
         //notify( new UseToolFirmyPastryBrush )
     }
@@ -133,6 +139,7 @@ public class CLIView extends View {
         //notify( new UseTool[nome_tool] )
     }
 
+
     private void roughingForceps(){
         //notify( new UseTool[nome_tool] )
     }
@@ -141,19 +148,36 @@ public class CLIView extends View {
         //notify( new UseTool[nome_tool] )
     }
 
+    @Override
     public void invalidActionMessage(String message){
         System.out.println(message);
         //TODO. non contiene niente, mostra solo i messaggio
     }
 
+    @Override
     public void loseMessage(Integer position, ArrayList<String> scores){
         //TODO. non contiene niente, mostra solo i messaggio. attento a parsare bene gli score
-    }
+        System.out.println("You lost! Your rank is " + position + "\n");
 
-    public void winMessage(List<String> scores){
+        System.out.println("Here other players ordered scores:");
+        for (String score : scores){
+            System.out.println(score);
+        }
         //TODO. non contiene niente, mostra solo i messaggio, attento a parsare bene gli scores
     }
 
+    @Override
+    public void winMessage(ArrayList<String> scores){
+        System.out.println("Congratulation! You won!");
+
+        System.out.println("Here other players ordered scores:");
+        for (String score : scores){
+            System.out.println(score);
+        }
+        //TODO. non contiene niente, mostra solo i messaggio, attento a parsare bene gli scores
+    }
+
+    @Override
     public void correctAuthenthication(String username){
         //TODO. non contiene niente, mostra solo i messaggio
     }
