@@ -20,7 +20,7 @@ import static junit.framework.TestCase.assertTrue;
 public class WindowPatternCardTest {
 
     private WindowPatternCard wpc;
-    
+
     @Before
     public void setUp(){
         ArrayList<WindowPatternCard> myCards = new ArrayList<>();
@@ -92,6 +92,15 @@ public class WindowPatternCardTest {
     public void setDieOnSideButNotAtFirstTurn(){
         wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 4);
         assertFalse(wpc.placeDie(new Die(COLOR.RED, 3), 1, 0));
+    }
+
+    @Test
+    public void justABunchOfMovesToVerifyItWorks(){
+        assertFalse(wpc.placeDie(new Die(COLOR.RED, 3), 0, 0));
+        assertTrue(wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 0));
+        assertTrue(wpc.placeDie(new Die(COLOR.VIOLET, 1), 1, 1));
+        assertTrue(wpc.placeDie(new Die(COLOR.YELLOW, 6), 2, 1));
+        assertFalse(wpc.placeDie(new Die(COLOR.YELLOW, 5), 2, 0));
 
     }
 

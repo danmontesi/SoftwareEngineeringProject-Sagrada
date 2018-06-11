@@ -91,6 +91,9 @@ public class WindowPatternCard {
      */
     public boolean placeDie(Die d, int row, int column){
         Cell c = this.getCell(row, column);
+        if(c.hasDie()){
+            return false;
+        }
         if(checkColorRestriction(c, d) && checkPlacementRestriction(c, d) && checkValueRestriction(c, d)){
             c.setAssociatedDie(d);
             return true;
@@ -160,7 +163,7 @@ public class WindowPatternCard {
                 if (check.getValue() == (value) || check.getColor().equals(color)){
                     return false;
                 }
-            } catch (EmptyCellException e){
+            } catch (EmptyCellException | WrongCellIndexException e){
                 continue;
             }
         }
