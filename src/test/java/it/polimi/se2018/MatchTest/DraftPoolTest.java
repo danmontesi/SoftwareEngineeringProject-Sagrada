@@ -58,7 +58,6 @@ public class DraftPoolTest {
         } catch (EmptyCellException e) {
             assertTrue(true);
         }
-
     }
 
     @Test
@@ -70,13 +69,17 @@ public class DraftPoolTest {
     @Test
     public void testSwitchDie() {
 
+        COLOR tempCol = null;
+        Die temp = null;
         try {
-            dp.switchDie(3, new Die(COLOR.GREEN));
+            tempCol = dp.getDie(3).getColor();
+            temp = dp.switchDie(3, new Die(COLOR.GREEN));
         } catch (EmptyCellException e) {
             Assert.fail();
         }
         try {
-            assertEquals(COLOR.GREEN, dp.getDie(4).getColor());
+            assertEquals(COLOR.GREEN, dp.getDie(3).getColor());
+            assertEquals(tempCol, temp.getColor());
         } catch (EmptyCellException e) {
             Assert.fail();
         }
@@ -85,7 +88,7 @@ public class DraftPoolTest {
     @Test
     public void testPlaceDie(){
         assertEquals(numberOfPlayers*2+1, dp.draftPoolSize());
-        dp.placeDie( new Die(COLOR.GREEN));
-         assertEquals(numberOfPlayers*2+2, dp.draftPoolSize());
+        dp.placeDie(3, new Die(COLOR.GREEN));
+         assertEquals(numberOfPlayers*2+1, dp.draftPoolSize());
     }
 }

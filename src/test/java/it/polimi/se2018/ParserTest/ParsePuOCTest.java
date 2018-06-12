@@ -21,7 +21,7 @@ public class ParsePuOCTest {
     public void setCardsTest() {
         try {
             testCards = ppoc.parseCards();
-            assertEquals(12, testCards.size());
+            assertEquals(10, testCards.size());
         } catch (IOException e) {
             System.out.println("problemino");
         }
