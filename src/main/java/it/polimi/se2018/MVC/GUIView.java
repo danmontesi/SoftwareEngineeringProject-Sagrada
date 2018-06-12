@@ -34,49 +34,41 @@ public class GUIView extends View {
     }
 
     public void firmPastryBrushMenu(int value){
-        //notify( new UseToolFirmyPastryThinner )
+
     }
 
     public void firmPastryThinnerMenu(String color, int value){
-        //notify( new UseToolFirmyPastryBrush )
+
     }
 
-    private void copperFoilReamerMenu(){
-        //notify( new UseTool[nome_tool] )
+    public void moveDieNoRestrictionMenu(String cardName){
+
     }
 
-    private void corkLineMenu(){
-        //notify( new UseTool[nome_tool] )
+    public void changeDieValueMenu(String cardName){
+
     }
 
-    private void diamondSwabMenu(){
-        //notify( new UseTool[nome_tool] )
+    public void twoDiceMoveMenu(String cardName){
+
     }
 
-    private void eglomiseBrushMenu(){
-        //notify( new UseTool[nome_tool] )
+    public void corkLineMenu(){
+
     }
 
+    public void gavelMenu(){
 
-    private void gavelMenu(){
-        //notify( new UseTool[nome_tool] )
     }
 
-    private void lathekin(){
-        //notify( new UseTool[nome_tool] )
+    public void wheelsPincher(){
+
     }
 
-    private void manuelCutter(){
-        //notify( new UseTool[nome_tool] )
+    public void circularCutter(){
+
     }
 
-    private void roughingForceps(){
-        //notify( new UseTool[nome_tool] )
-    }
-
-    private void wheelsPincher(){
-        //notify( new UseTool[nome_tool] )
-    }
 
     public void invalidActionMessage(String message){
         //TODO. non contiene niente, mostra solo i messaggio

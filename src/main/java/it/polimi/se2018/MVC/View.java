@@ -48,39 +48,31 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
 
     }
 
-    private void copperFoilReamerMenu(){
+    public void moveDieNoRestrictionMenu(String cardName){
 
     }
 
-    private void corkLineMenu(){
+    public void changeDieValueMenu(String cardName){
 
     }
 
-    private void diamondSwabMenu(){
+    public void twoDiceMoveMenu(String cardName){
 
     }
 
-    private void eglomiseBrushMenu(){
+    public void corkLineMenu(){
 
     }
 
-    private void gavelMenu(){
+    public void gavelMenu(){
 
     }
 
-    private void lathekin(){
+    public void wheelsPincher(){
 
     }
 
-    private void manuelCutter(){
-
-    }
-
-    private void roughingForceps(){
-
-    }
-
-    private void wheelsPincher(){
+    public void circularCutter(){
 
     }
 

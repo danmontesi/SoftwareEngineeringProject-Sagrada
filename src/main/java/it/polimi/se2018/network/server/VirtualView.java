@@ -68,12 +68,6 @@ public class VirtualView extends View{
         Server.getConnectedClients().get(username).notifyClient(new ContinueTurnCommand(move, tool));
     }
 
-    public void correctUseTool(int numTool){
-        Model temp = (Model) observable;
-        temp.getExtractedToolCard().get(numTool);
-        //SWITCH DEPENDENT TO THE CARD NAME
-    }
-
     public void firmPastryBrushMenu(int value){
         Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolFirmPastryBrush1(value));
     }
@@ -82,51 +76,34 @@ public class VirtualView extends View{
         Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolFirmPastryThinner1(color, value));
     }
 
-    /*** ONLY in VIEW EXTENDS IN CLIENT
-     private void copperFoilReamerMenu(){
+    public void moveDieNoRestrictionMenu(String cardName){
+        Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolMoveDieNoRestriction(cardName));
+    }
 
-     }
+    public void changeDieValueMenu(String cardName){
 
-     private void corkLineMenu(){
+    }
 
-     }
+    public void twoDiceMoveMenu(String cardName){
 
-     private void diamondSwabMenu(){
+    }
 
-     }
+    public void corkLineMenu(){
 
-     private void eglomiseBrushMenu(){
+    }
 
-     }
 
-     private void firmPastryBrushMenu(){
+    public void gavelMenu(){
 
-     }
+    }
 
-     private void firmPastryThinnerMenu(){
+    public void wheelsPincher(){
 
-     }
+    }
 
-     private void gavelMenu(){
+    public void circularCutter(){
 
-     }
-
-     private void lathekin(){
-
-     }
-
-     private void manuelCutter(){
-
-     }
-
-     private void roughingForceps(){
-
-     }
-
-     private void wheelsPincher(){
-
-     }
-     */
+    }
 
     public void invalidActionMessage(String message){
         System.out.println("SENDING INVALIDACTION");

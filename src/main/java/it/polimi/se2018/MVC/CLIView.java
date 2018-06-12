@@ -96,56 +96,44 @@ public class CLIView extends View {
 
     @Override
     public void correctUseTool(int numTool){
-        //Switch che in base al tipo di tool
-        //i possibili metodi sono PRIVATI e sono questi quì
+        //Invia un messageBox contenente un messaggio riguardante il tool applicato correttamente
+        //TODO FORSE INUTILE E SOSTITUIBILE DA UN METODO GENERICO DI MESSAGGIO
     }
 
-    @Override
     public void firmPastryBrushMenu(int value){
-        //notify( new UseToolFirmyPastryThinner )
+
     }
 
-    @Override
     public void firmPastryThinnerMenu(String color, int value){
-        //notify( new UseToolFirmyPastryBrush )
+
     }
 
-    private void copperFoilReamerMenu(){
-        //notify( new UseTool[nome_tool] )
+    public void moveDieNoRestrictionMenu(String cardName){
+
     }
 
-    private void corkLineMenu(){
-        //notify( new UseTool[nome_tool] )
+    public void changeDieValueMenu(String cardName){
+
     }
 
-    private void diamondSwabMenu(){
-        //notify( new UseTool[nome_tool] )
+    public void twoDiceMoveMenu(String cardName){
+
     }
 
-    private void eglomiseBrushMenu(){
-        //notify( new UseTool[nome_tool] )
+    public void corkLineMenu(){
+
     }
 
+    public void gavelMenu(){
 
-    private void gavelMenu(){
-        //notify( new UseTool[nome_tool] )
     }
 
-    private void lathekin(){
-        //notify( new UseTool[nome_tool] )
+    public void wheelsPincher(){
+
     }
 
-    private void manuelCutter(){
-        //notify( new UseTool[nome_tool] )
-    }
+    public void circularCutter(){
 
-
-    private void roughingForceps(){
-        //notify( new UseTool[nome_tool] )
-    }
-
-    private void wheelsPincher(){
-        //notify( new UseTool[nome_tool] )
     }
 
     @Override

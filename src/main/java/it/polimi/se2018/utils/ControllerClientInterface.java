@@ -66,11 +66,6 @@ public interface ControllerClientInterface{
     //USING OF TOOLS: Correct Move performed -> has to update the View (The answer will be the new model or the move performed)
 
 
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolCopperFoilReamer command);
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
@@ -79,11 +74,7 @@ public interface ControllerClientInterface{
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
-    public void applyCommand(CorrectUseToolDiamondSwab command);
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolEglomiseBrush command);
+    public void applyCommand(CorrectUseToolMoveDieNoRestriction command);
 
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
@@ -98,38 +89,27 @@ public interface ControllerClientInterface{
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
-    public void applyCommand(CorrectUseToolFirmPastryBrush2 command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolFirmPastryThinner2 command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
     public void applyCommand(CorrectUseToolGavel command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolLathekin command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolManualCutter command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolRoughingForceps command);
 
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     public void applyCommand(CorrectUseToolWheelsPincher command);
 
+    /**
+     * Applies commands coming from the Server, calling the right graphical methods of the View
+     */
+    public void applyCommand(CorrectUseToolTwoDiceMove command);
+
+    /**
+     * Applies commands coming from the Server, calling the right graphical methods of the View
+     */
+    public void applyCommand(CorrectUseToolChangeDieValue command);
+
+    /**
+     * Applies commands coming from the Server, calling the right graphical methods of the View
+     */
+    public void applyCommand(CorrectUseToolCircularCutter command);
 
 
 
@@ -142,22 +122,13 @@ public interface ControllerClientInterface{
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
-    public void applyCommand(InvalidUseToolCopperFoilReamer command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
     public void applyCommand(InvalidUseToolCorkLine command);
 
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidUseToolDiamondSwab command);
 
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
-    public void applyCommand(InvalidUseToolEglomiseBrush command);
+    public void applyCommand(InvalidUseToolMoveDieNoRestriction command);
 
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
@@ -167,16 +138,7 @@ public interface ControllerClientInterface{
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
-    public void applyCommand(InvalidUseToolFirmPastryBrush2 command);
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
     public void applyCommand(InvalidUseToolFirmPastryThinner1 command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidUseToolFirmPastryThinner2 command);
 
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
@@ -186,19 +148,24 @@ public interface ControllerClientInterface{
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
-    public void applyCommand(InvalidUseToolLathekin command);
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidUseToolManualCutter command);
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidUseToolRoughingForceps command);
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
     public void applyCommand(InvalidUseToolWheelsPincher command);
+
+    /**
+     * Applies commands coming from the Server, calling the right graphical methods of the View
+     */
+    public void applyCommand(InvalidUseToolTwoDiceMove command);
+
+    /**
+     * Applies commands coming from the Server, calling the right graphical methods of the View
+     */
+    public void applyCommand(InvalidUseToolChangeDieValue command);
+
+    /**
+     * Applies commands coming from the Server, calling the right graphical methods of the View
+     */
+    public void applyCommand(InvalidUseToolCircularCutter command);
+
+
 
     void dispatchCommand(Object event);
 }

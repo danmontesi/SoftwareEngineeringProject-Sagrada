@@ -277,30 +277,18 @@ public class ClientController implements Observer, ControllerClientInterface {
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     @Override
-    public void applyCommand(CorrectUseToolCopperFoilReamer command){
-
-    }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
     public void applyCommand(CorrectUseToolCorkLine command){
 
     }
+
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     @Override
-    public void applyCommand(CorrectUseToolDiamondSwab command){
-
+    public void applyCommand(CorrectUseToolMoveDieNoRestriction command){
+        view.moveDieNoRestrictionMenu(command.getCardName());
     }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(CorrectUseToolEglomiseBrush command){
 
-    }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
@@ -324,44 +312,10 @@ public class ClientController implements Observer, ControllerClientInterface {
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     @Override
-    public void applyCommand(CorrectUseToolFirmPastryBrush2 command){
-
-    }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(CorrectUseToolFirmPastryThinner2 command){
-
-    }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
     public void applyCommand(CorrectUseToolGavel command){
 
     }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(CorrectUseToolLathekin command){
 
-    }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(CorrectUseToolManualCutter command){
-
-    }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(CorrectUseToolRoughingForceps command){
-
-    }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
@@ -370,22 +324,21 @@ public class ClientController implements Observer, ControllerClientInterface {
 
     }
 
-
-
-
-
-
-
-    //InvalidToolUse-> The ClientController has to call the box that let the player do a second chance
-
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
     @Override
-    public void applyCommand(InvalidUseToolCopperFoilReamer command){
+    public void applyCommand(CorrectUseToolTwoDiceMove command) {
 
     }
+
+    @Override
+    public void applyCommand(CorrectUseToolChangeDieValue command) {
+
+    }
+
+    @Override
+    public void applyCommand(CorrectUseToolCircularCutter command) {
+
+    }
+
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
@@ -393,20 +346,12 @@ public class ClientController implements Observer, ControllerClientInterface {
     public void applyCommand(InvalidUseToolCorkLine command){
 
     }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
+
     @Override
-    public void applyCommand(InvalidUseToolDiamondSwab command){
+    public void applyCommand(InvalidUseToolMoveDieNoRestriction command) {
 
     }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(InvalidUseToolEglomiseBrush command){
 
-    }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
@@ -414,26 +359,12 @@ public class ClientController implements Observer, ControllerClientInterface {
     public void applyCommand(InvalidUseToolFirmPastryBrush1 command){
 
     }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(InvalidUseToolFirmPastryBrush2 command){
 
-    }
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     @Override
     public void applyCommand(InvalidUseToolFirmPastryThinner1 command){
-
-    }
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(InvalidUseToolFirmPastryThinner2 command){
 
     }
 
@@ -448,32 +379,24 @@ public class ClientController implements Observer, ControllerClientInterface {
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     @Override
-    public void applyCommand(InvalidUseToolLathekin command){
-
-    }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(InvalidUseToolManualCutter command){
-
-    }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(InvalidUseToolRoughingForceps command){
-
-    }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
     public void applyCommand(InvalidUseToolWheelsPincher command){
 
     }
 
+    @Override
+    public void applyCommand(InvalidUseToolTwoDiceMove command) {
 
+    }
+
+    @Override
+    public void applyCommand(InvalidUseToolChangeDieValue command) {
+
+    }
+
+    @Override
+    public void applyCommand(InvalidUseToolCircularCutter command) {
+
+    }
 
     @Override
     public void dispatchCommand(Object command) {

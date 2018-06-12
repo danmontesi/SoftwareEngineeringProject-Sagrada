@@ -75,7 +75,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             uninitializedOrderedPlayers.add(temp);
             usernamePlayerMap.put(username, temp);
         }
-
         this.model = new Model(uninitializedOrderedPlayers);
 
         for (String username : usernameList) {
@@ -83,7 +82,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.put(username, tempView);
             model.register(tempView);
         }
-
         this.roundNumber = 0;
         this.orderedPlayers= new ArrayList<>();
 
@@ -107,7 +105,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(p.getUsername()).chooseWindowPatternCardMenu(localWpc);
         }
     }
-
 
     /**
      * Initializes all Lists of players for each round, ordered.
@@ -207,23 +204,16 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private void sendResultToPlayers(LinkedHashMap<String, Integer> orderedPlayerScores) {
         Set set1 = orderedPlayerScores.entrySet();
         Set set2 = orderedPlayerScores.entrySet();
-        // Get an iterator
         String scores = "";
-
         ArrayList<String> scoresList = new ArrayList<>();
-
-        Iterator i0 = set1.iterator();
+        Iterator i0 = set1.iterator(); //Through iteration, we can better manage the scores of all players
         Iterator i1 = set2.iterator();
         int tempRank=1;
         while (i0.hasNext()) {
             Map.Entry entry = (Map.Entry) i0.next();
-            // Player Username + player score //TODO Controlla se funziona!!
             scoresList.add(tempRank + ": " + entry.getKey().toString() + ", scored " + entry.getValue().toString());
             tempRank++;
         }
-
-        //DATE COME ARRAYLIST
-
         Integer counter=0;
         while (i1.hasNext()) {
             Map.Entry me = (Map.Entry) i1.next();
@@ -239,15 +229,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     private Integer penalityScore(WindowPatternCard card){
-        //Counting all empty blocks
         int tempScore=0;
         for(Cell c : card.getSchema()){
             tempScore += c.isEmpty()? 1 : 0;
         }
         return tempScore;
     }
-
-
 
     /**
      * Calls method for initializing a new round
@@ -256,26 +243,19 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * - set first player and
      */
     private void startNewRound() {
-        if (orderedRoundPlayers.isEmpty() || orderedRoundPlayers.size()==8){ //TODO modifica la prova
+        if (orderedRoundPlayers.isEmpty()){
             endGame();
         }
         else{
-            System.out.println("Start turn "+ (10-orderedRoundPlayers.size()) );
+            System.out.println("Start turn "+ (10 - orderedRoundPlayers.size()) + 1);
             model.setDraftPool(model.extractDraftPoolDice(orderedPlayers.size()));
             model.setGamePlayers(orderedPlayers); //Used for notify eventual modifics of wpcs to the Players
             //initialize DraftPool
             //Start a new round-> pick the first of the RoundList
             currentRoundOrderedPlayers=orderedRoundPlayers.remove(0);
 
-            System.out.println("La lista turni giocatori sono:");
-            for (Player p : currentRoundOrderedPlayers){
-                System.out.printf(p.getUsername()+ ", ");
-            }
-
-            currentPlayer=currentRoundOrderedPlayers.remove(0); //TODO da' indexOutOfBound al 4° turno
-            // DA FARE???? TODO MODIFICA
+            currentPlayer=currentRoundOrderedPlayers.remove(0);
             System.out.println("current è " + currentPlayer.getUsername());
-            //first player
             System.out.println("Prima di chiamare StartTurnMenu");
             hasPerformedMove=false;
             hasUsedTool=false;
@@ -287,7 +267,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * if the round has still 2*n turns played, i have to call starNewRound()
      */
     private void startNewTurn(){
-        //Case that everybody has played in the round
+        //Case in which everybody has played in the round
         if (currentRoundOrderedPlayers.isEmpty()){
             startNewRound();
         }
@@ -298,116 +278,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     /**
-     *      *  Assign next currentPlayer to round
-     *      *  if currentPlayer == null, currentPlayer will be the first player
-     *      *  non serve l'eccezione del doppio turno in quanto può essere applicata solo nella seconda metà del round
-     *      *  se siamo nella prima metà del round currentPlayer sarà il successivo nella lista di giocatori;
-     *      *
-     *      *  se siamo nella seconda metà del round currentPlayer sarà il precedente nella lista di giocatori;
-     *      *  se ha già giocato 2 turni si passerà al giocatore ancora dopo
-     *      *
-     */
-
-    public void nextPlayer() {
-        /*
-        int i=0;
-        while (!firstPlayer.getUsername().equals(gamePlayers.get(i).getUsername())){
-            i++;
-        }
-        if (currentPlayer == null){
-            currentPlayer = firstPlayer; //primo giocatore
-        } else if (turnCount == 2*gamePlayers.size()){ //se siamo a fine round
-            firstPlayer = gamePlayers.get(i+1); //predispone firstPlayer per il prossimo round
-            currentPlayer = null; //curretnPlayer torna ad essere null (così al prossimo round gli verrà assegnato firstPlayer)
-            instance.nextRound(); //chiama il round successivo
-        } else if (turnCount < gamePlayers.size()){ //se siamo nella prima metà del round/il primo turno di ogni giocatore
-            if (gamePlayers.get(i+1) == null){ //se siamo arrivati a fine lista gamePlayers (lista dei giocatori)
-                currentPlayer = gamePlayers.get(0); //currentPlayer sarà il primo giocatore in gamePlayers
-            } else {
-                currentPlayer = gamePlayers.get(i+1); //currentPlayer sarà il successivo giocatore in gamePlayers
-            }
-        } else if (turnCount > gamePlayers.size()){ //se siamo nella seconda metà del round/il secondo turno di ogni giocatore
-            if (gamePlayers.get(i-1) == null){ //se siamo arrivati all'inizio di gamePlayers
-                currentPlayer = gamePlayers.get(gamePlayers.size()); //currentPlayer sarà l'ultimo giocatore in gamePlayers (dato che stiamo andando a ritroso)
-            } else {
-                currentPlayer = gamePlayers.get(i-1); //altrimenti currentPlayer sarà il giocatore precedente in gamePlayers
-            }
-            if (countPlayersTurns.get(currentPlayer) > 1){ //se il currentPlayer designato ha già giocato 2 turni
-                if (gamePlayers.get(i-1) == null){ //si passa a quello ancora dopo, con i soliti controlli di fine lista
-                    currentPlayer = gamePlayers.get(gamePlayers.size());
-                } else {
-                    currentPlayer = gamePlayers.get(i-1);
-                }
-            }
-        }
-        countPlayersTurns.put((currentPlayer), countPlayersTurns.get(currentPlayer)+1);
-        turnCount ++;
-    }
-    */
-    }
-
-    /**
-     * Calculate total score of players and determine who is the winner
-     */
- /*   public void endGame() {
-        // Calls calculatePlayersScore for each player
-        //notifies to players if they win or lose
-    }
-
-    public int calculatePlayerScore(Player player){
-        // PublicObj + PrivateObj - Penalization
-    }
-*/
-    /**
      * Generally returns true if need ad allowance to perform a command
      * @return true if the currentPlayer is the one given
      */
-    public boolean isAllowed(Player player){
+    private boolean isAllowed(Player player){
         return player==currentPlayer;
     }
-/*
-    private void sendCommandToAllPlayers(ServerToClientCommand command){
-        for (String username : usernamePlayerMap.keySet() ) {
-            if (Server.getConnectedClients().keySet().contains(username))
-                Server.getConnectedClients().get(username).notifyClient(command);
-        }
-    }
-
-    private void sendCommandToPlayer(Player player, ServerToClientCommand command){
-        System.out.println("invio comando da controller: " + command.getMessage());
-        Server.getConnectedClients().get(player.getUsername()).notifyClient(command);
-    }
-
-
-*/
-
-/*
-    public void performMoveToServer(Die dieToPlace, int row, int column, Player player) {
-        if (model.getCurrentRound.getCurrentPlayer() == player) {
-            WindowPatternCard patternCardWhereToPlaceDie = model.getCurrentRound.getCurrentPlayer().getWindowPatternCard();
-            if (patternCardWhereToPlaceDie.placeDie(dieToPlace, row, column,
-                    false, false, false)) {
-                view.notifyCorrectMoveServerToClient(player);
-            } else {
-                view.notifyIncorrectMoveServerToClient(player);
-            }
-        } else { // Case it's not player's turn
-            view.notifyNotYourTurn();
-        }
-    }
-
-        public void performToolActionToServer(int numberOfToolToUse, Player player){
-            if (player.getTokens() >
-                    (model.getExtractedToolCard.get(numberOfToolToUse).getTokenCounts()>0 ? 1: 2)) {
-                //posso utilizzarlo
-                player.decreaseTokens(model.getExtractedToolCard.get(numberOfToolToUse).getTokenCounts()>0 ? 1: 2);
-                view.notifyAbleToUseTool(model.getExtractedToolCard.get(numberOfToolToUse), player);
-            }
-            else {
-                view.notifyNotAbleToUseTool(player);
-            }
-    }
-*/
 
     /**
      * The choice of wpc is always right
@@ -426,7 +302,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         uninitializedOrderedPlayers.remove(usernamePlayerMap.get(playerUsername)); //TODO what happens can't find it?-> disconnection
         orderedPlayers.add(usernamePlayerMap.get(playerUsername));
-
 
         if (uninitializedOrderedPlayers.isEmpty()) {
             startGame();
@@ -450,10 +325,47 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         if (current.getTokens()>requiredTokens){
             current.decreaseTokens(requiredTokens);
             chosen.increaseTokens(requiredTokens);
+            switch (chosen.getName()){
+                case("CopperFoilReamer"):
+                    userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
+                    break;
+                case("CorkLine"):
+                    ;
+                    break;
+                case("DiamondSwab"):
+                    ;
+                    break;
+                case("EglomiseBrush"):
+                    userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
+                    break;
+                case("FirmPastryBrush"):
+                    ;
+                    break;
+                case("FirmPastryThinner"):
+                    ;
+                    break;
+                case("Gavel"):
+                    ;
+                    break;
+                case("Lathekin"):
+                    ;
+                    break;
+                case("ManualCutter"):
+                    ;
+                    break;
+                case("RoughingForceps"):
+                    ;
+                    break;
+                case("WheelsPincher"):
+                    ;
+                    break;
+                default:
+                    System.out.println("Error in toolNames");
+            }
             if (chosen.getName().equals("FirmPastryThinner")){
                 // Extract a die
                 Die die = model.getDiceBag().extractDie(); //TODO Dove tengo questa informazione? mi fido del controller?
-                userViewMap.get(currentPlayer.getUsername()).firmPastryThinnerMenu(die.getColor().toString() , die.getValue() );
+                userViewMap.get(currentPlayer.getUsername()).firmPastryThinnerMenu(die.getColor().toString(), die.getValue());
             }
             else if (chosen.getName().equals("FirmPastryBrush")){
                 userViewMap.get(currentPlayer.getUsername()).firmPastryBrushMenu(ThreadLocalRandom.current().nextInt(1, 7));
@@ -466,13 +378,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You haven't enough tokens to use this tool");
             userViewMap.get(currentPlayer.getUsername()).startTurnMenu();
         }
-
     }
 
 
     public void applyCommand(String playerUsername, MoveChoiceDicePlacement command){
         //TODO Controllo username di current RICORDANDO CHE I VERI PLAYER SONO SALVATI SU orderedPlayers
-
         try {
             Die toPlace = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
             boolean exit = usernamePlayerMap.get(playerUsername).getWindowPatternCard()
@@ -503,7 +413,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         startNewTurn();
     }
 
-
     //Those methods represents the view that uses correctly a tool.
     // The server has to validate the move and edit the model, if the move is correct
     // else, has to call a new Request of re-use of that tool, re-sending a event of AllowedUseToolCommand(usedToolNumber)
@@ -514,7 +423,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     public void applyCommand(String playerUsername, UseToolCopperFoilReamer command){
         String message = command.getMessage();
     }
-
 
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
