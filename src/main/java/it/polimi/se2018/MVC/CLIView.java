@@ -1,8 +1,6 @@
 package it.polimi.se2018.MVC;
 
-import it.polimi.se2018.client_to_server_command.ChosenWindowPatternCard;
-import it.polimi.se2018.client_to_server_command.MoveChoiceDicePlacement;
-import it.polimi.se2018.client_to_server_command.MoveChoicePassTurn;
+import it.polimi.se2018.client_to_server_command.*;
 import it.polimi.se2018.server_to_client_command.ChooseWindowPatternCardCommand;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.WindowPatternCard;
@@ -58,12 +56,15 @@ public class CLIView extends View {
                 break;
             case 2:
                 System.out.println("Which tool want you to use?");
+                int chosenToolNum = scan.nextInt();
+                notify(new MoveChoiceToolCard(chosenToolNum));
                 break;
             case 3:
                 System.out.println("passed turn");
                 notify(new MoveChoicePassTurn(""));
         }
     }
+
 
     public void AllowedUseToolMessage(String message){
         //TODO Questo metodo non invia niente, mostra solo il messaggio
@@ -100,39 +101,112 @@ public class CLIView extends View {
         //TODO FORSE INUTILE E SOSTITUIBILE DA UN METODO GENERICO DI MESSAGGIO
     }
 
-    public void firmPastryBrushMenu(int value){
-
+    @Override
+    public void firmPastryBrushMenu(int value){ // Changes a value of a die of draftpool with the one received (value)
+        //Notify(new UseToolFirmPastr...(Integer chosenDieDraftpoolIndex, Integer schemaPosition (can be null), boolean placedDie (true if the player place the die)
     }
 
-    public void firmPastryThinnerMenu(String color, int value){
 
+    //TODO dan
+    public void firmPastryThinnerMenu(String color, int value){ // receives a new die from Servfer with Color = color, Value = value. The player has to send one of draftpool dice to swap them
+        //Notify(new UseToolFirmPastr...(Integer chosenDieDraftpoolIndex, Integer schemaPosition (where he wants to place the die, can be null), **String color, Integer value***, boolean placedDie (true if the player place the die)
+        // ** il server deve ricevere il dado che ha mandato al client perchè non lo salva da nessuna parte
     }
 
+    @Override
     public void moveDieNoRestrictionMenu(String cardName){
+        if (cardName.equals("Eglomise Brush")){
+            System.out.println("TOOL USE - Eglomise Brush " +
+                    "\n You can move a die without color restriction");
+            System.out.println("Select where is the die you want to move in your schema:");
+            Integer schemaOldPos = scan.nextInt();
+            System.out.println("Select the cell you cant to move the die in");
+            Integer schemaNewPos = scan.nextInt();
+            notify(new UseToolMoveDieNoRestriction(cardName, schemaOldPos, schemaNewPos));
+        }
+        else if (cardName.equals("Copper Foil Reamer")){
+            System.out.println("TOOL USE - Copper Foil Reamer " +
+                    "\n You can move a die without value restriction");
+            System.out.println("Select where is the die you want to move in your schema:");
+            Integer schemaOldPos = scan.nextInt();
+            System.out.println("Select the cell you cant to move the die in");
+            Integer schemaNewPos = scan.nextInt();
+            notify(new UseToolMoveDieNoRestriction(cardName, schemaOldPos, schemaNewPos));
+
+        }
 
     }
 
+    @Override
     public void changeDieValueMenu(String cardName){
-
+        if (cardName.equals("Roughing Forceps")){
+            System.out.println("TOOL USE Increase-Decrease - Roughing Forceps " +
+                    "\n TOOL_DESCRIP"); //TODO
+            System.out.println("Select the die of Draftpool you want to edit");
+            Integer draftpoolPos = scan.nextInt(); //TODO controllo preventivo
+            System.out.println("Want you to increase the value? \n 1- Increase" + "\n 2- Decrease"); //TODO: controllo per evitare che il dado scelto sia un 6 e aumenti o sia un 1 e diminuisca
+            Integer chosen = scan.nextInt();
+            boolean increase = chosen==1;
+            //TODO: Devo stampare il valore aumentato
+            System.out.println("Want you to place the new edited die? type: \n 1- Yes \n2- No");
+            Integer decision = scan.nextInt();
+            if (decision==1){
+                System.out.println("Where do you want to place the die?");
+                Integer schemaPosition = scan.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, schemaPosition, increase, true));
+            }
+            else{
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, null, increase, false));
+            }
+        }
+        else if (cardName.equals("Diamond Swab")) {
+            System.out.println("TOOL USE Increase-Decrease - Diamond Swab " +
+                    "\n TOOL_DESCRIP"); //TODO
+            System.out.println("Select the die of Draftpool you want to edit");
+            Integer draftpoolPos = scan.nextInt(); //TODO controllo preventivo
+            System.out.println("The new value is... "); //TODO stampa
+            System.out.println("Want you to place the new die? type: \n 1- Yes \n2- No");
+            Integer decision = scan.nextInt();
+            if (decision == 1) {
+                System.out.println("Where do you want to place the die?");
+                Integer schemaPosition = scan.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, schemaPosition, true));
+            } else {
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, null, false));
+            }
+        }
     }
-
+    @Override
     public void twoDiceMoveMenu(String cardName){
-
+        System.out.println("YOU Used - " + cardName);
+        if (cardName.equals("Manual Cutter")){
+            System.out.println("With this tool you have to move 2 dice of same color of a die of the roundTrack. Check it out carefully!");
+        }
+        System.out.println("Select the index of first die you want to move");
+        Integer oldPos1 = scan.nextInt();
+        System.out.println("Select the index of the cell where you want to move it:");
+        Integer newPos1 = scan.nextInt();
+        System.out.println("Select next die");
+        Integer oldPos2 = scan.nextInt();
+        System.out.println("Select the index of the cell where you want to move");
+        Integer newPos2 = scan.nextInt();
+        notify(new UseToolTwoDicePlacement(cardName, oldPos1, newPos1, oldPos2, newPos2));
     }
 
-    public void corkLineMenu(){
-
+    @Override
+    public void corkLineMenu(){ //Move with no placement restriction
+        // notify(UseToolCorkLine(Integer draftpoolPosition, integer schemaPosition)
     }
 
-    public void gavelMenu(){
-
+    // Place another die instead of 1 per turn. Skip next turn
+    @Override
+    public void wheelsPincherMenu(){
+        //notify(new UseToolWheelsPincher(Integer drafpoolDieIndex, Integer schemaIndex)
     }
 
-    public void wheelsPincher(){
-
-    }
-
-    public void circularCutter(){
+    @Override
+    public void circularCutter(){ //Swap a die of draftpool with a die of roundtrack
+        //notify(new UseToolCircularCutter(Integer draftpoolIndex, Integer roundtrackIndex)
 
     }
 
@@ -175,6 +249,11 @@ public class CLIView extends View {
     public void notify(Object event) {
         for (Observer observer : observers)
             observer.update(event);
+    }
+
+    @Override
+    public void messageBox(String message) {
+        System.out.println(message);
     }
 
     @Override

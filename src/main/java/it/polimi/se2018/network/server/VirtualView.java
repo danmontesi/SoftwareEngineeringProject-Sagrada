@@ -40,6 +40,7 @@ public class VirtualView extends View{
         observer.update(command);
     }
 
+    @Override
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards){
         StringBuilder cardNames = new StringBuilder();
         for (WindowPatternCard card : cards)
@@ -51,62 +52,55 @@ public class VirtualView extends View{
     /**
      * Handle the network calling the connection associated to the username
      */
+    @Override
     public void startTurnMenu(){
         Server.getConnectedClients().get(username).notifyClient(new StartPlayerTurnCommand());
-    }
-
-    public void AllowedUseToolMessage(String message, Integer toolPosition){
-        Server.getConnectedClients().get(username).notifyClient(new AllowedUseToolCommand("Allowed", toolPosition));
     }
 
     public void askAuthenticatedCorrectlyMessage(String message){
         //TODO elimina
     }
 
+    @Override
     public void continueTurnMenu(boolean move, boolean tool){
         System.out.println("SENDING CONTINUETURNMENU");
         Server.getConnectedClients().get(username).notifyClient(new ContinueTurnCommand(move, tool));
     }
-
+    @Override
     public void firmPastryBrushMenu(int value){
         Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolFirmPastryBrush1(value));
     }
-
+    @Override
     public void firmPastryThinnerMenu(String color, int value){
         Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolFirmPastryThinner1(color, value));
     }
-
+    @Override
     public void moveDieNoRestrictionMenu(String cardName){
         Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolMoveDieNoRestriction(cardName));
     }
-
+    @Override
     public void changeDieValueMenu(String cardName){
-
+        Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolChangeDieValue(cardName));
     }
-
+    @Override
     public void twoDiceMoveMenu(String cardName){
-
+        Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolTwoDiceMove(cardName));
     }
-
+    @Override
     public void corkLineMenu(){
-
+        Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolCorkLine());
     }
-
-
-    public void gavelMenu(){
-
+    @Override
+    public void wheelsPincherMenu(){
+        Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolWheelsPincher());
     }
-
-    public void wheelsPincher(){
-
-    }
-
+    @Override
     public void circularCutter(){
-
+        Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolCircularCutter());
     }
-
+    @Override
     public void invalidActionMessage(String message){
-        System.out.println("SENDING INVALIDACTION");
+        System.out.println("SENDING INVALID ACTION");
         //Di qualsiasi tipo:
         // sia per il tool (seguita da una richiesta di uso del tool, di nuovo)
         // sia per il piazzamento di un dado scorretto
@@ -129,5 +123,10 @@ public class VirtualView extends View{
     public void update(Object model){
         //RefreshBoardCommand
         Server.getConnectedClients().get(username).notifyClient(new RefreshBoardCommand((String) model));
+    }
+
+    @Override
+    public void messageBox(String message) {
+        Server.getConnectedClients().get(username).notifyClient(new MessageFromServerCommand(message));
     }
 }

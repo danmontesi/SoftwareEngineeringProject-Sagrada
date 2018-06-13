@@ -116,22 +116,6 @@ public class ClientController implements Observer, ControllerClientInterface {
     }
     */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Second role of the ClientController is to receive commands from Server and apply them (to Client)
      *
@@ -140,10 +124,9 @@ public class ClientController implements Observer, ControllerClientInterface {
      * correct applyCommand() methods
      * @param
      */
-    @Override
-    public void applyCommand(ServerToClientCommand command){
-        System.out.println("Non dovresti essere qui.");
-    }
+
+
+
 
     /**
      * USO TOOL:
@@ -199,15 +182,7 @@ public class ClientController implements Observer, ControllerClientInterface {
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     @Override
-    public void applyCommand(InitializeMatchCommand command){
-    }
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
     public void applyCommand(InvalidActionCommand command){
-        System.out.println("arrivo a invalid sul client");
         view.invalidActionMessage(command.getMessage());
     }
 
@@ -241,11 +216,12 @@ public class ClientController implements Observer, ControllerClientInterface {
     public void applyCommand(RefreshBoardCommand command) {
         //setPlayerModel(command.getMessage());
         view.update(command);
-
+        //TODO Decidere con alle e nives
     }
     @Override
     public void setPlayerModel(String modelString){
         //TODO: Edit the modelView
+        //PROBABLY TO DELETE
     }
 
     /**
@@ -266,19 +242,22 @@ public class ClientController implements Observer, ControllerClientInterface {
         view.continueTurnMenu(command.canShowMove(),command.canShowTool());
     }
 
-
-
     //Correct use-> performs the move
     //USING OF TOOLS: Correct Move performed -> has to update the View (The answer will be the new model or the move performed)
 
 
+
+    @Override
+    public void applyCommand(MessageFromServerCommand command){
+        view.messageBox(command.message);
+    }
 
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
     @Override
     public void applyCommand(CorrectUseToolCorkLine command){
-
+        view.corkLineMenu();
     }
 
     /**
@@ -295,7 +274,7 @@ public class ClientController implements Observer, ControllerClientInterface {
     @Override
     public void applyCommand(CorrectUseToolFirmPastryBrush1 command){
         Integer valueForDraftPoolDie = command.getDieValue();
-        //view.showUseToolFirmPastryBrush1(valueForDraftPoolDie);
+        view.firmPastryBrushMenu(valueForDraftPoolDie);
 
     }
     /**
@@ -305,15 +284,7 @@ public class ClientController implements Observer, ControllerClientInterface {
     public void applyCommand(CorrectUseToolFirmPastryThinner1 command){
         String[] words = command.getMessage().split(" ");
         Die dieFromDiceBag = new Die(COLOR.valueOf(words[1]), command.getDieValue());
-        //view.showUseToolFirmPastryBrush1(dieFromDiceBag)
-    }
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(CorrectUseToolGavel command){
-
+        view.firmPastryThinnerMenu(command.getColor(), command.getDieValue());
     }
 
     /**
@@ -321,82 +292,26 @@ public class ClientController implements Observer, ControllerClientInterface {
      */
     @Override
     public void applyCommand(CorrectUseToolWheelsPincher command){
+        view.wheelsPincherMenu();
 
     }
 
     @Override
     public void applyCommand(CorrectUseToolTwoDiceMove command) {
-
+        view.twoDiceMoveMenu(command.getCardName());
     }
 
     @Override
     public void applyCommand(CorrectUseToolChangeDieValue command) {
+        view.changeDieValueMenu(command.getCardName());
 
     }
 
     @Override
     public void applyCommand(CorrectUseToolCircularCutter command) {
-
+        view.circularCutter();
     }
 
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(InvalidUseToolCorkLine command){
-
-    }
-
-    @Override
-    public void applyCommand(InvalidUseToolMoveDieNoRestriction command) {
-
-    }
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(InvalidUseToolFirmPastryBrush1 command){
-
-    }
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(InvalidUseToolFirmPastryThinner1 command){
-
-    }
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(InvalidUseToolGavel command){
-
-    }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(InvalidUseToolWheelsPincher command){
-
-    }
-
-    @Override
-    public void applyCommand(InvalidUseToolTwoDiceMove command) {
-
-    }
-
-    @Override
-    public void applyCommand(InvalidUseToolChangeDieValue command) {
-
-    }
-
-    @Override
-    public void applyCommand(InvalidUseToolCircularCutter command) {
-
-    }
 
     @Override
     public void dispatchCommand(Object command) {

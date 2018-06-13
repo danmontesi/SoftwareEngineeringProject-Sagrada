@@ -64,11 +64,7 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
 
     }
 
-    public void gavelMenu(){
-
-    }
-
-    public void wheelsPincher(){
+    public void wheelsPincherMenu(){
 
     }
 
@@ -113,4 +109,6 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
     public void notify(Object event){ //da passare all'observer
         //observer.update(command);
     }
+
+    public abstract void messageBox(String message);
 }

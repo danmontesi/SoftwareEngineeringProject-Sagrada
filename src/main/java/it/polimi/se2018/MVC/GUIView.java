@@ -61,7 +61,7 @@ public class GUIView extends View {
 
     }
 
-    public void wheelsPincher(){
+    public void wheelsPincherMenu(){
 
     }
 
@@ -94,6 +94,11 @@ public class GUIView extends View {
     public void notify(Object event) {
         for (Observer observer : observers)
             observer.update(event);
+    }
+
+    @Override
+    public void messageBox(String message) {
+
     }
 
     @Override
