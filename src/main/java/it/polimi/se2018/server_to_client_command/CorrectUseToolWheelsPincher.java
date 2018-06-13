@@ -1,5 +1,7 @@
 package it.polimi.se2018.server_to_client_command;
 
+import it.polimi.se2018.utils.ControllerClientInterface;
+
 public class CorrectUseToolWheelsPincher extends ServerToClientCommand{
     /**
      * Muovi 2 dadi in uno stesso turno
@@ -15,8 +17,6 @@ public class CorrectUseToolWheelsPincher extends ServerToClientCommand{
      * Integer diePosition2(from 0 to 20)
      */
 
-    private String message;
-
     private Integer dieValue1;
 
     private Integer dieSchemaPosition1;
@@ -24,5 +24,9 @@ public class CorrectUseToolWheelsPincher extends ServerToClientCommand{
     private Integer dieSchemaPosition2;
 
     private Integer dieRoundTrackPosition2;
+
+    public void visit(ControllerClientInterface clientController) {
+        clientController.applyCommand(this);
+    }
 
 }

@@ -7,8 +7,9 @@ import it.polimi.se2018.server_to_client_command.*;
  */
 public interface ControllerClientInterface{
 
-    public void applyCommand(ServerToClientCommand command);
+    //public void applyCommand(ServerToClientCommand command);
 
+    public void applyCommand(MessageFromServerCommand command);
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
@@ -20,10 +21,6 @@ public interface ControllerClientInterface{
      * @param command Command received
      */
     public void applyCommand(AuthenticatedCorrectlyCommand command);
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InitializeMatchCommand command);
 
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
@@ -89,11 +86,6 @@ public interface ControllerClientInterface{
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
      */
-    public void applyCommand(CorrectUseToolGavel command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
     public void applyCommand(CorrectUseToolWheelsPincher command);
 
     /**
@@ -112,60 +104,6 @@ public interface ControllerClientInterface{
     public void applyCommand(CorrectUseToolCircularCutter command);
 
 
-
-
-
-
-    //InvalidToolUse-> The ClientController has to call the box that let the player do a second chance
-
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidUseToolCorkLine command);
-
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidUseToolMoveDieNoRestriction command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidUseToolFirmPastryBrush1 command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidUseToolFirmPastryThinner1 command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidUseToolGavel command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidUseToolWheelsPincher command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidUseToolTwoDiceMove command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidUseToolChangeDieValue command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(InvalidUseToolCircularCutter command);
-
-
-
     void dispatchCommand(Object event);
+
 }

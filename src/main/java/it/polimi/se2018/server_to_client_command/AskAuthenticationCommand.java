@@ -18,4 +18,9 @@ public class AskAuthenticationCommand extends ServerToClientCommand{
         return message;
     }
 
+    @Override
+    public void visit(ControllerClientInterface clientController) {
+
+    }
+
 }

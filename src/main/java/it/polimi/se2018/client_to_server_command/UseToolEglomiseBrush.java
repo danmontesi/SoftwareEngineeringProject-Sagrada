@@ -14,8 +14,6 @@ public class UseToolEglomiseBrush extends ClientToServerCommand{
      * Integer nextPosition
      */
 
-    private String message;
-
     private Integer dieValue;
 
     private Integer currentPosition;

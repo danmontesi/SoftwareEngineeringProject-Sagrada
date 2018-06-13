@@ -1,6 +1,22 @@
 package it.polimi.se2018.client_to_server_command;
 
 public class UseToolManualCutter extends ClientToServerCommand{
+    public Integer getDieNextPosition2() {
+        return dieNextPosition2;
+    }
+
+    public Integer getDieNextPosition1() {
+        return dieNextPosition1;
+    }
+
+    public Integer getDieCurrentPosition1() {
+        return dieCurrentPosition1;
+    }
+
+    public Integer getDieCurrentPosition2() {
+        return dieCurrentPosition2;
+    }
+
     /**
      * Tool that moves 2 same color dice
      *
@@ -12,8 +28,6 @@ public class UseToolManualCutter extends ClientToServerCommand{
      * Integer dieNextPosition1
      * Integer dieNextPosition2
      */
-
-    private String message;
 
     private Integer dieNextPosition2;
 

@@ -11,9 +11,6 @@ public class UseToolCopperFoilReamer extends ClientToServerCommand{
      * Integer dieposition(from 0 to 20)
      */
 
-
-    private String message;
-
     private Integer dieValue;
 
     private Integer dieDraftPoolPosition;
@@ -23,4 +20,6 @@ public class UseToolCopperFoilReamer extends ClientToServerCommand{
         this.dieValue = dieValue;
         this.dieDraftPoolPosition = dieDraftPoolPosition;
     }
+
+
 }
