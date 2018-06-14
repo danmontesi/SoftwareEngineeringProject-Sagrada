@@ -1,5 +1,6 @@
-package ProvaJavaFX;
+package it.polimi.se2018.MVC.GUI;
 
+import it.polimi.se2018.MVC.ClientStarterMain;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +12,7 @@ public class GameBoardMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/ProvaJavaFX/resources/gameboard.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/client/gameboard.fxml"));
         primaryStage.setTitle("Sagrada - Gameboard");
         primaryStage.setScene(new Scene(root, 1254, 630));
         Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);

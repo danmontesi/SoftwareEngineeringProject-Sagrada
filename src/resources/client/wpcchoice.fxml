@@ -8,7 +8,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="570.0" prefWidth="730.0" stylesheets="/ProvaJavaFX/resources/wpcchoice.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ProvaJavaFX.WPCChoiceController">
+<AnchorPane prefHeight="570.0" prefWidth="730.0"
+            stylesheets="/client/wpcchoice.css"
+            xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.polimi.se2018.MVC.WPCChoiceController">
    <children>
       <ToggleButton fx:id="wpc1" styleClass="wpc" layoutX="396.0" layoutY="71.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc1Action" prefHeight="184.0" prefWidth="275.0" />
       <ToggleButton fx:id="wpc2" styleClass="wpc" layoutX="61.0" layoutY="71.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc2Action" prefHeight="184.0" prefWidth="275.0" />

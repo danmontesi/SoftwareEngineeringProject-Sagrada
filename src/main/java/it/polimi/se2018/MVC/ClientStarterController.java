@@ -1,4 +1,4 @@
-package ProvaJavaFX;
+package it.polimi.se2018.MVC;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

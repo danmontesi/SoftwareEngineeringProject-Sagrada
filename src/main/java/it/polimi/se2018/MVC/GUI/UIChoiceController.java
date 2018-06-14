@@ -1,4 +1,4 @@
-package ProvaJavaFX;
+package it.polimi.se2018.MVC.GUI;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,8 +22,8 @@ public class UIChoiceController {
     }
 
     private void initStyle() {
-        Image image1 = new Image("/ProvaJavaFX/resources/icon_cli.jpg");
-        Image image2 = new Image("/ProvaJavaFX/resources/sagrada3.png");
+        Image image1 = new Image("/client/images/icon_cli.jpg");
+        Image image2 = new Image("/client/images/sagrada3.png");
         cli.setGraphic(new ImageView(image1));
         gui.setGraphic(new ImageView(image2));
         cli.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {

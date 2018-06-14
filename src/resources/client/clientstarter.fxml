@@ -11,13 +11,13 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.121"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ProvaJavaFX.ClientStarterController"
-            stylesheets="/ProvaJavaFX/resources/clientstarter.css"
+            fx:controller="it.polimi.se2018.MVC.ClientStarterController"
+            stylesheets="/client/clientstarter.css"
             prefHeight="500.0" prefWidth="400.0">
    <children>
        <ImageView fx:id="sagrada" fitHeight="212.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
           <image>
-              <Image preserveRatio="true" url="@Sagrada2.jpg" />
+              <Image preserveRatio="true" url="@images/Sagrada2.jpg" />
           </image>
        </ImageView>
        <TextField fx:id="usernameField" layoutX="133.0" layoutY="174.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="227.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="174.0" />

@@ -1,4 +1,4 @@
-package ProvaJavaFX;
+package it.polimi.se2018.MVC.GUI;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -301,14 +301,14 @@ public class GameBoardController {
     }
 
     private void initRoundTrack() {
-            String path = "ProvaJavaFX/resources/RoundTrack.png";
+            String path = "/client/images/RoundTrack.png";
             Image image = new Image(path);
             rt.setImage(image);
     }
 
     private void initPubocards() {
-        String img = "9a-eng";
-        String path = "ProvaJavaFX/resources/" + img + ".jpg";
+        String img = "row_color_variety";
+        String path = "/client/OC/" + img + ".jpg";
         Image image = new Image(path);
 
         for (ImageView puboc : pubocards) {
@@ -321,7 +321,7 @@ public class GameBoardController {
 
     private void initTcards() {
         String img = "circular_cutter";
-        String path = "ProvaJavaFX/resources/" + img + ".jpg";
+        String path = "/client/TC/" + img + ".jpg";
         Image image = new Image(path);
 
         for (ToggleButton tc : tcbuttons) {
@@ -349,7 +349,7 @@ public class GameBoardController {
 
     private void initWpcards() {
         String img = "virtus";
-        String path = "ProvaJavaFX/resources/" + img + ".jpg";
+        String path = "/client/WPC/" + img + ".jpg";
         Image image = new Image(path);
 
         for (ImageView wpc : wpcards) {
@@ -359,14 +359,14 @@ public class GameBoardController {
 
     private void initMyWPC() {
         String img = "virtus";
-        String path = "ProvaJavaFX/resources/" + img + ".jpg";
+        String path = "/client/WPC/" + img + ".jpg";
         Image image = new Image(path);
         wpc0.setImage(image);
     }
 
     private void initMyPriOC() {
         String img = "shades_of_blue";
-        String path = "ProvaJavaFX/resources/" + img + ".jpg";
+        String path = "/client/OC/" + img + ".jpg";
         Image image = new Image(path);
         prioc0.setImage(image);
         Tooltip t = new Tooltip("Description: ...");
@@ -375,7 +375,7 @@ public class GameBoardController {
     }
 
     public void initDice() {
-        Image image = new Image("/ProvaJavaFX/resources/violet1.jpg");
+        Image image = new Image("/client/dice/violet1.jpg");
         for (ToggleButton tb : tbd) {
             ImageView iv = new ImageView(image);
             iv.setFitWidth(40);

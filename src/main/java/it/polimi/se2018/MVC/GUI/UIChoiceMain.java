@@ -1,5 +1,6 @@
-package ProvaJavaFX;
+package it.polimi.se2018.MVC.GUI;
 
+import it.polimi.se2018.MVC.ClientStarterMain;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +11,7 @@ import javafx.stage.Stage;
 public class UIChoiceMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/ProvaJavaFX/resources/uichoice.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/client/uichoice.fxml"));
         primaryStage.setTitle("Interface Choice");
         primaryStage.setScene(new Scene(root, 600, 300));
         Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 20);

@@ -1,5 +1,6 @@
-package ProvaJavaFX;
+package it.polimi.se2018.MVC.GUI;
 
+import it.polimi.se2018.MVC.ClientStarterMain;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +11,7 @@ import javafx.stage.Stage;
 public class RankingPaneMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/ProvaJavaFX/resources/rankingpane.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/client/rankingpane.fxml"));
         primaryStage.setTitle("Ranking");
         primaryStage.setScene(new Scene(root, 570, 520));
         Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 20);

@@ -1,5 +1,6 @@
-package ProvaJavaFX;
+package it.polimi.se2018.MVC;
 
+import it.polimi.se2018.MVC.ClientStarterMain;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +11,7 @@ import javafx.stage.Stage;
 public class WPCChoiceMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/ProvaJavaFX/resources/wpcchoice.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/client/wpcchoice.fxml"));
         primaryStage.setTitle("WindowPatternCard Choice");
         primaryStage.setScene(new Scene(root, 730, 570));
         Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 20);

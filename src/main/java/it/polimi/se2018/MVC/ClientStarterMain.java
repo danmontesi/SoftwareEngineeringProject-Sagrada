@@ -1,4 +1,4 @@
-package ProvaJavaFX;
+package it.polimi.se2018.MVC;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +14,7 @@ public class ClientStarterMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         setStage(primaryStage);
-        FXMLLoader loaderClientStarter = new FXMLLoader(getClass().getResource("/ProvaJavaFX/resources/clientstarter.fxml"));
+        FXMLLoader loaderClientStarter = new FXMLLoader(getClass().getResource("/client/clientstarter.fxml"));
         Parent root = loaderClientStarter.load();
         clientStarterController = loaderClientStarter.getController();
         primaryStage.setTitle("Sagrada");

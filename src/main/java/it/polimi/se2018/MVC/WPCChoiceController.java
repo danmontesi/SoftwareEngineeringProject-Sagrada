@@ -1,4 +1,4 @@
-package ProvaJavaFX;
+package it.polimi.se2018.MVC;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -47,7 +47,7 @@ public class WPCChoiceController {
     }
 
     private void initStyle() {
-        Image image = new Image("/ProvaJavaFX/resources/virtus.jpg");
+        Image image = new Image("/client/WPC/virtus.jpg");
         for (ToggleButton wpc : wpcards) {
             wpc.setStyle("-fx-focus-color: transparent");
             ImageView iv = new ImageView(image);

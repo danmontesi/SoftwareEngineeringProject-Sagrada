@@ -1,5 +1,6 @@
-package ProvaJavaFX;
+package it.polimi.se2018.MVC.GUI;
 
+import it.polimi.se2018.MVC.ClientStarterMain;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +11,7 @@ import javafx.stage.Stage;
 public class LobbyMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/ProvaJavaFX/resources/lobby.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/client/lobby.fxml"));
         primaryStage.setTitle("Lobby");
         primaryStage.setScene(new Scene(root, 400, 250));
         Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
