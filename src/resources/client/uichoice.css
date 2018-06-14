@@ -1,0 +1,13 @@
+.root {
+    -fx-background-image: url(marble3.jpg);
+    -fx-font-family: 'Goudy Bookletter 1911', serif;
+}
+
+#gui {
+    -fx-background-color: transparent;
+    
+}
+
+#cli {
+    -fx-background-color: transparent;
+}

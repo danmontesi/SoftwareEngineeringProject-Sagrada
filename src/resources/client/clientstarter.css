@@ -1,0 +1,16 @@
+.root {
+    -fx-background-image: url(marble2.jpg);
+    -fx-font-family: 'Goudy Bookletter 1911', serif;
+}
+
+.button {
+    -fx-font-size: 16px;
+}
+
+#usernameField {
+    -fx-font-size: 18px;
+}
+
+#ipAddressField {
+    -fx-font-size: 16px;
+}

@@ -1,0 +1,8 @@
+.root {
+    -fx-background-image: url(marble2.jpg);
+    -fx-font-family: 'Goudy Bookletter 1911', serif;
+}
+
+.wpc {
+    -fx-background-color: transparent;
+}

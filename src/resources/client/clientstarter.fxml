@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.121"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ProvaJavaFX.ClientStarterController"
+            stylesheets="/ProvaJavaFX/resources/clientstarter.css"
+            prefHeight="500.0" prefWidth="400.0">
+   <children>
+       <ImageView fx:id="sagrada" fitHeight="212.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+          <image>
+              <Image preserveRatio="true" url="@Sagrada2.jpg" />
+          </image>
+       </ImageView>
+       <TextField fx:id="usernameField" layoutX="133.0" layoutY="174.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="227.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="174.0" />
+       <Label fx:id="username" layoutX="40.0" layoutY="178.0" text="Username:" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="178.0" style="-fx-font-size: 18px" />
+       <Label fx:id="connection" layoutX="40.0" layoutY="246.0" text="Choose the connection:" AnchorPane.leftAnchor="40.0" style="-fx-font-size: 18px" />
+      <ToggleButton fx:id="rmi" styleClass="button" onMouseClicked="#hideIP" layoutX="90.0" layoutY="289.0" prefHeight="30.0" prefWidth="70.0" style="-fx-font-size: 16px" text="RMI" AnchorPane.leftAnchor="90.0" />
+      <ToggleButton fx:id="socket" styleClass="button" onMouseClicked="#showIP" layoutX="240.0" layoutY="289.0" prefHeight="30.0" prefWidth="70.0" style="-fx-font-size: 16px" text="Socket" AnchorPane.rightAnchor="90.0" />
+      <Label fx:id="ipAddress" layoutX="90.0" layoutY="353.0" text="IP Address:" AnchorPane.leftAnchor="90.0" style="-fx-font-size: 16px" />
+      <TextField fx:id="ipAddressField" layoutX="175.0" layoutY="351.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="185.0" style="-fx-font-size: 40px" AnchorPane.bottomAnchor="119.0" AnchorPane.rightAnchor="40.0" />
+      <Button fx:id="connect" styleClass="button" onAction="#startConnection" layoutX="150.0" layoutY="422.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" style="-fx-font-size: 16px" text="Connect" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" />
+
+   </children>
+</AnchorPane>

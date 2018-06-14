@@ -1,0 +1,13 @@
+.root {
+    -fx-background-image: url(marble2.jpg);
+    -fx-font-family: 'Goudy Bookletter 1911', serif;
+}
+
+
+#outcome {
+    -fx-font-size: 54px;
+}
+
+.button {
+    -fx-font-size: 16px;
+}

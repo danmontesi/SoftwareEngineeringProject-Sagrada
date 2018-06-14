@@ -45,4 +45,3 @@ public abstract class PublicObjectiveCard { //Probably has to be an Interface fo
     }
 }
 
-

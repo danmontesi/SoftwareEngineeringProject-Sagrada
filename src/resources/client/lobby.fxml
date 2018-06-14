@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="250.0" prefWidth="400.0" stylesheets="/ProvaJavaFX/resources/lobby.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ProvaJavaFX.LobbyController">
+   <children>
+      <Label alignment="CENTER" layoutX="76.0" layoutY="62.0" prefHeight="32.0" prefWidth="249.0" style="-fx-font-size: 24px" text="Waiting for players..." textAlignment="CENTER" />
+      <ProgressIndicator layoutX="175.0" layoutY="130.0" prefHeight="50.0" prefWidth="50.0" />
+   </children>
+</AnchorPane>
