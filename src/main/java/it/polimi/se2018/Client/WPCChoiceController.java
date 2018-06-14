@@ -1,4 +1,4 @@
-package it.polimi.se2018.MVC;
+package it.polimi.se2018.Client;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

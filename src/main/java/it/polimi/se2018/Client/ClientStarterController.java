@@ -1,11 +1,8 @@
-package it.polimi.se2018.MVC;
+package it.polimi.se2018.Client;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
 import java.util.Observable;
 import java.util.Observer;

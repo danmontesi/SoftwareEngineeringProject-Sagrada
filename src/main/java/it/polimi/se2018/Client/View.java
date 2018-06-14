@@ -1,4 +1,4 @@
-package it.polimi.se2018.MVC;
+package it.polimi.se2018.Client;
 
 import it.polimi.se2018.*;
 import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
@@ -6,7 +6,6 @@ import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class View extends Observable implements Observer { //VIEW: Osserva Model, Osservato da Controller
 

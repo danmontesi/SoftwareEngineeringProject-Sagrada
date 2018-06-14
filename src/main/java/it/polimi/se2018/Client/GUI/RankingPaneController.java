@@ -1,4 +1,4 @@
-package it.polimi.se2018.MVC.GUI;
+package it.polimi.se2018.Client.GUI;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -10,7 +10,6 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PrimitiveIterator;
 
 public class RankingPaneController {
 

@@ -15,7 +15,7 @@
       stylesheets="/client/gameboard.css"
       xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="it.polimi.se2018.MVC.GUI.GameBoardController">
+      fx:controller="it.polimi.se2018.Client.GUI.GameBoardController">
    <children>
        <AnchorPane fx:id="cards" prefHeight="630.0" prefWidth="328.0" styleClass="box">
          <children>

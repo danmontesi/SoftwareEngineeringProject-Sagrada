@@ -1,6 +1,5 @@
-package it.polimi.se2018.MVC.GUI;
+package it.polimi.se2018.Client;
 
-import it.polimi.se2018.MVC.ClientStarterMain;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,12 +7,12 @@ import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class UIChoiceMain extends Application {
+public class WPCChoiceMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/client/uichoice.fxml"));
-        primaryStage.setTitle("Interface Choice");
-        primaryStage.setScene(new Scene(root, 600, 300));
+        Parent root = FXMLLoader.load(getClass().getResource("/client/wpcchoice.fxml"));
+        primaryStage.setTitle("WindowPatternCard Choice");
+        primaryStage.setScene(new Scene(root, 730, 570));
         Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 20);
         primaryStage.show();
     }
@@ -22,4 +21,3 @@ public class UIChoiceMain extends Application {
         launch(args);
     }
 }
-

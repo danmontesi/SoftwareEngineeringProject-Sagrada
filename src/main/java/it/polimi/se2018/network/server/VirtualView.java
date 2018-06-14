@@ -1,6 +1,6 @@
 package it.polimi.se2018.network.server;
 
-import it.polimi.se2018.MVC.View;
+import it.polimi.se2018.Client.View;
 import it.polimi.se2018.Model;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;

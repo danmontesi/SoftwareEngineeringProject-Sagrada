@@ -1,4 +1,4 @@
-package it.polimi.se2018.MVC;
+package it.polimi.se2018.Client;
 
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.WindowPatternCard;
