@@ -204,7 +204,7 @@ public class ClientController implements Observer, ControllerClientInterface {
      */
     @Override
     public void applyCommand(LoseCommand command){
-        view.loseMessage(command.getPosition() , command.getScores());
+        view.loseMessage(command.getPosition(), command.getScores());
 
     }
 

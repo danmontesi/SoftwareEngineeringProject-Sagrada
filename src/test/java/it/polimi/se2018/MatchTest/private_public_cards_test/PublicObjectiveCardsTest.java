@@ -115,7 +115,7 @@ public class PublicObjectiveCardsTest {
         }
         System.out.println("ciao");
     }
-
+/*
     @Test
     public void testAll(){
 
@@ -161,7 +161,7 @@ public class PublicObjectiveCardsTest {
 
         assertEquals(1,1);
     }
-
+*/
 
 }
 

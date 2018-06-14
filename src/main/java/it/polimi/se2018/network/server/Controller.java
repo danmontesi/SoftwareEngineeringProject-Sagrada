@@ -49,14 +49,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * Represent current player. That is necessary to know which is the player i'm expecting an answer
      */
     private Player currentPlayer;
+
     private boolean hasUsedTool;
+
     private boolean hasPerformedMove;
 
-    private ArrayList<ClientConnection> disconnectedClients;
-
-    private int roundNumber;//Maybe to be deleted, substituted by orderedRoundPlayers.size()
-
-    private Server server;
+    private int roundNumber;//Maybe to be deleted, substituted by 10-orderedRoundPlayers.size()
 
     /**
      * The controller receives a list of the Usernames of the connected players.
@@ -352,7 +350,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     model.rollDraftpoolDice();
                     userViewMap.get(currentPlayer.getUsername()).messageBox("Correctly used the tool, dice are re-rolled");
                     hasPerformedMove = true;
-                    userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(!hasPerformedMove, !hasPerformedMove);
+                    userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasPerformedMove);
                 }
             }
             else if (toolName.equals("Lathekin"))
@@ -390,7 +388,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     .placeDie(toPlace, command.getDieSchemaRowPosition(), command.getDieSchemaColPosition(), true, true, true);
             if (!exit) {
                 userViewMap.get(playerUsername).invalidActionMessage("Incorrect move"); //TODO Sarebbe bello scrivere anche il motivo della mossa incorretta, magari creo un metodo apposito per ogni controllo piazzamentog
-                userViewMap.get(playerUsername).continueTurnMenu(!hasPerformedMove, !hasUsedTool);
+                userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             }
             else {
                 System.out.println("Mossa applicata correttamente");
@@ -398,13 +396,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 model.getDraftPool().takeDie(command.getDieDraftPoolPosition());
                 hasPerformedMove = true;
                 model.setGamePlayers(orderedPlayers);
-                userViewMap.get(playerUsername).continueTurnMenu(!hasPerformedMove, !hasUsedTool);
+                userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             }
         }catch (EmptyCellException e){
             e.printStackTrace();
             System.out.println("Empty cell, sending an IncorrectMoveCommand");
             userViewMap.get(playerUsername).invalidActionMessage("The Draftpool cell you selected is empty, try again");
-            userViewMap.get(playerUsername).continueTurnMenu(!hasPerformedMove,!hasUsedTool);
+            userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
         }
         //When I arrive here, the move is already performed
 

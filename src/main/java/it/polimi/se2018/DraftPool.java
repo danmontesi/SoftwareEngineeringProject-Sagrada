@@ -140,7 +140,7 @@ public class DraftPool {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < cells.size(); i++) {
             try {
-                if (cells.get(i).getAssociatedDie().getValue() == 0) {
+                if (!cells.get(i).hasDie()) {
                     builder.append(i).append(":- ").append("noDie");
                 } else {
                     builder.append(i).append(":- ").append(cells.get(i).getAssociatedDie().toString());

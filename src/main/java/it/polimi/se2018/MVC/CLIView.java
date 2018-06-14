@@ -106,7 +106,6 @@ public class CLIView extends View {
         //Notify(new UseToolFirmPastr...(Integer chosenDieDraftpoolIndex, Integer schemaPosition (can be null), boolean placedDie (true if the player place the die)
     }
 
-
     //TODO dan
     public void firmPastryThinnerMenu(String color, int value){ // receives a new die from Servfer with Color = color, Value = value. The player has to send one of draftpool dice to swap them
         //Notify(new UseToolFirmPastr...(Integer chosenDieDraftpoolIndex, Integer schemaPosition (where he wants to place the die, can be null), **String color, Integer value***, boolean placedDie (true if the player place the die)
@@ -132,7 +131,6 @@ public class CLIView extends View {
             System.out.println("Select the cell you cant to move the die in");
             Integer schemaNewPos = scan.nextInt();
             notify(new UseToolMoveDieNoRestriction(cardName, schemaOldPos, schemaNewPos));
-
         }
 
     }

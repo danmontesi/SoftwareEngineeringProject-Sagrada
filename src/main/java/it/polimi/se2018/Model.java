@@ -33,8 +33,6 @@ public class Model extends Observable implements Serializable{ //Observable of V
 
     private ArrayList<WindowPatternCard> windowPatternCardDeck;
 
-    private ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck;
-
     private ArrayList<Player> gamePlayers;
 
     private RoundTrack roundTrack;
@@ -71,9 +69,8 @@ public class Model extends Observable implements Serializable{ //Observable of V
         } catch (IOException e) {
 
         }
-
+        ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck = new ArrayList<>();
         ArrayList<PublicObjectiveCard> publicObjectiveCardDeck = new ArrayList<>();
-        privateObjectiveCardDeck = new ArrayList<>();
 
         windowPatternCardDeck = parserWindowPatternCard.parseAllCards();
 
@@ -110,6 +107,10 @@ public class Model extends Observable implements Serializable{ //Observable of V
             int index = ThreadLocalRandom.current().nextInt(0,  toolCardDeck.size());
             extractedToolCard.add(i, toolCardDeck.remove(index));
         }
+
+        Collections.shuffle(privateObjectiveCardDeck);
+        for (Player p : gamePlayers)
+            p.setPrivateObjectiveCard(privateObjectiveCardDeck.remove(0));
 
     }
 
