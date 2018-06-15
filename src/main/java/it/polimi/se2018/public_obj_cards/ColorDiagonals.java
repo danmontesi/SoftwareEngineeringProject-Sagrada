@@ -52,6 +52,7 @@ public class ColorDiagonals extends PublicObjectiveCard {
                             checked[indexDx] = true;
                         }
                     } catch (EmptyCellException ignored) {
+                        //nothing
                     }
 
                 }

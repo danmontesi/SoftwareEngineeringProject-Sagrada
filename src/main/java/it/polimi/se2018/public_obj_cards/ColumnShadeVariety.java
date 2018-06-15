@@ -24,7 +24,7 @@ public class ColumnShadeVariety extends PublicObjectiveCard{
                     try {
                         numbers.add(w.getCell(i, j).getAssociatedDie().getValue());
                     } catch (EmptyCellException e) {
-
+                        //nothing
                     }
                 }
             }

@@ -18,27 +18,25 @@ public class DeepShade extends PublicObjectiveCard{
         int[] numbers = new int[2];
         numbers[0] = 0;
         numbers[1] = 0;
-        //Check the number of 5 and 6 in window pattern card and save it in numbers
+        //Check the number of 5 and 6 in window pattern card and save it in the array numbers
         for (int i = 0; i < 4; i++){
             for(int j = 0; j < 5; j++){
-                if (w.getCell(i, j).hasDie()) {
-                    try {
-                        if (w.getCell(i, j).getAssociatedDie().getValue() == 5) {
-                            numbers[0] += 1;
-                        } else if (w.getCell(i, j).getAssociatedDie().getValue() == 6) {
-                            numbers[1] += 1;
-                        }
-                    } catch (EmptyCellException e) {
-
+                try {
+                    if (w.getCell(i, j).getAssociatedDie().getValue() == 5) {
+                        numbers[0] += 1;
+                    } else if (w.getCell(i, j).getAssociatedDie().getValue() == 6) {
+                        numbers[1] += 1;
                     }
+                } catch (EmptyCellException e) {
+                    //nothing
                 }
             }
-            if(numbers[0] > numbers[1]){
-                total += score*numbers[1];
-            }
-            else{
-                total +=score*numbers[0];
-            }
+        }
+        if(numbers[0] > numbers[1]){
+            total += score*numbers[1];
+        }
+        else{
+            total += score*numbers[0];
         }
         return total;
     }

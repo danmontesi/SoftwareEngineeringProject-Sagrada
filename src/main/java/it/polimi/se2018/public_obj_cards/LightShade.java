@@ -28,16 +28,16 @@ public class LightShade extends PublicObjectiveCard{
                             numbers[1] += 1;
                         }
                     } catch (EmptyCellException e) {
-                        continue;
+                        //nothing
                     }
 
             }
-            if(numbers[0] > numbers[1]){
-                total += score*numbers[1];
-            }
-            else{
-                total +=score*numbers[0];
-            }
+        }
+        if(numbers[0] > numbers[1]){
+            total += score*numbers[1];
+        }
+        else{
+            total +=score*numbers[0];
         }
         return total;
     }

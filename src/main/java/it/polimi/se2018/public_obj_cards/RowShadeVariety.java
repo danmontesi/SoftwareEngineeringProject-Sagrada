@@ -24,7 +24,7 @@ public class RowShadeVariety extends PublicObjectiveCard{
                 try {
                     numbers.add(w.getCell(i, j).getAssociatedDie().getValue());
                 } catch (EmptyCellException e) {
-                    continue;
+                    //nothing
                 }
             }
             if(numbers.size() == 5){

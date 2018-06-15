@@ -23,12 +23,13 @@ public class ShadeVariety extends PublicObjectiveCard{
                 try {
                     numbers.add(w.getCell(i, j).getAssociatedDie().getValue());
                 } catch (EmptyCellException e) {
-                    continue;
+                    //nothing
                 }
             }
-            if(numbers.size() == 6){
-                total += score;
-            }
+
+        }
+        if(numbers.size() == 6){
+            total += score;
         }
         return total;
     }

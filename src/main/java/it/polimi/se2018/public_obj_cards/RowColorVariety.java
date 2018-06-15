@@ -24,7 +24,7 @@ public class RowColorVariety extends PublicObjectiveCard{
                 try {
                     colors.add(w.getCell(i, j).getAssociatedDie().getColor());
                 } catch (EmptyCellException e) {
-                    continue;
+                    //nothing
                 }
             }
             if(colors.size() == 5){
