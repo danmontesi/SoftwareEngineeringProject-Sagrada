@@ -92,6 +92,9 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
     }
 
 
+    public void timeOut(){
+
+    }
     // Methods for Obs/Obsvb
 
     @Override
