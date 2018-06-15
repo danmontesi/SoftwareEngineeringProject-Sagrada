@@ -4,7 +4,7 @@ import com.google.gson.stream.MalformedJsonException;
 import it.polimi.se2018.model.COLOR;
 import it.polimi.se2018.client.CLI.CLIView;
 import it.polimi.se2018.model.Die;
-import it.polimi.se2018.client.GUIView;
+import it.polimi.se2018.client.GUI.GUIView;
 import it.polimi.se2018.client.View;
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.WindowPatternCard;
@@ -103,7 +103,7 @@ public class ClientController implements Observer, ControllerClientInterface {
     public void useToolFirmPastryThinnerMOVE(Integer dieNewValue, Integer dieOldPosition, Integer diePosition){
         //Gives the position of the old die in the DraftPool (to reinsert in the diceBag
         //Gives the new position in the Schema
-        //if gives the new Value (decided by the Client!)
+        //if gives the new Value (decided by the client!)
         //and the second word says MOVE
         sendCommand(new UseToolFirmPastryThinner("MOVE", dieNewValue, dieOldPosition, diePosition));
     }
@@ -111,14 +111,14 @@ public class ClientController implements Observer, ControllerClientInterface {
     public void useToolFirmPastryThinnerDRAFTPOOL(Integer dieNewValue, Integer dieOldPosition){
         //Gives the position of the old die in the DraftPool (to reinsert in the diceBag
         //Gives the new position in the Schema
-        //if gives the new Value (decided by the Client!)
+        //if gives the new Value (decided by the client!)
         //and the second word says MOVE
         sendCommand(new UseToolFirmPastryThinner("DRAFTPOOL", dieNewValue, dieOldPosition, null));
     }
     */
 
     /**
-     * Second role of the ClientController is to receive commands from Server and apply them (to Client)
+     * Second role of the ClientController is to receive commands from Server and apply them (to client)
      *
      * I have multiple methods called applyCommand with a different command as parameter
      * Firstly from calling distinguishCommand(), ClientController understand which kind of event server sent and applies it through calling

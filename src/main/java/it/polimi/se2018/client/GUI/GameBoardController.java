@@ -1,7 +1,11 @@
 package it.polimi.se2018.client.GUI;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
@@ -12,9 +16,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 public class GameBoardController {
 
@@ -27,6 +36,7 @@ public class GameBoardController {
     private List<ToggleButton> tbd;
     private List<ToggleButton> tbw0;
     private List<ToggleButton> tbr;
+    private List<Stage> stages;
 
     @FXML
     private AnchorPane cards;
@@ -189,6 +199,7 @@ public class GameBoardController {
         tbd = new ArrayList<>();
         tbw0 = new ArrayList<>();
         tbr = new ArrayList<>();
+        stages = new ArrayList<>();
     }
 
     public void initialize() {
@@ -381,7 +392,7 @@ public class GameBoardController {
             tb.setGraphic(iv);
         }
         for (ToggleButton tb : tbuttons) {
-            tb.setStyle("-fx-base: transparent; -fx-focus-color: transparent");
+            tb.setStyle("-fx-base: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent");
             tb.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
@@ -411,9 +422,57 @@ public class GameBoardController {
         }
     }
 
+    private void closeStage() {
+        Stage stage = (Stage)pass.getScene().getWindow();
+        stage.close();
+    }
+
+    public void showRanking() {
+        Platform.runLater(() ->  {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/rankingpane.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage gameBoardStage = new Stage();
+                gameBoardStage.setScene(new Scene(root));
+                gameBoardStage.show();
+                closeStage();
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch ranking pane", e);
+            }
+        });
+    }
+
     @FXML
     public void passTurn() {
-
+        Platform.runLater(() ->  {
+            try {
+                for (int i=0; i<5; i++) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ProvaJavaFX/resources/message.fxml"));
+                    Parent root = fxmlLoader.load();
+                    Stage message1Stage = new Stage();
+                    message1Stage.setScene(new Scene(root));
+                    message1Stage.show();
+                    stages.add(message1Stage);
+                }
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch message", e);
+            }
+        });
+        Platform.runLater(() ->  {
+            try {
+                for (int i=stages.size()-1; i>-1; i--) {
+                    stages.get(i).close();
+                    stages.remove(i);
+                }
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ProvaJavaFX/resources/message.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage gameBoardStage = new Stage();
+                gameBoardStage.setScene(new Scene(root));
+                gameBoardStage.show();
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch message", e);
+            }
+        });
     }
 
     @FXML

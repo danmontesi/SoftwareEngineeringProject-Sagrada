@@ -86,7 +86,7 @@ public class Server {
         /*
         Three cases:
         1) Attempt to reconnect after disconnection
-        2) Correct login request. Client is added to waitingClients (waiting for a game to start)
+        2) Correct login request. client is added to waitingClients (waiting for a game to start)
         3) Attempt to connect with a user already taken, the server choose a similar valid one and notifies it to the client
         Every time, a response is sent back to notify success or failure
          */
@@ -116,14 +116,14 @@ public class Server {
 
     public static void addClientInterface(Socket socket, ObjectInputStream input, ObjectOutputStream output, String username){
 
-        //Create reference to Socket Client
+        //Create reference to Socket client
 
         SocketVirtualClient vc = new SocketVirtualClient(socket, input, output);
 
         /*
         Three cases:
         1) Attempt to reconnect after disconnection
-        2) Correct login request. Client is added to waitingClients (waiting for a game to start)
+        2) Correct login request. client is added to waitingClients (waiting for a game to start)
         3) Attempt to connect with a user already taken, the server choose a similar valid one and notifies it to the client
         Every time, a response is sent back to notify success or failure
          */
@@ -180,7 +180,7 @@ public class Server {
         if(connectedClients.containsKey(username)){
             connectedClients.remove(username);
             disconnectedClients.add(username);
-            System.out.println("Client " + username + " disconnected");
+            System.out.println("client " + username + " disconnected");
         } else {
             System.out.println("Could not found such client");
         }

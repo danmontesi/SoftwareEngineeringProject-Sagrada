@@ -3,7 +3,7 @@ package it.polimi.se2018.utils;
 import it.polimi.se2018.commands.server_to_client_command.*;
 
 /**
- * The interface that let the Client to don't necessarely have the Controller class in its module
+ * The interface that let the client to don't necessarely have the Controller class in its module
  */
 public interface ControllerClientInterface{
 

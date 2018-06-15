@@ -2,14 +2,12 @@ package it.polimi.se2018.client.CLI;
 
 import it.polimi.se2018.client.View;
 import it.polimi.se2018.commands.client_to_server_command.*;
-import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
+import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.utils.Observer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.TimeoutException;
 
 public class CLIView extends View {
 
@@ -17,42 +15,12 @@ public class CLIView extends View {
      * CliView receives a clone of current model each time it's Player's turn
      */
 
-
-    /**
-     * The parameters of the View assigned from a RefreshBoardCommand
-     */
-    private String privateObjectiveCard;
-    private ArrayList<String> publicObjectiveCards;
-    private ArrayList<Integer> tokensPublicObjective; //Ordered based on poc order
-
-    private ArrayList<String> toolCards;
-    private ArrayList<Integer> tokensToolCards; //Ordered
-
-    private ArrayList<String> draftpool; //Dice in the format: colorNumber/empty
-    private ArrayList<String> roundTrack;
-
-    private ArrayList<String> personalWpc; //""
-    private Integer personalTokens;
-    private String username;
-
-    private ArrayList<String> otherPlayersWpcs; //Dice in the format colorNumber/empty or restrictionColor or restrictionValue
-    private ArrayList<Integer> otherPlayersTokens;
-    private ArrayList<Integer> otherPlayersUsernames;
-
-    /**
-     * The constructor
-     * @param observer the clientController
-     */
     public CLIView(Observer observer){
         register(observer);
-        inputReader = new InputReader();
     }
-
     private String playerUsername;
 
     private Scanner scan = new Scanner(System.in); // Can be replaced with BufferedReader?
-
-    private InputReader inputReader;
 
 //TODO      PER CHI FA LA VIEW:
 //TODO          OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO.
@@ -76,16 +44,7 @@ public class CLIView extends View {
         System.out.println("1- Place die");
         System.out.println("2- Use Tool");
         System.out.println("3- Pass Turn");
-        int choice = 3;
-        try {
-            try {
-                choice = Integer.parseInt(inputReader.readLine());
-            } catch (TimeoutException e) {
-                System.out.println("Timeout: you will skip this turn");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        int choice = scan.nextInt();
         switch(choice){
             case 1:
                 System.out.println("Inserisci rispettivamente");
@@ -280,11 +239,6 @@ public class CLIView extends View {
     @Override
     public void correctAuthenthication(String username){
         //TODO. non contiene niente, mostra solo i messaggio
-    }
-
-    @Override
-    public void timeOut() {
-        this.inputReader.setTimeOut(true);
     }
 
 

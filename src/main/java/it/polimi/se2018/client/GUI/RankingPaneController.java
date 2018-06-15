@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,6 @@ public class RankingPaneController {
     }
 
     private void initStyle() {
-        outcome.setStyle("-fx-font-weight: bold;");
         if (outcome.getText().equals("You Won!")) {
             outcome.setTextFill(Color.web("#006b00"));
         }
@@ -51,7 +51,7 @@ public class RankingPaneController {
         }
 
         for (Button b : buttons) {
-            b.setStyle("-fx-focus-color: transparent");
+            b.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent");
             b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
@@ -67,6 +67,11 @@ public class RankingPaneController {
         }
     }
 
+    private void closeStage() {
+        Stage stage = (Stage)outcome.getScene().getWindow();
+        stage.close();
+    }
+
     @FXML
     public void startNewGame() {
 
@@ -74,6 +79,6 @@ public class RankingPaneController {
 
     @FXML
     public void exit(){
-
+        closeStage();
     }
 }

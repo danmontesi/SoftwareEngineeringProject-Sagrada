@@ -56,7 +56,7 @@ public class SocketVirtualClient extends Thread implements ClientConnection {
                     if(entry.getValue().equals(this)){
                         disconnecting = entry.getKey();
                         Server.disconnnectClient(disconnecting);
-                        System.out.println("Client " + entry.getKey() + " disconnected");
+                        System.out.println("client " + entry.getKey() + " disconnected");
                         break;
                     }
                 }

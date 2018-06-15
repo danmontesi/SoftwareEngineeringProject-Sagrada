@@ -91,8 +91,6 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
 
     }
 
-    public abstract void timeOut();
-
 
     // Methods for Obs/Obsvb
 
