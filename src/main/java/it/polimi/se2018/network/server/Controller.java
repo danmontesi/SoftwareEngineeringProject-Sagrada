@@ -10,6 +10,7 @@ import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.model.public_obj_cards.PublicObjectiveCard;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -35,6 +36,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private ArrayList<Player> uninitializedOrderedPlayers;
 
+    private HashMap<Player,Timer> playerTimerMap;
+
     /**
      * ArrayList that contains the ordered players that has to play
      * is created by the model in its constructor
@@ -54,6 +57,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private int roundNumber;//Maybe to be deleted, substituted by 10-orderedRoundPlayers.size()
 
+    private int timerCostant;
     /**
      * The controller receives a list of the Usernames of the connected players.
      * The controller receives the connected Connection though the static HashMap of the Server
@@ -63,6 +67,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     public Controller(ArrayList<String> usernameList) {
         usernamePlayerMap = new HashMap<>();
+        playerTimerMap = new HashMap<>();
         uninitializedOrderedPlayers = new ArrayList<>();
         userViewMap = new HashMap<>();
         // I have to create the list that connects Usernames and Players and VirtualViews
@@ -81,8 +86,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         this.roundNumber = 0;
         this.orderedPlayers= new ArrayList<>();
 
+        this.timerCostant = 60000;
         // Now I will start each player's View
         initializeGame();
+
+
     }
 
     /**
@@ -213,7 +221,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         Integer counter=0;
         while (i1.hasNext()) {
             Map.Entry me = (Map.Entry) i1.next();
-            System.out.println("Io sono: "+ me.getKey() );
+            System.out.println("Io sono: " + me.getKey() );
                 if (counter == 0) {
                 userViewMap.get(me.getKey().toString()).winMessage(scoresList);
             }
@@ -255,16 +263,23 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             System.out.println("Prima di chiamare StartTurnMenu");
             hasPerformedMove=false;
             hasUsedTool=false;
-            userViewMap.get(currentPlayer.getUsername()).startTurnMenu();
 
-            try {
-                Thread.sleep(5000); //TODO EDIT TOGLI ERA UN  PROVA
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            userViewMap.get(currentPlayer.getUsername()).timeOut();
+            playerTimerMap.put(currentPlayer, new Timer());
+            playerTimerMap.get(currentPlayer).schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            System.out.println("Sending timeout");
+                            userViewMap.get(currentPlayer.getUsername()).timeOut(); //DA TOGLIERE, l'ho utilizzato solo come prova. il metodo deve essere contorllato dalla variabile itsTimeToStart
+                        }
+                    },
+                    timerCostant
+                    //TODO IMPOSTA
+            );
+            userViewMap.get(currentPlayer.getUsername()).startTurnMenu();
         }
     }
+
     /**
      * Has to start a turn of a new player in a round.
      * if the round has still 2*n turns played, i have to call starNewRound()
@@ -276,6 +291,17 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         else{
             currentPlayer=currentRoundOrderedPlayers.remove(0);
+            playerTimerMap.put(currentPlayer, new Timer());
+            playerTimerMap.get(currentPlayer).schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            System.out.println("Sending timeout");
+                            userViewMap.get(currentPlayer.getUsername()).timeOut(); //DA TOGLIERE, l'ho utilizzato solo come prova. il metodo deve essere contorllato dalla variabile itsTimeToStart
+                        }
+                    },
+                    timerCostant
+            );
             userViewMap.get(currentPlayer.getUsername()).startTurnMenu();
         }
     }
@@ -379,7 +405,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             }
         else{
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You haven't enough tokens to use this tool");
-            userViewMap.get(currentPlayer.getUsername()).startTurnMenu();
+            userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove,hasUsedTool);
         }
     }
 
@@ -415,6 +441,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     @Override
     public void applyCommand(String playerUsername, MoveChoicePassTurn command){
+        playerTimerMap.get(currentPlayer).cancel();
         startNewTurn();
     }
 

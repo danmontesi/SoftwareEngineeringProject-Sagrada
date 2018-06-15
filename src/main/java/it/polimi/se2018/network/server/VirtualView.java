@@ -1,6 +1,7 @@
 package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.client.View;
+import it.polimi.se2018.commands.client_to_server_command.ChosenWindowPatternCard;
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.commands.client_to_server_command.MoveChoicePassTurn;
 import it.polimi.se2018.utils.Observable;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 public class VirtualView extends View {
 
     String username;
-    Observer observer; // Il controller TODO: Togli e usa quello dato dall'Observable
+    Observer observer; //Il controller TODO: Togli e usa quello dato dall'Observable
     Observable observable; // Il model
 
     public VirtualView(Observer controller, Model model, String username) {
@@ -49,14 +50,21 @@ public class VirtualView extends View {
     @Override
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
-            System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
-        } else {
-            StringBuilder cardNames = new StringBuilder();
-            for (WindowPatternCard card : cards)
-                cardNames.append(card.getCardName() + ",");
-            Server.getConnectedClients().get(username).notifyClient(new ChooseWindowPatternCardCommand(cardNames.toString()));
-            //DATE NEL FORMATO nomeCarta nomeCarta nomeCarta
+            System.out.println("Disconnected-> choosing a random Wpc");
+            notify(new ChosenWindowPatternCard(cards.get(0).getCardName()));
+        }
+        else {
+            //Server.getConnectedClients().get(username).notifyClient(new pingConnectionTester()); //TODO implement the command
+            if (Server.getConnectedClients().get(username) == null) { //disconnected
+                System.out.println("Disconnected-> choosing a random Wpc");
+                notify(new ChosenWindowPatternCard(cards.get(0).getCardName()));
+            } else {
+                StringBuilder cardNames = new StringBuilder();
+                for (WindowPatternCard card : cards)
+                    cardNames.append(card.getCardName() + ",");
+                Server.getConnectedClients().get(username).notifyClient(new ChooseWindowPatternCardCommand(cardNames.toString()));
+                //DATE NEL FORMATO nomeCarta nomeCarta nomeCarta
+            }
         }
     }
 
@@ -200,10 +208,7 @@ public class VirtualView extends View {
         } else {
             Server.getConnectedClients().get(username).notifyClient(new TimeOutCommand());
         }
-
     }
-
-
 
     //TODO change without toString()
     public void update(Object model){
