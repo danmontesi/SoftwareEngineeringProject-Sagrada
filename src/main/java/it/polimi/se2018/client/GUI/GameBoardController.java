@@ -1,5 +1,6 @@
 package it.polimi.se2018.client.GUI;
 
+import it.polimi.se2018.client.ExampleBoardStringPaths;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,7 +28,9 @@ import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 public class GameBoardController {
 
-    private List<Circle> tokens;
+    ExampleBoardStringPaths exampleBoardStringPaths = new ExampleBoardStringPaths();
+
+    private List<Circle> circles;
     private List<ImageView> pubocards;
     private List<ImageView> tcards;
     private List<ImageView> wpcards;
@@ -37,6 +40,9 @@ public class GameBoardController {
     private List<ToggleButton> tbw0;
     private List<ToggleButton> tbr;
     private List<Stage> stages;
+    private List<Label> users;
+    private List<Label> usersTokens;
+    private List<Label> tcTokens;
 
     @FXML
     private AnchorPane cards;
@@ -96,6 +102,20 @@ public class GameBoardController {
     private Label user3;
     @FXML
     private Label user0;
+    @FXML
+    private Label user0tokens;
+    @FXML
+    private Label user1tokens;
+    @FXML
+    private Label user2tokens;
+    @FXML
+    private Label user3tokens;
+    @FXML
+    private Label tc1tokens;
+    @FXML
+    private Label tc2tokens;
+    @FXML
+    private Label tc3tokens;
     @FXML
     private Label dp;
 
@@ -188,6 +208,15 @@ public class GameBoardController {
     @FXML
     private ToggleButton tbr10;
 
+    @FXML
+    private Circle circle0;
+    @FXML
+    private Circle circle1;
+    @FXML
+    private Circle circle2;
+    @FXML
+    private Circle circle3;
+
     private DropShadow shadow = new DropShadow();
 
     public GameBoardController() {
@@ -200,11 +229,17 @@ public class GameBoardController {
         tbw0 = new ArrayList<>();
         tbr = new ArrayList<>();
         stages = new ArrayList<>();
+        users = new ArrayList<>();
+        usersTokens = new ArrayList<>();
+        tcTokens = new ArrayList<>();
+        circles = new ArrayList<>();
     }
 
     public void initialize() {
         setCards();
         setButtons();
+        setLabels();
+        setCircles();
         initButtons();
         initRoundTrack();
         initPubocards();
@@ -282,6 +317,26 @@ public class GameBoardController {
         tbuttons.addAll(tbr);
     }
 
+    private void setLabels() {
+        users.add(user1);
+        users.add(user2);
+        users.add(user3);
+
+        usersTokens.add(user1tokens);
+        usersTokens.add(user2tokens);
+        usersTokens.add(user3tokens);
+
+        tcTokens.add(tc1tokens);
+        tcTokens.add(tc2tokens);
+        tcTokens.add(tc3tokens);
+    }
+
+    private void setCircles() {
+        circles.add(circle1);
+        circles.add(circle2);
+        circles.add(circle3);
+    }
+
     private void initButtons() {
         pass.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
             @Override
@@ -310,30 +365,45 @@ public class GameBoardController {
     }
 
     private void initRoundTrack() {
-            String path = "/client/images/RoundTrack.png";
-            Image image = new Image(path);
-            rt.setImage(image);
+            rt.setImage(new Image("/client/images/RoundTrack.png"));
+        ArrayList<String> roundTrack = exampleBoardStringPaths.getRoundTrack();
+        for (int i=0; i<10; i++) {
+            String img = exampleBoardStringPaths.getRoundTrack().get(i);
+            if (img == "empty") {
+                tbr.get(i).setDisable(true);
+            } else {
+                String path = "/client/Dice/" + img + ".jpg";
+                Image image = new Image(path);
+                ImageView iv = new ImageView(image);
+                iv.setFitWidth(40);
+                iv.setFitHeight(40);
+                tbr.get(i).setGraphic(iv);
+            }
+        }
     }
 
     private void initPubocards() {
-        String img = "row_color_variety";
-        String path = "/client/OC/" + img + ".jpg";
-        Image image = new Image(path);
-
+        ArrayList<String> publicOC = exampleBoardStringPaths.getPublicObjectiveCards();
+        int i=0;
         for (ImageView puboc : pubocards) {
+        String img = publicOC.get(i);
+            String path = "/client/OC/" + img + ".jpg";
+            Image image = new Image(path);
             puboc.setImage(image);
             Tooltip t = new Tooltip("Description: ...");
             Tooltip.install(puboc, t);
             t.setStyle("-fx-font-size: 15px");
+            i++;
         }
     }
 
     private void initTcards() {
-        String img = "circular_cutter";
-        String path = "/client/TC/" + img + ".jpg";
-        Image image = new Image(path);
-
+        ArrayList<String> tCards = exampleBoardStringPaths.getToolCards();
+        int i=0;
         for (ToggleButton tc : tcbuttons) {
+            String img = tCards.get(i);
+            String path = "/client/TC/" + img + ".jpg";
+            Image image = new Image(path);
             ImageView iv = new ImageView(image);
             iv.setFitHeight(190);
             iv.setFitWidth(140);
@@ -353,28 +423,43 @@ public class GameBoardController {
                     if (!tc.isSelected()) tc.setEffect(null);
                 }
             });
+            i++;
+        }
+        int k=0;
+        for (Label tk : tcTokens) {
+            tk.setText(exampleBoardStringPaths.getTokensToolCards().get(k).toString());
+            k++;
         }
     }
 
     private void initWpcards() {
-        String img = "virtus";
-        String path = "/client/WPC/" + img + ".jpg";
-        Image image = new Image(path);
-
-        for (ImageView wpc : wpcards) {
-            wpc.setImage(image);
+        for (int i=0; i<exampleBoardStringPaths.getOtherPlayersWpcs().size(); i++) {
+            String img = exampleBoardStringPaths.getOtherPlayersWpcs().get(i).get(0);
+            String path = "/client/WPC/" + img + ".jpg";
+            Image image = new Image(path);
+            wpcards.get(i).setImage(image);
+            users.get(i).setText(exampleBoardStringPaths.getOtherPlayersUsernames().get(i));
+            usersTokens.get(i).setText(exampleBoardStringPaths.getOtherPlayersTokens().get(i).toString());
+        }
+        for (int j=exampleBoardStringPaths.getOtherPlayersWpcs().size(); j<3; j++) {
+            wpcards.get(j).setVisible(false);
+            users.get(j).setVisible(false);
+            usersTokens.get(j).setVisible(false);
+            circles.get(j).setVisible(false);
         }
     }
 
     private void initMyWPC() {
-        String img = "virtus";
+        String img = exampleBoardStringPaths.getPersonalWpc().get(0);
         String path = "/client/WPC/" + img + ".jpg";
         Image image = new Image(path);
         wpc0.setImage(image);
+        user0.setText(exampleBoardStringPaths.getUsername());
+        user0tokens.setText(exampleBoardStringPaths.getPersonalTokens().toString());
     }
 
     private void initMyPriOC() {
-        String img = "shades_of_blue";
+        String img = exampleBoardStringPaths.getPrivateObjectiveCard();
         String path = "/client/OC/" + img + ".jpg";
         Image image = new Image(path);
         prioc0.setImage(image);
@@ -384,12 +469,22 @@ public class GameBoardController {
     }
 
     public void initDice() {
-        Image image = new Image("/client/dice/violet1.jpg");
-        for (ToggleButton tb : tbd) {
-            ImageView iv = new ImageView(image);
-            iv.setFitWidth(40);
-            iv.setFitHeight(40);
-            tb.setGraphic(iv);
+        ArrayList<String> draftPool = exampleBoardStringPaths.getDraftpool();
+        for (int i=0; i<draftPool.size(); i++) {
+            String img = exampleBoardStringPaths.getDraftpool().get(i);
+            if (img == "empty") {
+                tbd.get(i).setDisable(true);
+            } else {
+                String path = "/client/Dice/" + img + ".jpg";
+                Image image = new Image(path);
+                ImageView iv = new ImageView(image);
+                iv.setFitWidth(40);
+                iv.setFitHeight(40);
+                tbd.get(i).setGraphic(iv);
+            }
+        }
+        for (int j=draftPool.size(); j<9; j++) {
+            tbd.get(j).setDisable(true);
         }
         for (ToggleButton tb : tbuttons) {
             tb.setStyle("-fx-base: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent");

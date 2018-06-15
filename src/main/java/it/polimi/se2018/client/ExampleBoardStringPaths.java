@@ -2,14 +2,12 @@ package it.polimi.se2018.client;
 
 import java.util.ArrayList;
 
-public class exampleBoardStringPaths{
+public class ExampleBoardStringPaths{
 
     private String privateObjectiveCard;
     private ArrayList<String> publicObjectiveCards;
-    private ArrayList<Integer> tokensPublicObjective; //Ordered based on poc order
 
     private ArrayList<String> toolCards;
-
     private ArrayList<Integer> tokensToolCards; //Ordered
 
     private ArrayList<String> draftpool; //Dice in the format: colorNumber/empty
@@ -23,18 +21,13 @@ public class exampleBoardStringPaths{
     private ArrayList<Integer> otherPlayersTokens;
     private ArrayList<String> otherPlayersUsernames;
 
-    public exampleBoardStringPaths() {
-        this.privateObjectiveCard = "shades_of_yelow";
+    public ExampleBoardStringPaths() {
+        this.privateObjectiveCard = "shades_of_yellow";
 
         this.publicObjectiveCards = new ArrayList<>();
         publicObjectiveCards.add("deep_shade");
         publicObjectiveCards.add("light_shade");
         publicObjectiveCards.add("medium_shade");
-
-        this.tokensPublicObjective = new ArrayList<>();
-        tokensPublicObjective.add(2);
-        tokensPublicObjective.add(0);
-        tokensPublicObjective.add(8);
 
         this.toolCards = new ArrayList<>();
         toolCards.add("circular_cutter");
@@ -121,10 +114,6 @@ public class exampleBoardStringPaths{
 
     public ArrayList<String> getPublicObjectiveCards() {
         return publicObjectiveCards;
-    }
-
-    public ArrayList<Integer> getTokensPublicObjective() {
-        return tokensPublicObjective;
     }
 
     public ArrayList<String> getToolCards() {
