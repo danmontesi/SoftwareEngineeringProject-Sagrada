@@ -22,13 +22,13 @@ public class CLIView extends View {
         inputReader = new InputReader();
     }
 
-    private String playerUsername;
+    //TODO Set! username
 
     private Scanner scan = new Scanner(System.in); // Can be replaced with BufferedReader?
 
     private InputReader inputReader;
 
-//TODO      PER CHI FA LA VIEW:
+//TODO          PER CHI FA LA VIEW:
 //TODO          OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO.
 //TODO          ognuno dei metodi quì sotto prima chiede l'input dall'utente, poi fa notify(new chosen
     @Override

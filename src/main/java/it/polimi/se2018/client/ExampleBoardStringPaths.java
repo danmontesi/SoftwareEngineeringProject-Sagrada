@@ -70,24 +70,24 @@ public class ExampleBoardStringPaths{
         //then, the dice in the format colorNum or empty
         personalWpc.add("red2");
         personalWpc.add("yellow5");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
-        roundTrack.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
+        personalWpc.add("empty");
 
         this.personalTokens = 4;
 

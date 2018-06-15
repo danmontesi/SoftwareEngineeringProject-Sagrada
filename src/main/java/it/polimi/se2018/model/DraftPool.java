@@ -11,7 +11,6 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Alessio Molinari, Nives Migotto, Daniele Montesi
  */
 
-//TODO: Ho cambiato il draftpool mettendo le cells al posto dei dadi, poichè è possibile che delle celle si svuotino quando i giocsatori le assegnano.Graficamente, questo deve essere rappresentato dalle celle vuote
 public class DraftPool {
     /**
      * The arraylist is a List of Die.

@@ -14,9 +14,11 @@ public class RefreshBoardCommand extends ServerToClientCommand{
 
     private String privateObjectiveCard;
     private ArrayList<String> publicObjectiveCards;
+    private ArrayList<String> publicObjectiveDescription;
     private ArrayList<Integer> tokensPublicObjective; //Ordered based on poc order
 
     private ArrayList<String> toolCards;
+    private ArrayList<String> toolCardDescription;
     private ArrayList<Integer> tokensToolCards; //Ordered
 
     private ArrayList<String> draftpool; //Dice in the format: colorNumber/empty
@@ -34,11 +36,13 @@ public class RefreshBoardCommand extends ServerToClientCommand{
         this.message = model;
     }
 
-    public RefreshBoardCommand(String privateObjectiveCard, ArrayList<String> publicObjectiveCards, ArrayList<Integer> tokensPublicObjective, ArrayList<String> toolCards, ArrayList<Integer> tokensToolCards, ArrayList<String> draftpool, ArrayList<String> roundTrack, ArrayList<String> personalWpc, Integer personalTokens, String username, ArrayList<String> otherPlayersWpcs, ArrayList<Integer> otherPlayersTokens, ArrayList<Integer> otherPlayersUsernames) {
+    public RefreshBoardCommand(String privateObjectiveCard, ArrayList<String> publicObjectiveCards, ArrayList<String> publicObjectiveDescription, ArrayList<Integer> tokensPublicObjective, ArrayList<String> toolCards, ArrayList<String> toolCardDescription, ArrayList<Integer> tokensToolCards, ArrayList<String> draftpool, ArrayList<String> roundTrack, ArrayList<String> personalWpc, Integer personalTokens, String username, ArrayList<String> otherPlayersWpcs, ArrayList<Integer> otherPlayersTokens, ArrayList<Integer> otherPlayersUsernames) {
         this.privateObjectiveCard = privateObjectiveCard;
         this.publicObjectiveCards = publicObjectiveCards;
+        this.publicObjectiveDescription = publicObjectiveDescription;
         this.tokensPublicObjective = tokensPublicObjective;
         this.toolCards = toolCards;
+        this.toolCardDescription = toolCardDescription;
         this.tokensToolCards = tokensToolCards;
         this.draftpool = draftpool;
         this.roundTrack = roundTrack;

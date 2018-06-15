@@ -10,8 +10,13 @@ public class OtherPlayerTurnCommand extends ServerToClientCommand {
         this.username = username;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     @Override
     public void visit(ControllerClientInterface clientController) {
-        clientController.applyCommand(this);
+        //clientController.applyCommand(this); //TODO IMPLEMENT
+
     }
 }

@@ -270,7 +270,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                         @Override
                         public void run() {
                             System.out.println("Sending timeout");
-                            userViewMap.get(currentPlayer.getUsername()).timeOut(); //DA TOGLIERE, l'ho utilizzato solo come prova. il metodo deve essere contorllato dalla variabile itsTimeToStart
+                            userViewMap.get(currentPlayer.getUsername()).timeOut();
                         }
                     },
                     timerCostant
@@ -297,7 +297,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                         @Override
                         public void run() {
                             System.out.println("Sending timeout");
-                            userViewMap.get(currentPlayer.getUsername()).timeOut(); //DA TOGLIERE, l'ho utilizzato solo come prova. il metodo deve essere contorllato dalla variabile itsTimeToStart
+                            userViewMap.get(currentPlayer.getUsername()).timeOut();
                         }
                     },
                     timerCostant

@@ -17,7 +17,6 @@ import java.util.ArrayList;
  */
 public class VirtualView extends View {
 
-    String username;
     Observer observer; //Il controller TODO: Togli e usa quello dato dall'Observable
     Observable observable; // Il model
 
@@ -210,8 +209,7 @@ public class VirtualView extends View {
         }
     }
 
-    //TODO change without toString()
-    public void update(Object model){
+    public void update(Object model){ //TODO Change with all model representation
         //RefreshBoardCommand
         if (Server.getConnectedClients().get(username)==null){ //disconnected
             System.out.println("Disconnected -> No updating model");

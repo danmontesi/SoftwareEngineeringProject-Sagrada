@@ -13,6 +13,11 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
      * OSS: LA VIEW INCAPSULA DEGLI EVENTI! E POI LI MANDA GRAZIE AL CONTROLLER (update..)
      *
      */
+    protected String username;
+
+    public String getUsername() {
+        return username;
+    }
 
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards){
 

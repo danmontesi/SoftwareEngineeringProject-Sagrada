@@ -1,5 +1,6 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.client.View;
 import it.polimi.se2018.parser.ParserPrivateObjectiveCard;
 import it.polimi.se2018.parser.ParserPublicObjectiveCard;
 import it.polimi.se2018.parser.ParserToolcard;
@@ -94,7 +95,6 @@ public class Model extends Observable implements Serializable{ //Observable of V
             extractedPublicObjectiveCard.add(publicObjectiveCardDeck.remove(0));
         }
 
-        //TODO: Create the deck from a json file
         ArrayList<ToolCard> toolCardDeck = new ArrayList<>();
         try {
             toolCardDeck = parserToolcard.parseCards();
@@ -210,6 +210,52 @@ public class Model extends Observable implements Serializable{ //Observable of V
         for (Observer observer : observers) {
             System.out.println("Notificando una V.V. della new board");
             observer.update(model.toString());
+        }
+    }
+
+    public void notifyRefreshBoard(){ //TODO personalised for every View. Remove the parameter
+        for (Observer observer : observers) {
+            View temp = (View) observer;
+            temp.getUsername();
+            //
+
+            System.out.println("Notificando una V.V. della new board");
+            //observer.update(model);
+        }
+    }
+
+    public void notifyRefreshDraftPool(DraftPool model){
+        for (Observer observer : observers) {
+            System.out.println("Notificando una V.V. della new board");
+            observer.update(model);
+        }
+    }
+
+    public void notifyRefreshWpcs(DraftPool model){
+        for (Observer observer : observers) {
+            System.out.println("Notificando una V.V. della new board");
+            observer.update(model);
+        }
+    }
+
+    public void notifyRefreshRoundTrack(RoundTrack model){
+        for (Observer observer : observers) {
+            System.out.println("Notificando una V.V. della new board");
+            observer.update(model);
+        }
+    }
+
+    public void notifyRefreshTokens(RoundTrack model){
+        for (Observer observer : observers) {
+            System.out.println("Notificando una V.V. della new board");
+            observer.update(model);
+        }
+    }
+
+    public void notifyRefreshToolCardTokens(RoundTrack model){
+        for (Observer observer : observers) {
+            System.out.println("Notificando una V.V. della new board");
+            observer.update(model);
         }
     }
     //Aready has
