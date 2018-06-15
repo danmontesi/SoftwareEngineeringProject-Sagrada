@@ -17,6 +17,32 @@ public class CLIView extends View {
      * CliView receives a clone of current model each time it's Player's turn
      */
 
+
+    /**
+     * The parameters of the View assigned from a RefreshBoardCommand
+     */
+    private String privateObjectiveCard;
+    private ArrayList<String> publicObjectiveCards;
+    private ArrayList<Integer> tokensPublicObjective; //Ordered based on poc order
+
+    private ArrayList<String> toolCards;
+    private ArrayList<Integer> tokensToolCards; //Ordered
+
+    private ArrayList<String> draftpool; //Dice in the format: colorNumber/empty
+    private ArrayList<String> roundTrack;
+
+    private ArrayList<String> personalWpc; //""
+    private Integer personalTokens;
+    private String username;
+
+    private ArrayList<String> otherPlayersWpcs; //Dice in the format colorNumber/empty or restrictionColor or restrictionValue
+    private ArrayList<Integer> otherPlayersTokens;
+    private ArrayList<Integer> otherPlayersUsernames;
+
+    /**
+     * The constructor
+     * @param observer the clientController
+     */
     public CLIView(Observer observer){
         register(observer);
         inputReader = new InputReader();

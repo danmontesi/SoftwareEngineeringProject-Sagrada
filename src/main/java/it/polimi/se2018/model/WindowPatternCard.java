@@ -279,4 +279,34 @@ public class WindowPatternCard {
         return printedCard;
     }
 
+    /**
+     * Representation of the patch of the whole Wpc. Useful for GUI
+     * @return List of path last name
+     */
+    public ArrayList<String> wpcPathRepresentation(){
+            ArrayList<String> wpcString = new ArrayList<>();
+            String pathName = name.replaceAll(" ", "_");
+            wpcString.add(pathName);
+            for (int i = 0; i < schema.size(); i++) {
+                try {
+                    if (schema.get(i).isEmpty()) {
+                        if (schema.get(i).getColorConstraint()!=null){
+                            wpcString.add(schema.get(i).getColorConstraint().toString());   //COLOR constaint has just the color name
+                        }
+                        else if (schema.get(i).getValueConstraint()!=null){
+                            wpcString.add(schema.get(i).getValueConstraint().toString());   //VALUE constaint has just the value name
+                        }
+                        else {
+                            wpcString.add("empty");
+                        }
+                    } else {
+                        wpcString.add(schema.get(i).getAssociatedDie().getColor().toString() + schema.get(i).getAssociatedDie().getValue());
+                    }
+                } catch (EmptyCellException e) {
+                    e.printStackTrace();
+                }
+            }
+            return wpcString;
+        }
+
 }

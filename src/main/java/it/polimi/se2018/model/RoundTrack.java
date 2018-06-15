@@ -90,4 +90,24 @@ public class RoundTrack {
     public ArrayList<Cell> getRoundCells() {
         return roundCells;
     }
+
+    /**
+     * Representation of the patch of the whole roundtrack. Useful for GUI
+     * @return List of path last name
+     */
+    public ArrayList<String> roundtrackPathRepresentation() {
+        ArrayList<String> roundtrackString = new ArrayList<>();
+        for (int i = 0; i < roundCells.size(); i++) {
+            try {
+                if (roundCells.get(i).isEmpty()) {
+                    roundtrackString.add("empty");
+                } else {
+                    roundtrackString.add(roundCells.get(i).getAssociatedDie().getColor().toString() + roundCells.get(i).getAssociatedDie().getValue());
+                }
+            } catch (EmptyCellException e) {
+                e.printStackTrace();
+            }
+        }
+        return roundtrackString;
+    }
 }

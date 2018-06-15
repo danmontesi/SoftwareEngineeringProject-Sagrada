@@ -9,6 +9,7 @@ public class AskAuthenticationCommand extends ServerToClientCommand{
      * String that cointains NameClass
      */
 
+    //TODO Maybe to delete
     public AskAuthenticationCommand(String message) {
         this.message = "AskAuthenticationCommand" + " " + message;
     }

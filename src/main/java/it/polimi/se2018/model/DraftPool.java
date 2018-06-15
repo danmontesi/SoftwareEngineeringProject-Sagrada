@@ -154,4 +154,24 @@ public class DraftPool {
         return builder.toString();
     }
 
+    /**
+     * Representation of the patch of the whole draftpool. Useful for GUI
+     * @return List of path last name
+     */
+    public ArrayList<String> draftpoolPathRepresentation() {
+        ArrayList<String> draftpoolString = new ArrayList<>();
+        for (int i = 0; i < cells.size(); i++) {
+            try {
+                if (cells.get(i).isEmpty()) {
+                    draftpoolString.add("empty");
+                } else {
+                    draftpoolString.add(cells.get(i).getAssociatedDie().getColor().toString() + cells.get(i).getAssociatedDie().getValue());
+                }
+            } catch (EmptyCellException e) {
+                e.printStackTrace();
+            }
+        }
+            return draftpoolString;
+    }
+
 }
