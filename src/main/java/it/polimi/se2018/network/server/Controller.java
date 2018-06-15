@@ -1,12 +1,11 @@
 package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.*;
-import it.polimi.se2018.MVC.View;
+import it.polimi.se2018.Client.View;
 import it.polimi.se2018.utils.ControllerServerInterface;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.client_to_server_command.*;
 import it.polimi.se2018.exceptions.EmptyCellException;
-import it.polimi.se2018.network.client.ClientConnection;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.toolcards.ToolCard;
@@ -49,14 +48,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * Represent current player. That is necessary to know which is the player i'm expecting an answer
      */
     private Player currentPlayer;
+
     private boolean hasUsedTool;
+
     private boolean hasPerformedMove;
 
-    private ArrayList<ClientConnection> disconnectedClients;
-
-    private int roundNumber;//Maybe to be deleted, substituted by orderedRoundPlayers.size()
-
-    private Server server;
+    private int roundNumber;//Maybe to be deleted, substituted by 10-orderedRoundPlayers.size()
 
     /**
      * The controller receives a list of the Usernames of the connected players.
@@ -292,6 +289,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * @param playerUsername the username who is applying the command
      * @param command the coming command
      */
+    @Override
     public synchronized void applyCommand(String playerUsername, ChosenWindowPatternCard command){
         ParserWindowPatternCard parser = null;
         try {
@@ -313,6 +311,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * @param playerUsername
      * @param command
      */
+    @Override
     //TODO: vedi se è necessario controllare che il player sia Current o non posso fare altre mosse e automaticamente il player da cui ricevo il comando è current
     public synchronized void applyCommand(String playerUsername, MoveChoiceToolCard command){
         Player current= usernamePlayerMap.get(playerUsername);
@@ -322,58 +321,56 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         if (chosen.getTokenCount()>0){
             requiredTokens=2;
         }
-        if (current.getTokens()>requiredTokens){
+        if (current.getTokens()>requiredTokens) {
             current.decreaseTokens(requiredTokens);
             chosen.increaseTokens(requiredTokens);
-            switch (chosen.getName()){
-                case("CopperFoilReamer"):
+            String toolName = chosen.getName();
+                if (toolName.equals("Copper Foil Reamer"))
                     userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
-                    break;
-                case("CorkLine"):
-                    ;
-                    break;
-                case("DiamondSwab"):
-                    ;
-                    break;
-                case("EglomiseBrush"):
+                else if (toolName.equals("Cork Line"))
                     userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
-                    break;
-                case("FirmPastryBrush"):
-                    ;
-                    break;
-                case("FirmPastryThinner"):
-                    ;
-                    break;
-                case("Gavel"):
-                    ;
-                    break;
-                case("Lathekin"):
-                    ;
-                    break;
-                case("ManualCutter"):
-                    ;
-                    break;
-                case("RoughingForceps"):
-                    ;
-                    break;
-                case("WheelsPincher"):
-                    ;
-                    break;
-                default:
-                    System.out.println("Error in toolNames");
+                else if (toolName.equals("Diamond Swab"))
+                    userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
+                else if (toolName.equals("Eglomise Brush"))
+                    userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
+                else if (toolName.equals("Firm Pastry Brush"))
+                    userViewMap.get(currentPlayer.getUsername()).firmPastryBrushMenu(ThreadLocalRandom.current().nextInt(1, 7));
+                else if (toolName.equals("Firm Pastry Thinner")) {
+                    Die die = model.getDiceBag().extractDie(); //TODO Dove tengo questa informazione? mi fido del controller? Sì
+                    userViewMap.get(currentPlayer.getUsername()).firmPastryThinnerMenu(die.getColor().toString(), die.getValue());
+                }
+                else if (toolName.equals("Gavel")) {
+                if (currentRoundOrderedPlayers.contains(usernamePlayerMap.get(playerUsername))) { //Can't use the tool, has to be in second turn
+                    current.decreaseTokens(-requiredTokens);
+                    chosen.increaseTokens(-requiredTokens);
+                    userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You have to be in your second turn to use the tool");
+                    userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                } else {
+                    model.rollDraftpoolDice();
+                    userViewMap.get(currentPlayer.getUsername()).messageBox("Correctly used the tool, dice are re-rolled");
+                    hasPerformedMove = true;
+                    userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasPerformedMove);
+                }
             }
-            if (chosen.getName().equals("FirmPastryThinner")){
-                // Extract a die
-                Die die = model.getDiceBag().extractDie(); //TODO Dove tengo questa informazione? mi fido del controller?
-                userViewMap.get(currentPlayer.getUsername()).firmPastryThinnerMenu(die.getColor().toString(), die.getValue());
+            else if (toolName.equals("Lathekin"))
+                    userViewMap.get(playerUsername).twoDiceMoveMenu(chosen.getName());
+            else if (toolName.equals("Manual Cutter"))
+                    userViewMap.get(playerUsername).twoDiceMoveMenu(chosen.getName());
+            else if (toolName.equals("Roughing Forceps"))
+                    userViewMap.get(playerUsername).changeDieValueMenu(chosen.getName());
+            else if (toolName.equals("Wheels Pincher")) {
+                if (!currentRoundOrderedPlayers.contains(usernamePlayerMap.get(playerUsername))) { //Can't use the tool, has to be in first turn
+                    current.decreaseTokens(-requiredTokens);
+                    chosen.increaseTokens(-requiredTokens);
+                    userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You have to be in your first turn to use the tool");
+                    userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                } else {
+                    userViewMap.get(playerUsername).wheelsPincherMenu();
+                }
             }
-            else if (chosen.getName().equals("FirmPastryBrush")){
-                userViewMap.get(currentPlayer.getUsername()).firmPastryBrushMenu(ThreadLocalRandom.current().nextInt(1, 7));
+            else
+                System.out.println("Error in toolNames");
             }
-            else{
-                userViewMap.get(currentPlayer.getUsername()).correctUseTool(usedToolNumber);
-            }
-        }
         else{
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You haven't enough tokens to use this tool");
             userViewMap.get(currentPlayer.getUsername()).startTurnMenu();
@@ -381,6 +378,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
 
+    @Override
     public void applyCommand(String playerUsername, MoveChoiceDicePlacement command){
         //TODO Controllo username di current RICORDANDO CHE I VERI PLAYER SONO SALVATI SU orderedPlayers
         try {
@@ -389,7 +387,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     .placeDie(toPlace, command.getDieSchemaRowPosition(), command.getDieSchemaColPosition(), true, true, true);
             if (!exit) {
                 userViewMap.get(playerUsername).invalidActionMessage("Incorrect move"); //TODO Sarebbe bello scrivere anche il motivo della mossa incorretta, magari creo un metodo apposito per ogni controllo piazzamentog
-                userViewMap.get(playerUsername).continueTurnMenu(!hasPerformedMove, !hasUsedTool);
+                userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             }
             else {
                 System.out.println("Mossa applicata correttamente");
@@ -397,18 +395,19 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 model.getDraftPool().takeDie(command.getDieDraftPoolPosition());
                 hasPerformedMove = true;
                 model.setGamePlayers(orderedPlayers);
-                userViewMap.get(playerUsername).continueTurnMenu(!hasPerformedMove, !hasUsedTool);
+                userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             }
         }catch (EmptyCellException e){
             e.printStackTrace();
             System.out.println("Empty cell, sending an IncorrectMoveCommand");
             userViewMap.get(playerUsername).invalidActionMessage("The Draftpool cell you selected is empty, try again");
-            userViewMap.get(playerUsername).continueTurnMenu(!hasPerformedMove,!hasUsedTool);
+            userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
         }
         //When I arrive here, the move is already performed
 
     }
 
+    @Override
     public void applyCommand(String playerUsername, MoveChoicePassTurn command){
         startNewTurn();
     }
@@ -420,14 +419,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(String playerUsername, UseToolCopperFoilReamer command){
-        String message = command.getMessage();
-    }
-
-    /**
-     * Applies commands coming from the Client, answering with correct/incorrect command responses
-     */
     //MOSSA SENZA RESTRIZIONE POSIZIONE E DEVONO ESSERE NON ADIACENTI
+    @Override
     public void applyCommand(String playerUsername,UseToolCorkLine command){
         //WindowPatternCard card = currentPlayer.getWindowPatternCard().placeDie(model.getDraftPool().getDie(command.getDieDraftPoolPosition()),  )
         //boolean correctMove = usernamePlayerMap.get(playerUsername).getWindowPatternCard().placeDie()
@@ -435,13 +428,15 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(String playerUsername ,UseToolDiamondSwab command){
+    @Override
+    public void applyCommand(String playerUsername ,UseToolTwoDicePlacement command){
 
     }
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(String playerUsername ,UseToolEglomiseBrush command){
+    @Override
+    public void applyCommand(String playerUsername ,UseToolMoveDieNoRestriction command){
 
     }
 
@@ -449,6 +444,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      * BRUSH: decide the new value
      */
+    @Override
     public void applyCommand(String playerUsername ,UseToolFirmPastryBrush command){
         String[] words = command.getMessage().split(" ");
         if (words[0].equals("MOVE")){
@@ -463,6 +459,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      * THINNER: die from DiceBag
      */
+    @Override
     public void applyCommand(String playerUsername , UseToolFirmPastryThinner command){
         String[] words = command.getMessage().split(" ");
         if (words[0].equals("MOVE")){
@@ -477,35 +474,30 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(String playerUsername ,UseToolGavel command){
+    @Override
+    public void applyCommand(String playerUsername ,UseToolChangeDieValue command){
 
     }
+
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(String playerUsername ,UseToolLathekin command){
+    @Override
+    public void applyCommand(String playerUsername ,UseToolCircularCutter command){
 
     }
-    /**
-     * Applies commands coming from the Client, answering with correct/incorrect command responses
-     */
-    public void applyCommand(String playerUsername ,UseToolManualCutter command){
 
-    }
-    /**
-     * Applies commands coming from the Client, answering with correct/incorrect command responses
-     */
-    public void applyCommand(String playerUsername ,UseToolRoughingForceps command){
-
-    }
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
 
+    @Override
     public void applyCommand(String playerUsername ,UseToolWheelsPincher command){
 
     }
 
+
+    @Override
     public void applyCommand(String playerUsername ,ClientToServerCommand command){
         System.out.println("You shouldn't be here");
     }

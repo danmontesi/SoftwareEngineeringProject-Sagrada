@@ -1,0 +1,32 @@
+.root {
+    -fx-background-image: url(/client/images/marble.jpg);
+    -fx-font-family: 'Goudy Bookletter 1911', serif;
+}
+
+#dpbox {
+    -fx-border-color: gray;
+    -fx-border-width: 3px;
+}
+
+#yourbox {
+    -fx-border-color: gray;
+    -fx-border-width: 3px 3px 0 3px;
+    -fx-font-size: 20px;
+}
+
+#usersbox {
+    -fx-border-color: gray;
+    -fx-border-width: 0 3px 3px 3px;
+}
+
+.tcb {
+    -fx-background-color: transparent;
+}
+
+#db1 {
+    -fx-background-color: transparent;
+}
+
+.button {
+    -fx-font-size: 14px;
+}

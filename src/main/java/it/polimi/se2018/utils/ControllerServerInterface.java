@@ -9,8 +9,9 @@ public interface ControllerServerInterface {
      * The choice of wpc is always right
      * That method removes the player that chooses its card, and moves it to the List of initialized player.
      * Checks if all players are initialized to call the next Controller Method
+     *
      * @param playerUsername the username who is applying the command
-     * @param command the coming command
+     * @param command        the coming command
      */
     public void applyCommand(String playerUsername, ChosenWindowPatternCard command);
 
@@ -21,7 +22,7 @@ public interface ControllerServerInterface {
 
     //TODO: già controllato se è allowed  il player deve essere il current )
     public void applyCommand(String playerUsername, MoveChoiceDicePlacement command);
-    
+
 
     //TODO: già controllato se è allowed (il player deve essere il current )
     public void applyCommand(String playerUsername, MoveChoicePassTurn command);
@@ -33,59 +34,34 @@ public interface ControllerServerInterface {
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(String playerUsername, UseToolCopperFoilReamer command);
-
-    /**
-     * Applies commands coming from the Client, answering with correct/incorrect command responses
-     */
     //MOSSA SENZA RESTRIZIONE POSIZIONE E DEVONO ESSERE NON ADIACENTI
-    public void applyCommand(String playerUsername,UseToolCorkLine command);
-    
-    /**
-     * Applies commands coming from the Client, answering with correct/incorrect command responses
-     */
-    public void applyCommand(String playerUsername ,UseToolDiamondSwab command);
-    
-    /**
-     * Applies commands coming from the Client, answering with correct/incorrect command responses
-     */
-    public void applyCommand(String playerUsername ,UseToolEglomiseBrush command);
+    public void applyCommand(String playerUsername, UseToolCorkLine command);
 
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      * BRUSH: decide the new value
      */
-    public void applyCommand(String playerUsername ,UseToolFirmPastryBrush command);
+    public void applyCommand(String playerUsername, UseToolFirmPastryBrush command);
 
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      * THINNER: die from DiceBag
      */
-    public void applyCommand(String playerUsername , UseToolFirmPastryThinner command);
+    public void applyCommand(String playerUsername, UseToolFirmPastryThinner command);
 
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(String playerUsername ,UseToolGavel command);
-    
+    public void applyCommand(String playerUsername, UseToolCircularCutter command);
+
     /**
      * Applies commands coming from the Client, answering with correct/incorrect command responses
      */
-    public void applyCommand(String playerUsername ,UseToolLathekin command);
-    
-    /**
-     * Applies commands coming from the Client, answering with correct/incorrect command responses
-     */
-    public void applyCommand(String playerUsername ,UseToolManualCutter command);
-    
-    /**
-     * Applies commands coming from the Client, answering with correct/incorrect command responses
-     */
-    public void applyCommand(String playerUsername ,UseToolRoughingForceps command);
-    
-    /**
-     * Applies commands coming from the Client, answering with correct/incorrect command responses
-     */
-    public void applyCommand(String playerUsername ,UseToolWheelsPincher command);
-    
+    public void applyCommand(String playerUsername, UseToolWheelsPincher command);
+
+    public void applyCommand(String playerUsername, UseToolChangeDieValue command);
+
+    public void applyCommand(String playerUsername, UseToolMoveDieNoRestriction command);
+
+    public void applyCommand(String playerUsername, UseToolTwoDicePlacement command);
 }

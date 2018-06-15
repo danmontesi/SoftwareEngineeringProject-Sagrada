@@ -1,0 +1,4 @@
+.root {
+    -fx-background-image: url(/client/images/marble3.jpg);
+    -fx-font-family: 'Goudy Bookletter 1911', serif; 
+}

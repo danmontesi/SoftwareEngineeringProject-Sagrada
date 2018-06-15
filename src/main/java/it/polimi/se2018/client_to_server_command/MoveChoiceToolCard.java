@@ -13,9 +13,8 @@ public class MoveChoiceToolCard  extends ClientToServerCommand{
      */
     private int numberChosen;
 
-    public MoveChoiceToolCard(String message, int numberChosen){
+    public MoveChoiceToolCard(int numberChosen){
         this.numberChosen = numberChosen;
-        this.message = "MoveChoiceToolCardCommand";
     }
 
     public void visit(ControllerServerInterface observer){

@@ -33,12 +33,17 @@ public class CorrectUseToolFirmPastryThinner1 extends ServerToClientCommand{
 
     private Integer dieValue;
 
+    private String color;
+
     public Integer getDieValue() {
         return dieValue;
     }
 
-    public CorrectUseToolFirmPastryThinner1(String message, Integer dieValue) {
-        this.message = "CorrectUseToolFirmPastryThinner1 " + message;
+    public String getColor() {
+        return color;
+    }
+    public CorrectUseToolFirmPastryThinner1(String color, Integer dieValue) {
+        this.color = color;
         this.dieValue = dieValue;
     }
 

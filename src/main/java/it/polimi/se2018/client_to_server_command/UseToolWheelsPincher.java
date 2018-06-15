@@ -1,6 +1,22 @@
 package it.polimi.se2018.client_to_server_command;
 
 public class UseToolWheelsPincher extends ClientToServerCommand{
+    public Integer getDieDraftPoolPosition1() {
+        return dieDraftPoolPosition1;
+    }
+
+    public Integer getDieSchemaPosition1() {
+        return dieSchemaPosition1;
+    }
+
+    public Integer getDieSchemaPosition2() {
+        return dieSchemaPosition2;
+    }
+
+    public Integer getDieDraftPoolPosition2() {
+        return dieDraftPoolPosition2;
+    }
+
     /**
      * Muovi 2 dadi in uno stesso turno
      * String that let you do 2 dice moves, and let you skip the turn
@@ -14,8 +30,6 @@ public class UseToolWheelsPincher extends ClientToServerCommand{
      * Integer dievalue2
      * Integer diePosition2(from 0 to 20)
      */
-
-    private String message;
 
     private Integer dieDraftPoolPosition1;
 

@@ -11,7 +11,7 @@ public class UseToolFirmPastryBrush extends ClientToServerCommand{
 
     public Integer getDieOldPosition() {
         return dieOldPosition;
-    }
+    } //TODO perchè non considerato?
 
     /**
      * Decides the die of DraftPool he wants to roll again

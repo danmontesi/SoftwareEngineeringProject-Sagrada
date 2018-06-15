@@ -1,5 +1,7 @@
 package it.polimi.se2018.server_to_client_command;
 
+import it.polimi.se2018.utils.ControllerClientInterface;
+
 public class CorrectUseToolCorkLine extends ServerToClientCommand{
     /**
      * As a normal move, no Placement Restriction
@@ -10,9 +12,12 @@ public class CorrectUseToolCorkLine extends ServerToClientCommand{
      * Integer diePosition(from 0 to 20)
      */
 
-    private String message;
-
     private Integer dieValue;
 
     private Integer dieRoundTrackPosition;
+
+    public void visit(ControllerClientInterface clientController) {
+        clientController.applyCommand(this);
+    }
+
 }

@@ -2,6 +2,7 @@ package it.polimi.se2018;
 
 import it.polimi.se2018.parser.ParserPrivateObjectiveCard;
 import it.polimi.se2018.parser.ParserPublicObjectiveCard;
+import it.polimi.se2018.parser.ParserToolcard;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.toolcards.ToolCard;
@@ -31,8 +32,6 @@ public class Model extends Observable implements Serializable{ //Observable of V
     private ArrayList<ToolCard> extractedToolCard;
 
     private ArrayList<WindowPatternCard> windowPatternCardDeck;
-
-    private ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck;
 
     private ArrayList<Player> gamePlayers;
 
@@ -64,14 +63,14 @@ public class Model extends Observable implements Serializable{ //Observable of V
         ParserPrivateObjectiveCard parserPrivateObjectiveCard = new ParserPrivateObjectiveCard();
         ParserPublicObjectiveCard parserPublicObjectiveCard = new ParserPublicObjectiveCard();
         ParserWindowPatternCard parserWindowPatternCard = null;
+        ParserToolcard parserToolcard = new ParserToolcard();
         try {
             parserWindowPatternCard = new ParserWindowPatternCard();
         } catch (IOException e) {
 
         }
-
+        ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck = new ArrayList<>();
         ArrayList<PublicObjectiveCard> publicObjectiveCardDeck = new ArrayList<>();
-        privateObjectiveCardDeck = new ArrayList<>();
 
         windowPatternCardDeck = parserWindowPatternCard.parseAllCards();
 
@@ -98,12 +97,20 @@ public class Model extends Observable implements Serializable{ //Observable of V
 
         //TODO: Create the deck from a json file
         ArrayList<ToolCard> toolCardDeck = new ArrayList<>();
-        extractedToolCard = new ArrayList<>();
-        //extractedToolCard= new ArrayList<>();
-        for (int i=0; i<3; i++){
-            //int index = ThreadLocalRandom.current().nextInt(0,  toolCardDeck.size());
-            //extractedToolCard.set(i, toolCardDeck.remove(index));
+        try {
+            toolCardDeck = parserToolcard.parseCards();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        extractedToolCard = new ArrayList<>();
+        for (int i=0; i<3; i++){
+            int index = ThreadLocalRandom.current().nextInt(0,  toolCardDeck.size());
+            extractedToolCard.add(i, toolCardDeck.remove(index));
+        }
+
+        Collections.shuffle(privateObjectiveCardDeck);
+        for (Player p : gamePlayers)
+            p.setPrivateObjectiveCard(privateObjectiveCardDeck.remove(0));
 
     }
 
@@ -178,7 +185,7 @@ public class Model extends Observable implements Serializable{ //Observable of V
         }
         string.append("\n ->Toolcards<- \n");
         for (int i = 0; i < extractedToolCard.size(); i++) {
-            string.append("\nName: " +extractedToolCard.get(i).getName() + "\n" + "Description: " + extractedToolCard.get(i).getDescription()
+            string.append("-> Number " + i + ", Name: " +extractedToolCard.get(i).getName() + "\n" + "Description: " + extractedToolCard.get(i).getDescription()
                     + "\n TokenCount = " + extractedToolCard.get(i).getTokenCount());
         }
 
@@ -190,6 +197,11 @@ public class Model extends Observable implements Serializable{ //Observable of V
         string.append("\n DraftPool: \n");
         string.append(draftPool.toString());
         return string.toString();
+    }
+
+    public void rollDraftpoolDice(){
+        this.getDraftPool().rollDice();
+        //TODO notify Draftpool changes
     }
 
     //TODO Versione toString, eventualmente da farle tornare il model stesso

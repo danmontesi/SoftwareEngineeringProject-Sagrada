@@ -17,6 +17,18 @@ public class UseToolFirmPastryThinner extends ClientToServerCommand{
      *
      */
 
+    public Integer getDieNewValue() {
+        return dieNewValue;
+    }
+
+    public Integer getDieOldPosition() {
+        return dieOldPosition;
+    }
+
+    public Integer getDiePosition() {
+        return diePosition;
+    }
+
     /**
      * Contains nameClass DRAFTPOOL/SCHEMA dieColor
      */
