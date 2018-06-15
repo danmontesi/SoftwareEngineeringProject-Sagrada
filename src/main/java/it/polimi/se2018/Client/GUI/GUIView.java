@@ -86,6 +86,11 @@ public class GUIView extends View {
         //TODO. non contiene niente, mostra solo i messaggio
     }
 
+    @Override
+    public void timeOut() {
+        //TODO: interrompe tutte le finesdte in corso, ed invia un passTurnCommand()
+    }
+
 
     // Methods for Obs/Obsvb
 

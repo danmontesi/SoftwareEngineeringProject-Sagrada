@@ -55,7 +55,11 @@ public class SocketClient implements ServerConnection {
                     try {
                         ServerToClientCommand command = (ServerToClientCommand) input.readObject();
                         System.out.println("SOCKET: arriva comando "+ command.toString());
-                        clientController.dispatchCommand(command);
+
+                        new Thread(() -> {
+                                clientController.dispatchCommand(command);
+                            }).start();
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {

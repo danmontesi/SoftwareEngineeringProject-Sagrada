@@ -17,7 +17,6 @@ public class SocketVirtualClient extends Thread implements ClientConnection {
     Socket socket;
     ObjectOutputStream output;
     ObjectInputStream input;
-    BufferedReader is;
 
     public SocketVirtualClient(Socket socket, ObjectInputStream input, ObjectOutputStream output) {
         this.socket = socket;
@@ -33,7 +32,6 @@ public class SocketVirtualClient extends Thread implements ClientConnection {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override

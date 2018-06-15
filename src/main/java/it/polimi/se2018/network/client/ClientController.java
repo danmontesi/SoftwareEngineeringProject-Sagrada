@@ -14,6 +14,7 @@ import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.server_to_client_command.*;
 import it.polimi.se2018.utils.ControllerClientInterface;
 import it.polimi.se2018.utils.Observer;
+import it.polimi.se2018.server_to_client_command.OtherPlayerTurnCommand;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -312,6 +313,17 @@ public class ClientController implements Observer, ControllerClientInterface {
         view.circularCutter();
     }
 
+
+    @Override
+    public void applyCommand(OtherPlayerTurnCommand command){
+        //TODO
+    }
+
+    @Override
+    public void applyCommand(TimeOutCommand command){
+        System.out.println("Arriva a clientContorller");
+        view.timeOut();
+    }
 
     @Override
     public void dispatchCommand(Object command) {

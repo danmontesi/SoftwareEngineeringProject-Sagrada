@@ -257,6 +257,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             hasPerformedMove=false;
             hasUsedTool=false;
             userViewMap.get(currentPlayer.getUsername()).startTurnMenu();
+
+            try {
+                Thread.sleep(5000); //TODO EDIT TOGLI ERA UN  PROVA
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            userViewMap.get(currentPlayer.getUsername()).timeOut();
         }
     }
     /**

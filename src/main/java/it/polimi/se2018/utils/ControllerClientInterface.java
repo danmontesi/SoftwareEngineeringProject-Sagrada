@@ -103,6 +103,10 @@ public interface ControllerClientInterface{
      */
     public void applyCommand(CorrectUseToolCircularCutter command);
 
+    public void applyCommand(OtherPlayerTurnCommand command);
+
+    public void applyCommand(TimeOutCommand command);
+
 
     void dispatchCommand(Object event);
 

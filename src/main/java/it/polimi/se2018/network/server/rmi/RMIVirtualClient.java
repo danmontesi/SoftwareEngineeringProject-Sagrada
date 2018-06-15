@@ -20,7 +20,7 @@ public class RMIVirtualClient implements ClientConnection {
     @Override
     public void notifyClient(ServerToClientCommand command) {
 
-        //TODO: SENZA THREAD!!!!!
+        //TODO: MAGARI SENZA THREAD
             new Thread() {
                 public void run() {
                     try {
