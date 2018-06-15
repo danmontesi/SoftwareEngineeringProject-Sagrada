@@ -4,7 +4,7 @@ package it.polimi.se2018.network.server.rmi;
 import it.polimi.se2018.network.client.ClientConnection;
 import it.polimi.se2018.network.client.rmi.RMIClientInterface;
 import it.polimi.se2018.network.server.Server;
-import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
+import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
 
 import java.rmi.RemoteException;
 import java.util.Map;

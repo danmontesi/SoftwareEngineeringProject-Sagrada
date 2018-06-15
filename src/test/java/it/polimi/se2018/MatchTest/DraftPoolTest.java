@@ -1,9 +1,9 @@
 package it.polimi.se2018.MatchTest;
 
-import it.polimi.se2018.COLOR;
-import it.polimi.se2018.DiceBag;
-import it.polimi.se2018.Die;
-import it.polimi.se2018.DraftPool;
+import it.polimi.se2018.model.COLOR;
+import it.polimi.se2018.model.DiceBag;
+import it.polimi.se2018.model.Die;
+import it.polimi.se2018.model.DraftPool;
 import it.polimi.se2018.exceptions.EmptyCellException;
 import org.junit.Assert;
 import org.junit.Before;

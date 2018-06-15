@@ -1,6 +1,7 @@
 package it.polimi.se2018.MatchTest;
 
-import it.polimi.se2018.*;
+import it.polimi.se2018.model.Model;
+import it.polimi.se2018.model.Player;
 import org.junit.Test;
 
 import java.util.ArrayList;

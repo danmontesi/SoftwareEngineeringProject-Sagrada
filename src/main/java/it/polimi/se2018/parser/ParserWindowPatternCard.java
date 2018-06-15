@@ -4,8 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.MalformedJsonException;
-import it.polimi.se2018.COLOR;
-import it.polimi.se2018.WindowPatternCard;
+import it.polimi.se2018.model.COLOR;
+import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.exceptions.NoSuchColorException;
 
 import java.io.IOException;

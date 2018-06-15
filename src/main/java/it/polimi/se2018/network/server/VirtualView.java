@@ -1,13 +1,13 @@
 package it.polimi.se2018.network.server;
 
-import it.polimi.se2018.Client.View;
-import it.polimi.se2018.Model;
-import it.polimi.se2018.client_to_server_command.MoveChoicePassTurn;
+import it.polimi.se2018.client.View;
+import it.polimi.se2018.model.Model;
+import it.polimi.se2018.commands.client_to_server_command.MoveChoicePassTurn;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.WindowPatternCard;
-import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
-import it.polimi.se2018.server_to_client_command.*;
+import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
+import it.polimi.se2018.commands.server_to_client_command.*;
 
 import java.util.ArrayList;
 

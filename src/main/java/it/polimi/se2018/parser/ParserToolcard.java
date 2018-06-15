@@ -2,7 +2,7 @@ package it.polimi.se2018.parser;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import it.polimi.se2018.toolcards.ToolCard;
+import it.polimi.se2018.model.ToolCard;
 
 import java.io.IOException;
 import java.util.ArrayList;

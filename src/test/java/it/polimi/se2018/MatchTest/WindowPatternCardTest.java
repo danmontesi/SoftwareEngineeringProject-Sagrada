@@ -1,8 +1,8 @@
 package it.polimi.se2018.MatchTest;
 
-import it.polimi.se2018.COLOR;
-import it.polimi.se2018.Die;
-import it.polimi.se2018.WindowPatternCard;
+import it.polimi.se2018.model.COLOR;
+import it.polimi.se2018.model.Die;
+import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
 import org.junit.Assert;
 import org.junit.Before;

@@ -1,7 +1,7 @@
 package it.polimi.se2018.ParserTest;
 
 import it.polimi.se2018.parser.ParserPrivateObjectiveCard;
-import it.polimi.se2018.PrivateObjectiveCard;
+import it.polimi.se2018.model.PrivateObjectiveCard;
 import org.junit.Test;
 
 import java.io.IOException;

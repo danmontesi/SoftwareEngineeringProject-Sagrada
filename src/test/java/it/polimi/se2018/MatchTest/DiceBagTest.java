@@ -1,7 +1,7 @@
 package it.polimi.se2018.MatchTest;
 
-import it.polimi.se2018.DiceBag;
-import it.polimi.se2018.Die;
+import it.polimi.se2018.model.DiceBag;
+import it.polimi.se2018.model.Die;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

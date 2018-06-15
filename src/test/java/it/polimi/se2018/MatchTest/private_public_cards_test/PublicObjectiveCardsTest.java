@@ -1,11 +1,11 @@
 package it.polimi.se2018.MatchTest.private_public_cards_test;
 
-import it.polimi.se2018.COLOR;
-import it.polimi.se2018.Cell;
-import it.polimi.se2018.Die;
-import it.polimi.se2018.WindowPatternCard;
+import it.polimi.se2018.model.COLOR;
+import it.polimi.se2018.model.Cell;
+import it.polimi.se2018.model.Die;
+import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.parser.ParserPublicObjectiveCard;
-import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
+import it.polimi.se2018.model.public_obj_cards.PublicObjectiveCard;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

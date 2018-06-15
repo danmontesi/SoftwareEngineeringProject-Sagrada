@@ -2,7 +2,7 @@ package it.polimi.se2018.parser;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
+import it.polimi.se2018.model.public_obj_cards.PublicObjectiveCard;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -23,7 +23,7 @@ public class ParserPublicObjectiveCard {
             String description = jcard.get("description").getAsString();
             int score = jcard.get("score").getAsInt();
             name = name.replaceAll("\\s","");
-            name = "it.polimi.se2018.public_obj_cards." + name;
+            name = "it.polimi.se2018.model.public_obj_cards." + name;
 
             try {
                 Class<?> clazz = Class.forName(name);

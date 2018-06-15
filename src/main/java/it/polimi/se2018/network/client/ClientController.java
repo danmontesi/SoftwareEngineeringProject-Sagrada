@@ -1,20 +1,20 @@
 package it.polimi.se2018.network.client;
 
 import com.google.gson.stream.MalformedJsonException;
-import it.polimi.se2018.COLOR;
-import it.polimi.se2018.Die;
-import it.polimi.se2018.Client.CLIView;
-import it.polimi.se2018.Client.GUIView;
-import it.polimi.se2018.Client.View;
-import it.polimi.se2018.Model;
-import it.polimi.se2018.WindowPatternCard;
-import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
+import it.polimi.se2018.model.COLOR;
+import it.polimi.se2018.client.CLI.CLIView;
+import it.polimi.se2018.model.Die;
+import it.polimi.se2018.client.GUIView;
+import it.polimi.se2018.client.View;
+import it.polimi.se2018.model.Model;
+import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.network.server.ServerConnection;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
-import it.polimi.se2018.server_to_client_command.*;
+import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.utils.ControllerClientInterface;
 import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.server_to_client_command.OtherPlayerTurnCommand;
+import it.polimi.se2018.commands.server_to_client_command.OtherPlayerTurnCommand;
 
 import java.io.IOException;
 import java.util.ArrayList;

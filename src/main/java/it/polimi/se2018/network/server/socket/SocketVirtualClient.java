@@ -1,16 +1,14 @@
 package it.polimi.se2018.network.server.socket;
 
 
-import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
+import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.network.client.ClientConnection;
 import it.polimi.se2018.network.server.Server;
-import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
+import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
 public class SocketVirtualClient extends Thread implements ClientConnection {
 

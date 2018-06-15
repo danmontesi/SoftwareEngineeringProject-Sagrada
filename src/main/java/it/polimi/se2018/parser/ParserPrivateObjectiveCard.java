@@ -2,8 +2,8 @@ package it.polimi.se2018.parser;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import it.polimi.se2018.COLOR;
-import it.polimi.se2018.PrivateObjectiveCard;
+import it.polimi.se2018.model.COLOR;
+import it.polimi.se2018.model.PrivateObjectiveCard;
 import it.polimi.se2018.exceptions.NoSuchColorException;
 
 import java.io.IOException;

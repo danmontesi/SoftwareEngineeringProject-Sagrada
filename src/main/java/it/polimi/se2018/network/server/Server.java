@@ -1,14 +1,14 @@
 package it.polimi.se2018.network.server;
 
 
-import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
+import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.network.client.ClientConnection;
 import it.polimi.se2018.network.client.rmi.RMIClientInterface;
 import it.polimi.se2018.network.server.rmi.RMIServer;
 import it.polimi.se2018.network.server.rmi.RMIVirtualClient;
 import it.polimi.se2018.network.server.socket.SocketServer;
 import it.polimi.se2018.network.server.socket.SocketVirtualClient;
-import it.polimi.se2018.server_to_client_command.AuthenticatedCorrectlyCommand;
+import it.polimi.se2018.commands.server_to_client_command.AuthenticatedCorrectlyCommand;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

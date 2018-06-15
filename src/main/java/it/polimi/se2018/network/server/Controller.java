@@ -1,14 +1,13 @@
 package it.polimi.se2018.network.server;
 
-import it.polimi.se2018.*;
-import it.polimi.se2018.Client.View;
+import it.polimi.se2018.client.View;
+import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.ControllerServerInterface;
 import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.client_to_server_command.*;
+import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
-import it.polimi.se2018.public_obj_cards.PublicObjectiveCard;
-import it.polimi.se2018.toolcards.ToolCard;
+import it.polimi.se2018.model.public_obj_cards.PublicObjectiveCard;
 
 import java.io.IOException;
 import java.util.*;

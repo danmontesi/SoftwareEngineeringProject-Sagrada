@@ -1,9 +1,9 @@
 package it.polimi.se2018.MatchTest;
 
-import it.polimi.se2018.COLOR;
-import it.polimi.se2018.Die;
+import it.polimi.se2018.model.COLOR;
+import it.polimi.se2018.model.Die;
 import it.polimi.se2018.exceptions.EmptyCellException;
-import it.polimi.se2018.RoundTrack;
+import it.polimi.se2018.model.RoundTrack;
 import org.junit.Before;
 import org.junit.Test;
 

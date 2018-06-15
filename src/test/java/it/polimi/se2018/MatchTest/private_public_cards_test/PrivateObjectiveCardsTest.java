@@ -1,7 +1,7 @@
 package it.polimi.se2018.MatchTest.private_public_cards_test;
 
-import it.polimi.se2018.*;
 import it.polimi.se2018.exceptions.EmptyCellException;
+import it.polimi.se2018.model.*;
 import it.polimi.se2018.parser.ParserPrivateObjectiveCard;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
 import org.junit.Before;

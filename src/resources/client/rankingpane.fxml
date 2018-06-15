@@ -11,7 +11,7 @@
             stylesheets="/client/rankingpane.css"
             xmlns="http://javafx.com/javafx/8"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.polimi.se2018.Client.GUI.RankingPaneController">
+            fx:controller="it.polimi.se2018.client.GUI.RankingPaneController">
    <children>
       <Label fx:id="outcome" alignment="CENTER" layoutX="135.0" layoutY="50.0" prefHeight="80.0" prefWidth="300.0" style="-fx-font-size: 54px;" text="You Lost" textAlignment="CENTER" />
       <Label fx:id="rank" alignment="CENTER" layoutX="135.0" layoutY="130.0" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 38px" text="You ranked #3" textAlignment="CENTER" />

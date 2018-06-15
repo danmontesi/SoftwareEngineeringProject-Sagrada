@@ -1,11 +1,11 @@
 package it.polimi.se2018.network.client.socket;
 
 
-import it.polimi.se2018.client_to_server_command.ClientToServerCommand;
+import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.network.client.ClientController;
 import it.polimi.se2018.utils.ControllerClientInterface;
 import it.polimi.se2018.network.server.ServerConnection;
-import it.polimi.se2018.server_to_client_command.ServerToClientCommand;
+import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
