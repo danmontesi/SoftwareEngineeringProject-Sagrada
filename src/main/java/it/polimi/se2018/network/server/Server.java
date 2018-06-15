@@ -61,7 +61,7 @@ public class Server {
 
         while (activeServer){
 
-            if ((waitingClients.size() >= 4) || (itsTimeToStart)){
+            if ((waitingClients.size() >= 4) || (itsTimeToStart)){ //TODO Che succede se tolgo l'or con itsTimeToStart?
                 startNewGame();
             }
         }
@@ -248,4 +248,5 @@ public class Server {
     public static HashMap<String, VirtualView> getUserMap() {
         return userMap;
     }
+
 }
