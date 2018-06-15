@@ -1,9 +1,9 @@
 package it.polimi.se2018.client.GUI;
 
-import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.client.View;
-import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
 import it.polimi.se2018.utils.Observer;
+import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ public class GUIView extends View {
 
 //TODO          PER CHI FA LA VIEW:
 //TODO          OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO.
-//TODO          ognuno dei metodi qui sotto prima chiede l'input dall'utente, poi fa notify(new chosen
+//TODO          ognuno dei metodi quì sotto prima chiede l'input dall'utente, poi fa notify(new chosen
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards){
         //notify(new ChooseWindowPatternCardCommand())
     }
@@ -85,6 +85,11 @@ public class GUIView extends View {
 
     public void correctAuthenthication(String username){
         //TODO. non contiene niente, mostra solo i messaggio
+    }
+
+    @Override
+    public void timeOut() {
+        //TODO: interrompe tutte le finesdte in corso, ed invia un passTurnCommand()
     }
 
 
