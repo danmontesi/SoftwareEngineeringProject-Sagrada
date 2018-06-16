@@ -1,10 +1,12 @@
 package it.polimi.se2018.client.CLI;
 
+import it.polimi.se2018.client.GUI.GameBoardController;
 import it.polimi.se2018.client.View;
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ public class CLIView extends View {
 
     public CLIView(Observer observer){
         register(observer);
+        System.out.println("ATTESA DI GIOCATORI...");
         inputReader = new InputReader();
     }
 

@@ -38,15 +38,15 @@ public class LobbyController {
         Parent root = FXMLLoader.load(getClass().getResource("/client/lobby.fxml"));
         Stage primaryStage = new Stage();
         stage = primaryStage;
-        primaryStage.setTitle("Lobby");
-        primaryStage.setScene(new Scene(root, 400, 250));
-        Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
-        primaryStage.show();
+        stage.setTitle("Lobby");
+        stage.setScene(new Scene(root, 400, 250));
+  //      Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
+        stage.show();
     }
 
     public void closeStage() {
-        //Stage stage = (Stage)text.getScene().getWindow();
         Platform.runLater(() -> {
+            //Stage stage = (Stage)text.getScene().getWindow();
             stage.setOnCloseRequest(event -> Platform.exit());
             stage.close();
             System.exit(0);

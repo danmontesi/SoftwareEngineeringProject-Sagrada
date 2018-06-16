@@ -1,6 +1,7 @@
 package it.polimi.se2018.client.GUI;
 
 import it.polimi.se2018.client.ClientStarterMain;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,7 +26,7 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class WPCChoiceController extends Observable implements Observer {
+public class WPCChoiceController{
 
     private static final Logger LOGGER = Logger.getLogger(WPCChoiceController.class.getName());
 
@@ -68,22 +69,31 @@ public class WPCChoiceController extends Observable implements Observer {
     }
 
     public void start() throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/client/wpcchoice.fxml"));
-        System.out.println("entra1");
-        Stage primaryStage = new Stage();
-        System.out.println("entra2");
-        stage = primaryStage;
-        System.out.println("entra3");
-        primaryStage.setTitle("WPC Choice");
-        System.out.println("entra4");
-        primaryStage.setScene(new Scene(root, 400, 250));
-        System.out.println("entra5");
-        Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
-        System.out.println("entra6");
-        primaryStage.show();
+        Platform.runLater(() -> {
+            Parent root = null;
+            try {
+                root = FXMLLoader.load(getClass().getResource("/client/wpcchoice.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("entra1");
+            Stage primaryStage = new Stage();
+            System.out.println("entra2");
+            stage = primaryStage;
+            System.out.println("entra3");
+            stage.setTitle("WPC Choice");
+            System.out.println("entra4");
+            stage.setScene(new Scene(root, 400, 250));
+            System.out.println("entra5");
+            //Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
+            System.out.println("entra6");
+            stage.show();
+            System.out.println("Entra7");
+        });
     }
 
     public void initialize() {
+        System.out.println("Prima di init");
         initWPCards();
         setTGroup();
         initStyle();
@@ -121,7 +131,6 @@ public class WPCChoiceController extends Observable implements Observer {
             }
     }
 
-    @Override
     public void update(Observable o, Object args) {
 
     }

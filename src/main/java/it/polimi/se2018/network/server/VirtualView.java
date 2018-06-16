@@ -9,6 +9,7 @@ import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -226,4 +227,5 @@ public class VirtualView extends View {
         else
             Server.getConnectedClients().get(username).notifyClient(new MessageFromServerCommand(message));
     }
+    
 }

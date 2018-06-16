@@ -37,10 +37,10 @@ public class GUIView extends View {
         ArrayList<String> cardNames = new ArrayList<>();
         for (WindowPatternCard card : cards)
             cardNames.add(card.getCardName());
+
         lobby.closeStage();
         wpcChoiceController = new WPCChoiceController();
         System.out.println("ciao");
-
         wpcChoiceController.show();
         //notify(new ChooseWindowPatternCardCommand())
     }
@@ -52,7 +52,6 @@ public class GUIView extends View {
         initGui.closeScene();
         lobby = new LobbyController();
         lobby.show();
-
     }
 
 
@@ -202,8 +201,4 @@ public class GUIView extends View {
         System.out.println("ricevuto "+ command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        
-    }
 }
