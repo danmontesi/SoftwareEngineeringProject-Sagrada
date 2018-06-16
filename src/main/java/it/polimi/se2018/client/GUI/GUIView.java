@@ -75,6 +75,11 @@ public class GUIView extends View {
         //piccola label a scomparsa che segnala il giocatore all'interno della lobby
     }
 
+    @Override
+    public void playerDisconnection(String username) {
+
+    }
+
 
     public void startTurnMenu(){
         // Abilito bottoni draftpool, toolcard, pass.
@@ -91,6 +96,16 @@ public class GUIView extends View {
         // se sì-> notify(new MoveChoiceToolCard(indice tool);
 
         //notify( new MOVE / new TOOLUSE / new PASSTURN )
+    }
+
+    @Override
+    public void otherPlayerTurn(String username) {
+
+    }
+
+    @Override
+    public void authenticatedCorrectlyMessage(String message) {
+
     }
 
     public void AllowedUseToolMessage(String message){
@@ -174,6 +189,26 @@ public class GUIView extends View {
     @Override
     public void timeOut() {
         //TODO: interrompe tutte le finesdte in corso, ed invia un passTurnCommand()
+    }
+
+    @Override
+    public void updateWpc() {
+        //DO LATER
+    }
+
+    @Override
+    public void updateTokens() {
+        //DO LATER
+    }
+
+    @Override
+    public void updateRoundTrack() {
+        //DO LATER
+    }
+
+    @Override
+    public void updateDraftPool() {
+        //DO LATER
     }
 
 

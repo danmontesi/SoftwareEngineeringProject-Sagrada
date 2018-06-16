@@ -110,4 +110,14 @@ public class RoundTrack {
         }
         return roundtrackString;
     }
+
+    public boolean isPresent(COLOR color) throws EmptyCellException {
+        for (Cell cell : roundCells){
+            if (cell.hasDie()){
+                if (cell.getAssociatedDie().getColor()==color)
+                    return true;
+            }
+        }
+        return false;
+    }
 }

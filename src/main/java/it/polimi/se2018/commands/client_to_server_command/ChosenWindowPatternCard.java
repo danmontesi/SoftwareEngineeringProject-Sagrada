@@ -13,7 +13,7 @@ public class ChosenWindowPatternCard extends ClientToServerCommand{
     }
 
     public void visit(ControllerServerInterface observer){
-        observer.applyCommand(getUsername(), this);
+        observer.applyCommand(getUsername(),this);
     }
 }
 

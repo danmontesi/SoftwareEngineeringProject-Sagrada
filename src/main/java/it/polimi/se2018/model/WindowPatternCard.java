@@ -102,6 +102,78 @@ public class WindowPatternCard {
         }
     }
 
+    public boolean switchDie(int oldPosition, int newPosition, boolean colorRestriction, boolean valueRestriction,
+                            boolean placementRestriction) throws EmptyCellException {
+        Die d = this.getCell(oldPosition).getAssociatedDie();
+        if (this.getCell(newPosition).hasDie()) {
+            return false;
+        }
+        if (colorRestriction) {
+            if (!checkColorRestriction(this.getCell(newPosition), d)) {
+                return false;
+            }
+        }
+        if (valueRestriction) {
+            if (!checkValueRestriction(this.getCell(newPosition), d)) {
+                return false;
+            }
+        }
+        if (placementRestriction) {
+            if (!checkPlacementRestriction(getCell(newPosition), d)) {
+                return false;
+            }
+        }
+        this.getCell(newPosition).setAssociatedDie(this.getCell(oldPosition).removeDie());
+        return true;
+    }
+
+    public boolean move2Dice(int oldPosition1, int newPosition1, int oldPosition2, int newPosition2, boolean colorRestriction, boolean valueRestriction,
+                             boolean placementRestriction) throws EmptyCellException {
+        Die d = this.getCell(oldPosition1).getAssociatedDie();
+        if (this.getCell(newPosition1).hasDie()) {
+            return false;
+        }
+        if (colorRestriction) {
+            if (!checkColorRestriction(this.getCell(newPosition1), d)) {
+                return false;
+            }
+        }
+        if (valueRestriction) {
+            if (!checkValueRestriction(this.getCell(newPosition1), d)) {
+                return false;
+            }
+        }
+        if (placementRestriction) {
+            if (!checkPlacementRestriction(getCell(newPosition1), d)) {
+                return false;
+            }
+        }
+
+        Die d2 = this.getCell(oldPosition2).getAssociatedDie();
+        if (this.getCell(newPosition2).hasDie()) {
+            return false;
+        }
+        if (colorRestriction) {
+            if (!checkColorRestriction(this.getCell(newPosition2), d2)) {
+                return false;
+            }
+        }
+        if (valueRestriction) {
+            if (!checkValueRestriction(this.getCell(newPosition2), d2)) {
+                return false;
+            }
+        }
+        if (placementRestriction) {
+            if (!checkPlacementRestriction(getCell(newPosition2), d2)) {
+                return false;
+            }
+        }
+
+        this.getCell(newPosition1).setAssociatedDie(this.getCell(oldPosition1).removeDie());
+        this.getCell(newPosition2).setAssociatedDie(this.getCell(oldPosition2).removeDie());
+        return true;
+    }
+
     public Die removeDie(int row, int column) throws EmptyCellException {
         return schema.get(row * 5 + column).removeDie();
     }

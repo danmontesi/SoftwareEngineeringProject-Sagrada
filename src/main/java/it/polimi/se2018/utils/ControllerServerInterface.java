@@ -1,6 +1,7 @@
 package it.polimi.se2018.utils;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
+import it.polimi.se2018.exceptions.EmptyCellException;
 
 public interface ControllerServerInterface {
 
@@ -62,5 +63,8 @@ public interface ControllerServerInterface {
 
     public void applyCommand(String playerUsername, UseToolMoveDieNoRestriction command);
 
-    public void applyCommand(String playerUsername, UseToolTwoDicePlacement command);
+    public void applyCommand(String playerUsername, UseToolTwoDicePlacement command) throws EmptyCellException;
+
+    public void applyCommand(String playerUsername, UndoActionCommand command);
+
 }

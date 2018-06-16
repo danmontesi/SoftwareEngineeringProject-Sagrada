@@ -1,5 +1,6 @@
 package it.polimi.se2018.commands.client_to_server_command;
 
+import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.utils.ControllerServerInterface;
 
 public class UseToolTwoDicePlacement extends ClientToServerCommand {
@@ -46,7 +47,7 @@ public class UseToolTwoDicePlacement extends ClientToServerCommand {
         this.schemaNewPosition2 = schemaNewPosition2;
     }
 
-    public void visit(ControllerServerInterface observer){
+    public void visit(ControllerServerInterface observer) throws EmptyCellException {
         observer.applyCommand(getUsername(), this);
     }
 }

@@ -10,9 +10,23 @@ public class UseToolChangeDieValue extends ClientToServerCommand {
      */
     private String cardName;
 
-    private boolean increase; //ONLY for Roughing forceps
+    public String getCardName() {
+        return cardName;
+    }
 
-    private boolean placedDie; //Setted depending from the constructor
+    public boolean isIncrease() {
+        return increase;
+    }
+
+    public Integer getDraftPoolPosition() {
+        return draftPoolPosition;
+    }
+
+    public Integer getSchemaPosition() {
+        return schemaPosition;
+    }
+
+    private boolean increase; //ONLY for Roughing forceps
 
     private Integer draftPoolPosition;
 
@@ -24,14 +38,12 @@ public class UseToolChangeDieValue extends ClientToServerCommand {
      * @param draftPoolPosition
      * @param schemaPosition
      * @param increase
-     * @param placedDie
      */
-    public UseToolChangeDieValue(String cardName, Integer draftPoolPosition, Integer schemaPosition, boolean increase, boolean placedDie) {
+    public UseToolChangeDieValue(String cardName, Integer draftPoolPosition, Integer schemaPosition, boolean increase) {
         this.cardName = cardName;
         this.increase = increase;
         this.draftPoolPosition = draftPoolPosition;
         this.schemaPosition = schemaPosition;
-        this.placedDie = placedDie;
     }
 
     /**
@@ -39,13 +51,11 @@ public class UseToolChangeDieValue extends ClientToServerCommand {
      * @param cardName
      * @param draftPoolPosition
      * @param schemaPosition
-     * @param placedDie
      */
-    public UseToolChangeDieValue(String cardName, Integer draftPoolPosition, Integer schemaPosition, boolean placedDie) {
+    public UseToolChangeDieValue(String cardName, Integer draftPoolPosition, Integer schemaPosition) {
         this.cardName = cardName;
         this.draftPoolPosition = draftPoolPosition;
         this.schemaPosition = schemaPosition;
-        this.placedDie = placedDie;
     }
 
     public void visit(ControllerServerInterface observer){

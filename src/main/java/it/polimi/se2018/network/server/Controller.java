@@ -10,7 +10,6 @@ import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.model.public_obj_cards.PublicObjectiveCard;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -38,6 +37,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private HashMap<Player,Timer> playerTimerMap;
 
+    private int requiredTokensForLastToolUse;
+    private ToolCard lastUsedToolCard;
+    private Die extractedDieForFirmyPastryThinner;
+
     /**
      * ArrayList that contains the ordered players that has to play
      * is created by the model in its constructor
@@ -58,6 +61,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private int roundNumber;//Maybe to be deleted, substituted by 10-orderedRoundPlayers.size()
 
     private int timerCostant;
+
+    //TODO:
+    //TODO OGNI MODIFICA DEI GIOCATORI orderedPlayers, DEVO RIASSEGNARLI AL MODEL
+    //TODO OGNI VOLTA DEVO CONTROLLARE SE E' RISPETTATA LA CONDIZIONE DI CURRENT
+    //TODO
     /**
      * The controller receives a list of the Usernames of the connected players.
      * The controller receives the connected Connection though the static HashMap of the Server
@@ -86,7 +94,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         this.roundNumber = 0;
         this.orderedPlayers= new ArrayList<>();
 
-        this.timerCostant = 60000;
+        this.timerCostant = 600000; //TODO set better
         // Now I will start each player's View
         initializeGame();
 
@@ -107,6 +115,17 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             localWpc = model.extractWindowPatternCard();
             System.out.println("invio command CHOOSEWPC a player:" + p.getUsername());
             userViewMap.get(p.getUsername()).chooseWindowPatternCardMenu(localWpc);
+            playerTimerMap.put(usernamePlayerMap.get(p.getUsername()), new Timer());
+            playerTimerMap.get(usernamePlayerMap.get(p.getUsername())).schedule(
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            System.out.println("Sending timeout");
+                            userViewMap.get(currentPlayer.getUsername()).timeOut();
+                        }
+                    },
+                    timerCostant);
+
         }
     }
 
@@ -264,8 +283,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             hasPerformedMove=false;
             hasUsedTool=false;
 
-            playerTimerMap.put(currentPlayer, new Timer());
-            playerTimerMap.get(currentPlayer).schedule(
+            playerTimerMap.put(usernamePlayerMap.get(currentPlayer.getUsername()), new Timer());
+            playerTimerMap.get(usernamePlayerMap.get(currentPlayer.getUsername())).schedule(
                     new TimerTask() {
                         @Override
                         public void run() {
@@ -291,8 +310,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         else{
             currentPlayer=currentRoundOrderedPlayers.remove(0);
-            playerTimerMap.put(currentPlayer, new Timer());
-            playerTimerMap.get(currentPlayer).schedule(
+            playerTimerMap.put(usernamePlayerMap.get(currentPlayer.getUsername()), new Timer());
+            playerTimerMap.get(usernamePlayerMap.get(currentPlayer.getUsername())).schedule(
                     new TimerTask() {
                         @Override
                         public void run() {
@@ -324,6 +343,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public synchronized void applyCommand(String playerUsername, ChosenWindowPatternCard command){
         ParserWindowPatternCard parser = null;
+        playerTimerMap.get(usernamePlayerMap.get(playerUsername)).cancel();
         try {
             parser = new ParserWindowPatternCard();
             usernamePlayerMap.get(playerUsername).setWindowPatternCard(parser.parseCardByName(command.getMessage()));
@@ -354,8 +374,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             requiredTokens=2;
         }
         if (current.getTokens()>requiredTokens) {
-            current.decreaseTokens(requiredTokens);
-            chosen.increaseTokens(requiredTokens);
+            lastUsedToolCard = chosen;
+            requiredTokensForLastToolUse = requiredTokens;
             String toolName = chosen.getName();
                 if (toolName.equals("Copper Foil Reamer"))
                     userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
@@ -368,19 +388,19 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 else if (toolName.equals("Firm Pastry Brush"))
                     userViewMap.get(currentPlayer.getUsername()).firmPastryBrushMenu(ThreadLocalRandom.current().nextInt(1, 7));
                 else if (toolName.equals("Firm Pastry Thinner")) {
-                    Die die = model.getDiceBag().extractDie(); //TODO Dove tengo questa informazione? mi fido del controller? Sì
-                    userViewMap.get(currentPlayer.getUsername()).firmPastryThinnerMenu(die.getColor().toString(), die.getValue());
+                    extractedDieForFirmyPastryThinner = model.getDiceBag().extractDie();
+                    userViewMap.get(currentPlayer.getUsername()).firmPastryThinnerMenu(extractedDieForFirmyPastryThinner.getColor().toString(), extractedDieForFirmyPastryThinner.getValue());
                 }
                 else if (toolName.equals("Gavel")) {
                 if (currentRoundOrderedPlayers.contains(usernamePlayerMap.get(playerUsername))) { //Can't use the tool, has to be in second turn
-                    current.decreaseTokens(-requiredTokens);
-                    chosen.increaseTokens(-requiredTokens);
                     userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You have to be in your second turn to use the tool");
                     userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 } else {
                     model.rollDraftpoolDice();
+                    current.decreaseTokens(requiredTokens);
+                    chosen.increaseTokens(requiredTokens);
                     userViewMap.get(currentPlayer.getUsername()).messageBox("Correctly used the tool, dice are re-rolled");
-                    hasPerformedMove = true;
+                    hasUsedTool = true;
                     userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasPerformedMove);
                 }
             }
@@ -392,8 +412,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     userViewMap.get(playerUsername).changeDieValueMenu(chosen.getName());
             else if (toolName.equals("Wheels Pincher")) {
                 if (!currentRoundOrderedPlayers.contains(usernamePlayerMap.get(playerUsername))) { //Can't use the tool, has to be in first turn
-                    current.decreaseTokens(-requiredTokens);
-                    chosen.increaseTokens(-requiredTokens);
                     userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You have to be in your first turn to use the tool");
                     userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 } else {
@@ -436,12 +454,15 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
         }
         //When I arrive here, the move is already performed
-
     }
 
     @Override
     public void applyCommand(String playerUsername, MoveChoicePassTurn command){
-        playerTimerMap.get(currentPlayer).cancel();
+        if (extractedDieForFirmyPastryThinner!=null) { //Case in which a timeout forced the player turn skip -> the die hasn't to be lost
+            model.getDiceBag().insertDie(extractedDieForFirmyPastryThinner);
+            extractedDieForFirmyPastryThinner=null;
+        }
+        playerTimerMap.get(usernamePlayerMap.get(currentPlayer.getUsername())).cancel();
         startNewTurn();
     }
 
@@ -454,23 +475,64 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     //MOSSA SENZA RESTRIZIONE POSIZIONE E DEVONO ESSERE NON ADIACENTI
     @Override
-    public void applyCommand(String playerUsername,UseToolCorkLine command){
+    public void applyCommand(String playerUsername, UseToolCorkLine command){
         //WindowPatternCard card = currentPlayer.getWindowPatternCard().placeDie(model.getDraftPool().getDie(command.getDieDraftPoolPosition()),  )
         //boolean correctMove = usernamePlayerMap.get(playerUsername).getWindowPatternCard().placeDie()
-    }
-    /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
-     */
-    @Override
-    public void applyCommand(String playerUsername ,UseToolTwoDicePlacement command){
+        usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
+        lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
+        hasUsedTool = true;
+        userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
 
     }
     /**
      * Applies commands coming from the client, answering with correct/incorrect command responses
      */
     @Override
-    public void applyCommand(String playerUsername ,UseToolMoveDieNoRestriction command){
+    public void applyCommand(String playerUsername, UseToolTwoDicePlacement command) throws EmptyCellException {
+        if (command.getCardName().equals("Manual Cutter")) {
+            Player current = usernamePlayerMap.get(playerUsername);
+            if (!current.getWindowPatternCard().getCell(command.getSchemaOldPosition1()).hasDie() || !current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).hasDie()) {
+                //Invalid (no die in the index given
+                //continueturn
+            }
+            Die die1 = current.getWindowPatternCard().getCell(command.getSchemaOldPosition1()).getAssociatedDie();
+            Die die2 = current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).getAssociatedDie();
+            if (die1.getColor() == die2.getColor()) {
+                //invalid with text "The dice has different color"
+                //continueTurn
+                return;
+            } else if (!model.getRoundTrack().isPresent(die1.getColor())) {
+                // invalid with mess "Roundtrack hasn't the specified color
+                //ContinueTurn
+                return;
+            }
+        }
+            if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().move2Dice(command.getSchemaOldPosition1(),
+                    command.getSchemaNewPosition1(), command.getSchemaOldPosition2(), command.getSchemaNewPosition2(), true, true, true)) {
+                //invalid (No correct placement, retry)
+                //continueTurn
+                return;
+            }
+        usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
+        lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
+        hasUsedTool = true;
+        userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+    }
 
+    @Override
+    public void applyCommand(String playerUsername, UndoActionCommand command) {
+        userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+    }
+
+    /**
+     * Applies commands coming from the client, answering with correct/incorrect command responses
+     */
+    @Override
+    public void applyCommand(String playerUsername, UseToolMoveDieNoRestriction command){
+        usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
+        lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
+        hasUsedTool = true;
+        userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
     }
 
     /**
@@ -486,6 +548,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         else{ //default: draftpool
             //TODO just change the value die in the DraftPool, call the menu of Player
         }
+        usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
+        lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
+        hasUsedTool = true;
+        userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
     }
 
     /**
@@ -501,6 +567,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         else{ //default: draftpool
             //TODO change the die in the DraftPool, reinsert the old one in the diceBag
         }
+        usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
+        lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
+        hasUsedTool = true;
+        userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
 
     }
 
@@ -510,6 +580,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername ,UseToolChangeDieValue command){
 
+        usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
+        lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
+        hasUsedTool = true;
+        userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+
     }
 
     /**
@@ -518,6 +593,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername ,UseToolCircularCutter command){
 
+        usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
+        lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
+        hasUsedTool = true;
+        userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
     }
 
     /**
@@ -527,6 +606,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername ,UseToolWheelsPincher command){
 
+        usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
+        lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
+        hasUsedTool = true;
+        userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
     }
 
 
@@ -539,6 +622,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void update(Object event) {
         ClientToServerCommand command = (ClientToServerCommand) event;
-        command.visit(this);
+        try {
+            command.visit(this);
+        } catch (EmptyCellException e) {
+            e.printStackTrace();
+        }
     }
 }

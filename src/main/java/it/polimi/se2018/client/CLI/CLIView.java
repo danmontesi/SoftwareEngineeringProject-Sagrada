@@ -82,6 +82,16 @@ public class CLIView extends View {
         }
     }
 
+    @Override
+    public void otherPlayerTurn(String username) {
+        //printother player name fo notify its turn
+    }
+
+    @Override
+    public void authenticatedCorrectlyMessage(String message) {
+        //print that the player authenticated correctly with username
+    }
+
 
     public void AllowedUseToolMessage(String message){
         //TODO Questo metodo non invia niente, mostra solo il messaggio
@@ -113,9 +123,15 @@ public class CLIView extends View {
     }
 
     @Override
-    public void correctUseTool(int numTool){
-        //Invia un messageBox contenente un messaggio riguardante il tool applicato correttamente
-        //TODO FORSE INUTILE E SOSTITUIBILE DA UN METODO GENERICO DI MESSAGGIO
+    public void newConnectedPlayer(String username) {
+        //print that player connected
+
+    }
+
+    @Override
+    public void playerDisconnection(String username) {
+        //print that player disconnected
+
     }
 
     @Override
@@ -168,10 +184,10 @@ public class CLIView extends View {
             if (decision==1){
                 System.out.println("Where do you want to place the die?");
                 Integer schemaPosition = scan.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
-                notify(new UseToolChangeDieValue(cardName, draftpoolPos, schemaPosition, increase, true));
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, schemaPosition, increase));
             }
             else{
-                notify(new UseToolChangeDieValue(cardName, draftpoolPos, null, increase, false));
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, null, increase));
             }
         }
         else if (cardName.equals("Diamond Swab")) {
@@ -262,6 +278,26 @@ public class CLIView extends View {
     @Override
     public void timeOut() {
         this.inputReader.setTimeOut(true);
+    }
+
+    @Override
+    public void updateWpc() {
+        //TODO
+    }
+
+    @Override
+    public void updateTokens() {
+    //TODO
+    }
+
+    @Override
+    public void updateRoundTrack() {
+    //TODO
+    }
+
+    @Override
+    public void updateDraftPool() {
+    //TODO
     }
 
 

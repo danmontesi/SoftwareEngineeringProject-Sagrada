@@ -1,5 +1,7 @@
 package it.polimi.se2018.commands.client_to_server_command;
 
+import it.polimi.se2018.utils.ControllerServerInterface;
+
 public class UseToolFirmPastryBrush extends ClientToServerCommand{
     public Integer getDieValue() {
         return dieValue;
@@ -44,5 +46,8 @@ public class UseToolFirmPastryBrush extends ClientToServerCommand{
         this.dieValue = dieValue;
         this.diePosition = diePosition;
         this.dieOldPosition = dieOldPosition;
+    }
+    public void visit(ControllerServerInterface observer){
+        observer.applyCommand(getUsername(), this);
     }
 }

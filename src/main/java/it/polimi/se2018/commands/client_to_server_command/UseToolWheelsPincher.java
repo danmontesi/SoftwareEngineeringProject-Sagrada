@@ -1,5 +1,7 @@
 package it.polimi.se2018.commands.client_to_server_command;
 
+import it.polimi.se2018.utils.ControllerServerInterface;
+
 public class UseToolWheelsPincher extends ClientToServerCommand{
     public Integer getDieDraftPoolPosition1() {
         return dieDraftPoolPosition1;
@@ -45,5 +47,9 @@ public class UseToolWheelsPincher extends ClientToServerCommand{
         this.dieSchemaPosition1 = dieSchemaPosition1;
         this.dieSchemaPosition2 = dieSchemaPosition2;
         this.dieDraftPoolPosition2 = dieDraftPoolPosition2;
+    }
+
+    public void visit(ControllerServerInterface observer){
+        observer.applyCommand(getUsername(), this);
     }
 }

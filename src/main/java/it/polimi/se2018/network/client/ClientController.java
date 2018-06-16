@@ -325,7 +325,7 @@ public class ClientController implements Observer, ControllerClientInterface {
 
     @Override
     public void applyCommand(OtherPlayerTurnCommand command){
-        //TODO
+        view.otherPlayerTurn(command.getUsername());
     }
 
     @Override
@@ -338,6 +338,43 @@ public class ClientController implements Observer, ControllerClientInterface {
     public void dispatchCommand(Object command) {
         ServerToClientCommand castedCommand = (ServerToClientCommand) command;
         castedCommand.visit(this);
+    }
+
+    @Override
+    public void applyCommand(RefreshDraftPoolCommand command) {
+
+    }
+
+    @Override
+    public void applyCommand(RefreshTokensCommand command) {
+
+    }
+
+    @Override
+    public void applyCommand(RefreshWpcCommand command) {
+
+    }
+
+    @Override
+    public void applyCommand(RefreshRoundTrackCommand command) {
+
+    }
+
+
+    @Override
+    public void applyCommand(PlayerDisconnectionNotification command) {
+        view.playerDisconnection(command.getUsername());
+    }
+
+
+    @Override
+    public void applyCommand(NewConnectedPlayerNotification command) {
+        view.newConnectedPlayer(command.getUsername());
+    }
+
+    @Override
+    public void applyCommand(PingConnectionTester pingConnectionTester) {
+        System.out.println("ping from server");
     }
 
 }

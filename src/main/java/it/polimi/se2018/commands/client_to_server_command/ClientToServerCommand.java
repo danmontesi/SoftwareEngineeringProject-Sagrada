@@ -1,5 +1,6 @@
 package it.polimi.se2018.commands.client_to_server_command;
 
+import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.utils.ControllerServerInterface;
 
 import java.io.Serializable;
@@ -40,9 +41,7 @@ public abstract class ClientToServerCommand implements Serializable {
 
     //THIS METHOD IS IN EVERY SON
 
-    public void visit(ControllerServerInterface observer){
-        observer.applyCommand(username , this);
-    }
+    public abstract void visit(ControllerServerInterface observer) throws EmptyCellException;
 
 }
 

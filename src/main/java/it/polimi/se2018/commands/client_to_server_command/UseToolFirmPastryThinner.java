@@ -1,5 +1,7 @@
 package it.polimi.se2018.commands.client_to_server_command;
 
+import it.polimi.se2018.utils.ControllerServerInterface;
+
 public class UseToolFirmPastryThinner extends ClientToServerCommand{
     /**
      *
@@ -44,5 +46,9 @@ public class UseToolFirmPastryThinner extends ClientToServerCommand{
         this.dieNewValue = dieNewValue;
         this.diePosition = diePosition;
         this.dieOldPosition = dieOldPosition;
+    }
+
+    public void visit(ControllerServerInterface observer){
+        observer.applyCommand(getUsername(), this);
     }
 }

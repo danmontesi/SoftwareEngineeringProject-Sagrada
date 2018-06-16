@@ -54,7 +54,7 @@ public class VirtualView extends View {
             notify(new ChosenWindowPatternCard(cards.get(0).getCardName()));
         }
         else {
-            //Server.getConnectedClients().get(username).notifyClient(new pingConnectionTester()); //TODO implement the command
+            Server.getConnectedClients().get(username).notifyClient(new PingConnectionTester()); //TODO implement the command
             if (Server.getConnectedClients().get(username) == null) { //disconnected
                 System.out.println("Disconnected-> choosing a random Wpc");
                 notify(new ChosenWindowPatternCard(cards.get(0).getCardName()));
@@ -80,7 +80,16 @@ public class VirtualView extends View {
             Server.getConnectedClients().get(username).notifyClient(new StartPlayerTurnCommand());
     }
 
-    public void askAuthenticatedCorrectlyMessage(String message) {
+    @Override
+    public void otherPlayerTurn(String username) {
+        if (Server.getConnectedClients().get(username) == null) { //disconnected
+            System.out.println("Disconnected-> No action");
+        } else
+            Server.getConnectedClients().get(username).notifyClient(new OtherPlayerTurnCommand(username));
+
+    }
+
+    public void authenticatedCorrectlyMessage(String message) {
         //TODO elimina
     }
 
@@ -92,6 +101,26 @@ public class VirtualView extends View {
         } else {
             System.out.println("SENDING CONTINUETURNMENU");
             Server.getConnectedClients().get(username).notifyClient(new ContinueTurnCommand(move, tool));
+        }
+    }
+
+    @Override
+    public void newConnectedPlayer(String username) {
+        if (Server.getConnectedClients().get(username) == null) { //disconnected
+            System.out.println("Disconnected-> No action");
+        } else {
+            Server.getConnectedClients().get(username).notifyClient(new PlayerDisconnectionNotification(username));
+        }
+    }
+
+
+    @Override
+    public void playerDisconnection(String username) {
+        if (Server.getConnectedClients().get(username) == null) { //disconnected
+            System.out.println("Disconnected-> No action");
+        } else {
+            System.out.println("SENDING CONTINUETURNMENU");
+            Server.getConnectedClients().get(username).notifyClient(new NewConnectedPlayerNotification(username));
         }
     }
 
@@ -185,17 +214,16 @@ public class VirtualView extends View {
     @Override
     public void loseMessage(Integer position, ArrayList<String> scores) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
-            System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
-        } else
+            System.out.println("Disconnected-> No action");
+        } else {
             Server.getConnectedClients().get(username).notifyClient(new LoseCommand(scores, position));
+        }
     }
 
     @Override
     public void winMessage(ArrayList<String> scores) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
-            System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
+            System.out.println("Disconnected-> No action");
         } else
             Server.getConnectedClients().get(username).notifyClient(new WinCommand(scores));
     }
@@ -208,6 +236,26 @@ public class VirtualView extends View {
         } else {
             Server.getConnectedClients().get(username).notifyClient(new TimeOutCommand());
         }
+    }
+
+    @Override
+    public void updateWpc() {
+        //TODO
+    }
+
+    @Override
+    public void updateTokens() {
+
+    }
+
+    @Override
+    public void updateRoundTrack() {
+
+    }
+
+    @Override
+    public void updateDraftPool() {
+
     }
 
     public void update(Object model){ //TODO Change with all model representation
@@ -227,5 +275,5 @@ public class VirtualView extends View {
         else
             Server.getConnectedClients().get(username).notifyClient(new MessageFromServerCommand(message));
     }
-    
+
 }

@@ -27,22 +27,17 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
         //Calls chooseWindowPatternCard(..)
     }
 
-    public void AllowedUseToolMessage(String message){
+    public abstract void otherPlayerTurn(String username);
 
-    }
-
-    public void askAuthenticatedCorrectlyMessage(String message){
-
-    }
+    public abstract void authenticatedCorrectlyMessage(String message);
 
     public void continueTurnMenu(boolean move, boolean tool){
 
     }
 
-    public void correctUseTool(int numTool){
-        //Switch che in base al tipo di tool
-        //i possibili metodi sono PRIVATI e sono questi quì
-    }
+    public abstract void newConnectedPlayer(String username);
+
+    public abstract void playerDisconnection(String username);
 
     public void firmPastryBrushMenu(int value){
 
@@ -103,6 +98,10 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
     }
     // Methods for Obs/Obsvb
 
+    public abstract void updateWpc();
+    public abstract void updateTokens();
+    public abstract void updateRoundTrack();
+    public abstract void updateDraftPool();
     @Override
     public void update(Object event) {
         //Osserva il Model e con Update, fa l'update del model locale

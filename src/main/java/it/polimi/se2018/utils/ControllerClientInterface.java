@@ -110,4 +110,17 @@ public interface ControllerClientInterface{
 
     void dispatchCommand(Object event);
 
+    void applyCommand(RefreshDraftPoolCommand refreshDraftPoolCommand);
+
+    void applyCommand(RefreshTokensCommand refreshTokensCommand);
+
+    void applyCommand(RefreshWpcCommand refreshWpcCommand);
+
+    void applyCommand(PlayerDisconnectionNotification playerDisconnectionNotification);
+
+    void applyCommand(RefreshRoundTrackCommand refreshRoundTrackCommand);
+
+    void applyCommand(NewConnectedPlayerNotification newConnectedPlayerNotification);
+
+    void applyCommand(PingConnectionTester pingConnectionTester);
 }
