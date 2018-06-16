@@ -1,5 +1,6 @@
 package it.polimi.se2018.client.GUI;
 
+import it.polimi.se2018.client.ClientStarterMain;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,9 +12,12 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -25,7 +29,10 @@ public class WPCChoiceController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(WPCChoiceController.class.getName());
 
-    private List<ToggleButton> wpcards;
+    private Stage stage;
+
+    private List<ToggleButton> wpcards = new ArrayList<>();
+    private List<String> wpcCards;
 
     @FXML
     private ToggleButton wpc1;
@@ -45,8 +52,35 @@ public class WPCChoiceController extends Observable implements Observer {
 
     private String selectedWPC = new String();
 
-    public WPCChoiceController() {
+    /*public WPCChoiceController(ArrayList<String> wpcCards){
         wpcards = new ArrayList<>();
+        this.wpcCards = wpcCards;
+    }*/
+
+
+
+    public void show() {
+        try {
+            start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void start() throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/client/wpcchoice.fxml"));
+        System.out.println("entra1");
+        Stage primaryStage = new Stage();
+        System.out.println("entra2");
+        stage = primaryStage;
+        System.out.println("entra3");
+        primaryStage.setTitle("WPC Choice");
+        System.out.println("entra4");
+        primaryStage.setScene(new Scene(root, 400, 250));
+        System.out.println("entra5");
+        Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
+        System.out.println("entra6");
+        primaryStage.show();
     }
 
     public void initialize() {
@@ -66,17 +100,25 @@ public class WPCChoiceController extends Observable implements Observer {
     }
 
     private void initStyle() {
-        Image image = new Image("/client/WPC/virtus.jpg");
-        for (ToggleButton wpc : wpcards) {
-            ImageView iv = new ImageView(image);
-            iv.setFitHeight(184);
-            iv.setFitWidth(275);
-            wpc.setGraphic(iv);
-            wpc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> wpc.setEffect(shadow));
-            wpc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
-                if (!wpc.isSelected()) wpc.setEffect(null);
-            });
-        }
+        /*for (String card : wpcCards) {
+            card.replaceAll(" ", "_");
+        }*/
+        //int i=0;
+            for (ToggleButton wpc : wpcards) {
+                /*String img = wpcCards.get(i);
+                String path = "/client/WPC/" + img + ".jpg";
+                Image image = new Image(path);*/
+                Image image = new Image("/client/WPC/virtus.jpg");
+                ImageView iv = new ImageView(image);
+                iv.setFitHeight(184);
+                iv.setFitWidth(275);
+                wpc.setGraphic(iv);
+                wpc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> wpc.setEffect(shadow));
+                wpc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                    if (!wpc.isSelected()) wpc.setEffect(null);
+                });
+                //i++;
+            }
     }
 
     @Override
@@ -141,9 +183,12 @@ public class WPCChoiceController extends Observable implements Observer {
         }
     }
 
-    private void closeStage() {
-        Stage stage = (Stage)start.getScene().getWindow();
-        stage.close();
+    public void closeStage() {
+        Platform.runLater(() -> {
+            stage.setOnCloseRequest(event -> Platform.exit());
+            stage.close();
+            System.exit(0);
+        });
     }
 
     @FXML

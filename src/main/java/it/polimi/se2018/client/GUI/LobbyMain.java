@@ -8,8 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class LobbyMain extends Application {
-    @Override
+public class LobbyMain {
+    /*@Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/client/lobby.fxml"));
         primaryStage.setTitle("Lobby");
@@ -18,7 +18,7 @@ public class LobbyMain extends Application {
         primaryStage.show();
     }
 
-    public static void main (String[] args) {
+    /*public static void main (String[] args) {
         launch(args);
-    }
+    }*/
 }

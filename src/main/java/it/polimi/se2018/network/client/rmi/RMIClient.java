@@ -1,6 +1,7 @@
 package it.polimi.se2018.network.client.rmi;
 
 
+import it.polimi.se2018.client.ClientStarterController;
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.network.client.ClientController;
 import it.polimi.se2018.utils.ControllerClientInterface;
@@ -23,6 +24,10 @@ public class RMIClient implements Remote, ServerConnection{
 
     public RMIClient(int viewChoice){
         clientController = new ClientController(viewChoice, this);
+    }
+
+    public RMIClient(int viewChoice, ClientStarterController initGui){
+        clientController = new ClientController(viewChoice, this, initGui);
     }
 
     @Override

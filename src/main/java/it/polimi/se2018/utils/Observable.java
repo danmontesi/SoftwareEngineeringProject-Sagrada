@@ -1,9 +1,11 @@
 package it.polimi.se2018.utils;
 
+import javafx.application.Application;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Observable{
+public abstract class Observable extends Application {
     protected List<Observer> observers = new ArrayList<>();
 
     public void notify(Object event){

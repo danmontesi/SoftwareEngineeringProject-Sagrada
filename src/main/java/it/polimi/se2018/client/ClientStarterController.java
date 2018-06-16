@@ -1,5 +1,8 @@
 package it.polimi.se2018.client;
 
+import it.polimi.se2018.network.client.rmi.RMIClient;
+import it.polimi.se2018.network.client.socket.SocketClient;
+import it.polimi.se2018.network.server.ServerConnection;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -72,7 +75,7 @@ public class ClientStarterController implements Observer {
     public void update(Observable o, Object arg) {
         boolean successful = (boolean)arg;
         if (successful) {
-            showUIChoice();
+            //showUIChoice();
         } else {
             inputError();
         }
@@ -90,20 +93,38 @@ public class ClientStarterController implements Observer {
         ipAddressField.setDisable(true);
     }
 
-    public String getConnection() {
+    private String getUsername() {
+        return usernameField.getText();
+    }
+
+    private String getConnection() {
         ToggleButton selectedButton = (ToggleButton)connectionType.getSelectedToggle();
         return selectedButton.getText();
     }
 
     @FXML
     public void startConnection() {
-
+        ServerConnection server;
+        if (getUsername() == null) {
+            //TODO scrivere inserire username
+        } else if (getConnection() == null) {
+            //TODO scrivere scegliere connessione
+        } else {
+            if (getConnection().equals("RMI")) {
+                server = new RMIClient(1, this);
+                server.startConnection(getUsername());
+            } else if (getConnection().equals("Socket")) {
+                //TODO vincolo IP
+                server = new SocketClient(2, this);
+                server.startConnection(getUsername());
+            }
+        }
     }
 
-    private void showUIChoice() {
+    public void showLobby() {
         Platform.runLater(() ->  {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/uichoice.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/lobby.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));
@@ -115,8 +136,9 @@ public class ClientStarterController implements Observer {
         });
     }
 
+
     public void closeScene() {
-        // PlayerLoginNotifier.getInstance().deleteObserver(this);
+        //PlayerLoginNotifier.getInstance().deleteObserver(this);
         ClientStarterMain.getStage().close();
     }
 

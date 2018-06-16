@@ -1,6 +1,8 @@
 package it.polimi.se2018.network.client;
 
 import com.google.gson.stream.MalformedJsonException;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import it.polimi.se2018.client.ClientStarterController;
 import it.polimi.se2018.client.GUI.GUIView;
 import it.polimi.se2018.model.COLOR;
 import it.polimi.se2018.client.CLI.CLIView;
@@ -46,7 +48,14 @@ public class ClientController implements Observer, ControllerClientInterface {
             this.view = new CLIView(this);
         }
         else
-            this.view = new GUIView();
+            this.view = new CLIView(this); //TODO MODIFICA;
+    }
+
+    public ClientController(int viewChoice, ServerConnection connection, ClientStarterController initGui){
+        System.out.println("ENTRO COSTRUTTORE");
+        this.connection = connection;
+        System.out.println("STO CReando guiview");
+        this.view = new GUIView(this, initGui);
     }
 
     public void setUsername(String username){

@@ -694,7 +694,7 @@ public class GameBoardController {
         }
     }
 
-    private void setWpcards() {
+    private void setWpcards()  {
         for (int i=0; i<exampleBoardStringPaths.getOtherPlayersWpcs().size(); i++) {
             usersTokens.get(i).setText(exampleBoardStringPaths.getOtherPlayersTokens().get(i).toString());
             for (int j=0; j<20; j++) {

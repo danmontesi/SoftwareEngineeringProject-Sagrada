@@ -1,21 +1,81 @@
 package it.polimi.se2018.client.GUI;
 
+import com.sun.security.ntlm.Client;
+import it.polimi.se2018.client.ClientStarterController;
+import it.polimi.se2018.client.ClientStarterMain;
 import it.polimi.se2018.client.View;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GUIView extends View {
 
+    private static final Logger LOGGER = Logger.getLogger(ClientStarterController.class.getName());
+
+    private LobbyController lobby;
+    private WPCChoiceController wpcChoiceController;
+
+
+    private ClientStarterController initGui;
 //TODO          PER CHI FA LA VIEW:
 //TODO          OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO.
 //TODO          ognuno dei metodi quì sotto prima chiede l'input dall'utente, poi fa notify(new chosen
+
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards){
+        System.out.println("arriva");
+        ArrayList<String> cardNames = new ArrayList<>();
+        for (WindowPatternCard card : cards)
+            cardNames.add(card.getCardName());
+        lobby.closeStage();
+        wpcChoiceController = new WPCChoiceController();
+        System.out.println("ciao");
+
+        wpcChoiceController.show();
         //notify(new ChooseWindowPatternCardCommand())
     }
+
+    public GUIView(Observer observer, ClientStarterController initGui){
+        register(observer);
+        this.initGui = initGui;
+        System.out.println("INIT GUI");
+        initGui.closeScene();
+        lobby = new LobbyController();
+        lobby.show();
+
+    }
+
+
+
+    private void showStage(String stg) {
+        String resource = "/client/" + stg + ".fxml";
+        Platform.runLater(() ->  {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resource));
+                Parent root = fxmlLoader.load();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch interface choice", e);
+            }
+        });
+    }
+
+    public void newConnectedPlayer(String username){
+        //piccola label a scomparsa che segnala il giocatore all'interno della lobby
+    }
+
 
     public void startTurnMenu(){
         // Abilito bottoni draftpool, toolcard, pass.
@@ -142,4 +202,8 @@ public class GUIView extends View {
         System.out.println("ricevuto "+ command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
     }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        
+    }
 }
