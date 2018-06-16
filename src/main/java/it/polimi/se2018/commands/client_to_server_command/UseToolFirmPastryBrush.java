@@ -32,6 +32,7 @@ public class UseToolFirmPastryBrush extends ClientToServerCommand{
      */
     //nameClass DRAFTPOOL/SCHEMA dieColor
 
+
     private Integer dieValue;
 
     private Integer diePosition; // in  Schema ony ( can be null)

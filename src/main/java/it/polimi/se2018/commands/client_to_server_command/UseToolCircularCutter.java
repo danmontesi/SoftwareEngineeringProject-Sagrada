@@ -14,6 +14,11 @@ public class UseToolCircularCutter extends ClientToServerCommand{
 
     private Integer dieDraftPoolPosition;
 
+    public UseToolCircularCutter(Integer dieDraftPoolPosition, Integer dieRoundTrackPosition) {
+        this.dieDraftPoolPosition = dieDraftPoolPosition;
+        this.dieRoundTrackPosition = dieRoundTrackPosition;
+    }
+
     private Integer dieRoundTrackPosition;
 
 }

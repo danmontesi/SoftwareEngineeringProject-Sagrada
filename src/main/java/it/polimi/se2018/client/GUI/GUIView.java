@@ -18,6 +18,19 @@ public class GUIView extends View {
     }
 
     public void startTurnMenu(){
+        // Abilito bottoni draftpool, toolcard, pass.
+        // Scrivo nel riquadro eventi " It's your turn"
+
+        //3 casi:
+        //1) clicco un dado dells draftpool -> Inizio mossa
+        //se faccio una mossa -> tutti bottoni disattivati
+        ///notify(new MoveChoiceDicePlacement( indice draft, indice schema)
+        //Disattivo tutti i bottoni
+
+
+        //2) se clicco una toolcard, appare una casewllina in cui scrivo "vuoi usare il tool x?"
+        // se sì-> notify(new MoveChoiceToolCard(indice tool);
+
         //notify( new MOVE / new TOOLUSE / new PASSTURN )
     }
 
@@ -26,6 +39,10 @@ public class GUIView extends View {
     }
 
     public void continueTurnMenu(boolean move, boolean tool){
+        //se move = false, draftpool disattivata, se true attivata
+        //tool ""
+
+
         //notify( new MOVE / new TOOLUSE / new PASSTURN )
     }
 
@@ -47,6 +64,11 @@ public class GUIView extends View {
     }
 
     public void changeDieValueMenu(String cardName){
+        //if CardName.equals(Roughing Forceps):
+        //1- scrivi nelle notifiche "Scegli un dado draftpool" abilitando solo draftpool
+        //2- scegli se aumentare / diminuire (Faccio apparire 2 bottoni + o - )"
+        //notify( cardName, Integer draftPoolPosition, Integer schemaPosition, boolean increase, boolean placedDie)
+        // -> 2 bottoni
 
     }
 
@@ -55,14 +77,17 @@ public class GUIView extends View {
     }
 
     public void corkLineMenu(){
+        // Attivo draftpool
+        // Attivo schema
+        //l'utente preme gli indici e invio l'evento
+        // notify(new UseToolCorkLine(schemaPos, draftPos);
+        //disabiliti tutto
 
     }
 
-    public void gavelMenu(){
-
-    }
 
     public void wheelsPincherMenu(){
+
 
     }
 

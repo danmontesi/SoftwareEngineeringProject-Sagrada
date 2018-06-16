@@ -215,7 +215,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         int tempRank=1;
         while (i0.hasNext()) {
             Map.Entry entry = (Map.Entry) i0.next();
-            scoresList.add(tempRank + ": " + entry.getKey().toString() + ", scored " + entry.getValue().toString());
+            scoresList.add(tempRank + "," + entry.getKey().toString() + "," + entry.getValue().toString());
             tempRank++;
         }
         Integer counter=0;

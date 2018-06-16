@@ -46,6 +46,7 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
 
     public void firmPastryBrushMenu(int value){
 
+
     }
 
     public void firmPastryThinnerMenu(String color, int value){

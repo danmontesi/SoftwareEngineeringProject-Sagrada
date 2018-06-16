@@ -201,7 +201,7 @@ public class Server {
                             startNewGame(); //DA TOGLIERE, l'ho utilizzato solo come prova. il metodo deve essere contorllato dalla variabile itsTimeToStart
                         }
                     },
-                    60
+                    6000
             );
         }
     }
