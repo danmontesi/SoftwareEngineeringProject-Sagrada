@@ -34,6 +34,10 @@ public class GameBoardController {
     private List<ImageView> pubocards;
     private List<ImageView> tcards;
     private List<ImageView> wpcards;
+    private List<ImageView> ivw1;
+    private List<ImageView> ivw2;
+    private List<ImageView> ivw3;
+    private List<List<ImageView>> ivw;
     private List<ToggleButton> tcbuttons;
     private List<ToggleButton> tbuttons;
     private List<ToggleButton> tbd;
@@ -93,6 +97,126 @@ public class GameBoardController {
     private ImageView prioc0;
     @FXML
     private ImageView rt;
+    @FXML
+    private ImageView ivw100;
+    @FXML
+    private ImageView ivw110;
+    @FXML
+    private ImageView ivw120;
+    @FXML
+    private ImageView ivw130;
+    @FXML
+    private ImageView ivw140;
+    @FXML
+    private ImageView ivw101;
+    @FXML
+    private ImageView ivw111;
+    @FXML
+    private ImageView ivw121;
+    @FXML
+    private ImageView ivw131;
+    @FXML
+    private ImageView ivw141;
+    @FXML
+    private ImageView ivw102;
+    @FXML
+    private ImageView ivw112;
+    @FXML
+    private ImageView ivw122;
+    @FXML
+    private ImageView ivw132;
+    @FXML
+    private ImageView ivw142;
+    @FXML
+    private ImageView ivw103;
+    @FXML
+    private ImageView ivw113;
+    @FXML
+    private ImageView ivw123;
+    @FXML
+    private ImageView ivw133;
+    @FXML
+    private ImageView ivw143;
+    @FXML
+    private ImageView ivw200;
+    @FXML
+    private ImageView ivw210;
+    @FXML
+    private ImageView ivw220;
+    @FXML
+    private ImageView ivw230;
+    @FXML
+    private ImageView ivw240;
+    @FXML
+    private ImageView ivw201;
+    @FXML
+    private ImageView ivw211;
+    @FXML
+    private ImageView ivw221;
+    @FXML
+    private ImageView ivw231;
+    @FXML
+    private ImageView ivw241;
+    @FXML
+    private ImageView ivw202;
+    @FXML
+    private ImageView ivw212;
+    @FXML
+    private ImageView ivw222;
+    @FXML
+    private ImageView ivw232;
+    @FXML
+    private ImageView ivw242;
+    @FXML
+    private ImageView ivw203;
+    @FXML
+    private ImageView ivw213;
+    @FXML
+    private ImageView ivw223;
+    @FXML
+    private ImageView ivw233;
+    @FXML
+    private ImageView ivw243;
+    @FXML
+    private ImageView ivw300;
+    @FXML
+    private ImageView ivw310;
+    @FXML
+    private ImageView ivw320;
+    @FXML
+    private ImageView ivw330;
+    @FXML
+    private ImageView ivw340;
+    @FXML
+    private ImageView ivw301;
+    @FXML
+    private ImageView ivw311;
+    @FXML
+    private ImageView ivw321;
+    @FXML
+    private ImageView ivw331;
+    @FXML
+    private ImageView ivw341;
+    @FXML
+    private ImageView ivw302;
+    @FXML
+    private ImageView ivw312;
+    @FXML
+    private ImageView ivw322;
+    @FXML
+    private ImageView ivw332;
+    @FXML
+    private ImageView ivw342;
+    @FXML
+    private ImageView ivw303;
+    @FXML
+    private ImageView ivw313;
+    @FXML
+    private ImageView ivw323;
+    @FXML
+    private ImageView ivw333;
+    @FXML
+    private ImageView ivw343;
 
     @FXML
     private Label user1;
@@ -228,6 +352,10 @@ public class GameBoardController {
         tbd = new ArrayList<>();
         tbw0 = new ArrayList<>();
         tbr = new ArrayList<>();
+        ivw1 = new ArrayList<>();
+        ivw2 = new ArrayList<>();
+        ivw3 = new ArrayList<>();
+        ivw = new ArrayList<>();
         stages = new ArrayList<>();
         users = new ArrayList<>();
         usersTokens = new ArrayList<>();
@@ -236,22 +364,28 @@ public class GameBoardController {
     }
 
     public void initialize() {
-        setCards();
-        setButtons();
-        setLabels();
-        setCircles();
+        initCards();
+        initToggleButtons();
+        initImageViews();
+        initLabels();
+        initCircles();
         initButtons();
         initRoundTrack();
         initPubocards();
         initTcards();
         initWpcards();
-        initMyWPC();
-        initMyPriOC();
-        initDice();
+        initPersonalWPC();
+        initPersonalPriOC();
         moveDice();
+
+        setDrafPool();
+        setRoundTrack();
+        setTCTokens();
+        setWpcards();
+        setPersonalWPC();
     }
 
-    private void setCards(){
+    private void initCards(){
         pubocards.add(puboc1);
         pubocards.add(puboc2);
         pubocards.add(puboc3);
@@ -269,7 +403,7 @@ public class GameBoardController {
         tcbuttons.add(tcb3);
     }
 
-    private void setButtons() {
+    private void initToggleButtons() {
         tbd.add(tbd1);
         tbd.add(tbd2);
         tbd.add(tbd3);
@@ -317,7 +451,76 @@ public class GameBoardController {
         tbuttons.addAll(tbr);
     }
 
-    private void setLabels() {
+    private void initImageViews() {
+        ivw1.add(ivw100);
+        ivw1.add(ivw110);
+        ivw1.add(ivw120);
+        ivw1.add(ivw130);
+        ivw1.add(ivw140);
+        ivw1.add(ivw101);
+        ivw1.add(ivw111);
+        ivw1.add(ivw121);
+        ivw1.add(ivw131);
+        ivw1.add(ivw141);
+        ivw1.add(ivw102);
+        ivw1.add(ivw112);
+        ivw1.add(ivw122);
+        ivw1.add(ivw132);
+        ivw1.add(ivw142);
+        ivw1.add(ivw103);
+        ivw1.add(ivw113);
+        ivw1.add(ivw123);
+        ivw1.add(ivw133);
+        ivw1.add(ivw143);
+
+        ivw2.add(ivw200);
+        ivw2.add(ivw210);
+        ivw2.add(ivw220);
+        ivw2.add(ivw230);
+        ivw2.add(ivw240);
+        ivw2.add(ivw201);
+        ivw2.add(ivw211);
+        ivw2.add(ivw221);
+        ivw2.add(ivw231);
+        ivw2.add(ivw241);
+        ivw2.add(ivw202);
+        ivw2.add(ivw212);
+        ivw2.add(ivw222);
+        ivw2.add(ivw232);
+        ivw2.add(ivw242);
+        ivw2.add(ivw203);
+        ivw2.add(ivw213);
+        ivw2.add(ivw223);
+        ivw2.add(ivw233);
+        ivw2.add(ivw243);
+
+        ivw3.add(ivw300);
+        ivw3.add(ivw310);
+        ivw3.add(ivw320);
+        ivw3.add(ivw330);
+        ivw3.add(ivw340);
+        ivw3.add(ivw301);
+        ivw3.add(ivw311);
+        ivw3.add(ivw321);
+        ivw3.add(ivw331);
+        ivw3.add(ivw341);
+        ivw3.add(ivw302);
+        ivw3.add(ivw312);
+        ivw3.add(ivw322);
+        ivw3.add(ivw332);
+        ivw3.add(ivw342);
+        ivw3.add(ivw303);
+        ivw3.add(ivw313);
+        ivw3.add(ivw323);
+        ivw3.add(ivw333);
+        ivw3.add(ivw343);
+
+        ivw.add(ivw1);
+        ivw.add(ivw2);
+        ivw.add(ivw3);
+    }
+
+    private void initLabels() {
         users.add(user1);
         users.add(user2);
         users.add(user3);
@@ -331,7 +534,7 @@ public class GameBoardController {
         tcTokens.add(tc3tokens);
     }
 
-    private void setCircles() {
+    private void initCircles() {
         circles.add(circle1);
         circles.add(circle2);
         circles.add(circle3);
@@ -366,20 +569,6 @@ public class GameBoardController {
 
     private void initRoundTrack() {
             rt.setImage(new Image("/client/images/RoundTrack.png"));
-        ArrayList<String> roundTrack = exampleBoardStringPaths.getRoundTrack();
-        for (int i=0; i<10; i++) {
-            String img = exampleBoardStringPaths.getRoundTrack().get(i);
-            if (img == "empty") {
-                tbr.get(i).setDisable(true);
-            } else {
-                String path = "/client/Dice/" + img + ".jpg";
-                Image image = new Image(path);
-                ImageView iv = new ImageView(image);
-                iv.setFitWidth(40);
-                iv.setFitHeight(40);
-                tbr.get(i).setGraphic(iv);
-            }
-        }
     }
 
     private void initPubocards() {
@@ -425,11 +614,6 @@ public class GameBoardController {
             });
             i++;
         }
-        int k=0;
-        for (Label tk : tcTokens) {
-            tk.setText(exampleBoardStringPaths.getTokensToolCards().get(k).toString());
-            k++;
-        }
     }
 
     private void initWpcards() {
@@ -439,7 +623,6 @@ public class GameBoardController {
             Image image = new Image(path);
             wpcards.get(i).setImage(image);
             users.get(i).setText(exampleBoardStringPaths.getOtherPlayersUsernames().get(i));
-            usersTokens.get(i).setText(exampleBoardStringPaths.getOtherPlayersTokens().get(i).toString());
         }
         for (int j=exampleBoardStringPaths.getOtherPlayersWpcs().size(); j<3; j++) {
             wpcards.get(j).setVisible(false);
@@ -449,16 +632,15 @@ public class GameBoardController {
         }
     }
 
-    private void initMyWPC() {
+    private void initPersonalWPC() {
         String img = exampleBoardStringPaths.getPersonalWpc().get(0);
         String path = "/client/WPC/" + img + ".jpg";
         Image image = new Image(path);
         wpc0.setImage(image);
         user0.setText(exampleBoardStringPaths.getUsername());
-        user0tokens.setText(exampleBoardStringPaths.getPersonalTokens().toString());
     }
 
-    private void initMyPriOC() {
+    private void initPersonalPriOC() {
         String img = exampleBoardStringPaths.getPrivateObjectiveCard();
         String path = "/client/OC/" + img + ".jpg";
         Image image = new Image(path);
@@ -468,7 +650,21 @@ public class GameBoardController {
         t.setStyle("-fx-font-size: 15px");
     }
 
-    public void initDice() {
+    public void moveDice() {
+        for (ToggleButton tb1 : tbw0) {
+            tb1.setOnAction(event -> {
+                for (ToggleButton tb2 : tbd) {
+                    if (tb2.isSelected()) {
+                        tb1.setGraphic(tb2.getGraphic());
+                        tb2.setSelected(false);
+                        tb1.setSelected(false);
+                    }
+                }
+            });
+        }
+    }
+
+    public void setDrafPool() {
         ArrayList<String> draftPool = exampleBoardStringPaths.getDraftpool();
         for (int i=0; i<draftPool.size(); i++) {
             String img = exampleBoardStringPaths.getDraftpool().get(i);
@@ -503,17 +699,57 @@ public class GameBoardController {
         }
     }
 
-    public void moveDice() {
-        for (ToggleButton tb1 : tbw0) {
-            tb1.setOnAction(event -> {
-                for (ToggleButton tb2 : tbd) {
-                    if (tb2.isSelected()) {
-                        tb1.setGraphic(tb2.getGraphic());
-                        tb2.setSelected(false);
-                        tb1.setSelected(false);
-                    }
+    private void setRoundTrack() {
+        ArrayList<String> roundTrack = exampleBoardStringPaths.getRoundTrack();
+        for (int i=0; i<10; i++) {
+            String img = exampleBoardStringPaths.getRoundTrack().get(i);
+            if (img == "empty") {
+                tbr.get(i).setDisable(true);
+            } else {
+                String path = "/client/Dice/" + img + ".jpg";
+                Image image = new Image(path);
+                ImageView iv = new ImageView(image);
+                iv.setFitWidth(40);
+                iv.setFitHeight(40);
+                tbr.get(i).setGraphic(iv);
+            }
+        }
+    }
+
+    private void setTCTokens() {
+        int k=0;
+        for (Label tk : tcTokens) {
+            tk.setText(exampleBoardStringPaths.getTokensToolCards().get(k).toString());
+            k++;
+        }
+    }
+
+    private void setWpcards() {
+        for (int i=0; i<exampleBoardStringPaths.getOtherPlayersWpcs().size(); i++) {
+            usersTokens.get(i).setText(exampleBoardStringPaths.getOtherPlayersTokens().get(i).toString());
+            for (int j=0; j<20; j++) {
+                String img = exampleBoardStringPaths.getPersonalWpc().get(j+1);
+                if (img != "empty") {
+                    String path = "/client/Dice/" + img + ".jpg";
+                    Image image = new Image(path);
+                    ivw.get(i).get(j).setImage(image);
                 }
-            });
+            }
+        }
+    }
+
+    private void setPersonalWPC() {
+        user0tokens.setText(exampleBoardStringPaths.getPersonalTokens().toString());
+        for (int i=0; i<20; i++) {
+            String img = exampleBoardStringPaths.getPersonalWpc().get(i+1);
+            if (img != "empty") {
+                String path = "/client/Dice/" + img + ".jpg";
+                Image image = new Image(path);
+                ImageView iv = new ImageView(image);
+                iv.setFitWidth(40);
+                iv.setFitHeight(40);
+                tbw0.get(i).setGraphic(iv);
+            }
         }
     }
 
