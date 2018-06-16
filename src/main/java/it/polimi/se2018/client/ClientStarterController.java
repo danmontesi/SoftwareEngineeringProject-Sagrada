@@ -16,10 +16,11 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 
 public class ClientStarterController implements Observer {
+
+    private static final Logger LOGGER = Logger.getLogger(ClientStarterController.class.getName());
 
     @FXML
     private Label username;
@@ -55,42 +56,16 @@ public class ClientStarterController implements Observer {
     }
 
     private void initStyle() {
-        rmi.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                rmi.setEffect(shadow);
-            }
+        rmi.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> rmi.setEffect(shadow));
+        rmi.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+            if (!rmi.isSelected()) rmi.setEffect(null);
         });
-        rmi.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                if (!rmi.isSelected()) rmi.setEffect(null);
-            }
+        socket.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> socket.setEffect(shadow));
+        socket.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+            if (!socket.isSelected()) socket.setEffect(null);
         });
-        socket.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                socket.setEffect(shadow);
-            }
-        });
-        socket.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                if (!socket.isSelected()) socket.setEffect(null);
-            }
-        });
-        connect.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                connect.setEffect(shadow);
-            }
-        });
-        connect.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                connect.setEffect(null);
-            }
-        });
+        connect.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> connect.setEffect(shadow));
+        connect.addEventHandler(MouseEvent.MOUSE_EXITED, e -> connect.setEffect(null));
     }
 
     @Override
@@ -117,8 +92,7 @@ public class ClientStarterController implements Observer {
 
     public String getConnection() {
         ToggleButton selectedButton = (ToggleButton)connectionType.getSelectedToggle();
-        String connection = selectedButton.getText();
-        return connection;
+        return selectedButton.getText();
     }
 
     @FXML

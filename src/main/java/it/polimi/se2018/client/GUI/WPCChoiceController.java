@@ -19,10 +19,11 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 
 public class WPCChoiceController extends Observable implements Observer {
+
+    private static final Logger LOGGER = Logger.getLogger(WPCChoiceController.class.getName());
 
     private List<ToggleButton> wpcards;
 
@@ -71,17 +72,9 @@ public class WPCChoiceController extends Observable implements Observer {
             iv.setFitHeight(184);
             iv.setFitWidth(275);
             wpc.setGraphic(iv);
-            wpc.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent e) {
-                    wpc.setEffect(shadow);
-                }
-            });
-            wpc.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent e) {
-                    if (!wpc.isSelected()) wpc.setEffect(null);
-                }
+            wpc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> wpc.setEffect(shadow));
+            wpc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                if (!wpc.isSelected()) wpc.setEffect(null);
             });
         }
     }

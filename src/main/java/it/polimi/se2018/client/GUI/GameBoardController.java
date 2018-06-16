@@ -23,12 +23,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 
 public class GameBoardController {
 
-    ExampleBoardStringPaths exampleBoardStringPaths = new ExampleBoardStringPaths();
+    private static final Logger LOGGER = Logger.getLogger(GameBoardController.class.getName());
+
+    private ExampleBoardStringPaths exampleBoardStringPaths = new ExampleBoardStringPaths();
 
     private List<Circle> circles;
     private List<ImageView> pubocards;
@@ -70,8 +71,6 @@ public class GameBoardController {
     private HBox dpd;
     @FXML
     private VBox rtd;
-    @FXML
-    private Pane root;
 
     @FXML
     private ImageView puboc1;
@@ -541,30 +540,10 @@ public class GameBoardController {
     }
 
     private void initButtons() {
-        pass.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                pass.setEffect(shadow);
-            }
-        });
-        pass.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                pass.setEffect(null);
-            }
-        });
-        quit.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                quit.setEffect(shadow);
-            }
-        });
-        quit.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                quit.setEffect(null);
-            }
-        });
+        pass.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> pass.setEffect(shadow));
+        pass.addEventHandler(MouseEvent.MOUSE_EXITED, e -> pass.setEffect(null));
+        quit.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> quit.setEffect(shadow));
+        quit.addEventHandler(MouseEvent.MOUSE_EXITED, e -> quit.setEffect(null));
     }
 
     private void initRoundTrack() {
@@ -600,17 +579,9 @@ public class GameBoardController {
             Tooltip t = new Tooltip("Description: ...");
             Tooltip.install(tc, t);
             t.setStyle("-fx-font-size: 15px");
-            tc.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent e) {
-                    tc.setEffect(shadow);
-                }
-            });
-            tc.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent e) {
-                    if (!tc.isSelected()) tc.setEffect(null);
-                }
+            tc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tc.setEffect(shadow));
+            tc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                if (!tc.isSelected()) tc.setEffect(null);
             });
             i++;
         }
@@ -650,7 +621,7 @@ public class GameBoardController {
         t.setStyle("-fx-font-size: 15px");
     }
 
-    public void moveDice() {
+    private void moveDice() {
         for (ToggleButton tb1 : tbw0) {
             tb1.setOnAction(event -> {
                 for (ToggleButton tb2 : tbd) {
@@ -664,11 +635,11 @@ public class GameBoardController {
         }
     }
 
-    public void setDrafPool() {
+    private void setDrafPool() {
         ArrayList<String> draftPool = exampleBoardStringPaths.getDraftpool();
         for (int i=0; i<draftPool.size(); i++) {
             String img = exampleBoardStringPaths.getDraftpool().get(i);
-            if (img == "empty") {
+            if (img.equals("empty")) {
                 tbd.get(i).setDisable(true);
             } else {
                 String path = "/client/Dice/" + img + ".jpg";
@@ -700,10 +671,9 @@ public class GameBoardController {
     }
 
     private void setRoundTrack() {
-        ArrayList<String> roundTrack = exampleBoardStringPaths.getRoundTrack();
         for (int i=0; i<10; i++) {
             String img = exampleBoardStringPaths.getRoundTrack().get(i);
-            if (img == "empty") {
+            if (img.equals("empty")) {
                 tbr.get(i).setDisable(true);
             } else {
                 String path = "/client/Dice/" + img + ".jpg";
@@ -729,7 +699,7 @@ public class GameBoardController {
             usersTokens.get(i).setText(exampleBoardStringPaths.getOtherPlayersTokens().get(i).toString());
             for (int j=0; j<20; j++) {
                 String img = exampleBoardStringPaths.getPersonalWpc().get(j+1);
-                if (img != "empty") {
+                if (!img.equals("empty")) {
                     String path = "/client/Dice/" + img + ".jpg";
                     Image image = new Image(path);
                     ivw.get(i).get(j).setImage(image);
@@ -742,7 +712,7 @@ public class GameBoardController {
         user0tokens.setText(exampleBoardStringPaths.getPersonalTokens().toString());
         for (int i=0; i<20; i++) {
             String img = exampleBoardStringPaths.getPersonalWpc().get(i+1);
-            if (img != "empty") {
+            if (!img.equals("empty")) {
                 String path = "/client/Dice/" + img + ".jpg";
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);

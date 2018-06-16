@@ -12,10 +12,11 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 
 public class LobbyController extends Observable implements Observer {
+
+    private static final Logger LOGGER = Logger.getLogger(LobbyController.class.getName());
 
     @FXML
     private Label text;
@@ -25,7 +26,7 @@ public class LobbyController extends Observable implements Observer {
         showWPCChoice();
     }
 
-    public void showWPCChoice() {
+    private void showWPCChoice() {
         Platform.runLater(() ->  {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/wpcchoice.fxml"));

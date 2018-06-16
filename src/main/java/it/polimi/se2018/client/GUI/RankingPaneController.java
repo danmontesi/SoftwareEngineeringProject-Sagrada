@@ -1,6 +1,5 @@
 package it.polimi.se2018.client.GUI;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -52,18 +51,8 @@ public class RankingPaneController {
 
         for (Button b : buttons) {
             b.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent");
-            b.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent e) {
-                    b.setEffect(shadow);
-                }
-            });
-            b.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent e) {
-                    b.setEffect(null);
-                }
-            });
+            b.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> b.setEffect(shadow));
+            b.addEventHandler(MouseEvent.MOUSE_EXITED, e -> b.setEffect(null));
         }
     }
 
@@ -79,6 +68,6 @@ public class RankingPaneController {
 
     @FXML
     public void exit(){
-        closeStage();
+
     }
 }

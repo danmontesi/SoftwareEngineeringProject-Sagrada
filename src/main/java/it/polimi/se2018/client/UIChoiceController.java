@@ -1,7 +1,6 @@
 package it.polimi.se2018.client;
 
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,16 +14,18 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 
 public class UIChoiceController {
+
+    private static final Logger LOGGER = Logger.getLogger(UIChoiceController.class.getName());
+
     @FXML
     private Button cli;
     @FXML
     private Button gui;
 
-    DropShadow shadow = new DropShadow();
+    private DropShadow shadow = new DropShadow();
 
     public void initialize() {
         initStyle();
@@ -35,30 +36,10 @@ public class UIChoiceController {
         Image image2 = new Image("/client/images/sagrada3.png");
         cli.setGraphic(new ImageView(image1));
         gui.setGraphic(new ImageView(image2));
-        cli.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                cli.setEffect(shadow);
-            }
-        });
-        cli.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                cli.setEffect(null);
-            }
-        });
-        gui.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                gui.setEffect(shadow);
-            }
-        });
-        gui.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                gui.setEffect(null);
-            }
-        });
+        cli.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> cli.setEffect(shadow));
+        cli.addEventHandler(MouseEvent.MOUSE_EXITED, e -> cli.setEffect(null));
+        gui.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> gui.setEffect(shadow));
+        gui.addEventHandler(MouseEvent.MOUSE_EXITED, e -> gui.setEffect(null));
     }
 
     private void closeStage() {

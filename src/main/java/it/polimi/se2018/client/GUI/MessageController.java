@@ -1,6 +1,5 @@
 package it.polimi.se2018.client.GUI;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -27,30 +26,10 @@ public class MessageController {
     }
 
     private void initStyle() {
-        ok.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                ok.setEffect(shadow);
-            }
-        });
-        ok.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                ok.setEffect(null);
-            }
-        });
-        cancel.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                cancel.setEffect(shadow);
-            }
-        });
-        cancel.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                cancel.setEffect(null);
-            }
-        });
+        ok.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> ok.setEffect(shadow));
+        ok.addEventHandler(MouseEvent.MOUSE_EXITED, e -> ok.setEffect(null));
+        cancel.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> cancel.setEffect(shadow));
+        cancel.addEventHandler(MouseEvent.MOUSE_EXITED, e -> cancel.setEffect(null));
     }
 
     private void setMessage() {
