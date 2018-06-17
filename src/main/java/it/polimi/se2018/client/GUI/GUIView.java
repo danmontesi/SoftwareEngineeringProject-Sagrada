@@ -52,7 +52,7 @@ public class GUIView extends View {
 
                     wpcChoiceController.show();
                 });*/
-       WPCChoiceController wpcChoice = new WPCChoiceController(cardNames);
+       //WPCChoiceController wpcChoice = new WPCChoiceController(cardNames);
         AnchorPane nextPane = new AnchorPane();
         try {
             nextPane = FXMLLoader.load(WPCChoiceController.class.getResource("/client/wpcchoice.fxml")); //Errore
@@ -61,8 +61,10 @@ public class GUIView extends View {
         }
         Scene scene = new Scene(nextPane);
         //Stage w = (Stage) ((Node) lobby.getSource()).getScene().getWindow(); //TODO UTilizzare all'evento (es. click) di un utente all'evento
-        currentStage.setScene(scene);
-        currentStage.show();
+        //currentStage.setScene(scene);
+        Stage w = lobby.getStage();
+        w.setScene(scene);
+        w.show();
         });
 
 

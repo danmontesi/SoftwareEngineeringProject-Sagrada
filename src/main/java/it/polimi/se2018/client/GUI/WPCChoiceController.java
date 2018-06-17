@@ -53,13 +53,16 @@ public class WPCChoiceController{
 
     private String selectedWPC = new String();
 
+    /*
     public WPCChoiceController(ArrayList<String> wpcCards) {
         wpcards = new ArrayList<>();
         this.wpcCards = wpcCards;
     }
 
-    public void show() {
+*/
+    public void show(ArrayList<String> cardNames) { //NON VIENE FATTA PARTIRE, viene chiamato lo show() del padre (classe Stage)
         try {
+            wpcCards = cardNames;
             start();
         } catch (Exception e) {
             e.printStackTrace();
