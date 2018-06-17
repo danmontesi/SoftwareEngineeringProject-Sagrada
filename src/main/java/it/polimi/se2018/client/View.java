@@ -98,7 +98,7 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
     }
     // Methods for Obs/Obsvb
 
-    public abstract void updateWpc();
+    public abstract void updateWpc(ArrayList<String> myWpc, ArrayList<ArrayList<String>> otherWpcs);
     public abstract void updateTokens();
     public abstract void updateRoundTrack();
     public abstract void updateDraftPool();

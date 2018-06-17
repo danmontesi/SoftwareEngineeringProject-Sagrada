@@ -26,17 +26,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
 
     private Model model;
-
     private HashMap<String, Player> usernamePlayerMap;
-
     private HashMap<String, View> userViewMap;
-
     private ArrayList<Player> orderedPlayers;
-
     private ArrayList<Player> uninitializedOrderedPlayers;
-
     private HashMap<Player,Timer> playerTimerMap;
-
     private int requiredTokensForLastToolUse;
     private ToolCard lastUsedToolCard;
     private Die extractedDieForFirmyPastryThinner;
@@ -46,20 +40,14 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * is created by the model in its constructor
      */
     private ArrayList<ArrayList<Player>> orderedRoundPlayers;
-
     private ArrayList<Player> currentRoundOrderedPlayers;
 
     /**
      * Represent current player. That is necessary to know which is the player i'm expecting an answer
      */
     private Player currentPlayer;
-
     private boolean hasUsedTool;
-
     private boolean hasPerformedMove;
-
-    private int roundNumber;//Maybe to be deleted, substituted by 10-orderedRoundPlayers.size()
-
     private int timerCostant;
 
     //TODO:
@@ -91,14 +79,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.put(username, tempView);
             model.register(tempView);
         }
-        this.roundNumber = 0;
         this.orderedPlayers= new ArrayList<>();
 
         this.timerCostant = 600000; //TODO set better
         // Now I will start each player's View
         initializeGame();
-
-
     }
 
     /**
@@ -125,7 +110,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                         }
                     },
                     timerCostant);
-
         }
     }
 
@@ -184,18 +168,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
     }
 
-
-    /**
-     * Call methods for starting the board of each player
-     * including:
-     * choose the WPattern Card
-     * ...
-     */
     private void startGame() {
         assignRoundPlayers(orderedPlayers);
         startNewRound();
     }
-
 
     private void endGame(){
         //For each player, create an HashMap calling on every player a Win/Lose command
@@ -276,7 +252,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             //initialize DraftPool
             //Start a new round-> pick the first of the RoundList
             currentRoundOrderedPlayers=orderedRoundPlayers.remove(0);
-
             currentPlayer=currentRoundOrderedPlayers.remove(0);
             System.out.println("current è " + currentPlayer.getUsername());
             System.out.println("Prima di chiamare StartTurnMenu");
@@ -329,8 +304,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * Generally returns true if need ad allowance to perform a command
      * @return true if the currentPlayer is the one given
      */
-    private boolean isAllowed(Player player){
-        return player==currentPlayer;
+    private boolean isAllowed(String username){
+        return username.equals(currentPlayer.getUsername());
     }
 
     /**
@@ -352,20 +327,19 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         uninitializedOrderedPlayers.remove(usernamePlayerMap.get(playerUsername)); //TODO what happens can't find it?-> disconnection
         orderedPlayers.add(usernamePlayerMap.get(playerUsername));
-
         if (uninitializedOrderedPlayers.isEmpty()) {
             startGame();
         }
     }
 
-    /**
-     * The first word is the
-     * @param playerUsername
-     * @param command
-     */
+
     @Override
     //TODO: vedi se è necessario controllare che il player sia Current o non posso fare altre mosse e automaticamente il player da cui ricevo il comando è current
     public synchronized void applyCommand(String playerUsername, MoveChoiceToolCard command){
+        if (!isAllowed(playerUsername)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            return;
+        }
         Player current= usernamePlayerMap.get(playerUsername);
         Integer usedToolNumber = command.getNumberChosen(); //Referes to the toolcard used
         ToolCard chosen = model.getExtractedToolCard().get(usedToolNumber);
@@ -388,7 +362,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 else if (toolName.equals("Firm Pastry Brush"))
                     userViewMap.get(currentPlayer.getUsername()).firmPastryBrushMenu(ThreadLocalRandom.current().nextInt(1, 7));
                 else if (toolName.equals("Firm Pastry Thinner")) {
-                    extractedDieForFirmyPastryThinner = model.getDiceBag().extractDie();
+                    extractedDieForFirmyPastryThinner = model.extractDieFromDiceBag(); //TODO
                     userViewMap.get(currentPlayer.getUsername()).firmPastryThinnerMenu(extractedDieForFirmyPastryThinner.getColor().toString(), extractedDieForFirmyPastryThinner.getValue());
                 }
                 else if (toolName.equals("Gavel")) {
@@ -430,7 +404,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     @Override
     public void applyCommand(String playerUsername, MoveChoiceDicePlacement command){
-        //TODO Controllo username di current RICORDANDO CHE I VERI PLAYER SONO SALVATI SU orderedPlayers
+        if (!isAllowed(playerUsername)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            return;
+        }
         try {
             Die toPlace = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
             boolean exit = usernamePlayerMap.get(playerUsername).getWindowPatternCard()
@@ -442,7 +419,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             else {
                 System.out.println("Mossa applicata correttamente");
                 //TODO devo rimuovere il dado mosso dalla draftpool!
-                model.getDraftPool().takeDie(command.getDieDraftPoolPosition());
+                model.removeDieFromDraftPool(command.getDieDraftPoolPosition());
                 hasPerformedMove = true;
                 model.setGamePlayers(orderedPlayers);
                 userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
@@ -458,8 +435,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     @Override
     public void applyCommand(String playerUsername, MoveChoicePassTurn command){
+        if (!isAllowed(playerUsername)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            return;
+        }
         if (extractedDieForFirmyPastryThinner!=null) { //Case in which a timeout forced the player turn skip -> the die hasn't to be lost
-            model.getDiceBag().insertDie(extractedDieForFirmyPastryThinner);
+            model.insertDieInDiceBag(extractedDieForFirmyPastryThinner);
             extractedDieForFirmyPastryThinner=null;
         }
         playerTimerMap.get(usernamePlayerMap.get(currentPlayer.getUsername())).cancel();
@@ -476,19 +457,26 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     //MOSSA SENZA RESTRIZIONE POSIZIONE E DEVONO ESSERE NON ADIACENTI
     @Override
     public void applyCommand(String playerUsername, UseToolCorkLine command){
+        if (!isAllowed(playerUsername)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            return;
+        }
         //WindowPatternCard card = currentPlayer.getWindowPatternCard().placeDie(model.getDraftPool().getDie(command.getDieDraftPoolPosition()),  )
         //boolean correctMove = usernamePlayerMap.get(playerUsername).getWindowPatternCard().placeDie()
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
-
     }
     /**
      * Applies commands coming from the client, answering with correct/incorrect command responses
      */
     @Override
     public void applyCommand(String playerUsername, UseToolTwoDicePlacement command) throws EmptyCellException {
+        if (!isAllowed(playerUsername)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            return;
+        }
         if (command.getCardName().equals("Manual Cutter")) {
             Player current = usernamePlayerMap.get(playerUsername);
             if (!current.getWindowPatternCard().getCell(command.getSchemaOldPosition1()).hasDie() || !current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).hasDie()) {
@@ -521,6 +509,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     @Override
     public void applyCommand(String playerUsername, UndoActionCommand command) {
+        if (!isAllowed(playerUsername)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            return;
+        }
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
     }
 
@@ -529,6 +521,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     @Override
     public void applyCommand(String playerUsername, UseToolMoveDieNoRestriction command){
+        if (!isAllowed(playerUsername)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            return;
+        }
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;
@@ -541,6 +537,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     @Override
     public void applyCommand(String playerUsername ,UseToolFirmPastryBrush command){
+        if (!isAllowed(playerUsername)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            return;
+        }
         String[] words = command.getMessage().split(" ");
         if (words[0].equals("MOVE")){
             //TODO edit the schema, perform the move with the new value of the dice of the DraftPool
@@ -562,6 +562,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     @Override
     public void applyCommand(String playerUsername , UseToolFirmPastryThinner command){
+        if (!isAllowed(playerUsername)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            return;
+        }
         String[] words = command.getMessage().split(" ");
         if (words[0].equals("MOVE")){
             //TODO edit the model, reinsert the die in the draftpool in the dicebag
@@ -582,6 +586,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     @Override
     public void applyCommand(String playerUsername ,UseToolChangeDieValue command){ //Has to place it!
+        if (!isAllowed(playerUsername)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            return;
+        }
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;
@@ -595,7 +603,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     @Override
     public void applyCommand(String playerUsername ,UseToolCircularCutter command){
-    //from roundtrack to draftpool
+        if (!isAllowed(playerUsername)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            return;
+        }
+        //from roundtrack to draftpool
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;
@@ -608,7 +620,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     //Skip next turn
     @Override
     public void applyCommand(String playerUsername ,UseToolWheelsPincher command){
-
+        if (!isAllowed(playerUsername)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            return;
+        }
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;

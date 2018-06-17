@@ -281,7 +281,7 @@ public class CLIView extends View {
     }
 
     @Override
-    public void updateWpc() {
+    public void updateWpc(ArrayList<String> myWpc, ArrayList<ArrayList<String>> otherWpcs) {
         //TODO
     }
 

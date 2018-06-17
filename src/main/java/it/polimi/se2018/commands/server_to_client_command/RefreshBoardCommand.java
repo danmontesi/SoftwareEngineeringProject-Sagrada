@@ -1,7 +1,5 @@
 package it.polimi.se2018.commands.server_to_client_command;
 
-import it.polimi.se2018.model.Model;
-import it.polimi.se2018.model.RoundTrack;
 import it.polimi.se2018.utils.ControllerClientInterface;
 
 import java.util.ArrayList;
@@ -22,13 +20,13 @@ public class RefreshBoardCommand extends ServerToClientCommand{
     private ArrayList<Integer> tokensToolCards; //Ordered
 
     private ArrayList<String> draftpool; //Dice in the format: colorNumber/empty
-    private ArrayList<String> roundTrack;
+    private ArrayList<String> roundTrack; //Dice in the format: colorNumber/empty
 
-    private ArrayList<String> personalWpc; //""
+    private ArrayList<String> personalWpc; //the first cell is the name of the card, then /Dice in the format colorNumber/empty or restrictionColor or restrictionValue
     private Integer personalTokens;
     private String username;
 
-    private ArrayList<String> otherPlayersWpcs; //Dice in the format colorNumber/empty or restrictionColor or restrictionValue
+    private ArrayList<ArrayList<String>> otherPlayersWpcs; //Dice in the format colorNumber/empty or restrictionColor or restrictionValue
     private ArrayList<Integer> otherPlayersTokens;
     private ArrayList<Integer> otherPlayersUsernames;
 
@@ -36,7 +34,7 @@ public class RefreshBoardCommand extends ServerToClientCommand{
         this.message = model;
     }
 
-    public RefreshBoardCommand(String privateObjectiveCard, ArrayList<String> publicObjectiveCards, ArrayList<String> publicObjectiveDescription, ArrayList<Integer> tokensPublicObjective, ArrayList<String> toolCards, ArrayList<String> toolCardDescription, ArrayList<Integer> tokensToolCards, ArrayList<String> draftpool, ArrayList<String> roundTrack, ArrayList<String> personalWpc, Integer personalTokens, String username, ArrayList<String> otherPlayersWpcs, ArrayList<Integer> otherPlayersTokens, ArrayList<Integer> otherPlayersUsernames) {
+    public RefreshBoardCommand(String privateObjectiveCard, ArrayList<String> publicObjectiveCards, ArrayList<String> publicObjectiveDescription, ArrayList<Integer> tokensPublicObjective, ArrayList<String> toolCards, ArrayList<String> toolCardDescription, ArrayList<Integer> tokensToolCards, ArrayList<String> draftpool, ArrayList<String> roundTrack, ArrayList<String> personalWpc, Integer personalTokens, String username, ArrayList<ArrayList<String>> otherPlayersWpcs, ArrayList<Integer> otherPlayersTokens, ArrayList<Integer> otherPlayersUsernames) {
         this.privateObjectiveCard = privateObjectiveCard;
         this.publicObjectiveCards = publicObjectiveCards;
         this.publicObjectiveDescription = publicObjectiveDescription;
@@ -62,4 +60,64 @@ public class RefreshBoardCommand extends ServerToClientCommand{
         clientController.applyCommand(this);
     }
 
+
+    public String getPrivateObjectiveCard() {
+        return privateObjectiveCard;
+    }
+
+    public ArrayList<String> getPublicObjectiveCards() {
+        return publicObjectiveCards;
+    }
+
+    public ArrayList<String> getPublicObjectiveDescription() {
+        return publicObjectiveDescription;
+    }
+
+    public ArrayList<Integer> getTokensPublicObjective() {
+        return tokensPublicObjective;
+    }
+
+    public ArrayList<String> getToolCards() {
+        return toolCards;
+    }
+
+    public ArrayList<String> getToolCardDescription() {
+        return toolCardDescription;
+    }
+
+    public ArrayList<Integer> getTokensToolCards() {
+        return tokensToolCards;
+    }
+
+    public ArrayList<String> getDraftpool() {
+        return draftpool;
+    }
+
+    public ArrayList<String> getRoundTrack() {
+        return roundTrack;
+    }
+
+    public ArrayList<String> getPersonalWpc() {
+        return personalWpc;
+    }
+
+    public Integer getPersonalTokens() {
+        return personalTokens;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public ArrayList<ArrayList<String>> getOtherPlayersWpcs() {
+        return otherPlayersWpcs;
+    }
+
+    public ArrayList<Integer> getOtherPlayersTokens() {
+        return otherPlayersTokens;
+    }
+
+    public ArrayList<Integer> getOtherPlayersUsernames() {
+        return otherPlayersUsernames;
+    }
 }

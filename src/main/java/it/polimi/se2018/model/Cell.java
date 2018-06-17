@@ -86,7 +86,7 @@ public class Cell {
      * @return old cell's associated die
      * @throws EmptyCellException if the cell is empty
      * */
-    public Die removeDie() throws  EmptyCellException{
+    public Die removeDie() throws EmptyCellException{
         if (associatedDie == null){
             throw new EmptyCellException();
         }

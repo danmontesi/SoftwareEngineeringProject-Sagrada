@@ -2,6 +2,7 @@ package it.polimi.se2018.network.server;
 
 
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
+import it.polimi.se2018.commands.server_to_client_command.NewConnectedPlayerNotification;
 import it.polimi.se2018.network.client.ClientConnection;
 import it.polimi.se2018.network.client.rmi.RMIClientInterface;
 import it.polimi.se2018.network.server.rmi.RMIServer;
@@ -114,6 +115,13 @@ public class Server {
 
     }
 
+    private static void notifyNewConnectedPlayer(String username){
+        for (String connectionReference : waitingClients){
+            getConnectedClients().get(connectionReference).notifyClient(new NewConnectedPlayerNotification(username));
+        }
+
+    }
+
     public static void addClientInterface(Socket socket, ObjectInputStream input, ObjectOutputStream output, String username){
 
         //Create reference to Socket client
@@ -177,6 +185,9 @@ public class Server {
      * @param username
      */
     public static void disconnnectClient(String username){
+        if (waitingClients.contains(username)){ //Covers the case in which a player is connected but isn't in a started game
+            removeClient(username);
+        }
         if(connectedClients.containsKey(username)){
             connectedClients.remove(username);
             disconnectedClients.add(username);
@@ -186,12 +197,13 @@ public class Server {
         }
     }
 
-    public static void addToWaitingClients(String username){
+    public static void addToWaitingClients(String username){ //TODO Gestire la concorrenza: se vengono addati insieme 6 client, faccio partire un timer e l'altro per i 2 player rimanenti?
         waitingClients.add(username);
         System.out.println("Addato "+ username);
+        notifyNewConnectedPlayer(username);
         if (waitingClients.size() == 2){
             System.out.println("Starting timer");
-            timer = new Timer();
+            timer = new Timer(); //TODO gestire il caso di più partite in attesa: devo avere degli ARRAY di timer in quel caso! e sapere quali sono attivi
             timer.schedule(
                     new TimerTask() {
                         @Override
@@ -201,15 +213,14 @@ public class Server {
                             startNewGame(); //DA TOGLIERE, l'ho utilizzato solo come prova. il metodo deve essere contorllato dalla variabile itsTimeToStart
                         }
                     },
-                    6000
+                    6000 //TODO import from file
             );
         }
     }
 
-    public static void startNewGame(){
+    public static synchronized void startNewGame(){
         //when a game starts, timer is cancelled
         timer.cancel();
-
         ArrayList<String> players = new ArrayList<>();
 
         for(int i = 0; i < waitingClients.size() || i < 4; i ++){
@@ -226,7 +237,6 @@ public class Server {
 
         Controller controller = new Controller(players);
         activeGames.add(controller);
-
     }
 
     public static ArrayList<String> getWaitingClients(){

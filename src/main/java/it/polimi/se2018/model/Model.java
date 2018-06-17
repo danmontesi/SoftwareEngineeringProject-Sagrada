@@ -1,6 +1,7 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.client.View;
+import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.parser.ParserPrivateObjectiveCard;
 import it.polimi.se2018.parser.ParserPublicObjectiveCard;
 import it.polimi.se2018.parser.ParserToolcard;
@@ -170,11 +171,21 @@ public class Model extends Observable implements Serializable{ //Observable of V
         return diceBag;
     }
 
+    public void insertDieInDiceBag(Die die){
+        getDiceBag().insertDie(die);
+    }
+
+    public Die extractDieFromDiceBag(){
+        return getDiceBag().extractDie();
+    }
     public void setGamePlayers(ArrayList<Player> gamePlayers) {
         this.gamePlayers = gamePlayers;
         //notifyEditWpcs();
         notify(this);
+        notifyRefreshWpcs();
     }
+
+
 
     public String toString() {
         StringBuilder string = new StringBuilder();
@@ -199,8 +210,17 @@ public class Model extends Observable implements Serializable{ //Observable of V
         return string.toString();
     }
 
+    public Die removeDieFromDraftPool(int index){
+        try {
+            return getDraftPool().takeDie(index);
+        } catch (EmptyCellException e) {
+            return null;
+        }
+    }
+
     public void rollDraftpoolDice(){
         this.getDraftPool().rollDice();
+        notifyRefreshDraftPool();
         //TODO notify Draftpool changes
     }
 
@@ -225,38 +245,49 @@ public class Model extends Observable implements Serializable{ //Observable of V
         }
     }
 
-    public void notifyRefreshDraftPool(DraftPool model){
+    public void notifyRefreshDraftPool(){
         for (Observer observer : observers) {
             System.out.println("Notificando una V.V. della new board");
-            observer.update(model);
+            //observer.update(model);
         }
     }
 
-    public void notifyRefreshWpcs(DraftPool model){
+    public void notifyRefreshWpcs(){
         for (Observer observer : observers) {
-            System.out.println("Notificando una V.V. della new board");
-            observer.update(model);
+            ArrayList<String> personalWpc = new ArrayList<>(); //Dice in the format: colorNumber/empty
+            ArrayList<ArrayList<String>> otherPlayersWpcs = new ArrayList<>();
+            View currentView = (View) observer;
+            for (Player p : gamePlayers){
+                if (p.getUsername().equals(currentView.getUsername())){
+                    personalWpc = p.getWindowPatternCard().wpcPathRepresentation();
+                }
+                else{
+                    otherPlayersWpcs.add(p.getWindowPatternCard().wpcPathRepresentation());
+                }
+            }
+            ((View) observer).updateWpc(personalWpc, otherPlayersWpcs);
+            System.out.println("Notificando una V.V. della new board -> new WPCards");
         }
     }
 
-    public void notifyRefreshRoundTrack(RoundTrack model){
+    public void notifyRefreshRoundTrack(){
         for (Observer observer : observers) {
             System.out.println("Notificando una V.V. della new board");
-            observer.update(model);
+            //observer.update(model);
         }
     }
 
-    public void notifyRefreshTokens(RoundTrack model){
+    public void notifyRefreshTokens(){
         for (Observer observer : observers) {
             System.out.println("Notificando una V.V. della new board");
-            observer.update(model);
+            //observer.update(model);
         }
     }
 
-    public void notifyRefreshToolCardTokens(RoundTrack model){
+    public void notifyRefreshToolCardTokens(){
         for (Observer observer : observers) {
             System.out.println("Notificando una V.V. della new board");
-            observer.update(model);
+            //observer.update(model);
         }
     }
 
