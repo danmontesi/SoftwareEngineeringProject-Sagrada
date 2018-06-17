@@ -544,6 +544,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         String[] words = command.getMessage().split(" ");
         if (words[0].equals("MOVE")){
             //TODO edit the schema, perform the move with the new value of the dice of the DraftPool
+            hasPerformedMove = true;
         }
         else{ //default: draftpool
             //TODO just change the value die in the DraftPool, call the menu of Player
@@ -551,6 +552,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;
+
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
     }
 
@@ -563,6 +565,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         String[] words = command.getMessage().split(" ");
         if (words[0].equals("MOVE")){
             //TODO edit the model, reinsert the die in the draftpool in the dicebag
+            hasPerformedMove = true;
         }
         else{ //default: draftpool
             //TODO change the die in the DraftPool, reinsert the old one in the diceBag
@@ -578,11 +581,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * Applies commands coming from the client, answering with correct/incorrect command responses
      */
     @Override
-    public void applyCommand(String playerUsername ,UseToolChangeDieValue command){
-
+    public void applyCommand(String playerUsername ,UseToolChangeDieValue command){ //Has to place it!
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;
+        hasPerformedMove = true;
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
 
     }
@@ -592,7 +595,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     @Override
     public void applyCommand(String playerUsername ,UseToolCircularCutter command){
-
+    //from roundtrack to draftpool
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;
@@ -602,13 +605,14 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     /**
      * Applies commands coming from the client, answering with correct/incorrect command responses
      */
-
+    //Skip next turn
     @Override
     public void applyCommand(String playerUsername ,UseToolWheelsPincher command){
 
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;
+        hasPerformedMove = true;
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
     }
 

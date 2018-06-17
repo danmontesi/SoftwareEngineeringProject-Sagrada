@@ -53,12 +53,10 @@ public class WPCChoiceController{
 
     private String selectedWPC = new String();
 
-    /*public WPCChoiceController(ArrayList<String> wpcCards){
+    public WPCChoiceController(ArrayList<String> wpcCards) {
         wpcards = new ArrayList<>();
         this.wpcCards = wpcCards;
-    }*/
-
-
+    }
 
     public void show() {
         try {
@@ -69,7 +67,6 @@ public class WPCChoiceController{
     }
 
     public void start() throws Exception {
-        Platform.runLater(() -> {
             Parent root = null;
             try {
                 root = FXMLLoader.load(getClass().getResource("/client/wpcchoice.fxml"));
@@ -89,7 +86,6 @@ public class WPCChoiceController{
             System.out.println("entra6");
             stage.show();
             System.out.println("Entra7");
-        });
     }
 
     public void initialize() {

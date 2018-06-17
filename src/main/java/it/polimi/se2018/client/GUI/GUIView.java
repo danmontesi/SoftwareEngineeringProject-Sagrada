@@ -9,8 +9,10 @@ import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,6 +26,9 @@ public class GUIView extends View {
     private static final Logger LOGGER = Logger.getLogger(ClientStarterController.class.getName());
 
     private LobbyController lobby;
+
+    private Stage currentStage;
+
     private WPCChoiceController wpcChoiceController;
 
 
@@ -32,33 +37,52 @@ public class GUIView extends View {
 //TODO          OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO.
 //TODO          ognuno dei metodi quì sotto prima chiede l'input dall'utente, poi fa notify(new chosen
 
-    public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards){
+    public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
+        Platform.runLater(() -> {
         System.out.println("arriva");
         ArrayList<String> cardNames = new ArrayList<>();
         for (WindowPatternCard card : cards)
             cardNames.add(card.getCardName());
 
-        lobby.closeStage();
-        wpcChoiceController = new WPCChoiceController();
-        System.out.println("ciao");
-        wpcChoiceController.show();
+       /* Platform.runLater(() -> {
+                    lobby.closeStage();
+                    wpcChoiceController = new WPCChoiceController();
+                    System.out.println("ciao");
+
+
+                    wpcChoiceController.show();
+                });*/
+       WPCChoiceController wpcChoice = new WPCChoiceController(cardNames);
+        AnchorPane nextPane = new AnchorPane();
+        try {
+            nextPane = FXMLLoader.load(WPCChoiceController.class.getResource("/client/wpcchoice.fxml")); //Errore
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene scene = new Scene(nextPane);
+        //Stage w = (Stage) ((Node) lobby.getSource()).getScene().getWindow(); //TODO UTilizzare all'evento (es. click) di un utente all'evento
+        currentStage.setScene(scene);
+        currentStage.show();
+        });
+
+
         //notify(new ChooseWindowPatternCardCommand())
     }
 
-    public GUIView(Observer observer, ClientStarterController initGui){
+    public GUIView(Observer observer, ClientStarterController initGui) {
         register(observer);
         this.initGui = initGui;
         System.out.println("INIT GUI");
         initGui.closeScene();
         lobby = new LobbyController();
+        currentStage = lobby.getStage();
         lobby.show();
     }
 
 
-
     private void showStage(String stg) {
         String resource = "/client/" + stg + ".fxml";
-        Platform.runLater(() ->  {
+        Platform.runLater(() -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resource));
                 Parent root = fxmlLoader.load();
@@ -71,7 +95,7 @@ public class GUIView extends View {
         });
     }
 
-    public void newConnectedPlayer(String username){
+    public void newConnectedPlayer(String username) {
         //piccola label a scomparsa che segnala il giocatore all'interno della lobby
     }
 
@@ -81,7 +105,7 @@ public class GUIView extends View {
     }
 
 
-    public void startTurnMenu(){
+    public void startTurnMenu() {
         // Abilito bottoni draftpool, toolcard, pass.
         // Scrivo nel riquadro eventi " It's your turn"
 
@@ -108,11 +132,11 @@ public class GUIView extends View {
 
     }
 
-    public void AllowedUseToolMessage(String message){
+    public void AllowedUseToolMessage(String message) {
         //TODO Questo metodo non invia niente, mostra solo il messaggio
     }
 
-    public void continueTurnMenu(boolean move, boolean tool){
+    public void continueTurnMenu(boolean move, boolean tool) {
         //se move = false, draftpool disattivata, se true attivata
         //tool ""
 
@@ -120,24 +144,24 @@ public class GUIView extends View {
         //notify( new MOVE / new TOOLUSE / new PASSTURN )
     }
 
-    public void correctUseTool(int numTool){
+    public void correctUseTool(int numTool) {
         //Switch che in base al tipo di tool
         //i possibili metodi sono PRIVATI e sono questi quì
     }
 
-    public void firmPastryBrushMenu(int value){
+    public void firmPastryBrushMenu(int value) {
 
     }
 
-    public void firmPastryThinnerMenu(String color, int value){
+    public void firmPastryThinnerMenu(String color, int value) {
 
     }
 
-    public void moveDieNoRestrictionMenu(String cardName){
+    public void moveDieNoRestrictionMenu(String cardName) {
 
     }
 
-    public void changeDieValueMenu(String cardName){
+    public void changeDieValueMenu(String cardName) {
         //if CardName.equals(Roughing Forceps):
         //1- scrivi nelle notifiche "Scegli un dado draftpool" abilitando solo draftpool
         //2- scegli se aumentare / diminuire (Faccio apparire 2 bottoni + o - )"
@@ -146,11 +170,11 @@ public class GUIView extends View {
 
     }
 
-    public void twoDiceMoveMenu(String cardName){
+    public void twoDiceMoveMenu(String cardName) {
 
     }
 
-    public void corkLineMenu(){
+    public void corkLineMenu() {
         // Attivo draftpool
         // Attivo schema
         //l'utente preme gli indici e invio l'evento
@@ -160,29 +184,29 @@ public class GUIView extends View {
     }
 
 
-    public void wheelsPincherMenu(){
+    public void wheelsPincherMenu() {
 
 
     }
 
-    public void circularCutter(){
+    public void circularCutter() {
 
     }
 
 
-    public void invalidActionMessage(String message){
+    public void invalidActionMessage(String message) {
         //TODO. non contiene niente, mostra solo i messaggio
     }
 
-    public void loseMessage(Integer position, ArrayList<String> scores){
+    public void loseMessage(Integer position, ArrayList<String> scores) {
         //TODO. non contiene niente, mostra solo i messaggio. attento a parsare bene gli score
     }
 
-    public void winMessage(List<String> scores){
+    public void winMessage(List<String> scores) {
         //TODO. non contiene niente, mostra solo i messaggio, attento a parsare bene gli scores
     }
 
-    public void correctAuthenthication(String username){
+    public void correctAuthenthication(String username) {
         //TODO. non contiene niente, mostra solo i messaggio
     }
 
@@ -233,7 +257,7 @@ public class GUIView extends View {
         //The model is already updated by the ClientController, no worries about that
         //In case there is a CLI, does anything
         ServerToClientCommand command = (ServerToClientCommand) event;
-        System.out.println("ricevuto "+ command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
+        System.out.println("ricevuto " + command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
     }
 
 }

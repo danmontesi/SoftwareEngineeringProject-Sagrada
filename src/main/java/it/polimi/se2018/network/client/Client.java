@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 
-public class Client {
+public class Client{
     public static void main(String[] args) {
         ServerConnection server;
         Scanner scanner2 = new Scanner(System.in);

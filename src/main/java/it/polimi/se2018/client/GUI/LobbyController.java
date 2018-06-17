@@ -24,6 +24,10 @@ public class LobbyController {
     @FXML
     private Label text;
 
+    public Stage getStage() {
+        return stage;
+    }
+
     private Stage stage;
 
     public void show() {
@@ -52,6 +56,8 @@ public class LobbyController {
             System.exit(0);
         });
     }
+
+
 
 
 }
