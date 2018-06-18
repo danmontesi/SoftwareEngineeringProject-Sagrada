@@ -34,7 +34,7 @@ public class RMIVirtualClient implements ClientConnection {
                         for (Map.Entry<String, ClientConnection> entry : Server.getConnectedClients().entrySet()) {
                             if (entry.getValue().equals(this)) {
                                 disconnecting = entry.getKey();
-                                Server.disconnnectClient(disconnecting);
+                                Server.disconnectClient(disconnecting);
                                 System.out.println("client " + entry.getKey() + " disconnected");
                                 break;
                             }

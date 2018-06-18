@@ -20,10 +20,11 @@ public class InputReader {
 
     public String readLine() throws IOException, TimeoutException {
         System.out.println("Dentro readLine");
+        timeOut = false; //TODO se lo tolgo il primo turno va avanti perchè non riporto timeOut a false, capire perchè e risolverlo
         while (!reader.ready()) {
             if (timeOut) {
                 System.out.println("Timeout: passing turn automatically");
-                setTimeOut(false);
+                //setTimeOut(false); //TODO decommenta e elimnina il timeout a linea 23
                 throw new TimeoutException();
             }
 

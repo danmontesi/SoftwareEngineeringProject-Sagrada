@@ -75,7 +75,7 @@ public class VirtualView extends View {
     public void startTurnMenu() {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
+            notify(new MoveChoicePassTurn(username));
         } else
             Server.getConnectedClients().get(username).notifyClient(new StartPlayerTurnCommand());
     }
@@ -97,7 +97,7 @@ public class VirtualView extends View {
     public void continueTurnMenu(boolean move, boolean tool) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
+            notify(new MoveChoicePassTurn(username));
         } else {
             System.out.println("SENDING CONTINUETURNMENU");
             Server.getConnectedClients().get(username).notifyClient(new ContinueTurnCommand(move, tool));
@@ -128,7 +128,7 @@ public class VirtualView extends View {
     public void firmPastryBrushMenu(int value) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
+            notify(new MoveChoicePassTurn(username));
         } else
             Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolFirmPastryBrush1(value));
     }
@@ -137,7 +137,7 @@ public class VirtualView extends View {
     public void firmPastryThinnerMenu(String color, int value) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
+            notify(new MoveChoicePassTurn(username));
         } else
             Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolFirmPastryThinner1(color, value));
     }
@@ -146,7 +146,7 @@ public class VirtualView extends View {
     public void moveDieNoRestrictionMenu(String cardName) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
+            notify(new MoveChoicePassTurn(username));
         } else
             Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolMoveDieNoRestriction(cardName));
     }
@@ -155,7 +155,7 @@ public class VirtualView extends View {
     public void changeDieValueMenu(String cardName) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
+            notify(new MoveChoicePassTurn(username));
         } else
             Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolChangeDieValue(cardName));
     }
@@ -164,7 +164,7 @@ public class VirtualView extends View {
     public void twoDiceMoveMenu(String cardName) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
+            notify(new MoveChoicePassTurn(username));
         } else
             Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolTwoDiceMove(cardName));
     }
@@ -173,7 +173,7 @@ public class VirtualView extends View {
     public void corkLineMenu() {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
+            notify(new MoveChoicePassTurn(username));
         } else
             Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolCorkLine());
     }
@@ -182,7 +182,7 @@ public class VirtualView extends View {
     public void wheelsPincherMenu() {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
+            notify(new MoveChoicePassTurn(username));
         } else
             Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolWheelsPincher());
     }
@@ -191,7 +191,7 @@ public class VirtualView extends View {
     public void circularCutter() {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
+            notify(new MoveChoicePassTurn(username));
         } else
             Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolCircularCutter());
     }
@@ -232,7 +232,7 @@ public class VirtualView extends View {
     public void timeOut() {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             System.out.println("Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(""));
+            notify(new MoveChoicePassTurn(username));
         } else {
             Server.getConnectedClients().get(username).notifyClient(new TimeOutCommand());
         }
