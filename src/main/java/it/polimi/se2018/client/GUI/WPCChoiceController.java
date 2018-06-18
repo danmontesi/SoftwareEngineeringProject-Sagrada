@@ -58,6 +58,7 @@ public class WPCChoiceController extends Observable implements Observer {
 
     public void update(Observable o, Object arg) {
         if (arg != null) {
+            System.out.println("update cards");
             setWPCards((String)arg);
         }
     }
@@ -74,23 +75,26 @@ public class WPCChoiceController extends Observable implements Observer {
     }
 
     private void setWPCards(String cards) {
-        ArrayList<String> wpcCards = stringToArray(cards);
-        int i=0;
-        for (ToggleButton wpc : wpcards) {
-            String img = wpcCards.get(i);
-            String path = "/client/WPC/" + img + ".jpg";
-            Image image = new Image(path);
-            ImageView iv = new ImageView(image);
-            iv.setFitHeight(184);
-            iv.setFitWidth(275);
-            wpc.setGraphic(iv);
-            wpc.setText("virtus");
-            wpc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> wpc.setEffect(shadow));
-            wpc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
-                if (!wpc.isSelected()) wpc.setEffect(null);
-            });
-            i++;
-        }
+        System.out.println("cards setting");
+        Platform.runLater(() -> {
+            ArrayList<String> wpcCards = stringToArray(cards);
+            int i=0;
+            for (ToggleButton wpc : wpcards) {
+                String img = wpcCards.get(i);
+                String path = "/client/WPC/" + img + ".jpg";
+                Image image = new Image(path);
+                ImageView iv = new ImageView(image);
+                iv.setFitHeight(184);
+                iv.setFitWidth(275);
+                wpc.setGraphic(iv);
+                wpc.setText("virtus");
+                wpc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> wpc.setEffect(shadow));
+                wpc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                    if (!wpc.isSelected()) wpc.setEffect(null);
+                });
+                i++;
+            }
+        });
     }
 
     @FXML

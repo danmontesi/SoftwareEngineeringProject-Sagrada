@@ -1,5 +1,6 @@
 package it.polimi.se2018.client.GUI;
 
+import it.polimi.se2018.client.GUI.Notifiers.LobbyNotifier;
 import it.polimi.se2018.client.GUI.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.client.View;
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
@@ -25,18 +26,22 @@ public class GUIView extends View {
         for (WindowPatternCard card : cards) {
             cardNames.add(card.getCardName());
         }
-        //notify(new ChooseWindowPatternCardCommand(cardNames.toString()));
+        LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
+        lobbyNotifier.updateGui();
         WPCChoiceNotifier wpcChoiceNotifier = WPCChoiceNotifier.getInstance();
         wpcChoiceNotifier.updateGui(cardNames.toString());
     }
 
     public void newConnectedPlayer(String username) {
         //piccola label che segnala il giocatore all'interno della lobby
+        LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
+        lobbyNotifier.updateGui(username);
     }
 
     @Override
     public void playerDisconnection(String username) {
-
+        LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
+        lobbyNotifier.updateGui(username);
     }
 
 
