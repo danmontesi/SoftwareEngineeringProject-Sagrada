@@ -1,5 +1,6 @@
 package it.polimi.se2018.client.GUI;
 
+import it.polimi.se2018.client.GUI.Notifiers.WPCChoiceNotifier;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,7 +54,6 @@ public class WPCChoiceController extends Observable implements Observer {
         WPCChoiceNotifier.getInstance().addObserver(this);
         initWPCards();
         setTGroup();
-        setWPCards("prova2");
     }
 
     public void update(Observable o, Object arg) {

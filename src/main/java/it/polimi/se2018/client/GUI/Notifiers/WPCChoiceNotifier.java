@@ -1,8 +1,8 @@
-package it.polimi.se2018.client.GUI;
+package it.polimi.se2018.client.GUI.Notifiers;
 
-import java.util.List;
+import java.util.Observable;
 
-public class WPCChoiceNotifier extends java.util.Observable {
+public class WPCChoiceNotifier extends Observable {
     private WPCChoiceNotifier() {}
 
     private static class WPCChoiceNotifierHolder {

@@ -56,6 +56,7 @@ public class ClientStarterController implements Observer {
 
     private void initToggleGroup() {
         connectionType.getToggles().addAll(rmi, socket);
+        socket.setSelected(true);
     }
 
     private void initStyle() {
@@ -73,12 +74,7 @@ public class ClientStarterController implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        boolean successful = (boolean)arg;
-        if (successful) {
-            //showUIChoice();
-        } else {
-            inputError();
-        }
+
     }
 
     @FXML
@@ -104,20 +100,20 @@ public class ClientStarterController implements Observer {
 
     @FXML
     public void startConnection() {
-        ServerConnection server;
-        if (getUsername() == null) {
-            //TODO scrivere inserire username
-        } else if (getConnection() == null) {
-            //TODO scrivere scegliere connessione
+        if (getUsername().equals("")) {
+            inputError();
         } else {
+            usernameField.setEffect(null);
+            ServerConnection server;
             if (getConnection().equals("RMI")) {
-                server = new RMIClient(1, this);
+                server = new RMIClient(1);
                 server.startConnection(getUsername());
             } else if (getConnection().equals("Socket")) {
                 //TODO vincolo IP
-                server = new SocketClient(2, this);
+                server = new SocketClient(2);
                 server.startConnection(getUsername());
             }
+            showLobby();
         }
     }
 
@@ -144,7 +140,6 @@ public class ClientStarterController implements Observer {
 
     private void inputError() {
         redShadow.setColor(new Color(0.7, 0,0,1));
-        redShadow.setSpread(3);
         usernameField.setEffect(redShadow);
     }
 }

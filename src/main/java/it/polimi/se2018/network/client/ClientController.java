@@ -44,13 +44,13 @@ public class ClientController implements Observer, ControllerClientInterface {
      */
     public ClientController(int viewChoice, ServerConnection connection){
         this.connection = connection;
-        if (viewChoice==1){
+        if (viewChoice == 1){
             this.view = new CLIView(this);
         }
         else
-            this.view = new CLIView(this); //TODO MODIFICA;
+            this.view = new GUIView(this); //TODO MODIFICA;
     }
-    
+
     public void setUsername(String username){
         this.username = username;
     }
