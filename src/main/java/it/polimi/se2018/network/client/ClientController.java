@@ -50,14 +50,7 @@ public class ClientController implements Observer, ControllerClientInterface {
         else
             this.view = new CLIView(this); //TODO MODIFICA;
     }
-
-    public ClientController(int viewChoice, ServerConnection connection, ClientStarterController initGui){
-        System.out.println("ENTRO COSTRUTTORE");
-        this.connection = connection;
-        System.out.println("STO CReando guiview");
-        this.view = new GUIView(this, initGui);
-    }
-
+    
     public void setUsername(String username){
         this.username = username;
     }
