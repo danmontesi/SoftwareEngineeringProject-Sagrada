@@ -19,7 +19,7 @@ public class ClientStarterMain extends Application {
         clientStarterController = loaderClientStarter.getController();
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(new Scene(root, 400, 500));
-        Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 20);
+        //Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 20);
         primaryStage.show();
     }
 

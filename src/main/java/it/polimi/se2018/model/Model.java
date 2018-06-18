@@ -218,6 +218,14 @@ public class Model extends Observable implements Serializable{ //Observable of V
         }
     }
 
+    public void changeDieValueOnDraftPool(int index, int value){
+        try {
+            draftPool.getDie(index).setValue(value);
+        } catch (EmptyCellException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void rollDraftpoolDice(){
         this.getDraftPool().rollDice();
         notifyRefreshDraftPool();

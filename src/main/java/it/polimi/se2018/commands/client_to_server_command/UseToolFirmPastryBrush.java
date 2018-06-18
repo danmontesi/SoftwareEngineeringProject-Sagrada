@@ -7,12 +7,12 @@ public class UseToolFirmPastryBrush extends ClientToServerCommand{
         return dieValue;
     }
 
-    public Integer getDiePosition() {
-        return diePosition;
+    public Integer getDieSchemaPosition() {
+        return dieSchemaPosition;
     }
 
-    public Integer getDieOldPosition() {
-        return dieOldPosition;
+    public Integer getDieDraftpoolPosition() {
+        return dieDraftpoolPosition;
     } //TODO perchè non considerato?
 
     /**
@@ -37,15 +37,15 @@ public class UseToolFirmPastryBrush extends ClientToServerCommand{
 
     private Integer dieValue;
 
-    private Integer diePosition; // in  Schema ony ( can be null)
+    private Integer dieSchemaPosition; // in  Schema ony ( can be null)
 
-    private Integer dieOldPosition;
+    private Integer dieDraftpoolPosition;
 
-    public UseToolFirmPastryBrush(String message, Integer dieValue, Integer dieOldPosition, Integer diePosition) {
+    public UseToolFirmPastryBrush(String message, Integer dieValue, Integer dieDraftpoolPosition, Integer dieSchemaPosition) {
         this.message = message;
         this.dieValue = dieValue;
-        this.diePosition = diePosition;
-        this.dieOldPosition = dieOldPosition;
+        this.dieSchemaPosition = dieSchemaPosition;
+        this.dieDraftpoolPosition = dieDraftpoolPosition;
     }
     public void visit(ControllerServerInterface observer){
         observer.applyCommand(getUsername(), this);

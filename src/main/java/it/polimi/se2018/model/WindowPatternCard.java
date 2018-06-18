@@ -82,6 +82,40 @@ public class WindowPatternCard {
         return true;
     }
 
+
+    /**
+     * Same of place die, but has index instead of row/column
+     * @param d
+     * @param index
+     * @param colorRestriction
+     * @param valueRestriction
+     * @param placementRestriction
+     * @return
+     */
+    public boolean placeDie(Die d, int index, boolean colorRestriction, boolean valueRestriction,
+                            boolean placementRestriction) {
+        if (this.getCell(index).hasDie()) {
+            return false;
+        }
+        if (colorRestriction) {
+            if (!checkColorRestriction(this.getCell(index), d)) {
+                return false;
+            }
+        }
+        if (valueRestriction) {
+            if (!checkValueRestriction(this.getCell(index), d)) {
+                return false;
+            }
+        }
+        if (placementRestriction) {
+            if (!checkPlacementRestriction(getCell(index), d)) {
+                return false;
+            }
+        }
+        this.getCell(index).setAssociatedDie(d);
+        return true;
+    }
+
     /**
      * Overloaded method for ordinary moves (without toolcards)
      * @param d Die to be placed

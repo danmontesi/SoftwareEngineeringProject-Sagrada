@@ -37,10 +37,6 @@ public class ParserToolcard {
       "description": "After drafting, swap the drafted die with a die from the Round Track."
     },
     {
-      "name": "Firm Pastry Brush",
-      "description": "After drafting, re-roll che drafted die. If it cannot be placed, return it to the Draft Pool."
-    },
-    {
       "name": "Gavel",
       "description": "Re-roll all dice in the Draft Pool. This may only be used on your second turn before drafting."
     },
