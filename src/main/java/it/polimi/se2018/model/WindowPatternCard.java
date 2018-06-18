@@ -363,16 +363,16 @@ public class WindowPatternCard {
                 try {
                     if (schema.get(i).isEmpty()) {
                         if (schema.get(i).getColorConstraint()!=null){
-                            wpcString.add("constr_" + schema.get(i).getColorConstraint().toString());   //COLOR constaint has just the "constr" color name. casn use ".contains"_" to know if there is a restriction
+                            wpcString.add( schema.get(i).getColorConstraint().toString());   //COLOR constaint has just the "constr" color name. casn use ".contains"_" to know if there is a restriction
                         }
                         else if (schema.get(i).getValueConstraint()!=null){
-                            wpcString.add("constr_" + schema.get(i).getValueConstraint().toString());   //VALUE constaint has just the "constr" + value name
+                            wpcString.add( schema.get(i).getValueConstraint().toString());   //VALUE constaint has just the "constr" + value name
                         }
                         else {
                             wpcString.add("empty");
                         }
                     } else {
-                        wpcString.add(schema.get(i).getAssociatedDie().getColor().toString() + schema.get(i).getAssociatedDie().getValue());
+                        wpcString.add(schema.get(i).getAssociatedDie().getColor().toString() + "_" + schema.get(i).getAssociatedDie().getValue());
                     }
                 } catch (EmptyCellException e) {
                     e.printStackTrace();
