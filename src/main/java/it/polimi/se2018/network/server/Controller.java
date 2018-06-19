@@ -359,6 +359,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     @Override
     public synchronized void applyCommand(String playerUsername, ChosenWindowPatternCard command){
+        System.out.println("entra controller command"+command.getMessage());
         ParserWindowPatternCard parser = null;
         try {
             parser = new ParserWindowPatternCard();

@@ -1,5 +1,6 @@
 package it.polimi.se2018.view.GUI;
 
+import it.polimi.se2018.commands.client_to_server_command.ChosenWindowPatternCard;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardReplies.RefreshBoard;
 import it.polimi.se2018.view.GUI.Notifiers.LobbyNotifier;
@@ -217,6 +218,10 @@ public class GUIView extends View {
             GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
             gameBoardNotifier.updateGui(new RefreshBoard(), command);
         }
+    }
+
+    public void chosenWindowPatternCardMenu(String wpc) {
+        notify(new ChosenWindowPatternCard(wpc));
     }
 
 }

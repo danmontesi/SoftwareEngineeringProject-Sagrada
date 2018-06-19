@@ -107,7 +107,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc3.setDisable(false);
             wpc4.setDisable(false);
         }
-        selectedWPC = "0";
+        selectedWPC = wpc1.getText();
     }
 
     @FXML
@@ -122,7 +122,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc3.setDisable(false);
             wpc4.setDisable(false);
         }
-        selectedWPC = "1";
+        selectedWPC = wpc2.getText();
     }
 
     @FXML
@@ -137,7 +137,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc1.setDisable(false);
             wpc4.setDisable(false);
         }
-        selectedWPC = "2";
+        selectedWPC = wpc3.getText();
     }
 
     @FXML
@@ -152,7 +152,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc3.setDisable(false);
             wpc1.setDisable(false);
         }
-        selectedWPC = "3";
+        selectedWPC = wpc4.getText();
     }
 
     public void closeStage() {
@@ -179,15 +179,9 @@ public class WPCChoiceController extends Observable implements Observer {
     }
 
     private ArrayList<String> stringToArray(String s1) {
-        String s = s1.toLowerCase();
-        String r = s.replace("[","");
+        String r = s1.replace("[","");
         String r1 = r.replace("]","");
         ArrayList<String> a = new ArrayList<String>(Arrays.asList(r1.split(", ")));
-        ArrayList<String> a1 = new ArrayList<>();
-        for (String card : a) {
-            String card1 = card.replaceAll(" ", "_");
-            a1.add(card1);
-        }
-        return a1;
+        return a;
     }
 }
