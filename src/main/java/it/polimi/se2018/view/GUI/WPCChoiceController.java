@@ -54,9 +54,6 @@ public class WPCChoiceController extends Observable implements Observer {
         WPCChoiceNotifier.getInstance().addObserver(this);
         initWPCards();
         setTGroup();
-        for (ToggleButton tb : wpcards) {
-
-        }
     }
 
     public void update(Observable o, Object arg) {
@@ -110,7 +107,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc3.setDisable(false);
             wpc4.setDisable(false);
         }
-        selectedWPC = wpc1.getText();
+        selectedWPC = "0";
     }
 
     @FXML
@@ -125,7 +122,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc3.setDisable(false);
             wpc4.setDisable(false);
         }
-        selectedWPC = wpc2.getText();
+        selectedWPC = "1";
     }
 
     @FXML
@@ -140,7 +137,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc1.setDisable(false);
             wpc4.setDisable(false);
         }
-        selectedWPC = wpc3.getText();
+        selectedWPC = "2";
     }
 
     @FXML
@@ -155,7 +152,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc3.setDisable(false);
             wpc1.setDisable(false);
         }
-        selectedWPC = wpc4.getText();
+        selectedWPC = "3";
     }
 
     public void closeStage() {

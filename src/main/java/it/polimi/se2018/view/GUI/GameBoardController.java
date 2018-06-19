@@ -1,7 +1,11 @@
 package it.polimi.se2018.view.GUI;
 
+import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
 import it.polimi.se2018.view.ExampleBoardStringPaths;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardReplies.GameBoardReply;
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardReplies.GameBoardVisitor;
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardReplies.RefreshBoard;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -32,6 +36,7 @@ public class GameBoardController extends Observable implements Observer {
     private static final Logger LOGGER = Logger.getLogger(GameBoardController.class.getName());
 
     private ExampleBoardStringPaths exampleBoardStringPaths = new ExampleBoardStringPaths();
+    private RefreshBoardCommand modelRepresentation;
 
     private List<Circle> circles;
     private List<ImageView> pubocards;
@@ -376,11 +381,11 @@ public class GameBoardController extends Observable implements Observer {
         initCircles();
         initButtons();
         initRoundTrack();
-        initPubocards();
+        /*initPubocards();
         initTcards();
         initWpcards();
         initPersonalWPC();
-        initPersonalPriOC();
+        initPersonalPriOC();*/
         moveDice();
 
         setDrafPool();
@@ -390,17 +395,26 @@ public class GameBoardController extends Observable implements Observer {
         setPersonalWPC();
     }
 
-    private void setMB() {
-        String txt;
-        for (int i=0; i<12; i++) {
-            txt = "prova "+i+"\n";
-            msgbox.appendText(txt);
-        }
-    }
-
     public void update(Observable o, Object arg) {
         if (arg == null) {
             showRanking();
+        } else {
+            System.out.println("enters1");
+            GameBoardReply gameBoardReply = (GameBoardReply)arg;
+            GameBoardVisitor gameBoardVisitor = new GameBoardVisitor() {
+                @Override
+                public void visitGameBoardReply(RefreshBoard refreshBoard) {
+                    System.out.println("enters");
+                    modelRepresentation = (RefreshBoardCommand)arg;
+                    System.out.println("enters2");
+                    initPubocards();
+                    initTcards();
+                    initWpcards();
+                    initPersonalWPC();
+                    initPersonalPriOC();
+                }
+            };
+            gameBoardReply.acceptGameBoardVisitor(gameBoardVisitor);
         }
     }
 
@@ -571,17 +585,17 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void initPubocards() {
-        ArrayList<String> publicOC = exampleBoardStringPaths.getPublicObjectiveCards();
-        int i=0;
-        for (ImageView puboc : pubocards) {
+        System.out.println("initPubOC");
+        ArrayList<String> publicOC = modelRepresentation.getPublicObjectiveCards();
+        ArrayList<String> publicOCDesc = modelRepresentation.getPublicObjectiveDescription();
+        for (int i=0; i<publicOC.size(); i++) {
         String img = publicOC.get(i);
             String path = "/client/OC/" + img + ".jpg";
             Image image = new Image(path);
-            puboc.setImage(image);
-            Tooltip t = new Tooltip("Description: ...");
-            Tooltip.install(puboc, t);
+            pubocards.get(i).setImage(image);
+            Tooltip t = new Tooltip(publicOCDesc.get(i));
+            Tooltip.install(pubocards.get(i), t);
             t.setStyle("-fx-font-size: 15px");
-            i++;
         }
     }
 
@@ -815,5 +829,14 @@ public class GameBoardController extends Observable implements Observer {
     public void tc3Action() {
 
     }
+
+    private void setMB() {
+        String txt;
+        for (int i=0; i<12; i++) {
+            txt = "prova "+i+"\n";
+            msgbox.appendText(txt);
+        }
+    }
+
 }
 

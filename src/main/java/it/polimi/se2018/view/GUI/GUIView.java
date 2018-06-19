@@ -1,5 +1,7 @@
 package it.polimi.se2018.view.GUI;
 
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardReplies.RefreshBoard;
 import it.polimi.se2018.view.GUI.Notifiers.LobbyNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.view.View;
@@ -195,6 +197,7 @@ public class GUIView extends View {
 
     @Override
     public void update(Object model) {
+        System.out.println("entra update");
         //Osserva il Model e con Update, fa l'update del model locale
         //Calls the right method to update the Graphical Board;
         //The model is already updated by the ClientController, no worries about that
@@ -208,9 +211,11 @@ public class GUIView extends View {
         }
         else{
             currentModelPathRepresentation = command; //posso sempre accedere alle informazioni del model facendo currentModelPathRepresentation.get....()
-            System.out.println(command.getDraftpool().get(0)); //example
+            //System.out.println(command.getDraftpool().get(0)); //example
             //TODO NIVES: da command prendo tutte le informazioni come ho fatto per la classe di prova
             //es. command.getDraftPool,... Oss: ho aggiunto anche le descrizioni
+            GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+            gameBoardNotifier.updateGui(new RefreshBoard(), command);
         }
     }
 
