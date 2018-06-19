@@ -30,3 +30,11 @@
 .button {
     -fx-font-size: 14px;
 }
+
+.text-area {
+    -fx-background-color: #909090;
+}
+
+.text-area .content {
+    -fx-background-color: #f0f0f0;
+}
