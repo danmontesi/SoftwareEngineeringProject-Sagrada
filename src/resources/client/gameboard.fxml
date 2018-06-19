@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -121,7 +122,7 @@
                   </RadialGradient>
                </fill>
             </Circle>
-               <ImageView fx:id="wpc2" fitHeight="152.0" fitWidth="190.0" layoutX="285.0" layoutY="46.0" preserveRatio="true" AnchorPane.bottomAnchor="15.433547973632812" AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="285.4803009033203" />
+               <ImageView fx:id="wpc2" fitHeight="152.0" fitWidth="190.0" layoutX="285.0" layoutY="46.0" preserveRatio="true" AnchorPane.bottomAnchor="15.433547973632812" AnchorPane.leftAnchor="285.0" />
             <GridPane fx:id="gwpc2" hgap="8.0" layoutX="294.0" layoutY="41.0" vgap="8.0">
                 <children>
                     <ImageView fx:id="ivw200" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" />
@@ -226,7 +227,8 @@
                   <ToggleButton fx:id="tbd7" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
                   <ToggleButton fx:id="tbd8" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
                   <ToggleButton fx:id="tbd9" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-               </children></HBox>
+               </children>
+            </HBox>
             <Button fx:id="pass" layoutX="680.0" layoutY="15.0" mnemonicParsing="false" onAction="#passTurn" pickOnBounds="false" prefHeight="25.0" prefWidth="65.0" styleClass="button" text="Pass" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="15.0" />
             <Button fx:id="quit" layoutX="954.0" layoutY="91.0" mnemonicParsing="false" onAction="#quit" pickOnBounds="false" prefHeight="25.0" prefWidth="65.0" styleClass="button" text="Quit" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="30.0" />
          </children>
@@ -284,13 +286,14 @@
                   <ToggleButton fx:id="tbw043" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
                </children>
             </GridPane>
-            <ImageView fx:id="prioc0" fitHeight="267.0" fitWidth="188.0" layoutX="327.0" layoutY="19.0" preserveRatio="true" AnchorPane.bottomAnchor="13.0" AnchorPane.topAnchor="13.0" />
+            <ImageView fx:id="prioc0" fitHeight="267.0" fitWidth="188.0" layoutX="335.0" layoutY="15.0" preserveRatio="true" AnchorPane.bottomAnchor="15.152801513671875" AnchorPane.topAnchor="15.0" />
+            <TextArea fx:id="msgbox" style="-fx-font-size: 14px" editable="false" layoutX="556.0" layoutY="30.0" prefHeight="238.0" prefWidth="190.0" wrapText="true" />
          </children>
       </AnchorPane>
        <AnchorPane fx:id="rtbox" layoutX="1100.0" prefHeight="630.0" prefWidth="158.0">
            <children>
                <ImageView fx:id="rt" fitHeight="600.0" fitWidth="122.0" layoutX="16.0" layoutY="15.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
-               <VBox fx:id="rtd" layoutX="57.0" layoutY="67.0" prefHeight="513.0" prefWidth="40.0" rotate="180.0" spacing="12.5" AnchorPane.leftAnchor="57.0" AnchorPane.rightAnchor="61.0">
+               <VBox fx:id="rtd" layoutX="57.0" layoutY="67.0" prefHeight="513.0" prefWidth="40.0" rotate="180.0" spacing="12.5" AnchorPane.leftAnchor="57.0">
                <children>
                   <ToggleButton fx:id="tbr1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
                   <ToggleButton fx:id="tbr2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />

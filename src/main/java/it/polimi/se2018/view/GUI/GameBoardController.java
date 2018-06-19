@@ -8,16 +8,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -343,6 +342,9 @@ public class GameBoardController extends Observable implements Observer {
     @FXML
     private Circle circle3;
 
+    @FXML
+    private TextArea msgbox;
+
     private DropShadow shadow = new DropShadow();
 
     public GameBoardController() {
@@ -386,6 +388,14 @@ public class GameBoardController extends Observable implements Observer {
         setTCTokens();
         setWpcards();
         setPersonalWPC();
+    }
+
+    private void setMB() {
+        String txt;
+        for (int i=0; i<12; i++) {
+            txt = "prova "+i+"\n";
+            msgbox.appendText(txt);
+        }
     }
 
     public void update(Observable o, Object arg) {
