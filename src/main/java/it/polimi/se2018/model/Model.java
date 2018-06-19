@@ -1,6 +1,7 @@
 package it.polimi.se2018.model;
 
-import it.polimi.se2018.view.View;
+import it.polimi.se2018.client.View;
+import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
 import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.parser.ParserPrivateObjectiveCard;
 import it.polimi.se2018.parser.ParserPublicObjectiveCard;
@@ -9,6 +10,7 @@ import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.model.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -231,6 +233,11 @@ public class Model extends Observable implements Serializable{ //Observable of V
         //TODO notify Draftpool changes
     }
 
+    public void setPlayerWpcs(ArrayList<Player> players){
+        this.gamePlayers = players;
+        notifyRefreshBoard();
+    }
+
     //TODO Versione toString, eventualmente da farle tornare il model stesso
     @Override
     public void notify(Object obj){
@@ -241,19 +248,10 @@ public class Model extends Observable implements Serializable{ //Observable of V
         }
     }
 
-    public void notifyRefreshBoard(){ //TODO personalised for every View. Remove the parameter
-        for (Observer observer : observers) {
-            View temp = (View) observer;
-            temp.getUsername();
-            //
-
-            System.out.println("Notificando una V.V. della new board");
-            //observer.update(model);
-        }
-    }
-
     public void notifyRefreshDraftPool(){
         for (Observer observer : observers) {
+            ArrayList<String> draftpool= new ArrayList<>(); //Dice in the format: colorNumber/empty
+            draftpool = getDraftPool().draftpoolPathRepresentation();
             System.out.println("Notificando una V.V. della new board");
             //observer.update(model);
         }
@@ -279,6 +277,8 @@ public class Model extends Observable implements Serializable{ //Observable of V
 
     public void notifyRefreshRoundTrack(){
         for (Observer observer : observers) {
+            ArrayList<String> roundTrack = new ArrayList<>(); //Dice in the format: colorNumber/empty
+            roundTrack = getRoundTrack().roundtrackPathRepresentation();
             System.out.println("Notificando una V.V. della new board");
             //observer.update(model);
         }
@@ -295,6 +295,73 @@ public class Model extends Observable implements Serializable{ //Observable of V
         for (Observer observer : observers) {
             System.out.println("Notificando una V.V. della new board");
             //observer.update(model);
+        }
+    }
+
+
+    /**
+     * Method for initial setting of the board
+     */
+    public void notifyRefreshBoard(){
+        System.out.println("CALLED REFRESHBOARD");
+        ArrayList<String> draftpool= new ArrayList<>(); //Dice in the format: colorNumber/empty
+        draftpool = getDraftPool().draftpoolPathRepresentation();
+        ArrayList<String> roundTrack = new ArrayList<>(); //Dice in the format: colorNumber/empty
+        roundTrack = getRoundTrack().roundtrackPathRepresentation();
+
+        ArrayList<String> publicObjectiveCards = new ArrayList<>();
+        ArrayList<String> publicObjectiveDescription = new ArrayList<>();
+        for (PublicObjectiveCard card : extractedPublicObjectiveCard){
+            publicObjectiveCards.add(card.getName());
+            publicObjectiveDescription.add(card.getDescription());
+        }
+
+        ArrayList<String> toolCards = new ArrayList<>();
+        ArrayList<String> toolCardDescription = new ArrayList<>();
+        ArrayList<Integer> tokensToolCards = new ArrayList<>(); //Ordered
+        for (ToolCard toolCard : extractedToolCard){
+            toolCards.add(toolCard.getName());
+            toolCardDescription.add(toolCard.getDescription());
+            tokensToolCards.add(toolCard.getTokenCount());
+        }
+
+        for (Observer observer : observers) {
+            View currentView = (View) observer;
+            String username = currentView.getUsername();
+
+            //Private obj card
+            String privateObjectiveCard = null;
+            String privateObjectiveCardDescription = null;
+            //WPC initialization
+            ArrayList<String> personalWpc = new ArrayList<>(); //Dice in the format: colorNumber/empty
+            ArrayList<ArrayList<String>> otherPlayersWpcs = new ArrayList<>();
+            for (Player p : gamePlayers){
+                if (p.getUsername().equals(username)){
+                    personalWpc = p.getWindowPatternCard().wpcPathRepresentation();
+                    privateObjectiveCard = p.getPrivateObjectiveCard().getName();
+                    privateObjectiveCardDescription = p.getPrivateObjectiveCard().getDescription();
+                }
+                else{
+                    otherPlayersWpcs.add(p.getWindowPatternCard().wpcPathRepresentation());
+                }
+            }
+
+            ArrayList<Integer> otherPlayersTokens = new ArrayList<>();
+            ArrayList<String> otherPlayersUsernames = new ArrayList<>();
+            Integer myTokens = null;
+            String myUsername = username;
+            for (Player p : gamePlayers){
+                if (p.getUsername().equals(username))
+                    myTokens = p.getTokens();
+                else {
+                    otherPlayersTokens.add(p.getTokens());
+                    otherPlayersUsernames.add(p.getUsername());
+                }
+            }
+
+            observer.update(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
+                    draftpool, roundTrack, personalWpc, myTokens, myUsername, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
+            System.out.println("Notificando una V.V. della new board COMPLETA");
         }
     }
 

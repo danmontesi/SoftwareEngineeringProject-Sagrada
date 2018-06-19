@@ -275,7 +275,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         else{
             System.out.println("Start turn "+ (10 - orderedRoundPlayers.size()) + 1);
             model.setDraftPool(model.extractDraftPoolDice(orderedPlayers.size()));
-            model.setGamePlayers(orderedPlayers); //Used for notify eventual modifics of wpcs to the Players
+
+            //TODO fallo apparire solo una volta con wpcs (aggiorna Tutta la board, non serve)
+            model.setPlayerWpcs(orderedPlayers); //Used for notify eventual modifics of wpcs to the Players
             //initialize DraftPool
             //Start a new round-> pick the first of the RoundList
             currentRoundOrderedPlayers=orderedRoundPlayers.remove(0);
