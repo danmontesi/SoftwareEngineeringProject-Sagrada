@@ -3,6 +3,7 @@ package it.polimi.se2018.client.CLI;
 import it.polimi.se2018.client.GUI.GameBoardController;
 import it.polimi.se2018.client.View;
 import it.polimi.se2018.commands.client_to_server_command.*;
+import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
@@ -334,8 +335,17 @@ public class CLIView extends View {
         //The model is already updated by the ClientController, no worries about that
         //In case there is a CLI, does anything
         System.out.println("\n->Updating board<-\n");
-        ServerToClientCommand command = (ServerToClientCommand) event;
-        System.out.println("ricevuto \n"+ command.getMessage());
+
+        RefreshBoardCommand command = (RefreshBoardCommand) event;
+        if (command.getMessage()!=null) {
+            System.out.println("ricevuto " + command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
+        }
+        else{
+            //currentModelPathRepresentation = command; //TODO se vuoi, lo associo localmente così posso sempre accedere alle informazioni del model facendo currentModelPathRepresentation.get....()
+            System.out.println(command.getDraftpool().get(0)); //example
+            //TODO ALLE: da command prendo tutte le informazioni come ho fatto per la classe di prova
+            //es. command.getDraftPool,... Oss: ho aggiunto anche le descrizioni
+        }
     }
 
 }

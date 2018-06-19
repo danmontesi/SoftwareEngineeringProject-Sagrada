@@ -3,6 +3,7 @@ package it.polimi.se2018.client.GUI;
 import it.polimi.se2018.client.GUI.Notifiers.LobbyNotifier;
 import it.polimi.se2018.client.GUI.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.client.View;
+import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
@@ -14,6 +15,7 @@ public class GUIView extends View {
 //TODO          PER CHI FA LA VIEW:
 //TODO          OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO.
 //TODO          ognuno dei metodi quì sotto prima chiede l'input dall'utente, poi fa notify(new chosen
+    private RefreshBoardCommand currentModelPathRepresentation;
 
     public GUIView(Observer observer) {
         register(observer);
@@ -193,13 +195,24 @@ public class GUIView extends View {
     }
 
     @Override
-    public void update(Object event) {
+    public void update(Object model) {
         //Osserva il Model e con Update, fa l'update del model locale
         //Calls the right method to update the Graphical Board;
         //The model is already updated by the ClientController, no worries about that
         //In case there is a CLI, does anything
-        ServerToClientCommand command = (ServerToClientCommand) event;
-        System.out.println("ricevuto " + command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
+        RefreshBoardCommand command = (RefreshBoardCommand) model;
+        this.currentModelPathRepresentation=command;
+
+        //PER NIVES: PER ORA LE UPDATE SONO DI 2 TIPI: TU LASCIALI ENTRAMBI E FAI L'AGGIORNAMENTO  DELLA BOARD PRENDENDO QUESTO
+        if (command.getMessage()!=null) {
+            System.out.println("ricevuto " + command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
+        }
+        else{
+            currentModelPathRepresentation = command; //posso sempre accedere alle informazioni del model facendo currentModelPathRepresentation.get....()
+            System.out.println(command.getDraftpool().get(0)); //example
+            //TODO NIVES: da command prendo tutte le informazioni come ho fatto per la classe di prova
+            //es. command.getDraftPool,... Oss: ho aggiunto anche le descrizioni
+        }
     }
 
 }

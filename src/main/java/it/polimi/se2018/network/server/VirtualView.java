@@ -268,11 +268,25 @@ public class VirtualView extends View {
 
     public void update(Object model){ //TODO Change with all model representation
         //RefreshBoardCommand
+        //TODO TOGLI!! PERR ORA SOLO
+        if (model instanceof RefreshBoardCommand){
+            update((RefreshBoardCommand) model);
+            return;
+        }
         if (Server.getConnectedClients().get(username)==null){ //disconnected
             System.out.println("Disconnected -> No updating model");
         }
         else
             Server.getConnectedClients().get(username).notifyClient(new RefreshBoardCommand((String) model));
+    }
+
+    public void update(RefreshBoardCommand command){ //TODO Change with all model representation
+        //RefreshBoardCommand
+        if (Server.getConnectedClients().get(username)==null){ //disconnected
+            System.out.println("Disconnected -> No updating model");
+        }
+        else
+            Server.getConnectedClients().get(username).notifyClient(command);
     }
 
     @Override

@@ -10,10 +10,17 @@ public class RefreshBoardCommand extends ServerToClientCommand{
      * Contains each player's view of the board.
      */
 
+    //TODO devono essere final? o basta che non abbiano setter? questo comando mi arriverà fino al client
+
     private String privateObjectiveCard;
+
+    public String getPrivateObjectiveCardDescription() {
+        return privateObjectiveCardDescription;
+    }
+
+    private String privateObjectiveCardDescription;
     private ArrayList<String> publicObjectiveCards;
     private ArrayList<String> publicObjectiveDescription;
-    private ArrayList<Integer> tokensPublicObjective; //Ordered based on poc order
 
     private ArrayList<String> toolCards;
     private ArrayList<String> toolCardDescription;
@@ -28,17 +35,16 @@ public class RefreshBoardCommand extends ServerToClientCommand{
 
     private ArrayList<ArrayList<String>> otherPlayersWpcs; //Dice in the format colorNumber/empty or restrictionColor or restrictionValue
     private ArrayList<Integer> otherPlayersTokens;
-    private ArrayList<Integer> otherPlayersUsernames;
+    private ArrayList<String> otherPlayersUsernames;
 
     public RefreshBoardCommand(String model){
         this.message = model;
     }
 
-    public RefreshBoardCommand(String privateObjectiveCard, ArrayList<String> publicObjectiveCards, ArrayList<String> publicObjectiveDescription, ArrayList<Integer> tokensPublicObjective, ArrayList<String> toolCards, ArrayList<String> toolCardDescription, ArrayList<Integer> tokensToolCards, ArrayList<String> draftpool, ArrayList<String> roundTrack, ArrayList<String> personalWpc, Integer personalTokens, String username, ArrayList<ArrayList<String>> otherPlayersWpcs, ArrayList<Integer> otherPlayersTokens, ArrayList<Integer> otherPlayersUsernames) {
+    public RefreshBoardCommand(String privateObjectiveCard, String privateObjectiveCardDescription, ArrayList<String> publicObjectiveCards, ArrayList<String> publicObjectiveDescription, ArrayList<String> toolCards, ArrayList<String> toolCardDescription, ArrayList<Integer> tokensToolCards, ArrayList<String> draftpool, ArrayList<String> roundTrack, ArrayList<String> personalWpc, Integer personalTokens, String username, ArrayList<ArrayList<String>> otherPlayersWpcs, ArrayList<Integer> otherPlayersTokens, ArrayList<String> otherPlayersUsernames) {
         this.privateObjectiveCard = privateObjectiveCard;
         this.publicObjectiveCards = publicObjectiveCards;
         this.publicObjectiveDescription = publicObjectiveDescription;
-        this.tokensPublicObjective = tokensPublicObjective;
         this.toolCards = toolCards;
         this.toolCardDescription = toolCardDescription;
         this.tokensToolCards = tokensToolCards;
@@ -50,6 +56,7 @@ public class RefreshBoardCommand extends ServerToClientCommand{
         this.otherPlayersWpcs = otherPlayersWpcs;
         this.otherPlayersTokens = otherPlayersTokens;
         this.otherPlayersUsernames = otherPlayersUsernames;
+        this.privateObjectiveCardDescription = privateObjectiveCardDescription;
     }
 
     /**
@@ -71,10 +78,6 @@ public class RefreshBoardCommand extends ServerToClientCommand{
 
     public ArrayList<String> getPublicObjectiveDescription() {
         return publicObjectiveDescription;
-    }
-
-    public ArrayList<Integer> getTokensPublicObjective() {
-        return tokensPublicObjective;
     }
 
     public ArrayList<String> getToolCards() {
@@ -117,7 +120,7 @@ public class RefreshBoardCommand extends ServerToClientCommand{
         return otherPlayersTokens;
     }
 
-    public ArrayList<Integer> getOtherPlayersUsernames() {
+    public ArrayList<String> getOtherPlayersUsernames() {
         return otherPlayersUsernames;
     }
 }
