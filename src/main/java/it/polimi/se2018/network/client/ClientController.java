@@ -359,6 +359,10 @@ public class ClientController implements Observer, ControllerClientInterface {
         view.playerDisconnection(command.getUsername());
     }
 
+    @Override
+    public void applyCommand(StartGameCommand startGameCommand){
+        view.startGame();
+    }
 
     @Override
     public void applyCommand(NewConnectedPlayerNotification command) {

@@ -27,6 +27,8 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
         //Calls chooseWindowPatternCard(..)
     }
 
+    public abstract void startGame();
+
     public abstract void otherPlayerTurn(String username);
 
     public abstract void authenticatedCorrectlyMessage(String message);
