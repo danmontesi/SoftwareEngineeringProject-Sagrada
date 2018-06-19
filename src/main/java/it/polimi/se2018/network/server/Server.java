@@ -187,8 +187,12 @@ public class Server {
      * @param username
      */
     public static void disconnectClient(String username){
-        if (waitingClients.contains(username)){ //Covers the case in which a player is connected but isn't in a started game
+        if (waitingClients.contains(username)) { //Covers the case in which a player is connected but isn't in a started game
             removeClient(username);
+            if (waitingClients.size() <= 1) {
+                timer.cancel();
+            }
+            return;
         }
         if(connectedClients.containsKey(username)){
             connectedClients.remove(username);

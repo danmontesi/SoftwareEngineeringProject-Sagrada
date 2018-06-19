@@ -117,6 +117,42 @@ public class WindowPatternCard {
     }
 
     /**
+     * Same of place die, but has index for 2 dice
+     * @param d1
+     * @param d2
+     * @param index1
+     * @param index2
+     * @param colorRestriction
+     * @param valueRestriction
+     * @param placementRestriction
+     * @return
+     */
+    public boolean place2Die(Die d1, Die d2, int index1, int index2, boolean colorRestriction, boolean valueRestriction,
+                            boolean placementRestriction) {
+        if (this.getCell(index1).hasDie() || this.getCell(index2).hasDie()) {
+            return false;
+        }
+        if (colorRestriction) {
+            if (!checkColorRestriction(this.getCell(index1), d1) || !checkColorRestriction(this.getCell(index2), d2)) {
+                return false;
+            }
+        }
+        if (valueRestriction) {
+            if (!checkValueRestriction(this.getCell(index1), d1) || !checkValueRestriction(this.getCell(index2), d2)) {
+                return false;
+            }
+        }
+        if (placementRestriction) {
+            if (!checkPlacementRestriction(getCell(index1), d1) || !checkPlacementRestriction(getCell(index2), d2)) {
+                return false;
+            }
+        }
+        this.getCell(index1).setAssociatedDie(d1);
+        this.getCell(index2).setAssociatedDie(d2);
+        return true;
+    }
+
+    /**
      * Overloaded method for ordinary moves (without toolcards)
      * @param d Die to be placed
      * @param row Cell row

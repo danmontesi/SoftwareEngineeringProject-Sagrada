@@ -220,8 +220,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             for (Map.Entry<String, Integer> entry : playerScoreMap.entrySet()) {  // Iterates through hashmap
                 if (entry.getValue() == maxValueInMap) {
                     orderedPlayerScores.put(entry.getKey(), playerScoreMap.remove(entry.getKey()));   // Assign a new Entry in the LinkedHashMap
+                    break; //Exit for new research of max
                 }
-                break; //Exit for new research of max
             }
         }
         sendResultToPlayers(orderedPlayerScores);
@@ -237,7 +237,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         int tempRank=1;
         while (i0.hasNext()) {
             Map.Entry entry = (Map.Entry) i0.next();
-            scoresList.add(tempRank + "," + entry.getKey().toString() + "," + entry.getValue().toString());
+            scoresList.add(tempRank + "_" + entry.getKey().toString() + "_" + entry.getValue().toString());
             tempRank++;
         }
         Integer counter=0;
@@ -518,6 +518,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         hasUsedTool = true;
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
     }
+
     /**
      * Applies commands coming from the view, answering with correct/incorrect command responses
      */
@@ -665,23 +666,38 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     @Override
     public void applyCommand(String playerUsername , UseToolFirmPastryThinner command){
-        if (!isAllowed(playerUsername)){
+        if (!isAllowed(playerUsername) || extractedDieForFirmyPastryThinner==null){
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
+        Die toReinsert = model.removeDieFromDraftPool(command.getDieOldPosition());
+        model.insertDieInDiceBag(toReinsert);
+        extractedDieForFirmyPastryThinner.setValue(command.getDieNewValue());
         String[] words = command.getMessage().split(" ");
         if (words[0].equals("MOVE")){
-            //TODO edit the model, reinsert the die in the draftpool in the dicebag
-            hasPerformedMove = true;
+            if (usernamePlayerMap.get(playerUsername).getWindowPatternCard()
+                    .placeDie(extractedDieForFirmyPastryThinner,
+                    command.getDiePosition(), true, true, true)){
+                usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
+                lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
+                hasUsedTool = true;
+                hasPerformedMove = true;
+                userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                extractedDieForFirmyPastryThinner=null;
+                return;
+            }
+            else{
+                //sending invalidinvalid
+                //default: leaving the die in draftpool TODO
+            }
         }
-        else{ //default: draftpool
-            //TODO change the die in the DraftPool, reinsert the old one in the diceBag
-        }
+        //default: draftpool
+        model.setDieOnDraftPool(extractedDieForFirmyPastryThinner, command.getDieOldPosition());
+        extractedDieForFirmyPastryThinner=null;
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
-
     }
 
     /**
@@ -693,6 +709,84 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
+        Die temp = null;
+        try {
+            temp = model.getDraftPool().getDie(command.getDraftPoolPosition());
+        } catch (EmptyCellException e) {
+            e.printStackTrace();
+        }
+
+        if (command.getCardName().equals("Roughing Forceps")){
+            if (command.isIncrease()){
+                //checking number <6
+                try {
+                    if(usernamePlayerMap.get(playerUsername).getWindowPatternCard()
+                            .getCell(command.getDraftPoolPosition()).getAssociatedDie().getValue()<6){
+                        //correct
+                        if (!usernamePlayerMap.get(currentPlayer.getUsername()).getWindowPatternCard()
+                                .placeDie(temp, command.getSchemaPosition(), true, true, true)){
+                            //invalid: undo action
+                            //continueturncommand
+                            return;
+                        }
+                        else{
+                            model.removeDieFromDraftPool(command.getDraftPoolPosition());
+                        }
+                    }
+                    else{
+                        //undo action
+                        usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(-requiredTokensForLastToolUse);
+                        lastUsedToolCard.increaseTokens(-requiredTokensForLastToolUse);
+                        //invalid command: undo action
+                        //continueTurncommand
+                        return;
+                    }
+                } catch (EmptyCellException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{ //default: decrease
+                try {
+                    if(usernamePlayerMap.get(playerUsername).getWindowPatternCard()
+                            .getCell(command.getDraftPoolPosition()).getAssociatedDie().getValue()>1){
+                        //correct
+                        if (!usernamePlayerMap.get(currentPlayer.getUsername()).getWindowPatternCard()
+                                .placeDie(temp, command.getSchemaPosition(), true, true, true)){
+                            //invalid: undo action
+                            //continueturncommand
+                            return;
+                        }
+                        else{
+                            model.removeDieFromDraftPool(command.getDraftPoolPosition());
+                        }
+                    }
+                    else{
+                        //undo action
+                        usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(-requiredTokensForLastToolUse);
+                        lastUsedToolCard.increaseTokens(-requiredTokensForLastToolUse);
+                        //invalid command: undo action
+                        //continueTurncommand
+                        return;
+                    }
+                } catch (EmptyCellException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        //default: Diamond Swab
+        else{
+            temp.flip();
+            if (!usernamePlayerMap.get(currentPlayer.getUsername()).getWindowPatternCard()
+                    .placeDie(temp, command.getSchemaPosition(), true, true, true)){
+                //invalid: undo action
+                //continueturncommand
+                return;
+            }
+            else{
+                model.removeDieFromDraftPool(command.getDraftPoolPosition());
+            }
+        }
+        //TODO aggiungo set dei player al model?
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;
@@ -710,6 +804,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
+
+        //TODO check correct die position not null
+
+        Die tempFromDraftPool = model.removeDieFromDraftPool(command.getDieDraftPoolPosition());
+        Die tempFromRoundTrack = model.swapDieOnRoundTrack(tempFromDraftPool, command.getDieRoundTrackPosition());
+        model.setDieOnDraftPool(tempFromRoundTrack, command.getDieDraftPoolPosition());
         //from roundtrack to draftpool
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
@@ -722,11 +822,15 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     //Skip next turn
     @Override
-    public void applyCommand(String playerUsername ,UseToolWheelsPincher command){
+    public void applyCommand(String playerUsername, UseToolWheelsPincher command){
         if (!isAllowed(playerUsername)){
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
+
+        //Metodo per place2Die
+        //if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().place2Die())
+
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;

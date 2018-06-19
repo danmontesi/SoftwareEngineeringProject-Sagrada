@@ -227,12 +227,27 @@ public class Model extends Observable implements Serializable{ //Observable of V
         }
     }
 
+    public void setDieOnDraftPool(Die die, int index){
+        this.draftPool.placeDie(index, die);
+        notifyRefreshDraftPool();
+    }
+
     public void rollDraftpoolDice(){
         this.getDraftPool().rollDice();
         notifyRefreshDraftPool();
         //TODO notify Draftpool changes
     }
 
+    public Die swapDieOnRoundTrack(Die die, int index){
+        Die toReturn=null;
+        try {
+            toReturn = getRoundTrack().switchDie(index, die);
+        } catch (EmptyCellException e) {
+            e.printStackTrace();
+        }
+        notifyRefreshRoundTrack();
+        return toReturn;
+    }
     public void setPlayerWpcs(ArrayList<Player> players){
         this.gamePlayers = players;
         notifyRefreshBoard();

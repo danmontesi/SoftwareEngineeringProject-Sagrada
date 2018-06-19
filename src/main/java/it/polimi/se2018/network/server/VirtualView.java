@@ -28,6 +28,15 @@ public class VirtualView extends View {
         System.out.println("Creata virtual view di username: " + username);
     }
 
+    public VirtualView(Observer controller) {
+        this.observer = controller;
+    }
+
+    public void setUsername(String username){
+        Server.getUserMap().put(username, this);
+        System.out.println("Creata virtual view di username: " + username);
+    }
+
     /**
      * Nel VirtualView devono stare:
      * - il metodo notify(un comando) che da' al Controller i comandi che prende dal view

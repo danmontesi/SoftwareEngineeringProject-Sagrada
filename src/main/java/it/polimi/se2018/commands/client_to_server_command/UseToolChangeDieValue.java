@@ -30,7 +30,7 @@ public class UseToolChangeDieValue extends ClientToServerCommand {
 
     private Integer draftPoolPosition;
 
-    private Integer schemaPosition; //Can be null or not. If not null -> player can't place any die
+    private Integer schemaPosition;
 
     /**
      * For increase/decrease tool
