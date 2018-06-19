@@ -1,6 +1,6 @@
 package it.polimi.se2018.network.server;
 
-import it.polimi.se2018.client.View;
+import it.polimi.se2018.view.View;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.ControllerServerInterface;
 import it.polimi.se2018.utils.Observer;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-//TODO has to extend controllerInterface to avoid access of Controller from client
+//TODO has to extend controllerInterface to avoid access of Controller from view
 public class Controller implements Observer, ControllerServerInterface { //Observer perchè osserva la View tramite le classi di mezzo (ClientConnection)
 
     /**
@@ -22,7 +22,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      *
      * Has a link to
      * - Model (it modifies the model)
-     * - Connections with the client (to handle ServerToClientCommands)
+     * - Connections with the view (to handle ServerToClientCommands)
      */
 
     private Model model;
@@ -499,7 +499,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     // else, has to call a new Request of re-use of that tool, re-sending a event of AllowedUseToolCommand(usedToolNumber)
 
     /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
+     * Applies commands coming from the view, answering with correct/incorrect command responses
      */
     //MOSSA SENZA RESTRIZIONE POSIZIONE E DEVONO ESSERE NON ADIACENTI
     @Override
@@ -516,7 +516,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
     }
     /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
+     * Applies commands coming from the view, answering with correct/incorrect command responses
      */
     @Override
     public void applyCommand(String playerUsername, UseToolTwoDicePlacement command) throws EmptyCellException {
@@ -573,7 +573,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
+     * Applies commands coming from the view, answering with correct/incorrect command responses
      */
     @Override
     public void applyCommand(String playerUsername, UseToolMoveDieNoRestriction command) {
@@ -614,7 +614,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
+     * Applies commands coming from the view, answering with correct/incorrect command responses
      * BRUSH: decide the new value
      */
     @Override
@@ -657,7 +657,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
+     * Applies commands coming from the view, answering with correct/incorrect command responses
      * THINNER: die from DiceBag
      */
     @Override
@@ -682,7 +682,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
+     * Applies commands coming from the view, answering with correct/incorrect command responses
      */
     @Override
     public void applyCommand(String playerUsername ,UseToolChangeDieValue command){ //Has to place it!
@@ -699,7 +699,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
+     * Applies commands coming from the view, answering with correct/incorrect command responses
      */
     @Override
     public void applyCommand(String playerUsername, UseToolCircularCutter command){
@@ -715,7 +715,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
+     * Applies commands coming from the view, answering with correct/incorrect command responses
      */
     //Skip next turn
     @Override

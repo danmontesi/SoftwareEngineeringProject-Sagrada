@@ -1,13 +1,11 @@
 package it.polimi.se2018.network.client;
 
 import com.google.gson.stream.MalformedJsonException;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import it.polimi.se2018.client.ClientStarterController;
-import it.polimi.se2018.client.GUI.GUIView;
+import it.polimi.se2018.view.GUI.GUIView;
 import it.polimi.se2018.model.COLOR;
-import it.polimi.se2018.client.CLI.CLIView;
+import it.polimi.se2018.view.CLI.CLIView;
 import it.polimi.se2018.model.Die;
-import it.polimi.se2018.client.View;
+import it.polimi.se2018.view.View;
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;

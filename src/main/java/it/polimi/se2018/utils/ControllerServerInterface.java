@@ -32,30 +32,30 @@ public interface ControllerServerInterface {
     // else, has to call a new Request of re-use of that tool, re-sending a event of AllowedUseToolCommand(usedToolNumber)
 
     /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
+     * Applies commands coming from the view, answering with correct/incorrect command responses
      */
     //MOSSA SENZA RESTRIZIONE POSIZIONE E DEVONO ESSERE NON ADIACENTI
     public void applyCommand(String playerUsername, UseToolCorkLine command);
 
     /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
+     * Applies commands coming from the view, answering with correct/incorrect command responses
      * BRUSH: decide the new value
      */
     public void applyCommand(String playerUsername, UseToolFirmPastryBrush command);
 
     /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
+     * Applies commands coming from the view, answering with correct/incorrect command responses
      * THINNER: die from DiceBag
      */
     public void applyCommand(String playerUsername, UseToolFirmPastryThinner command);
 
     /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
+     * Applies commands coming from the view, answering with correct/incorrect command responses
      */
     public void applyCommand(String playerUsername, UseToolCircularCutter command);
 
     /**
-     * Applies commands coming from the client, answering with correct/incorrect command responses
+     * Applies commands coming from the view, answering with correct/incorrect command responses
      */
     public void applyCommand(String playerUsername, UseToolWheelsPincher command);
 

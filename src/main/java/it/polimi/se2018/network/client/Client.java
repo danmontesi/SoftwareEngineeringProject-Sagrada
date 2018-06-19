@@ -1,19 +1,12 @@
 package it.polimi.se2018.network.client;
 
 
-import it.polimi.se2018.client.ClientStarterController;
-import it.polimi.se2018.client.ClientStarterMain;
+import it.polimi.se2018.view.ClientStarterMain;
 import it.polimi.se2018.network.client.rmi.RMIClient;
 import it.polimi.se2018.network.client.socket.SocketClient;
 import it.polimi.se2018.network.server.ServerConnection;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
 
 public class Client{
     public static void main(String[] args) {

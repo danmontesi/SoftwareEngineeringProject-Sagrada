@@ -1,10 +1,9 @@
-package it.polimi.se2018.client;
+package it.polimi.se2018.view;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class ClientStarterMain extends Application {

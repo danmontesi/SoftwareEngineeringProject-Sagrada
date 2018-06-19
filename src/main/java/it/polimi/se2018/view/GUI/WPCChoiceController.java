@@ -1,6 +1,6 @@
-package it.polimi.se2018.client.GUI;
+package it.polimi.se2018.view.GUI;
 
-import it.polimi.se2018.client.GUI.Notifiers.WPCChoiceNotifier;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,6 +54,9 @@ public class WPCChoiceController extends Observable implements Observer {
         WPCChoiceNotifier.getInstance().addObserver(this);
         initWPCards();
         setTGroup();
+        for (ToggleButton tb : wpcards) {
+
+        }
     }
 
     public void update(Observable o, Object arg) {
@@ -83,7 +86,7 @@ public class WPCChoiceController extends Observable implements Observer {
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);
                 iv.setFitHeight(184);
-                iv.setFitWidth(275);
+                iv.setFitWidth(230);
                 wpc.setGraphic(iv);
                 wpc.setText("virtus");
                 wpc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> wpc.setEffect(shadow));

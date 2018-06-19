@@ -1,11 +1,9 @@
-package it.polimi.se2018.client.GUI;
+package it.polimi.se2018.view.GUI;
 
-import it.polimi.se2018.client.ClientStarterMain;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class MessageMain extends Application {

@@ -1,8 +1,8 @@
-package it.polimi.se2018.client.GUI;
+package it.polimi.se2018.view.GUI;
 
-import it.polimi.se2018.client.GUI.Notifiers.LobbyNotifier;
-import it.polimi.se2018.client.GUI.Notifiers.WPCChoiceNotifier;
-import it.polimi.se2018.client.View;
+import it.polimi.se2018.view.GUI.Notifiers.LobbyNotifier;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
+import it.polimi.se2018.view.View;
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;

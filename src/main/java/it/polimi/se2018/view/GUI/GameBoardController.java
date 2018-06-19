@@ -1,7 +1,7 @@
-package it.polimi.se2018.client.GUI;
+package it.polimi.se2018.view.GUI;
 
-import it.polimi.se2018.client.ExampleBoardStringPaths;
-import it.polimi.se2018.client.GUI.Notifiers.GameBoardNotifier;
+import it.polimi.se2018.view.ExampleBoardStringPaths;
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -726,8 +726,8 @@ public class GameBoardController extends Observable implements Observer {
                 String path = "/client/Dice/" + img + ".jpg";
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);
-                iv.setFitWidth(40);
-                iv.setFitHeight(40);
+                iv.setFitWidth(43);
+                iv.setFitHeight(43);
                 tbw0.get(i).setGraphic(iv);
             }
         }

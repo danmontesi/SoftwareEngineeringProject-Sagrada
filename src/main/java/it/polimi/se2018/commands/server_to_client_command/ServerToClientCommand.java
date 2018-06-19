@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public abstract class ServerToClientCommand implements Serializable {
     /**
-     * This is the abstract class representing all possible command from Server to client
+     * This is the abstract class representing all possible command from Server to view
      */
     public String message;
 

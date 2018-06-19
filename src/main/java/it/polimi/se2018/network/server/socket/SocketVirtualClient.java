@@ -49,7 +49,7 @@ public class SocketVirtualClient extends Thread implements ClientConnection {
                 }
                  /*
             Nota: in alternativa, un modo più semplice di ciclare in tutta la mapppa è aggiungere al comando
-            da server a client l'username dell'utente di destinazione (come per l'analogo client to server)
+            da server a view l'username dell'utente di destinazione (come per l'analogo view to server)
              */
                 String disconnecting;
                 for (Map.Entry<String, ClientConnection> entry : Server.getConnectedClients().entrySet()) {

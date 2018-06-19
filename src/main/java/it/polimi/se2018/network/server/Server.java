@@ -87,8 +87,8 @@ public class Server {
         /*
         Three cases:
         1) Attempt to reconnect after disconnection
-        2) Correct login request. client is added to waitingClients (waiting for a game to start)
-        3) Attempt to connect with a user already taken, the server choose a similar valid one and notifies it to the client
+        2) Correct login request. view is added to waitingClients (waiting for a game to start)
+        3) Attempt to connect with a user already taken, the server choose a similar valid one and notifies it to the view
         Every time, a response is sent back to notify success or failure
          */
         if (disconnectedClients.contains(username)){
@@ -126,15 +126,15 @@ public class Server {
 
     public static void addClientInterface(Socket socket, ObjectInputStream input, ObjectOutputStream output, String username){
 
-        //Create reference to Socket client
+        //Create reference to Socket view
 
         SocketVirtualClient vc = new SocketVirtualClient(socket, input, output);
 
         /*
         Three cases:
         1) Attempt to reconnect after disconnection
-        2) Correct login request. client is added to waitingClients (waiting for a game to start)
-        3) Attempt to connect with a user already taken, the server choose a similar valid one and notifies it to the client
+        2) Correct login request. view is added to waitingClients (waiting for a game to start)
+        3) Attempt to connect with a user already taken, the server choose a similar valid one and notifies it to the view
         Every time, a response is sent back to notify success or failure
          */
         System.out.println("Entro in addClientSocket");
@@ -194,18 +194,18 @@ public class Server {
             connectedClients.remove(username);
             disconnectedClients.add(username);
             //TODO Ale: controllo che ci siano abbastanza giocatori nella partita
-            // 1)- Cerco il controller associato all'username del client disconnesso
+            // 1)- Cerco il controller associato all'username del view disconnesso
             // 2) una volta trovato, controllo se ha almeno 2 giocatori nell'Hashmap dei ConnectedClients
             // 3) Se ne ha almeno 2, no action
             // 4) se ne ha uno soltato, proclamo vincitore l'ultimo rimasto
 
             System.out.println("client " + username + " disconnected");
         } else {
-            System.out.println("Could not found such client");
+            System.out.println("Could not found such view");
         }
     }
 
-    public static void addToWaitingClients(String username){ //TODO Gestire la concorrenza: se vengono addati insieme 6 client, faccio partire un timer e l'altro per i 2 player rimanenti?
+    public static void addToWaitingClients(String username){ //TODO Gestire la concorrenza: se vengono addati insieme 6 view, faccio partire un timer e l'altro per i 2 player rimanenti?
         waitingClients.add(username);
         System.out.println("Addato "+ username);
         notifyNewConnectedPlayer(username);

@@ -2,7 +2,7 @@ package it.polimi.se2018.network;
 
 import java.util.Scanner;
 
-//TODO: To do better, is an example of connection from a client
+//TODO: To do better, is an example of connection from a view
 public class ClientLauncher {
 /*
     public static void main(String args[]){

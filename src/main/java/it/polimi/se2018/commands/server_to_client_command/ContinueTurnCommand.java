@@ -9,7 +9,7 @@ public class ContinueTurnCommand extends ServerToClientCommand {
     private boolean tool;
 
     /**
-     * Command that let the client continue its turn
+     * Command that let the view continue its turn
      * @param move true if can do a move
      * @param tool true if can use a tool\
      */

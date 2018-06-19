@@ -1,4 +1,4 @@
-package it.polimi.se2018.client;
+package it.polimi.se2018.view;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;

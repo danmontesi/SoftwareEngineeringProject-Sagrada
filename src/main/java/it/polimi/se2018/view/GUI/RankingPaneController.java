@@ -1,6 +1,6 @@
-package it.polimi.se2018.client.GUI;
+package it.polimi.se2018.view.GUI;
 
-import it.polimi.se2018.client.GUI.Notifiers.RankingPaneNotifier;
+import it.polimi.se2018.view.GUI.Notifiers.RankingPaneNotifier;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

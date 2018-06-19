@@ -1,4 +1,4 @@
-package it.polimi.se2018.client;
+package it.polimi.se2018.view;
 
 public class ClientInformation {
     private static String Username;

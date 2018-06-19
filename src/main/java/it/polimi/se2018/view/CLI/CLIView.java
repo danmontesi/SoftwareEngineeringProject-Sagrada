@@ -1,12 +1,10 @@
-package it.polimi.se2018.client.CLI;
+package it.polimi.se2018.view.CLI;
 
-import it.polimi.se2018.client.GUI.GameBoardController;
-import it.polimi.se2018.client.View;
+import it.polimi.se2018.view.View;
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -156,7 +154,7 @@ public class CLIView extends View {
     //TODO dan
     public void firmPastryThinnerMenu(String color, int value){ // receives a new die from Servfer with Color = color, Value = value. The player has to send one of draftpool dice to swap them
         //Notify(new UseToolFirmPastr...(Integer chosenDieDraftpoolIndex, Integer schemaPosition (where he wants to place the die, can be null), **String color, Integer value***, boolean placedDie (true if the player place the die)
-        // ** il server deve ricevere il dado che ha mandato al client perchè non lo salva da nessuna parte
+        // ** il server deve ricevere il dado che ha mandato al view perchè non lo salva da nessuna parte
     }
 
     @Override

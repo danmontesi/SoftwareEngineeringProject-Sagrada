@@ -1,4 +1,4 @@
-package it.polimi.se2018.client.CLI;
+package it.polimi.se2018.view.CLI;
 
 import java.io.BufferedReader;
 import java.io.IOException;

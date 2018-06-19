@@ -1,6 +1,6 @@
 package it.polimi.se2018.model;
 
-import it.polimi.se2018.client.View;
+import it.polimi.se2018.view.View;
 import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.parser.ParserPrivateObjectiveCard;
 import it.polimi.se2018.parser.ParserPublicObjectiveCard;
@@ -9,7 +9,6 @@ import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.model.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.Serializable;

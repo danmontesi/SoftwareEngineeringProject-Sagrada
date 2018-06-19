@@ -14,7 +14,7 @@ public abstract class ClientToServerCommand implements Serializable {
 
     private static final long serialVersionUID = -6460847931998831472L;
     /**
-     * Represent all possible methods from client to Server
+     * Represent all possible methods from view to Server
      * They are constructed by the View
      *
      * EVERY CLASS HAS AT LEAST A STRING METHOD THAT SPECIFIES THE NAME OF THE COMMAND

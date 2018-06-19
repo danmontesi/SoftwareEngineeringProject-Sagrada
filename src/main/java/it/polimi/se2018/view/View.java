@@ -1,4 +1,4 @@
-package it.polimi.se2018.client;
+package it.polimi.se2018.view;
 
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
 import it.polimi.se2018.model.WindowPatternCard;

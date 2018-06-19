@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="330.0" prefWidth="400.0" stylesheets="/client/lobby.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.client.GUI.LobbyController">
+<AnchorPane prefHeight="330.0" prefWidth="400.0" stylesheets="/client/lobby.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.view.GUI.LobbyController">
    <children>
       <Label fx:id="text" alignment="CENTER" layoutX="76.0" layoutY="52.0" prefHeight="32.0" prefWidth="249.0" style="-fx-font-size: 24px" text="Waiting for players..." textAlignment="CENTER" />
       <ProgressIndicator layoutX="175.0" layoutY="120.0" prefHeight="50.0" prefWidth="50.0" />

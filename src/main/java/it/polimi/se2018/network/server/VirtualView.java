@@ -1,6 +1,6 @@
 package it.polimi.se2018.network.server;
 
-import it.polimi.se2018.client.View;
+import it.polimi.se2018.view.View;
 import it.polimi.se2018.commands.client_to_server_command.ChosenWindowPatternCard;
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.commands.client_to_server_command.MoveChoicePassTurn;
@@ -9,7 +9,6 @@ import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -31,7 +30,7 @@ public class VirtualView extends View {
 
     /**
      * Nel VirtualView devono stare:
-     * - il metodo notify(un comando) che da' al Controller i comandi che prende dal client
+     * - il metodo notify(un comando) che da' al Controller i comandi che prende dal view
      * poi il Controller deve associare col binding un effetto (grazie al Visitor)
      * -> Il clientToServerCOmmand prende parametro Controller
      *

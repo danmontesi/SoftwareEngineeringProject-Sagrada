@@ -1,10 +1,9 @@
-package it.polimi.se2018.client;
+package it.polimi.se2018.view;
 
 import it.polimi.se2018.network.client.rmi.RMIClient;
 import it.polimi.se2018.network.client.socket.SocketClient;
 import it.polimi.se2018.network.server.ServerConnection;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
