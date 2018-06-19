@@ -14,11 +14,9 @@
     <properties>
 
         <!-- Class Exclusion on SonarQube ToBeRemoved -->
-        <sonar.exclusions>/Users/danmontesi/Desktop/ing-sw-2018-ProvaFinale/src/main/java/it/polimi/se2018/client_to_server_command/View.java</sonar.exclusions>
-        <sonar.exclusions>/Users/danmontesi/Desktop/ing-sw-2018-ProvaFinale/src/main/java/it/polimi/se2018/client_to_server_command/CLIView.java</sonar.exclusions>
-        <sonar.exclusions>/Users/danmontesi/Desktop/ing-sw-2018-ProvaFinale/src/main/java/it/polimi/se2018/client_to_server_command/ClientLauncher.java</sonar.exclusions>
-        <sonar.exclusions>/Users/danmontesi/Desktop/ing-sw-2018-ProvaFinale/src/main/java/it/polimi/se2018/client_to_server_command/ClientConnectionSocket.java</sonar.exclusions>
-        <sonar.exclusions>/Users/danmontesi/Desktop/ing-sw-2018-ProvaFinale/src/main/java/it/polimi/se2018/client_to_server_command/ServerConnectionSocket.java</sonar.exclusions>
+        <sonar.exclusions>file:**/src/main/java/it/polimi/se2018/network/**</sonar.exclusions>
+        <sonar.exclusions>file:**/src/main/java/it/polimi/se2018/client/**</sonar.exclusions>
+        <sonar.exclusions>file:**/src/main/java/it/polimi/se2018/commands/**</sonar.exclusions>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 

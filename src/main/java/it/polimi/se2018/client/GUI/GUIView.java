@@ -1,15 +1,12 @@
 package it.polimi.se2018.client.GUI;
 
-import com.sun.security.ntlm.Client;
 import it.polimi.se2018.client.ClientStarterController;
-import it.polimi.se2018.client.ClientStarterMain;
 import it.polimi.se2018.client.View;
-import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
+import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.utils.Observer;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
