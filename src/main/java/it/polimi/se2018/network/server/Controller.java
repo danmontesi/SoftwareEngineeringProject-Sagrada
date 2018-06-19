@@ -84,6 +84,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
         this.timerCostant = 600000; //TODO set better
         // Now I will start each player's View
+        for (String username : usernamePlayerMap.keySet())
+            userViewMap.get(username).startGame(); //notifying game starting
+
         initializeGame();
     }
 
@@ -193,8 +196,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     private void startGame() {
-        for (String username : usernamePlayerMap.keySet())
-            userViewMap.get(username).startGame();
         assignRoundPlayers(orderedPlayers);
         startNewRound();
     }
@@ -701,7 +702,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * Applies commands coming from the client, answering with correct/incorrect command responses
      */
     @Override
-    public void applyCommand(String playerUsername ,UseToolCircularCutter command){
+    public void applyCommand(String playerUsername, UseToolCircularCutter command){
         if (!isAllowed(playerUsername)){
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
