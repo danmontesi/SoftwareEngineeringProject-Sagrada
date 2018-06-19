@@ -193,6 +193,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     private void startGame() {
+        for (String username : usernamePlayerMap.keySet())
+            userViewMap.get(username).startGame();
         assignRoundPlayers(orderedPlayers);
         startNewRound();
     }

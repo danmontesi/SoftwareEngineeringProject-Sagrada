@@ -92,6 +92,11 @@ public class CLIView extends View {
     }
 
     @Override
+    public void startGame() {
+
+    }
+
+    @Override
     public void otherPlayerTurn(String username) {
         //printother player name fo notify its turn
     }
