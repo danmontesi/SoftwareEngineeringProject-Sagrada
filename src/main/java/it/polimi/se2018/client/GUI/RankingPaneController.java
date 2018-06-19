@@ -1,5 +1,6 @@
 package it.polimi.se2018.client.GUI;
 
+import it.polimi.se2018.client.GUI.Notifiers.RankingPaneNotifier;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,8 +11,10 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class RankingPaneController {
+public class RankingPaneController extends Observable implements Observer {
 
     private List<Button> buttons;
 
@@ -32,8 +35,13 @@ public class RankingPaneController {
     }
 
     public void initialize() {
+        RankingPaneNotifier.getInstance().addObserver(this);
         initButtons();
         initStyle();
+    }
+
+    public void update(Observable o, Object arg) {
+
     }
 
     private void initButtons() {

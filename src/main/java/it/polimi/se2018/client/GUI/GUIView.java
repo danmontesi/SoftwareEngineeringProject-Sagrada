@@ -21,17 +21,6 @@ public class GUIView extends View {
 
     public GUIView() {}
 
-    public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
-        ArrayList<String> cardNames = new ArrayList<>();
-        for (WindowPatternCard card : cards) {
-            cardNames.add(card.getCardName());
-        }
-        LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
-        lobbyNotifier.updateGui();
-        WPCChoiceNotifier wpcChoiceNotifier = WPCChoiceNotifier.getInstance();
-        wpcChoiceNotifier.updateGui(cardNames.toString());
-    }
-
     public void newConnectedPlayer(String username) {
         //piccola label che segnala il giocatore all'interno della lobby
         LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
@@ -44,6 +33,19 @@ public class GUIView extends View {
         lobbyNotifier.updateGui(username);
     }
 
+    public void startGame() {
+        LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
+        lobbyNotifier.updateGui();
+    }
+
+    public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
+        ArrayList<String> cardNames = new ArrayList<>();
+        for (WindowPatternCard card : cards) {
+            cardNames.add(card.getCardName());
+        }
+        WPCChoiceNotifier wpcChoiceNotifier = WPCChoiceNotifier.getInstance();
+        wpcChoiceNotifier.updateGui(cardNames.toString());
+    }
 
     public void startTurnMenu() {
         // Abilito bottoni draftpool, toolcard, pass.

@@ -58,7 +58,6 @@ public class WPCChoiceController extends Observable implements Observer {
 
     public void update(Observable o, Object arg) {
         if (arg != null) {
-            System.out.println("update cards");
             setWPCards((String)arg);
         }
     }
@@ -75,7 +74,6 @@ public class WPCChoiceController extends Observable implements Observer {
     }
 
     private void setWPCards(String cards) {
-        System.out.println("cards setting");
         Platform.runLater(() -> {
             ArrayList<String> wpcCards = stringToArray(cards);
             int i=0;
@@ -181,9 +179,15 @@ public class WPCChoiceController extends Observable implements Observer {
     }
 
     private ArrayList<String> stringToArray(String s1) {
-        String replace = s1.replace("[","");
-        String replace1 = replace.replace("]","");
-        ArrayList<String> Array = new ArrayList<String>(Arrays.asList(replace1.split(",")));
-        return Array;
+        String s = s1.toLowerCase();
+        String r = s.replace("[","");
+        String r1 = r.replace("]","");
+        ArrayList<String> a = new ArrayList<String>(Arrays.asList(r1.split(", ")));
+        ArrayList<String> a1 = new ArrayList<>();
+        for (String card : a) {
+            String card1 = card.replaceAll(" ", "_");
+            a1.add(card1);
+        }
+        return a1;
     }
 }
