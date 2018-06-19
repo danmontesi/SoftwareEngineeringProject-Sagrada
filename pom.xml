@@ -15,9 +15,10 @@
 
         <!-- Class Exclusion on SonarQube ToBeRemoved -->
         <sonar.coverage.exclusions>
-            **/src/main/java/it/polimi/se2018/network/**/*
-            **/src/main/java/it/polimi/se2018/view/**/*
-            **/src/main/java/it/polimi/se2018/commands/**/*</sonar.coverage.exclusions>
+            **/src/main/java/it/polimi/se2018/network/**/*,
+            **/src/main/java/it/polimi/se2018/view/**/*,
+            **/src/main/java/it/polimi/se2018/commands/**/*
+        </sonar.coverage.exclusions>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
