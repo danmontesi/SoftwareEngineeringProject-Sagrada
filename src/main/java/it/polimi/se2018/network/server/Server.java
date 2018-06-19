@@ -117,7 +117,9 @@ public class Server {
 
     private static void notifyNewConnectedPlayer(String username){
         for (String connectionReference : waitingClients){
-            getConnectedClients().get(connectionReference).notifyClient(new NewConnectedPlayerNotification(username));
+            if (!waitingClients.equals(username)) {
+                getConnectedClients().get(connectionReference).notifyClient(new NewConnectedPlayerNotification(username));
+            }
         }
 
     }
@@ -184,13 +186,19 @@ public class Server {
      * Disconnect a player from the server: his username is saved in disconnectedClients in case he will reconnect
      * @param username
      */
-    public static void disconnnectClient(String username){
+    public static void disconnectClient(String username){
         if (waitingClients.contains(username)){ //Covers the case in which a player is connected but isn't in a started game
             removeClient(username);
         }
         if(connectedClients.containsKey(username)){
             connectedClients.remove(username);
             disconnectedClients.add(username);
+            //TODO Ale: controllo che ci siano abbastanza giocatori nella partita
+            // 1)- Cerco il controller associato all'username del client disconnesso
+            // 2) una volta trovato, controllo se ha almeno 2 giocatori nell'Hashmap dei ConnectedClients
+            // 3) Se ne ha almeno 2, no action
+            // 4) se ne ha uno soltato, proclamo vincitore l'ultimo rimasto
+
             System.out.println("client " + username + " disconnected");
         } else {
             System.out.println("Could not found such client");

@@ -26,10 +26,6 @@ public class RMIClient implements Remote, ServerConnection{
         clientController = new ClientController(viewChoice, this);
     }
 
-    public RMIClient(int viewChoice, ClientStarterController initGui){
-        clientController = new ClientController(viewChoice, this, initGui);
-    }
-
     @Override
     public void send(ClientToServerCommand command) {
         try {

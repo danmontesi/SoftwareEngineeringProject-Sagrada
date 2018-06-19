@@ -8,17 +8,17 @@ import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class LobbyMain {
-    /*@Override
+public class LobbyMain extends Application {
+    @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/client/lobby.fxml"));
         primaryStage.setTitle("Lobby");
-        primaryStage.setScene(new Scene(root, 400, 250));
-        Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
+        primaryStage.setScene(new Scene(root, 400, 330));
+        Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 20);
         primaryStage.show();
     }
 
-    /*public static void main (String[] args) {
+    public static void main (String[] args) {
         launch(args);
-    }*/
+    }
 }

@@ -1,5 +1,6 @@
 package it.polimi.se2018.client.GUI;
 
+import it.polimi.se2018.client.GUI.Notifiers.WPCChoiceNotifier;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,20 +16,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class WPCChoiceController{
+public class WPCChoiceController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(WPCChoiceController.class.getName());
 
-    private Stage stage;
-
-    private List<ToggleButton> wpcards = new ArrayList<>();
-    private List<String> wpcCards;
+    private List<ToggleButton> wpcards;
 
     @FXML
     private ToggleButton wpc1;
@@ -42,56 +38,30 @@ public class WPCChoiceController{
     @FXML
     private Button start;
 
-    private ToggleGroup wpcs = new ToggleGroup();
+    private ToggleGroup wpcs;
 
     private DropShadow shadow = new DropShadow();
 
-    private String selectedWPC = new String();
+    private String selectedWPC;
 
-    /*
-    public WPCChoiceController(ArrayList<String> wpcCards) {
+    public WPCChoiceController() {
         wpcards = new ArrayList<>();
-        this.wpcCards = wpcCards;
-    }
-
-*/
-    public void show(ArrayList<String> cardNames) { //NON VIENE FATTA PARTIRE, viene chiamato lo show() del padre (classe Stage)
-        try {
-            wpcCards = cardNames;
-            start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void start() throws Exception {
-            Parent root = null;
-            try {
-                root = FXMLLoader.load(getClass().getResource("/client/wpcchoice.fxml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println("entra1");
-            Stage primaryStage = new Stage();
-            System.out.println("entra2");
-            stage = primaryStage;
-            System.out.println("entra3");
-            stage.setTitle("WPC Choice");
-            System.out.println("entra4");
-            stage.setScene(new Scene(root, 400, 250));
-            System.out.println("entra5");
-            //Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
-            System.out.println("entra6");
-            stage.show();
-            System.out.println("Entra7");
+        wpcs = new ToggleGroup();
+        selectedWPC = new String();
     }
 
     public void initialize() {
-        System.out.println("Prima di init");
+        WPCChoiceNotifier.getInstance().addObserver(this);
         initWPCards();
         setTGroup();
-        initStyle();
     }
+
+    public void update(Observable o, Object arg) {
+        if (arg != null) {
+            setWPCards((String)arg);
+        }
+    }
+
     private void setTGroup() {
         wpcs.getToggles().addAll(wpc1, wpc2, wpc3, wpc4);
     }
@@ -103,30 +73,26 @@ public class WPCChoiceController{
         wpcards.add(wpc4);
     }
 
-    private void initStyle() {
-        /*for (String card : wpcCards) {
-            card.replaceAll(" ", "_");
-        }*/
-        //int i=0;
+    private void setWPCards(String cards) {
+        Platform.runLater(() -> {
+            ArrayList<String> wpcCards = stringToArray(cards);
+            int i=0;
             for (ToggleButton wpc : wpcards) {
-                /*String img = wpcCards.get(i);
+                String img = wpcCards.get(i);
                 String path = "/client/WPC/" + img + ".jpg";
-                Image image = new Image(path);*/
-                Image image = new Image("/client/WPC/virtus.jpg");
+                Image image = new Image(path);
                 ImageView iv = new ImageView(image);
                 iv.setFitHeight(184);
                 iv.setFitWidth(275);
                 wpc.setGraphic(iv);
+                wpc.setText("virtus");
                 wpc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> wpc.setEffect(shadow));
                 wpc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
                     if (!wpc.isSelected()) wpc.setEffect(null);
                 });
-                //i++;
+                i++;
             }
-    }
-
-    public void update(Observable o, Object args) {
-
+        });
     }
 
     @FXML
@@ -141,7 +107,7 @@ public class WPCChoiceController{
             wpc3.setDisable(false);
             wpc4.setDisable(false);
         }
-
+        selectedWPC = wpc1.getText();
     }
 
     @FXML
@@ -156,6 +122,7 @@ public class WPCChoiceController{
             wpc3.setDisable(false);
             wpc4.setDisable(false);
         }
+        selectedWPC = wpc2.getText();
     }
 
     @FXML
@@ -170,6 +137,7 @@ public class WPCChoiceController{
             wpc1.setDisable(false);
             wpc4.setDisable(false);
         }
+        selectedWPC = wpc3.getText();
     }
 
     @FXML
@@ -184,18 +152,18 @@ public class WPCChoiceController{
             wpc3.setDisable(false);
             wpc1.setDisable(false);
         }
+        selectedWPC = wpc4.getText();
     }
 
     public void closeStage() {
-        Platform.runLater(() -> {
-            stage.setOnCloseRequest(event -> Platform.exit());
-            stage.close();
-            System.exit(0);
-        });
+        Stage stage = (Stage)start.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     public void showGameBoard(){
+        GUISender guiSender = new GUISender();
+        guiSender.chosenWindowPatternCardMenu(selectedWPC);
         Platform.runLater(() ->  {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/gameboard.fxml"));
@@ -208,5 +176,18 @@ public class WPCChoiceController{
                 LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch game board", e);
             }
         });
+    }
+
+    private ArrayList<String> stringToArray(String s1) {
+        String s = s1.toLowerCase();
+        String r = s.replace("[","");
+        String r1 = r.replace("]","");
+        ArrayList<String> a = new ArrayList<String>(Arrays.asList(r1.split(", ")));
+        ArrayList<String> a1 = new ArrayList<>();
+        for (String card : a) {
+            String card1 = card.replaceAll(" ", "_");
+            a1.add(card1);
+        }
+        return a1;
     }
 }

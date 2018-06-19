@@ -1,6 +1,7 @@
 package it.polimi.se2018.client.GUI;
 
 import it.polimi.se2018.client.ExampleBoardStringPaths;
+import it.polimi.se2018.client.GUI.Notifiers.GameBoardNotifier;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,10 +23,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GameBoardController {
+public class GameBoardController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(GameBoardController.class.getName());
 
@@ -363,6 +366,7 @@ public class GameBoardController {
     }
 
     public void initialize() {
+        GameBoardNotifier.getInstance().addObserver(this);
         initCards();
         initToggleButtons();
         initImageViews();
@@ -382,6 +386,12 @@ public class GameBoardController {
         setTCTokens();
         setWpcards();
         setPersonalWPC();
+    }
+
+    public void update(Observable o, Object arg) {
+        if (arg == null) {
+            showRanking();
+        }
     }
 
     private void initCards(){

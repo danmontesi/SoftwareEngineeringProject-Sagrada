@@ -123,4 +123,6 @@ public interface ControllerClientInterface{
     void applyCommand(NewConnectedPlayerNotification newConnectedPlayerNotification);
 
     void applyCommand(PingConnectionTester pingConnectionTester);
+
+    void applyCommand(StartGameCommand startGameCommand);
 }

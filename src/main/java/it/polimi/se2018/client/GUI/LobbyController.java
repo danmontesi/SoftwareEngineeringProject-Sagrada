@@ -1,63 +1,95 @@
 package it.polimi.se2018.client.GUI;
 
-import it.polimi.se2018.client.ClientStarterMain;
-import javafx.application.Application;
+import it.polimi.se2018.client.GUI.Notifiers.LobbyNotifier;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class LobbyController {
+public class LobbyController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(LobbyController.class.getName());
 
+    private ArrayList<Label> players;
+
     @FXML
     private Label text;
+    @FXML
+    private Label player1;
+    @FXML
+    private Label player2;
+    @FXML
+    private Label player3;
 
-    public Stage getStage() {
-        return stage;
+    public LobbyController() {
+        players = new ArrayList<>();
     }
 
-    private Stage stage;
+    public void initialize() {
+        LobbyNotifier.getInstance().addObserver(this);
+        initLabels();
+    }
 
-    public void show() {
-        try {
-            start();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void update(Observable o, Object arg) {
+        if (arg == null) {
+            showWPCChoice();
+        } else {
+            updatePlayers((String)arg);
         }
     }
 
-    public void start() throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/client/lobby.fxml"));
-        Stage primaryStage = new Stage();
-        stage = primaryStage;
-        stage.setTitle("Lobby");
-        stage.setScene(new Scene(root, 400, 250));
-  //      Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
-        stage.show();
+    private void initLabels() {
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
     }
 
-    public void closeStage() {
+    private void updatePlayers(String player) {
         Platform.runLater(() -> {
-            //Stage stage = (Stage)text.getScene().getWindow();
-            stage.setOnCloseRequest(event -> Platform.exit());
-            stage.close();
-            System.exit(0);
+            ArrayList<String> playerNames = new ArrayList<>();
+            if (!playerNames.contains(player)) {
+                playerNames.add(player);
+            } else {
+                playerNames.remove(player);
+            }
+            if (playerNames.size() > 0) {
+                for (int i = 0; i < playerNames.size(); i++) {
+                    players.get(i).setText(playerNames.get(i) + " just connected");
+                }
+                for (int j = playerNames.size(); j < 3; j++) {
+                    players.get(j).setText("");
+                }
+            }
         });
     }
 
+    private void showWPCChoice(){
+        Platform.runLater(() ->  {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/wpcchoice.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage wpcChoiceStage = new Stage();
+                wpcChoiceStage.setScene(new Scene(root));
+                wpcChoiceStage.show();
+                closeStage();
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch game board", e);
+            }
+        });
+    }
 
-
-
+    public void closeStage() {
+        Stage stage = (Stage)text.getScene().getWindow();
+        stage.close();
+    }
 }

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="250.0" prefWidth="400.0"
-            stylesheets="/client/lobby.css"
-            xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.polimi.se2018.client.GUI.LobbyController">
+<AnchorPane prefHeight="330.0" prefWidth="400.0" stylesheets="/client/lobby.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.client.GUI.LobbyController">
    <children>
-      <Label fx:id="text" alignment="CENTER" layoutX="76.0" layoutY="62.0" prefHeight="32.0" prefWidth="249.0" style="-fx-font-size: 24px" text="Waiting for players..." textAlignment="CENTER" />
-      <ProgressIndicator layoutX="175.0" layoutY="130.0" prefHeight="50.0" prefWidth="50.0" />
+      <Label fx:id="text" alignment="CENTER" layoutX="76.0" layoutY="52.0" prefHeight="32.0" prefWidth="249.0" style="-fx-font-size: 24px" text="Waiting for players..." textAlignment="CENTER" />
+      <ProgressIndicator layoutX="175.0" layoutY="120.0" prefHeight="50.0" prefWidth="50.0" />
+      <Label fx:id="player1" alignment="CENTER" contentDisplay="CENTER" layoutX="76.0" layoutY="202.0" prefHeight="27.0" prefWidth="249.0" style="-fx-font-size: 16px" />
+      <Label fx:id="player2" alignment="CENTER" contentDisplay="CENTER" layoutX="76.0" layoutY="229.0" prefHeight="27.0" prefWidth="249.0" style="-fx-font-size: 16px" />
+      <Label fx:id="player3" alignment="CENTER" contentDisplay="CENTER" layoutX="76.0" layoutY="256.0" prefHeight="27.0" prefWidth="249.0" style="-fx-font-size: 16px" />
    </children>
 </AnchorPane>

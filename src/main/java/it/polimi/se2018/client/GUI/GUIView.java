@@ -1,108 +1,51 @@
 package it.polimi.se2018.client.GUI;
 
-import it.polimi.se2018.client.ClientStarterController;
+import it.polimi.se2018.client.GUI.Notifiers.LobbyNotifier;
+import it.polimi.se2018.client.GUI.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.client.View;
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class GUIView extends View {
-
-    private static final Logger LOGGER = Logger.getLogger(ClientStarterController.class.getName());
-
-    private LobbyController lobby;
-
-    private Stage currentStage;
-
-    private WPCChoiceController wpcChoiceController;
-
-
-    private ClientStarterController initGui;
 //TODO          PER CHI FA LA VIEW:
 //TODO          OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO.
 //TODO          ognuno dei metodi quì sotto prima chiede l'input dall'utente, poi fa notify(new chosen
 
-    public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
-        Platform.runLater(() -> {
-        System.out.println("arriva");
-        ArrayList<String> cardNames = new ArrayList<>();
-        for (WindowPatternCard card : cards)
-            cardNames.add(card.getCardName());
-
-       /* Platform.runLater(() -> {
-                    lobby.closeStage();
-                    wpcChoiceController = new WPCChoiceController();
-                    System.out.println("ciao");
-
-
-                    wpcChoiceController.show();
-                });*/
-       //WPCChoiceController wpcChoice = new WPCChoiceController(cardNames);
-        AnchorPane nextPane = new AnchorPane();
-        try {
-            nextPane = FXMLLoader.load(WPCChoiceController.class.getResource("/client/wpcchoice.fxml")); //Errore
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Scene scene = new Scene(nextPane);
-        //Stage w = (Stage) ((Node) lobby.getSource()).getScene().getWindow(); //TODO UTilizzare all'evento (es. click) di un utente all'evento
-        //currentStage.setScene(scene);
-        Stage w = lobby.getStage();
-        w.setScene(scene);
-        w.show();
-        });
-
-
-        //notify(new ChooseWindowPatternCardCommand())
-    }
-
-    public GUIView(Observer observer, ClientStarterController initGui) {
+    public GUIView(Observer observer) {
         register(observer);
-        this.initGui = initGui;
-        System.out.println("INIT GUI");
-        initGui.closeScene();
-        lobby = new LobbyController();
-        currentStage = lobby.getStage();
-        lobby.show();
     }
 
-
-    private void showStage(String stg) {
-        String resource = "/client/" + stg + ".fxml";
-        Platform.runLater(() -> {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resource));
-                Parent root = fxmlLoader.load();
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root));
-                stage.show();
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch interface choice", e);
-            }
-        });
-    }
+    public GUIView() {}
 
     public void newConnectedPlayer(String username) {
-        //piccola label a scomparsa che segnala il giocatore all'interno della lobby
+        //piccola label che segnala il giocatore all'interno della lobby
+        LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
+        lobbyNotifier.updateGui(username);
     }
 
     @Override
     public void playerDisconnection(String username) {
-
+        LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
+        lobbyNotifier.updateGui(username);
     }
 
+    public void startGame() {
+        LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
+        lobbyNotifier.updateGui();
+    }
+
+    public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
+        ArrayList<String> cardNames = new ArrayList<>();
+        for (WindowPatternCard card : cards) {
+            cardNames.add(card.getCardName());
+        }
+        WPCChoiceNotifier wpcChoiceNotifier = WPCChoiceNotifier.getInstance();
+        wpcChoiceNotifier.updateGui(cardNames.toString());
+    }
 
     public void startTurnMenu() {
         // Abilito bottoni draftpool, toolcard, pass.
@@ -119,6 +62,11 @@ public class GUIView extends View {
         // se sì-> notify(new MoveChoiceToolCard(indice tool);
 
         //notify( new MOVE / new TOOLUSE / new PASSTURN )
+    }
+
+    @Override
+    public void startGame() {
+
     }
 
     @Override

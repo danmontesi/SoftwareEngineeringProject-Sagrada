@@ -41,9 +41,18 @@ public class CLIView extends View {
             System.out.println(card.toString());
         }
         System.out.println("\n\n Which one do you chose?");
+        int chosen;
         //TODO: menu per numero scorretto
-        int chosen = scan.nextInt();
-        notify(new ChosenWindowPatternCard(cards.get(chosen).getCardName()));
+        try {
+            try {
+                chosen = Integer.parseInt(inputReader.readLine());
+                notify(new ChosenWindowPatternCard(cards.get(chosen).getCardName()));
+            } catch (TimeoutException e) {
+                System.out.println("Timeout: your wpc is chosen randomly");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -80,6 +89,11 @@ public class CLIView extends View {
                 System.out.println("passed turn");
                 notify(new MoveChoicePassTurn(""));
         }
+    }
+
+    @Override
+    public void startGame() {
+
     }
 
     @Override
@@ -276,12 +290,13 @@ public class CLIView extends View {
     }
 
     @Override
-    public void timeOut() {
+    public synchronized void timeOut() {
         this.inputReader.setTimeOut(true);
     }
 
     @Override
     public void updateWpc(ArrayList<String> myWpc, ArrayList<ArrayList<String>> otherWpcs) {
+
         //TODO
     }
 

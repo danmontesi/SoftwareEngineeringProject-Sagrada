@@ -26,10 +26,6 @@ public class SocketClient implements ServerConnection {
         clientController = new ClientController(viewChoice, this);
     }
 
-    public SocketClient(int viewChoice, ClientStarterController initGui){
-        clientController = new ClientController(viewChoice, this, initGui);
-    }
-
     @Override
     public void send(ClientToServerCommand command) {
         try {

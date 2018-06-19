@@ -164,7 +164,7 @@ public class DraftPool {
                 if (cells.get(i).isEmpty()) {
                     draftpoolString.add("empty");
                 } else {
-                    draftpoolString.add(cells.get(i).getAssociatedDie().getColor().toString() + cells.get(i).getAssociatedDie().getValue());
+                    draftpoolString.add(cells.get(i).getAssociatedDie().getColor().toString() + "_" + cells.get(i).getAssociatedDie().getValue());
                 }
             } catch (EmptyCellException e) {
                 e.printStackTrace();

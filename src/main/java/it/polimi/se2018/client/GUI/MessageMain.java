@@ -15,7 +15,7 @@ public class MessageMain extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/client/message.fxml"));
         primaryStage.setTitle("Message");
         primaryStage.setScene(new Scene(root, 500, 350));
-        Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
+        //Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
         primaryStage.show();
     }
 

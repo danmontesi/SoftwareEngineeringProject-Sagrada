@@ -9,8 +9,8 @@ public class MoveChoicePassTurn extends ClientToServerCommand{
      * Move performed in case there is no way to place a correct die in the wpc
      */
 
-    public MoveChoicePassTurn(String message) {
-        this.message = message;
+    public MoveChoicePassTurn(String username) {
+        this.username = username;
     }
 
     public void visit(ControllerServerInterface observer){

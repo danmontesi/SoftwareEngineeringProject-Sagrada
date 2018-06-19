@@ -102,7 +102,7 @@ public class RoundTrack {
                 if (roundCells.get(i).isEmpty()) {
                     roundtrackString.add("empty");
                 } else {
-                    roundtrackString.add(roundCells.get(i).getAssociatedDie().getColor().toString() + roundCells.get(i).getAssociatedDie().getValue());
+                    roundtrackString.add(roundCells.get(i).getAssociatedDie().getColor().toString() + "_" + roundCells.get(i).getAssociatedDie().getValue());
                 }
             } catch (EmptyCellException e) {
                 e.printStackTrace();
