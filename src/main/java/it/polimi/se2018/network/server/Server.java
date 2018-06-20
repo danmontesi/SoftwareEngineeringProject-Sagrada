@@ -63,9 +63,6 @@ public class Server {
 
         while (activeServer){
 
-            if ((waitingClients.size() >= 4) || (itsTimeToStart)){ //TODO Che succede se tolgo l'or con itsTimeToStart?
-                startNewGame();
-            }
         }
     }
 
@@ -210,7 +207,7 @@ public class Server {
         }
     }
 
-    public static void addToWaitingClients(String username){ //TODO Gestire la concorrenza: se vengono addati insieme 6 view, faccio partire un timer e l'altro per i 2 player rimanenti?
+    public synchronized static void addToWaitingClients(String username){ //TODO Gestire la concorrenza: se vengono addati insieme 6 view, faccio partire un timer e l'altro per i 2 player rimanenti?
         waitingClients.add(username);
         System.out.println("Addato "+ username);
         notifyNewConnectedPlayer(username);
@@ -221,7 +218,7 @@ public class Server {
                     new TimerTask() {
                         @Override
                         public void run() {
-                            itsTimeToStart = true;  //TODO a cosa serve questa variabile? startNewGame() deve essere controllato da questa variabile? deve essere messo in un thread quindi?
+                            // Inutile -> itsTimeToStart = true;  //TODO a cosa serve questa variabile? startNewGame() deve essere controllato da questa variabile? deve essere messo in un thread quindi?
                             System.out.println("Time expired");
                             //TODO: check all players from RMI are connected -> Ping
                             //wait for 1s (time to the ping to be sent)
@@ -232,6 +229,9 @@ public class Server {
                     },
                     6000 //TODO import from file
             );
+        }
+        if (waitingClients.size()==4){
+            startNewGame();
         }
     }
 

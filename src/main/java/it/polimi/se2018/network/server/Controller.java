@@ -1,5 +1,6 @@
 package it.polimi.se2018.network.server;
 
+import it.polimi.se2018.view.CLI.CLIView;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.ControllerServerInterface;
@@ -90,6 +91,34 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         initializeGame();
     }
 
+    public Controller(ArrayList<String> usernameList, boolean forTesting) {
+        usernamePlayerMap = new HashMap<>();
+        playerTimerMap = new HashMap<>();
+        uninitializedOrderedPlayers = new ArrayList<>();
+        userViewMap = new HashMap<>();
+        // I have to create the list that connects Usernames and Players and VirtualViews
+        for (String username : usernameList){
+            Player temp = new Player(username);
+            uninitializedOrderedPlayers.add(temp);
+            usernamePlayerMap.put(username, temp);
+        }
+        this.model = new Model(uninitializedOrderedPlayers);
+
+        for (String username : usernameList) {
+            View tempView = new CLIView(this); //Vedi meglio
+            userViewMap.put(username, tempView);
+            model.register(tempView);
+        }
+        this.orderedPlayers= new ArrayList<>();
+
+        this.timerCostant = 600000; //TODO set better
+        // Now I will start each player's View
+        for (String username : usernamePlayerMap.keySet())
+            userViewMap.get(username).startGame(); //notifying game starting
+
+        initializeGame();
+    }
+
     /**
      * It calls initializePlayers() and setInitialPlayer()
      */
@@ -106,19 +135,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             usernamePlayerMap.get(p.getUsername()).setWindowPatternCard(defaultCard);
             System.out.println("invio command CHOOSEWPC a player:" + p.getUsername());
             userViewMap.get(p.getUsername()).chooseWindowPatternCardMenu(localWpc);
-            //playerTimerMap.put(usernamePlayerMap.get(p.getUsername()), new Timer());
-/*
-            playerTimerMap.get(usernamePlayerMap.get(p.getUsername())).schedule(
-                    new TimerTask() { //TODO togli
-                        @Override
-                        public void run() {
-                            System.out.println("WPC timeout-> chosing a random one"); // Done
-                        }
-                    },
-                    timerCostant);
-                    */
         }
-
         checkBlockingTimer = new Timer(); //General timer for every player. Is starts the game stopping players without waiting the answer
         checkBlockingTimer.schedule(
                 new TimerTask() {
@@ -230,7 +247,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private void sendResultToPlayers(LinkedHashMap<String, Integer> orderedPlayerScores) {
         Set set1 = orderedPlayerScores.entrySet();
         Set set2 = orderedPlayerScores.entrySet();
-        String scores = "";
         ArrayList<String> scoresList = new ArrayList<>();
         Iterator i0 = set1.iterator(); //Through iteration, we can better manage the scores of all players
         Iterator i1 = set2.iterator();
@@ -287,9 +303,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             hasPerformedMove=false;
             hasUsedTool=false;
 
+            System.out.println("CURRENT E'" + currentPlayer.getUsername());
+
             for (Player p : orderedPlayers){
-                if (!p.getUsername().equals(currentPlayer.getUsername()))
-                    userViewMap.get(p.getUsername()).otherPlayerTurn(currentPlayer.getUsername());
+                if (!(p.getUsername().equals(currentPlayer.getUsername()))) {
+                    userViewMap.get(p.getUsername()).otherPlayerTurn(p.getUsername());
+                }
             }
 
             playerTimerMap.put(usernamePlayerMap.get(currentPlayer.getUsername()), new Timer());
@@ -323,8 +342,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             hasUsedTool=false;
 
             for (Player p : orderedPlayers){
-                if (!p.getUsername().equals(currentPlayer.getUsername()))
-                    userViewMap.get(p.getUsername()).otherPlayerTurn(currentPlayer.getUsername());
+                if (!(p.getUsername().equals(currentPlayer.getUsername()))) {
+                    userViewMap.get(p.getUsername()).otherPlayerTurn(p.getUsername());
+                }
             }
 
             playerTimerMap.put(usernamePlayerMap.get(currentPlayer.getUsername()), new Timer());
@@ -380,7 +400,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
 
     @Override
-    //TODO: vedi se è necessario controllare che il player sia Current o non posso fare altre mosse e automaticamente il player da cui ricevo il comando è current
     public synchronized void applyCommand(String playerUsername, MoveChoiceToolCard command){
         if (!isAllowed(playerUsername)){
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
@@ -408,7 +427,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 else if (toolName.equals("Firm Pastry Brush"))
                     userViewMap.get(currentPlayer.getUsername()).firmPastryBrushMenu(ThreadLocalRandom.current().nextInt(1, 7));
                 else if (toolName.equals("Firm Pastry Thinner")) {
-                    extractedDieForFirmyPastryThinner = model.extractDieFromDiceBag(); //TODO
+                    extractedDieForFirmyPastryThinner = model.extractDieFromDiceBag();
                     userViewMap.get(currentPlayer.getUsername()).firmPastryThinnerMenu(extractedDieForFirmyPastryThinner.getColor().toString(), extractedDieForFirmyPastryThinner.getValue());
                 }
                 else if (toolName.equals("Gavel")) {
@@ -441,7 +460,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             else
                 System.out.println("Error in toolNames");
             }
-        else{
+        else{ //Not enough tokens
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You haven't enough tokens to use this tool");
             userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove,hasUsedTool);
         }
@@ -464,7 +483,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             }
             else {
                 System.out.println("Mossa applicata correttamente");
-                //TODO devo rimuovere il dado mosso dalla draftpool!
                 model.removeDieFromDraftPool(command.getDieDraftPoolPosition());
                 hasPerformedMove = true;
                 model.setGamePlayers(orderedPlayers);
@@ -511,8 +529,21 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
-        //WindowPatternCard card = currentPlayer.getWindowPatternCard().placeDie(model.getDraftPool().getDie(command.getDieDraftPoolPosition()),  )
-        //boolean correctMove = usernamePlayerMap.get(playerUsername).getWindowPatternCard().placeDie()
+        Die temp = null;
+        try {
+            temp = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
+        } catch (EmptyCellException e) {
+            e.printStackTrace();
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid index, try again");
+            userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
+            return;
+        }
+        //TODO mosssa speciale , ragiona se devo creare un altro metodo o va bene questo
+        if (!currentPlayer.getWindowPatternCard().placeDie(temp, command.getSchemaPosition(), true, true, false)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid move, try again");
+            userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
+            return;
+        }
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;
@@ -523,7 +554,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * Applies commands coming from the view, answering with correct/incorrect command responses
      */
     @Override
-    public void applyCommand(String playerUsername, UseToolTwoDicePlacement command) throws EmptyCellException {
+    public void applyCommand(String playerUsername, UseToolTwoDicePlacement command){
         if (!isAllowed(playerUsername)){
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
@@ -531,34 +562,54 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         if (command.getCardName().equals("Manual Cutter")) {
             Player current = usernamePlayerMap.get(playerUsername);
             if (!current.getWindowPatternCard().getCell(command.getSchemaOldPosition1()).hasDie() || !current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).hasDie()) {
-                //Invalid (no die in the index given
-                //continueturn
+                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid index, try again");
+                userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 return;
             }
-            Die die1 = current.getWindowPatternCard().getCell(command.getSchemaOldPosition1()).getAssociatedDie();
-            Die die2 = current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).getAssociatedDie();
-            if (die1.getColor() == die2.getColor()) {
-                //invalid with text "The dice has different color"
-                //continueTurn
+            Die die1 = null, die2 = null;
+            try {
+                die1 = current.getWindowPatternCard().getCell(command.getSchemaOldPosition1()).getAssociatedDie();
+                die2 = current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).getAssociatedDie();
+
+            } catch (EmptyCellException e) {
+                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid index! Try again");
+                userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 return;
-            } else if (!model.getRoundTrack().isPresent(die1.getColor())) {
-                // invalid with mess "Roundtrack hasn't the specified color
-                //ContinueTurn
+            }
+            if (die1.getColor() == die2.getColor()) {
+                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Your dice has different color! Try again");
+                userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                return;
+            } else try {
+                if (!model.getRoundTrack().isPresent(die1.getColor())) {
+                    userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("The RoundTrack hasn't the chosen color, try with another ones");
+                    userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                    return;
+                }
+            } catch (EmptyCellException e) {
+                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid index! Try again");
+                userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 return;
             }
         }
 
         Player current = usernamePlayerMap.get(playerUsername);
         if (!current.getWindowPatternCard().getCell(command.getSchemaOldPosition1()).hasDie() || !current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).hasDie()) {
-            //Invalid (no die in the index given
-            //continueturn
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid index! Try again");
+            userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
 
-        if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().move2Dice(command.getSchemaOldPosition1(),
-                command.getSchemaNewPosition1(), command.getSchemaOldPosition2(), command.getSchemaNewPosition2(), true, true, true)) {
-            //invalid (No correct placement, retry)
-            //continueTurn
+        try {
+            if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().move2Dice(command.getSchemaOldPosition1(),
+                    command.getSchemaNewPosition1(), command.getSchemaOldPosition2(), command.getSchemaNewPosition2(), true, true, true)) {
+                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the die here! Try again");
+                userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                return;
+            }
+        } catch (EmptyCellException e) {
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid index! Try again");
+            userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
@@ -587,24 +638,24 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         Player current = usernamePlayerMap.get(playerUsername);
         if (!current.getWindowPatternCard().getCell(command.getSchemaOldPosition()).hasDie()) {
-            //Invalid (no die in the index given
-            //continueturn
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("The index given is incorrect, try again!");
+            userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
         try {
             if (command.getCardName().equalsIgnoreCase("Eglomise Brush")) {
                 if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().switchDie(command.getSchemaOldPosition(),
                         command.getSchemaNewPosition(), false, true, true)) {
-                    //invalid (No correct placement, retry)
-                    //continueTurn
+                    userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the die here! Try again");
+                    userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                     return;
                 }
             }
             else if (command.getCardName().equalsIgnoreCase("Copper Foil Reamer")){
                 if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().switchDie(command.getSchemaOldPosition(),
                         command.getSchemaNewPosition(), true, false, true)) {
-                    //invalid (No correct placement, retry)
-                    //continueTurn
+                    userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the die here! Try again");
+                    userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                     return;
                 }
             }
@@ -632,7 +683,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             tempOk = model.getDraftPool().getDie(command.getDieDraftpoolPosition());
         } catch (EmptyCellException e) {
             e.printStackTrace();
-            //send invalid index
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("The chosen cell index from draftpool is incorrect");
+            userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
         tempOk.setValue(command.getDieValue());
@@ -640,9 +692,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         if (words[0].equals("MOVE")){
             if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().placeDie(tempOk
                     , command.getDieSchemaPosition(), true, true, true)){
-                //send invalid move, and continueturncommand BUT putting the die on Draftpool and using the tool
-                // no return needed
-
+                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the die here! Automatically put the die on draftpool"); //TODO forse do la possibilità di rifare la mssa
+                model.changeDieValueOnDraftPool(command.getDieDraftpoolPosition(), command.getDieValue());
+                userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             }
             else {
                 model.removeDieFromDraftPool(command.getDieDraftpoolPosition());
@@ -687,8 +739,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 return;
             }
             else{
-                //sending invalidinvalid
-                //default: leaving the die in draftpool TODO
+                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the die here! Automatically put the die on DraftPool");//TODO forse richiama il metodo per fargli provare ancora
+                userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             }
         }
         //default: draftpool
@@ -725,8 +777,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                         //correct
                         if (!usernamePlayerMap.get(currentPlayer.getUsername()).getWindowPatternCard()
                                 .placeDie(temp, command.getSchemaPosition(), true, true, true)){
-                            //invalid: undo action
-                            //continueturncommand
+                            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the die here! Try again");
+                            userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                             return;
                         }
                         else{
@@ -734,11 +786,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                         }
                     }
                     else{
-                        //undo action
-                        usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(-requiredTokensForLastToolUse);
-                        lastUsedToolCard.increaseTokens(-requiredTokensForLastToolUse);
-                        //invalid command: undo action
-                        //continueTurncommand
+                        userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("The die has value 6, can't be increased");
+                        userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                         return;
                     }
                 } catch (EmptyCellException e) {
@@ -761,11 +810,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                         }
                     }
                     else{
-                        //undo action
-                        usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(-requiredTokensForLastToolUse);
-                        lastUsedToolCard.increaseTokens(-requiredTokensForLastToolUse);
-                        //invalid command: undo action
-                        //continueTurncommand
+                        userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("The die has value 1, can't be decreased");
+                        userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                         return;
                     }
                 } catch (EmptyCellException e) {
@@ -778,8 +824,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             temp.flip();
             if (!usernamePlayerMap.get(currentPlayer.getUsername()).getWindowPatternCard()
                     .placeDie(temp, command.getSchemaPosition(), true, true, true)){
-                //invalid: undo action
-                //continueturncommand
+                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place TODO");
+                userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 return;
             }
             else{
@@ -827,10 +873,24 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
+        //Already checked that the player is in his first turn
+        Die toPlace1=null, toPlace2=null;
+        try {
+            toPlace1 = model.getDraftPool().getDie(command.getDieDraftPoolPosition2());
+            toPlace2 = model.getDraftPool().getDie(command.getDieDraftPoolPosition2());
+        } catch (EmptyCellException e) {
+            e.printStackTrace();
+        }
 
-        //Metodo per place2Die
-        //if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().place2Die())
-
+        if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().place2Die(toPlace1, toPlace2,
+                command.getDieSchemaPosition1(), command.getDieSchemaPosition2(),
+                true, true, true)){
+            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the dice there! Try Again");
+            userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
+            return;
+        }
+        model.removeDieFromDraftPool(command.getDieDraftPoolPosition1());
+        model.removeDieFromDraftPool(command.getDieDraftPoolPosition2());
         usernamePlayerMap.get(currentPlayer.getUsername()).decreaseTokens(requiredTokensForLastToolUse);
         lastUsedToolCard.increaseTokens(requiredTokensForLastToolUse);
         hasUsedTool = true;
@@ -843,7 +903,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     public void applyCommand(String playerUsername ,ClientToServerCommand command){
         System.out.println("You shouldn't be here");
     }
-
 
     @Override
     public void update(Object event) {
