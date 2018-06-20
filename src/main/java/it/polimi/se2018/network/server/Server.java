@@ -48,6 +48,7 @@ public class Server {
     private static HashMap<String, VirtualView> userMap = new HashMap<>();
 
     private static Timer timer;
+
     private static boolean itsTimeToStart = false;
 
     public static void main(String[] args) {
@@ -222,6 +223,10 @@ public class Server {
                         public void run() {
                             itsTimeToStart = true;  //TODO a cosa serve questa variabile? startNewGame() deve essere controllato da questa variabile? deve essere messo in un thread quindi?
                             System.out.println("Time expired");
+                            //TODO: check all players from RMI are connected -> Ping
+                            //wait for 1s (time to the ping to be sent)
+
+                            //if arrives here, the client connected are more than 1 (if not, disconnectPlayers can cancel the timer
                             startNewGame(); //DA TOGLIERE, l'ho utilizzato solo come prova. il metodo deve essere contorllato dalla variabile itsTimeToStart
                         }
                     },

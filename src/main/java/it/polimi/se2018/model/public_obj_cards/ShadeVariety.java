@@ -7,9 +7,15 @@ import java.util.HashSet;
 
 public class ShadeVariety extends PublicObjectiveCard{
     public ShadeVariety(String name, String description, Integer score) {
-        super(name, description, score);
+        this.name = name;
+        this.description = description;
+        this.score = score;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
     /**
      * Sets of one of each value anywhere
      * @param w WindowPatternCard for which you want to calculate the score

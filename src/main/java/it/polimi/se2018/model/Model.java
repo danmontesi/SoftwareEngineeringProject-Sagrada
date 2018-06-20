@@ -321,8 +321,8 @@ public class Model extends Observable implements Serializable{ //Observable of V
         System.out.println("CALLED REFRESHBOARD");
         ArrayList<String> draftpool= new ArrayList<>(); //Dice in the format: colorNumber/empty
         draftpool = getDraftPool().draftpoolPathRepresentation();
-        ArrayList<String> roundTrack = new ArrayList<>(); //Dice in the format: colorNumber/empty
-        roundTrack = getRoundTrack().roundtrackPathRepresentation();
+        ArrayList<String> roundTrackString = new ArrayList<>(); //Dice in the format: colorNumber/empty
+        roundTrackString = getRoundTrack().roundtrackPathRepresentation();
 
         ArrayList<String> publicObjectiveCards = new ArrayList<>();
         ArrayList<String> publicObjectiveDescription = new ArrayList<>();
@@ -375,7 +375,7 @@ public class Model extends Observable implements Serializable{ //Observable of V
             }
 
             observer.update(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
-                    draftpool, roundTrack, personalWpc, myTokens, myUsername, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
+                    draftpool, roundTrackString, personalWpc, myTokens, myUsername, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
             System.out.println("Notificando una V.V. della new board COMPLETA");
         }
     }
