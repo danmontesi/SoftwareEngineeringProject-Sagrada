@@ -3,9 +3,7 @@ package it.polimi.se2018.view.GUI;
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
 import it.polimi.se2018.view.ExampleBoardStringPaths;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
-import it.polimi.se2018.view.GUI.Notifiers.GameBoardReplies.GameBoardReply;
-import it.polimi.se2018.view.GUI.Notifiers.GameBoardReplies.GameBoardVisitor;
-import it.polimi.se2018.view.GUI.Notifiers.GameBoardReplies.RefreshBoard;
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.*;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,8 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -34,6 +30,8 @@ import java.util.logging.Logger;
 public class GameBoardController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(GameBoardController.class.getName());
+
+    private GUIView guiViewT;
 
     private ExampleBoardStringPaths exampleBoardStringPaths = new ExampleBoardStringPaths();
     private RefreshBoardCommand modelRepresentation;
@@ -373,6 +371,7 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     public void initialize() {
+        System.out.println("entra initialize");
         GameBoardNotifier.getInstance().addObserver(this);
         initCards();
         initToggleButtons();
@@ -399,14 +398,19 @@ public class GameBoardController extends Observable implements Observer {
         if (arg == null) {
             showRanking();
         } else {
-            System.out.println("enters1");
-            GameBoardReply gameBoardReply = (GameBoardReply)arg;
-            GameBoardVisitor gameBoardVisitor = new GameBoardVisitor() {
+            GUIReply guiReply = (GUIReply)arg;
+            GUIVisitor guiVisitor = new GUIVisitor() {
                 @Override
-                public void visitGameBoardReply(RefreshBoard refreshBoard) {
-                    System.out.println("enters");
-                    modelRepresentation = (RefreshBoardCommand)arg;
-                    System.out.println("enters2");
+                public void visitGUIReply(GUIViewSetting guiViewSetting) {
+                    guiViewT = guiViewSetting.getGuiView();
+                }
+
+                @Override
+                public void visitGUIReply(WPCChoice wpcChoice) {}
+
+                @Override
+                public void visitGUIReply(RefreshBoard refreshBoard) {
+                    modelRepresentation = refreshBoard.getModelRepresentation();
                     initPubocards();
                     initTcards();
                     initWpcards();
@@ -414,7 +418,7 @@ public class GameBoardController extends Observable implements Observer {
                     initPersonalPriOC();
                 }
             };
-            gameBoardReply.acceptGameBoardVisitor(gameBoardVisitor);
+            guiReply.acceptGUIVisitor(guiVisitor);
         }
     }
 
@@ -585,12 +589,12 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void initPubocards() {
-        System.out.println("initPubOC");
         ArrayList<String> publicOC = modelRepresentation.getPublicObjectiveCards();
         ArrayList<String> publicOCDesc = modelRepresentation.getPublicObjectiveDescription();
         for (int i=0; i<publicOC.size(); i++) {
         String img = publicOC.get(i);
             String path = "/client/OC/" + img + ".jpg";
+            System.out.println("OC "+i+": "+img);
             Image image = new Image(path);
             pubocards.get(i).setImage(image);
             Tooltip t = new Tooltip(publicOCDesc.get(i));

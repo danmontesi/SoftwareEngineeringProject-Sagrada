@@ -1,8 +1,9 @@
 package it.polimi.se2018.view.GUI;
 
-import it.polimi.se2018.commands.client_to_server_command.ChosenWindowPatternCard;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
-import it.polimi.se2018.view.GUI.Notifiers.GameBoardReplies.RefreshBoard;
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.GUIViewSetting;
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.RefreshBoard;
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.WPCChoice;
 import it.polimi.se2018.view.GUI.Notifiers.LobbyNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.view.View;
@@ -48,7 +49,8 @@ public class GUIView extends View {
             cardNames.add(card.getCardName());
         }
         WPCChoiceNotifier wpcChoiceNotifier = WPCChoiceNotifier.getInstance();
-        wpcChoiceNotifier.updateGui(cardNames.toString());
+        wpcChoiceNotifier.updateGui(new GUIViewSetting(this));
+        wpcChoiceNotifier.updateGui(new WPCChoice(cardNames.toString()));
     }
 
     public void startTurnMenu() {
@@ -198,14 +200,12 @@ public class GUIView extends View {
 
     @Override
     public void update(Object model) {
-        System.out.println("entra update");
         //Osserva il Model e con Update, fa l'update del model locale
         //Calls the right method to update the Graphical Board;
         //The model is already updated by the ClientController, no worries about that
         //In case there is a CLI, does anything
         RefreshBoardCommand command = (RefreshBoardCommand) model;
         this.currentModelPathRepresentation=command;
-
         //PER NIVES: PER ORA LE UPDATE SONO DI 2 TIPI: TU LASCIALI ENTRAMBI E FAI L'AGGIORNAMENTO  DELLA BOARD PRENDENDO QUESTO
         if (command.getMessage()!=null) {
             System.out.println("ricevuto " + command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
@@ -216,12 +216,8 @@ public class GUIView extends View {
             //TODO NIVES: da command prendo tutte le informazioni come ho fatto per la classe di prova
             //es. command.getDraftPool,... Oss: ho aggiunto anche le descrizioni
             GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
-            gameBoardNotifier.updateGui(new RefreshBoard(), command);
+            gameBoardNotifier.updateGui(new RefreshBoard(command));
         }
-    }
-
-    public void chosenWindowPatternCardMenu(String wpc) {
-        notify(new ChosenWindowPatternCard(wpc));
     }
 
 }

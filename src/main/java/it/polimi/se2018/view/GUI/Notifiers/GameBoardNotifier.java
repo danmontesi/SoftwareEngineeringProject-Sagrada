@@ -1,7 +1,7 @@
 package it.polimi.se2018.view.GUI.Notifiers;
 
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
-import it.polimi.se2018.view.GUI.Notifiers.GameBoardReplies.GameBoardReply;
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.GUIReply;
 
 import java.util.Observable;
 
@@ -21,8 +21,8 @@ public class GameBoardNotifier extends Observable {
         notifyObservers();
     }
 
-    public void updateGui(GameBoardReply gameBoardReply, RefreshBoardCommand refreshBoardCommand) {
+    public void updateGui(GUIReply guiReply) {
         setChanged();
-        notifyObservers(refreshBoardCommand);
+        notifyObservers(guiReply);
     }
 }

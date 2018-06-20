@@ -14,7 +14,7 @@
       <ToggleButton fx:id="wpc2" layoutX="320.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc2Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
       <ToggleButton fx:id="wpc3" layoutX="60.0" layoutY="284.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc3Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
       <ToggleButton fx:id="wpc4" layoutX="320.0" layoutY="284.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc4Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
-      <Label layoutX="152.0" layoutY="20.0" prefHeight="30.0" style="-fx-font-size: 22px" text="Choose a Window Pattern Card" />
+      <Label fx:id="choose" layoutX="152.0" layoutY="20.0" prefHeight="30.0" style="-fx-font-size: 22px" text="Choose a Window Pattern Card" />
       <Button fx:id="start" layoutX="254.0" layoutY="498.0" mnemonicParsing="false" onAction="#showGameBoard" prefWidth="100.0" style="-fx-font-size: 18px" text="Start" />
    </children>
 </AnchorPane>
