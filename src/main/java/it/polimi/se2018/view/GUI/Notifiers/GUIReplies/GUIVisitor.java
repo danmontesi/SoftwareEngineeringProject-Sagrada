@@ -4,4 +4,5 @@ public interface GUIVisitor {
     void visitGUIReply(RefreshBoard refreshBoard);
     void visitGUIReply(GUIViewSetting guiViewSetting);
     void visitGUIReply(WPCChoice wpcChoice);
+    void visitGUIReply(TurnStart turnStart);
 }

@@ -1,5 +1,6 @@
 package it.polimi.se2018.view.GUI;
 
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.TurnStart;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.GUIViewSetting;
 import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.RefreshBoard;
@@ -54,8 +55,11 @@ public class GUIView extends View {
     }
 
     public void startTurnMenu() {
-        // Abilito bottoni draftpool, toolcard, pass.
-        // Scrivo nel riquadro eventi " It's your turn"
+        System.out.println("start turn");
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new TurnStart(null));
+        // Abilito bottoni draftpool, toolcard, pass. fatto
+        // Scrivo nel riquadro eventi " It's your turn" fatto
 
         //3 casi:
         //1) clicco un dado dells draftpool -> Inizio mossa
@@ -72,7 +76,8 @@ public class GUIView extends View {
 
     @Override
     public void otherPlayerTurn(String username) {
-
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new TurnStart(username));
     }
 
     @Override
@@ -160,7 +165,7 @@ public class GUIView extends View {
 
     @Override
     public void timeOut() {
-        //TODO: interrompe tutte le finesdte in corso, ed invia un passTurnCommand()
+        //TODO: interrompe tutte le finestre in corso ed invia un passTurnCommand()
     }
 
     @Override

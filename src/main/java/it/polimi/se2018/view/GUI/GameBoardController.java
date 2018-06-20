@@ -20,6 +20,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -36,6 +37,8 @@ public class GameBoardController extends Observable implements Observer {
     private ExampleBoardStringPaths exampleBoardStringPaths = new ExampleBoardStringPaths();
     private RefreshBoardCommand modelRepresentation;
 
+    private List<Circle> tcircles;
+    private List<Circle> wcircles;
     private List<Circle> circles;
     private List<ImageView> pubocards;
     private List<ImageView> tcards;
@@ -337,13 +340,19 @@ public class GameBoardController extends Observable implements Observer {
     private ToggleButton tbr10;
 
     @FXML
-    private Circle circle0;
+    private Circle tcircle1;
     @FXML
-    private Circle circle1;
+    private Circle tcircle2;
     @FXML
-    private Circle circle2;
+    private Circle tcircle3;
     @FXML
-    private Circle circle3;
+    private Circle wcircle0;
+    @FXML
+    private Circle wcircle1;
+    @FXML
+    private Circle wcircle2;
+    @FXML
+    private Circle wcircle3;
 
     @FXML
     private TextArea msgbox;
@@ -367,6 +376,8 @@ public class GameBoardController extends Observable implements Observer {
         users = new ArrayList<>();
         usersTokens = new ArrayList<>();
         tcTokens = new ArrayList<>();
+        tcircles = new ArrayList<>();
+        wcircles = new ArrayList<>();
         circles = new ArrayList<>();
     }
 
@@ -380,12 +391,9 @@ public class GameBoardController extends Observable implements Observer {
         initCircles();
         initButtons();
         initRoundTrack();
-        /*initPubocards();
-        initTcards();
-        initWpcards();
-        initPersonalWPC();
-        initPersonalPriOC();*/
         moveDice();
+        disableAllButtons();
+        msgbox.appendText("waiting for other players to choose WPC...");
 
         setDrafPool();
         setRoundTrack();
@@ -395,6 +403,7 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     public void update(Observable o, Object arg) {
+        System.out.println("in update");
         if (arg == null) {
             showRanking();
         } else {
@@ -416,6 +425,27 @@ public class GameBoardController extends Observable implements Observer {
                     initWpcards();
                     initPersonalWPC();
                     initPersonalPriOC();
+                    msgbox.setText("");
+                }
+
+                @Override
+                public void visitGUIReply(TurnStart turnStart) {
+                    System.out.println("in turn");
+                    if (turnStart.getUsername() == null) {
+                        for (ToggleButton t : tcbuttons) {
+                            t.setDisable(false);
+                        }
+                        for (ToggleButton t : tbd) {
+                            t.setDisable(false);
+                        }
+                        for (ToggleButton t : tbw0) {
+                            t.setDisable(false);
+                        }
+                        pass.setDisable(false);
+                        msgbox.appendText("It's your turn!\n");
+                    } else {
+                        msgbox.appendText("It's " + turnStart.getUsername() + "'s turn!\n");
+                    }
                 }
             };
             guiReply.acceptGUIVisitor(guiVisitor);
@@ -572,12 +602,26 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void initCircles() {
-        circles.add(circle1);
-        circles.add(circle2);
-        circles.add(circle3);
+        tcircles.add(tcircle1);
+        tcircles.add(tcircle2);
+        tcircles.add(tcircle3);
+
+        wcircles.add(wcircle1);
+        wcircles.add(wcircle2);
+        wcircles.add(wcircle3);
+
+        circles.addAll(tcircles);
+        circles.addAll(wcircles);
+        circles.add(wcircle0);
+
+        for (Circle c : circles) {
+            c.setVisible(false);
+        }
     }
 
     private void initButtons() {
+        pass.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
+        quit.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
         pass.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> pass.setEffect(shadow));
         pass.addEventHandler(MouseEvent.MOUSE_EXITED, e -> pass.setEffect(null));
         quit.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> quit.setEffect(shadow));
@@ -591,72 +635,87 @@ public class GameBoardController extends Observable implements Observer {
     private void initPubocards() {
         ArrayList<String> publicOC = modelRepresentation.getPublicObjectiveCards();
         ArrayList<String> publicOCDesc = modelRepresentation.getPublicObjectiveDescription();
-        for (int i=0; i<publicOC.size(); i++) {
-        String img = publicOC.get(i);
-            String path = "/client/OC/" + img + ".jpg";
-            System.out.println("OC "+i+": "+img);
-            Image image = new Image(path);
-            pubocards.get(i).setImage(image);
-            Tooltip t = new Tooltip(publicOCDesc.get(i));
-            Tooltip.install(pubocards.get(i), t);
-            t.setStyle("-fx-font-size: 15px");
-        }
+        Platform.runLater(() -> {
+            for (int i=0; i<publicOC.size(); i++) {
+            String img = publicOC.get(i);
+                String path = "/client/OC/" + img + ".jpg";
+                Image image = new Image(path);
+                pubocards.get(i).setImage(image);
+                Tooltip t = new Tooltip(publicOCDesc.get(i));
+                Tooltip.install(pubocards.get(i), t);
+                t.setStyle("-fx-font-size: 15px");
+            }
+        });
     }
 
     private void initTcards() {
-        ArrayList<String> tCards = exampleBoardStringPaths.getToolCards();
-        int i=0;
-        for (ToggleButton tc : tcbuttons) {
-            String img = tCards.get(i);
-            String path = "/client/TC/" + img + ".jpg";
-            Image image = new Image(path);
-            ImageView iv = new ImageView(image);
-            iv.setFitHeight(190);
-            iv.setFitWidth(140);
-            tc.setGraphic(iv);
-            Tooltip t = new Tooltip("Description: ...");
-            Tooltip.install(tc, t);
-            t.setStyle("-fx-font-size: 15px");
-            tc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tc.setEffect(shadow));
-            tc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
-                if (!tc.isSelected()) tc.setEffect(null);
-            });
-            i++;
-        }
+        ArrayList<String> tCards = modelRepresentation.getToolCards();
+        ArrayList<String> tCardsDesc = modelRepresentation.getToolCardDescription();
+        Platform.runLater(() -> {
+            for (int i=0; i<tCards.size(); i++) {
+                String img = tCards.get(i);
+                String path = "/client/TC/" + img + ".jpg";
+                Image image = new Image(path);
+                ImageView iv = new ImageView(image);
+                iv.setFitHeight(190);
+                iv.setFitWidth(140);
+                tcbuttons.get(i).setGraphic(iv);
+                Tooltip t = new Tooltip(tCardsDesc.get(i));
+                Tooltip.install(tcbuttons.get(i), t);
+                t.setStyle("-fx-font-size: 15px");
+                tcTokens.get(i).setText(modelRepresentation.getTokensToolCards().get(i).toString());
+                tcircles.get(i).setVisible(true);
+            }
+            for (ToggleButton tc : tcbuttons) {
+                tc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tc.setEffect(shadow));
+                tc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                    if (!tc.isSelected()) tc.setEffect(null);
+                });
+            }
+        });
     }
 
     private void initWpcards() {
-        for (int i=0; i<exampleBoardStringPaths.getOtherPlayersWpcs().size(); i++) {
-            String img = exampleBoardStringPaths.getOtherPlayersWpcs().get(i).get(0);
-            String path = "/client/WPC/" + img + ".jpg";
-            Image image = new Image(path);
-            wpcards.get(i).setImage(image);
-            users.get(i).setText(exampleBoardStringPaths.getOtherPlayersUsernames().get(i));
-        }
-        for (int j=exampleBoardStringPaths.getOtherPlayersWpcs().size(); j<3; j++) {
-            wpcards.get(j).setVisible(false);
-            users.get(j).setVisible(false);
-            usersTokens.get(j).setVisible(false);
-            circles.get(j).setVisible(false);
-        }
+        Platform.runLater(() -> {
+            for (int i=0; i<modelRepresentation.getOtherPlayersWpcs().size(); i++) {
+                String img = modelRepresentation.getOtherPlayersWpcs().get(i).get(0).replace("_", " ");
+                String path = "/client/WPC/" + img + ".jpg";
+                Image image = new Image(path);
+                wpcards.get(i).setImage(image);
+                users.get(i).setText(modelRepresentation.getOtherPlayersUsernames().get(i));
+                usersTokens.get(i).setText(modelRepresentation.getOtherPlayersTokens().get(i).toString());
+                wcircles.get(i).setVisible(true);
+            }
+            for (int j=modelRepresentation.getOtherPlayersWpcs().size(); j<3; j++) {
+                wpcards.get(j).setVisible(false);
+                users.get(j).setVisible(false);
+                usersTokens.get(j).setVisible(false);
+            }
+        });
     }
 
     private void initPersonalWPC() {
-        String img = exampleBoardStringPaths.getPersonalWpc().get(0);
-        String path = "/client/WPC/" + img + ".jpg";
-        Image image = new Image(path);
-        wpc0.setImage(image);
-        user0.setText(exampleBoardStringPaths.getUsername());
+        Platform.runLater(() -> {
+            String img = modelRepresentation.getPersonalWpc().get(0).replace("_", " ");
+            String path = "/client/WPC/" + img + ".jpg";
+            Image image = new Image(path);
+            wpc0.setImage(image);
+            user0.setText(modelRepresentation.getUsername());
+            user0tokens.setText(modelRepresentation.getPersonalTokens().toString());
+            wcircle0.setVisible(true);
+        });
     }
 
     private void initPersonalPriOC() {
-        String img = exampleBoardStringPaths.getPrivateObjectiveCard();
-        String path = "/client/OC/" + img + ".jpg";
-        Image image = new Image(path);
-        prioc0.setImage(image);
-        Tooltip t = new Tooltip("Description: ...");
-        Tooltip.install(prioc0, t);
-        t.setStyle("-fx-font-size: 15px");
+        Platform.runLater(() -> {
+            String img = modelRepresentation.getPrivateObjectiveCard();
+            String path = "/client/OC/" + img + ".jpg";
+            Image image = new Image(path);
+            prioc0.setImage(image);
+            Tooltip t = new Tooltip(modelRepresentation.getPrivateObjectiveCardDescription());
+            Tooltip.install(prioc0, t);
+            t.setStyle("-fx-font-size: 15px");
+        });
     }
 
     private void moveDice() {
@@ -834,13 +893,14 @@ public class GameBoardController extends Observable implements Observer {
 
     }
 
-    private void setMB() {
-        String txt;
-        for (int i=0; i<12; i++) {
-            txt = "prova "+i+"\n";
-            msgbox.appendText(txt);
+    private void disableAllButtons() {
+        for (ToggleButton t : tcbuttons) {
+            t.setDisable(true);
         }
+        for (ToggleButton t : tbuttons) {
+            t.setDisable(true);
+        }
+        pass.setDisable(true);
     }
-
 }
 

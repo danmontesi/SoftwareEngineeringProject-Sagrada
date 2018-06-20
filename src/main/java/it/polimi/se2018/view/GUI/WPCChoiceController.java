@@ -81,6 +81,8 @@ public class WPCChoiceController extends Observable implements Observer {
 
             @Override
             public void visitGUIReply(RefreshBoard refreshBoard) {}
+            @Override
+            public void visitGUIReply(TurnStart turnStart) {}
         };
         guiReply.acceptGUIVisitor(guiVisitor);
     }
