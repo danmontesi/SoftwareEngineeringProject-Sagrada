@@ -302,14 +302,11 @@ public class Model extends Observable implements Serializable{ //Observable of V
     }
 
     public void notifyRefreshTokens(){
-
         System.out.println("Notificando una V.V. della new board");
         ArrayList<Integer> tokensToolCards = new ArrayList<>(); //Ordered
         for (ToolCard toolCard : extractedToolCard) {
             tokensToolCards.add(toolCard.getTokenCount());
         }
-
-
 
         for (Observer observer : observers) {
             View temp = (View) observer;
@@ -322,10 +319,11 @@ public class Model extends Observable implements Serializable{ //Observable of V
                     otherPlayersTokens.add(p.getTokens());
                 }
             }
-            observer.update(new RefreshTokensCommand(otherPlayersTokens, myTokens));
+            observer.update(new RefreshTokensCommand(otherPlayersTokens, tokensToolCards, myTokens));
         }
     }
 
+    //TODO ELIMINA
     public void notifyRefreshToolCardTokens(){
         ArrayList<Integer> tokensToolCards = new ArrayList<>(); //Ordered
         for (ToolCard toolCard : extractedToolCard){
@@ -384,7 +382,6 @@ public class Model extends Observable implements Serializable{ //Observable of V
                     otherPlayersWpcs.add(p.getWindowPatternCard().wpcPathRepresentation());
                 }
             }
-
             ArrayList<Integer> otherPlayersTokens = new ArrayList<>();
             ArrayList<String> otherPlayersUsernames = new ArrayList<>();
             Integer myTokens = null;
