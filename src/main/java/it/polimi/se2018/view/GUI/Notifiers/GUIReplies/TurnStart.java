@@ -1,7 +1,6 @@
 package it.polimi.se2018.view.GUI.Notifiers.GUIReplies;
 
 public class TurnStart implements GUIReply {
-
     private String username;
 
     public TurnStart(String username) {

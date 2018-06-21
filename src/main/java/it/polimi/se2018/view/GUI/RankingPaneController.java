@@ -1,5 +1,6 @@
 package it.polimi.se2018.view.GUI;
 
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.*;
 import it.polimi.se2018.view.GUI.Notifiers.RankingPaneNotifier;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,19 +10,46 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 public class RankingPaneController extends Observable implements Observer {
 
+    private GUIView guiViewT;
     private List<Button> buttons;
+    private List<Label> first;
+    private List<Label> second;
+    private List<Label> third;
+    private List<Label> fourth;
+    private List<List<Label>> players;
 
     @FXML
     private Label outcome;
     @FXML
     private Label rank;
+    @FXML
+    private Label r1;
+    @FXML
+    private Label r2;
+    @FXML
+    private Label r3;
+    @FXML
+    private Label r4;
+    @FXML
+    private Label u1;
+    @FXML
+    private Label u2;
+    @FXML
+    private Label u3;
+    @FXML
+    private Label u4;
+    @FXML
+    private Label p1;
+    @FXML
+    private Label p2;
+    @FXML
+    private Label p3;
+    @FXML
+    private Label p4;
 
     @FXML
     private Button playAgain;
@@ -32,35 +60,73 @@ public class RankingPaneController extends Observable implements Observer {
 
     public RankingPaneController() {
         buttons = new ArrayList<>();
+        first = new ArrayList<>();
+        second = new ArrayList<>();
+        third = new ArrayList<>();
+        fourth = new ArrayList<>();
+        players = new ArrayList<>();
     }
 
     public void initialize() {
         RankingPaneNotifier.getInstance().addObserver(this);
         initButtons();
-        initStyle();
+        initLabels();
     }
 
     public void update(Observable o, Object arg) {
-
+        setRanking((ArrayList<String>)arg);
     }
 
     private void initButtons() {
         buttons.add(playAgain);
         buttons.add(exit);
-    }
-
-    private void initStyle() {
-        if (outcome.getText().equals("You Won!")) {
-            outcome.setTextFill(Color.web("#006b00"));
-        }
-        if (outcome.getText().equals("You Lost")) {
-            outcome.setTextFill(Color.web("#990000"));
-        }
-
         for (Button b : buttons) {
-            b.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent");
+            b.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
             b.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> b.setEffect(shadow));
             b.addEventHandler(MouseEvent.MOUSE_EXITED, e -> b.setEffect(null));
+        }
+    }
+
+    private void initLabels() {
+        first.add(r1);
+        first.add(u1);
+        first.add(p1);
+
+        second.add(r2);
+        second.add(u2);
+        second.add(p2);
+
+        third.add(r3);
+        third.add(u3);
+        third.add(p3);
+
+        fourth.add(r4);
+        fourth.add(u4);
+        fourth.add(p4);
+
+        players.add(first);
+        players.add(second);
+        players.add(third);
+        players.add(fourth);
+    }
+
+    private void setRanking(ArrayList<String> scores) {
+        if (scores.get(0).equals("1")) {
+            outcome.setText("You Won!");
+            outcome.setTextFill(Color.web("#006b00"));
+            rank.setText("You ranked #1");
+        }
+        else {
+            outcome.setText("You Lost");
+            outcome.setTextFill(Color.web("#990000"));
+            rank.setText("You ranked #" + scores.get(0));
+        }
+        scores.remove(0);
+        ArrayList<ArrayList<String>> s = extractElements(scores);
+        for (int i=0; i<s.size();i++) {
+            for (int j=0; j<s.get(i).size(); j++) {
+                players.get(i).get(j).setText(s.get(i).get(j));
+            }
         }
     }
 
@@ -77,5 +143,14 @@ public class RankingPaneController extends Observable implements Observer {
     @FXML
     public void exit(){
 
+    }
+
+    private ArrayList<ArrayList<String>> extractElements(ArrayList<String> s) {
+        ArrayList<ArrayList<String>> a = new ArrayList<>();
+        for (int i=0; i<s.size(); i++) {
+            ArrayList<String> a1 = new ArrayList<String>(Arrays.asList(s.get(i).split("_")));
+            a.add(a1);
+        }
+        return a;
     }
 }

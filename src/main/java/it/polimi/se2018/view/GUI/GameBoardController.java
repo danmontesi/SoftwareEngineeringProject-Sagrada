@@ -1,5 +1,7 @@
 package it.polimi.se2018.view.GUI;
 
+import it.polimi.se2018.commands.client_to_server_command.MoveChoiceDicePlacement;
+import it.polimi.se2018.commands.client_to_server_command.MoveChoicePassTurn;
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
 import it.polimi.se2018.view.ExampleBoardStringPaths;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
@@ -16,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
@@ -358,6 +361,7 @@ public class GameBoardController extends Observable implements Observer {
     private TextArea msgbox;
 
     private DropShadow shadow = new DropShadow();
+    private DropShadow redShadow = new DropShadow();
 
     public GameBoardController() {
         pubocards = new ArrayList<>();
@@ -392,14 +396,14 @@ public class GameBoardController extends Observable implements Observer {
         initButtons();
         initRoundTrack();
         moveDice();
-        disableAllButtons();
-        msgbox.appendText("waiting for other players to choose WPC...");
+        disableAllButtons(true);
+        msgbox.appendText("waiting for other players to choose WPC...\n");
 
-        setDrafPool();
+        /*setDrafPool();
         setRoundTrack();
         setTCTokens();
         setWpcards();
-        setPersonalWPC();
+        setPersonalWPC();*/
     }
 
     public void update(Observable o, Object arg) {
@@ -415,9 +419,6 @@ public class GameBoardController extends Observable implements Observer {
                 }
 
                 @Override
-                public void visitGUIReply(WPCChoice wpcChoice) {}
-
-                @Override
                 public void visitGUIReply(RefreshBoard refreshBoard) {
                     modelRepresentation = refreshBoard.getModelRepresentation();
                     initPubocards();
@@ -425,28 +426,62 @@ public class GameBoardController extends Observable implements Observer {
                     initWpcards();
                     initPersonalWPC();
                     initPersonalPriOC();
-                    msgbox.setText("");
                 }
 
                 @Override
                 public void visitGUIReply(TurnStart turnStart) {
                     System.out.println("in turn");
                     if (turnStart.getUsername() == null) {
-                        for (ToggleButton t : tcbuttons) {
-                            t.setDisable(false);
-                        }
-                        for (ToggleButton t : tbd) {
-                            t.setDisable(false);
-                        }
-                        for (ToggleButton t : tbw0) {
-                            t.setDisable(false);
-                        }
+                        disableAllButtons(false);
+                        disableTB(tbd, false);
+                        disableTB(tcbuttons, false);
+                        disableTB(tbw0, false);
                         pass.setDisable(false);
-                        msgbox.appendText("It's your turn!\n");
+                        msgbox.setText("It's your turn!\n");
                     } else {
-                        msgbox.appendText("It's " + turnStart.getUsername() + "'s turn!\n");
+                        disableAllButtons(true);
+                        msgbox.setText("It's " + turnStart.getUsername() + "'s turn!\n");
                     }
                 }
+
+                @Override
+                public void visitGUIReply(TurnUpdate turnUpdate) {
+                    if (!turnUpdate.getMove()) {
+                        disableTB(tbw0, false);
+                        disableTB(tcbuttons, false);
+                        pass.setDisable(false);
+                    }
+                    if (!turnUpdate.getTool()) {
+                        disableTB(tbw0, false);
+                        disableTB(tbd, false);
+                        pass.setDisable(false);
+                    }
+
+                }
+
+                @Override
+                public void visitGUIReply(InvalidAction invalidAction) {
+                    msgbox.appendText(invalidAction.getMessage() + "\n");
+                    inputError(true);
+                }
+
+                @Override
+                public void visitGUIReply(WPCUpdate wpcUpdate) {
+                    setWpcards(wpcUpdate.getOtherWpcs());
+                    setPersonalWPC(wpcUpdate.getMyWpc());
+                }
+
+                @Override
+                public void visitGUIReply(TokensUpdate tokensUpdate) {}
+
+                @Override
+                public void visitGUIReply(DraftPoolUpdate draftPoolUpdate) {}
+
+                @Override
+                public void visitGUIReply(RoundTrackUpdate roundTrackUpdate) {}
+
+                @Override
+                public void visitGUIReply(WPCChoice wpcChoice) {}
             };
             guiReply.acceptGUIVisitor(guiVisitor);
         }
@@ -719,13 +754,17 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void moveDice() {
-        for (ToggleButton tb1 : tbw0) {
-            tb1.setOnAction(event -> {
-                for (ToggleButton tb2 : tbd) {
-                    if (tb2.isSelected()) {
-                        tb1.setGraphic(tb2.getGraphic());
-                        tb2.setSelected(false);
-                        tb1.setSelected(false);
+        for (int i=0; i<20; i++) {
+            int h = i;
+            tbw0.get(i).setOnAction(event -> {
+                for (int j=0; j<9; j++) {
+                    if (tbd.get(j).isSelected()) {
+                        tbw0.get(h).setGraphic(tbd.get(j).getGraphic());
+                        tbd.get(j).setSelected(false);
+                        tbw0.get(h).setSelected(false);
+                        System.out.println("move");
+                        inputError(false);
+                        notifyMove((h+1)%4, (h+1)%5, j);
                     }
                 }
             });
@@ -791,12 +830,12 @@ public class GameBoardController extends Observable implements Observer {
         }
     }
 
-    private void setWpcards()  {
-        for (int i=0; i<exampleBoardStringPaths.getOtherPlayersWpcs().size(); i++) {
-            usersTokens.get(i).setText(exampleBoardStringPaths.getOtherPlayersTokens().get(i).toString());
+    private void setWpcards(ArrayList<ArrayList<String>> wpcards)  {
+        for (int i=0; i<wpcards.size(); i++) {
+            //usersTokens.get(i).setText(exampleBoardStringPaths.getOtherPlayersTokens().get(i).toString());
             for (int j=0; j<20; j++) {
-                String img = exampleBoardStringPaths.getPersonalWpc().get(j+1);
-                if (!img.equals("empty")) {
+                String img = wpcards.get(i).get(j+1);
+                if (img.contains("_")) {
                     String path = "/client/Dice/" + img + ".jpg";
                     Image image = new Image(path);
                     ivw.get(i).get(j).setImage(image);
@@ -805,11 +844,11 @@ public class GameBoardController extends Observable implements Observer {
         }
     }
 
-    private void setPersonalWPC() {
-        user0tokens.setText(exampleBoardStringPaths.getPersonalTokens().toString());
+    private void setPersonalWPC(ArrayList<String> wpc) {
+        //user0tokens.setText(exampleBoardStringPaths.getPersonalTokens().toString());
         for (int i=0; i<20; i++) {
-            String img = exampleBoardStringPaths.getPersonalWpc().get(i+1);
-            if (!img.equals("empty")) {
+            String img = wpc.get(i+1);
+            if (img.contains("_")) {
                 String path = "/client/Dice/" + img + ".jpg";
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);
@@ -842,6 +881,11 @@ public class GameBoardController extends Observable implements Observer {
 
     @FXML
     public void passTurn() {
+        guiViewT.notify(new MoveChoicePassTurn(user0.getText()));
+    }
+
+    @FXML
+    public void quit() {
         Platform.runLater(() ->  {
             try {
                 for (int i=0; i<5; i++) {
@@ -874,11 +918,6 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     @FXML
-    public void quit() {
-
-    }
-
-    @FXML
     public void tc1Action() {
 
     }
@@ -893,14 +932,50 @@ public class GameBoardController extends Observable implements Observer {
 
     }
 
-    private void disableAllButtons() {
-        for (ToggleButton t : tcbuttons) {
-            t.setDisable(true);
+    private void disableTB(List<ToggleButton> l, boolean b) {
+        if (b) {
+            for (ToggleButton t : l) {
+                t.setDisable(true);
+            }
+        } else {
+            for (ToggleButton t : l) {
+                t.setDisable(false);
+            }
         }
-        for (ToggleButton t : tbuttons) {
-            t.setDisable(true);
+    }
+
+    private void disableAllButtons(boolean b) {
+        if (b) {
+            for (ToggleButton t : tcbuttons) {
+                t.setDisable(true);
+            }
+            for (ToggleButton t : tbuttons) {
+                t.setDisable(true);
+            }
+            pass.setDisable(true);
+        } else {
+            for (ToggleButton t : tcbuttons) {
+                t.setDisable(false);
+            }
+            for (ToggleButton t : tbuttons) {
+                t.setDisable(false);
+            }
+            pass.setDisable(false);
         }
-        pass.setDisable(true);
+    }
+
+    private void notifyMove(Integer r, Integer c, Integer d) {
+        guiViewT.notify(new MoveChoiceDicePlacement("", r, c, d));
+        disableAllButtons(true);
+    }
+
+    private void inputError(boolean b) {
+        redShadow.setColor(new Color(0.7, 0,0,1));
+        if (b) {
+            msgbox.setEffect(redShadow);
+        } else {
+            msgbox.setEffect(null);
+        }
     }
 }
 

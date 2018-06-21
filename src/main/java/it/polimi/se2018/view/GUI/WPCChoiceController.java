@@ -31,9 +31,27 @@ public class WPCChoiceController extends Observable implements Observer {
     private GUIView guiViewT;
 
     private List<ToggleButton> wpcards;
+    private List<Label> wpcnames;
+    private List<Label> wpcdifficulties;
 
     @FXML
     private Label choose;
+    @FXML
+    private Label wpc1n;
+    @FXML
+    private Label wpc2n;
+    @FXML
+    private Label wpc3n;
+    @FXML
+    private Label wpc4n;
+    @FXML
+    private Label wpc1d;
+    @FXML
+    private Label wpc2d;
+    @FXML
+    private Label wpc3d;
+    @FXML
+    private Label wpc4d;
 
     @FXML
     private ToggleButton wpc1;
@@ -56,6 +74,7 @@ public class WPCChoiceController extends Observable implements Observer {
 
     public WPCChoiceController() {
         wpcards = new ArrayList<>();
+        wpcnames = new ArrayList<>();
         wpcs = new ToggleGroup();
         selectedWPC = new String();
     }
@@ -76,13 +95,25 @@ public class WPCChoiceController extends Observable implements Observer {
 
             @Override
             public void visitGUIReply(WPCChoice wpcChoice) {
-                setWPCards(wpcChoice.getWpcards());
+                setWPCards(wpcChoice.getWpcNames(), wpcChoice.getWpcDifficulties());
             }
 
             @Override
             public void visitGUIReply(RefreshBoard refreshBoard) {}
             @Override
             public void visitGUIReply(TurnStart turnStart) {}
+            @Override
+            public void visitGUIReply(TurnUpdate turnUpdate) {}
+            @Override
+            public void visitGUIReply(InvalidAction invalidAction) {}
+            @Override
+            public void visitGUIReply(WPCUpdate wpcUpdate) {}
+            @Override
+            public void visitGUIReply(TokensUpdate tokensUpdate) {}
+            @Override
+            public void visitGUIReply(DraftPoolUpdate draftPoolUpdate) {}
+            @Override
+            public void visitGUIReply(RoundTrackUpdate roundTrackUpdate) {}
         };
         guiReply.acceptGUIVisitor(guiVisitor);
     }
@@ -96,26 +127,36 @@ public class WPCChoiceController extends Observable implements Observer {
         wpcards.add(wpc2);
         wpcards.add(wpc3);
         wpcards.add(wpc4);
+
+        wpcnames.add(wpc1n);
+        wpcnames.add(wpc2n);
+        wpcnames.add(wpc3n);
+        wpcnames.add(wpc4n);
+
+        wpcdifficulties.add(wpc1d);
+        wpcdifficulties.add(wpc2d);
+        wpcdifficulties.add(wpc3d);
+        wpcdifficulties.add(wpc4d);
     }
 
-    private void setWPCards(String cards) {
+    private void setWPCards(ArrayList<String> names, ArrayList<Integer> difficulties) {
         Platform.runLater(() -> {
-            ArrayList<String> wpcCards = stringToArray(cards);
-            int i=0;
-            for (ToggleButton wpc : wpcards) {
-                String img = wpcCards.get(i);
+            for (int i=0; i<names.size(); i++) {
+                String img = names.get(i);
                 String path = "/client/WPC/" + img + ".jpg";
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);
                 iv.setFitHeight(184);
                 iv.setFitWidth(230);
-                wpc.setGraphic(iv);
-                wpc.setText(img);
+                wpcards.get(i).setGraphic(iv);
+                wpcnames.get(i).setText(img);
+                wpcdifficulties.get(i).setText(difficulties.get(i).toString());
+            }
+            for (ToggleButton wpc : wpcards) {
                 wpc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> wpc.setEffect(shadow));
                 wpc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
                     if (!wpc.isSelected()) wpc.setEffect(null);
                 });
-                i++;
             }
         });
     }
@@ -132,8 +173,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc3.setDisable(false);
             wpc4.setDisable(false);
         }
-        selectedWPC = wpc1.getText();
-        System.out.println("selected WPC: "+selectedWPC);
+        selectedWPC = wpc1n.getText();
     }
 
     @FXML
@@ -148,7 +188,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc3.setDisable(false);
             wpc4.setDisable(false);
         }
-        selectedWPC = wpc2.getText();
+        selectedWPC = wpc2n.getText();
     }
 
     @FXML
@@ -163,7 +203,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc1.setDisable(false);
             wpc4.setDisable(false);
         }
-        selectedWPC = wpc3.getText();
+        selectedWPC = wpc3n.getText();
     }
 
     @FXML
@@ -178,7 +218,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc3.setDisable(false);
             wpc1.setDisable(false);
         }
-        selectedWPC = wpc4.getText();
+        selectedWPC = wpc4n.getText();
     }
 
     public void closeStage() {
@@ -205,13 +245,6 @@ public class WPCChoiceController extends Observable implements Observer {
                 }
             });
         }
-    }
-
-    private ArrayList<String> stringToArray(String s1) {
-        String r = s1.replace("[","");
-        String r1 = r.replace("]","");
-        ArrayList<String> a = new ArrayList<String>(Arrays.asList(r1.split(", ")));
-        return a;
     }
 
     private void inputError() {

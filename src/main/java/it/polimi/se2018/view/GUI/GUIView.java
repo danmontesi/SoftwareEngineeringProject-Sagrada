@@ -1,11 +1,9 @@
 package it.polimi.se2018.view.GUI;
 
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.TurnStart;
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.*;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.GUIViewSetting;
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.RefreshBoard;
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.WPCChoice;
 import it.polimi.se2018.view.GUI.Notifiers.LobbyNotifier;
+import it.polimi.se2018.view.GUI.Notifiers.RankingPaneNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
@@ -46,12 +44,14 @@ public class GUIView extends View {
 
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
         ArrayList<String> cardNames = new ArrayList<>();
+        ArrayList<Integer> cardDifficulties = new ArrayList<>();
         for (WindowPatternCard card : cards) {
             cardNames.add(card.getCardName());
+            cardDifficulties.add(card.getDifficulty());
         }
         WPCChoiceNotifier wpcChoiceNotifier = WPCChoiceNotifier.getInstance();
         wpcChoiceNotifier.updateGui(new GUIViewSetting(this));
-        wpcChoiceNotifier.updateGui(new WPCChoice(cardNames.toString()));
+        wpcChoiceNotifier.updateGui(new WPCChoice(cardNames, cardDifficulties));
     }
 
     public void startTurnMenu() {
@@ -90,8 +90,10 @@ public class GUIView extends View {
     }
 
     public void continueTurnMenu(boolean move, boolean tool) {
-        //se move = false, draftpool disattivata, se true attivata
-        //tool ""
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new TurnUpdate(move, tool));
+        //se move = false, draftpool disattivata, se true attivata fatto
+        //tool "" fatto
 
 
         //notify( new MOVE / new TOOLUSE / new PASSTURN )
@@ -148,15 +150,20 @@ public class GUIView extends View {
 
 
     public void invalidActionMessage(String message) {
-        //TODO. non contiene niente, mostra solo i messaggio
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new InvalidAction(message));
     }
 
     public void loseMessage(Integer position, ArrayList<String> scores) {
-        //TODO. non contiene niente, mostra solo i messaggio. attento a parsare bene gli score
+        scores.add(0, position.toString());
+        RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
+        rankingPaneNotifier.updateGui(scores);
     }
 
-    public void winMessage(List<String> scores) {
-        //TODO. non contiene niente, mostra solo i messaggio, attento a parsare bene gli scores
+    public void winMessage(ArrayList<String> scores) {
+        scores.add(0, "1");
+        RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
+        rankingPaneNotifier.updateGui(scores);
     }
 
     public void correctAuthenthication(String username) {
@@ -170,12 +177,14 @@ public class GUIView extends View {
 
     @Override
     public void updateWpc(ArrayList<String> myWpc, ArrayList<ArrayList<String>> otherWpcs) {
-        //DO LATER
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new WPCUpdate(myWpc, otherWpcs));
     }
 
     @Override
     public void updateTokens() {
         //DO LATER
+
     }
 
     @Override
@@ -220,7 +229,14 @@ public class GUIView extends View {
             //System.out.println(command.getDraftpool().get(0)); //example
             //TODO NIVES: da command prendo tutte le informazioni come ho fatto per la classe di prova
             //es. command.getDraftPool,... Oss: ho aggiunto anche le descrizioni
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //TODO: sistemare meglio
             GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+            gameBoardNotifier.updateGui(new GUIViewSetting(this));
             gameBoardNotifier.updateGui(new RefreshBoard(command));
         }
     }

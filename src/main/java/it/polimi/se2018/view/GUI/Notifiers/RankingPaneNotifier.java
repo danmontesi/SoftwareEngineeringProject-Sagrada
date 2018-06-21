@@ -1,5 +1,8 @@
 package it.polimi.se2018.view.GUI.Notifiers;
 
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.GUIReply;
+
+import java.util.ArrayList;
 import java.util.Observable;
 
 public class RankingPaneNotifier extends Observable {
@@ -13,8 +16,8 @@ public class RankingPaneNotifier extends Observable {
         return RankingPaneNotifierHolder.INSTANCE;
     }
 
-    public void updateGui() {
+    public void updateGui(ArrayList<String> scores) {
         setChanged();
-        notifyObservers();
+        notifyObservers(scores);
     }
 }

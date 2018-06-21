@@ -3,7 +3,6 @@ package it.polimi.se2018.view.GUI.Notifiers.GUIReplies;
 import it.polimi.se2018.view.GUI.GUIView;
 
 public class GUIViewSetting implements GUIReply {
-
     private GUIView guiView;
 
     public GUIViewSetting(GUIView guiView) {
