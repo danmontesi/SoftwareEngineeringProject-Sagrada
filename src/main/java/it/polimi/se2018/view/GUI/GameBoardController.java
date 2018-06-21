@@ -831,32 +831,34 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void setWpcards(ArrayList<ArrayList<String>> wpcards)  {
-        for (int i=0; i<wpcards.size(); i++) {
-            //usersTokens.get(i).setText(exampleBoardStringPaths.getOtherPlayersTokens().get(i).toString());
-            for (int j=0; j<20; j++) {
-                String img = wpcards.get(i).get(j+1);
-                if (img.contains("_")) {
-                    String path = "/client/Dice/" + img + ".jpg";
-                    Image image = new Image(path);
-                    ivw.get(i).get(j).setImage(image);
+        Platform.runLater(() -> {
+            for (int i=0; i<wpcards.size(); i++) {
+                for (int j=0; j<20; j++) {
+                    String img = wpcards.get(i).get(j+1);
+                    if (img.contains("_")) {
+                        String path = "/client/Dice/" + img + ".jpg";
+                        Image image = new Image(path);
+                        ivw.get(i).get(j).setImage(image);
+                    }
                 }
             }
-        }
+        });
     }
 
     private void setPersonalWPC(ArrayList<String> wpc) {
-        //user0tokens.setText(exampleBoardStringPaths.getPersonalTokens().toString());
-        for (int i=0; i<20; i++) {
-            String img = wpc.get(i+1);
-            if (img.contains("_")) {
-                String path = "/client/Dice/" + img + ".jpg";
-                Image image = new Image(path);
-                ImageView iv = new ImageView(image);
-                iv.setFitWidth(43);
-                iv.setFitHeight(43);
-                tbw0.get(i).setGraphic(iv);
+        Platform.runLater(() -> {
+            for (int i=0; i<20; i++) {
+                String img = wpc.get(i+1);
+                if (img.contains("_")) {
+                    String path = "/client/Dice/" + img + ".jpg";
+                    Image image = new Image(path);
+                    ImageView iv = new ImageView(image);
+                    iv.setFitWidth(43);
+                    iv.setFitHeight(43);
+                    tbw0.get(i).setGraphic(iv);
+                }
             }
-        }
+        });
     }
 
     private void closeStage() {
