@@ -8,7 +8,14 @@ import it.polimi.se2018.model.WindowPatternCard;
 public class ColorDiagonals extends PublicObjectiveCard {
 
     public ColorDiagonals(String name, String description, Integer score) {
-        super(name, description, score);
+        this.name = name;
+        this.description = description;
+        this.score = score;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     /**

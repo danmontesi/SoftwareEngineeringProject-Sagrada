@@ -285,7 +285,8 @@ public class CLIView extends View {
 
     @Override
     public void correctAuthenthication(String username){
-        //TODO. non contiene niente, mostra solo i messaggio
+        this.username=username;
+        //TODO. Setta username e mostra solo il messaggio di corretta auth
     }
 
     @Override

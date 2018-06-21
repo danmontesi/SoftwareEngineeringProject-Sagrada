@@ -8,9 +8,15 @@ import java.util.HashSet;
 
 public class RowColorVariety extends PublicObjectiveCard{
     public RowColorVariety(String name, String description, Integer score) {
-        super(name, description, score);
+        this.name = name;
+        this.description = description;
+        this.score = score;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
     /**
      * Rows with no repeated colors
      * @param w WindowPatternCard for which you want to calculate the score

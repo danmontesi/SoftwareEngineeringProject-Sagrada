@@ -1,5 +1,10 @@
 package it.polimi.se2018.view.GUI;
 
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.TurnStart;
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.GUIViewSetting;
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.RefreshBoard;
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.WPCChoice;
 import it.polimi.se2018.view.GUI.Notifiers.LobbyNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.view.View;
@@ -45,12 +50,16 @@ public class GUIView extends View {
             cardNames.add(card.getCardName());
         }
         WPCChoiceNotifier wpcChoiceNotifier = WPCChoiceNotifier.getInstance();
-        wpcChoiceNotifier.updateGui(cardNames.toString());
+        wpcChoiceNotifier.updateGui(new GUIViewSetting(this));
+        wpcChoiceNotifier.updateGui(new WPCChoice(cardNames.toString()));
     }
 
     public void startTurnMenu() {
-        // Abilito bottoni draftpool, toolcard, pass.
-        // Scrivo nel riquadro eventi " It's your turn"
+        System.out.println("start turn");
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new TurnStart(null));
+        // Abilito bottoni draftpool, toolcard, pass. fatto
+        // Scrivo nel riquadro eventi " It's your turn" fatto
 
         //3 casi:
         //1) clicco un dado dells draftpool -> Inizio mossa
@@ -67,7 +76,8 @@ public class GUIView extends View {
 
     @Override
     public void otherPlayerTurn(String username) {
-
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new TurnStart(username));
     }
 
     @Override
@@ -155,7 +165,7 @@ public class GUIView extends View {
 
     @Override
     public void timeOut() {
-        //TODO: interrompe tutte le finesdte in corso, ed invia un passTurnCommand()
+        //TODO: interrompe tutte le finestre in corso ed invia un passTurnCommand()
     }
 
     @Override
@@ -201,16 +211,17 @@ public class GUIView extends View {
         //In case there is a CLI, does anything
         RefreshBoardCommand command = (RefreshBoardCommand) model;
         this.currentModelPathRepresentation=command;
-
         //PER NIVES: PER ORA LE UPDATE SONO DI 2 TIPI: TU LASCIALI ENTRAMBI E FAI L'AGGIORNAMENTO  DELLA BOARD PRENDENDO QUESTO
         if (command.getMessage()!=null) {
             System.out.println("ricevuto " + command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
         }
         else{
             currentModelPathRepresentation = command; //posso sempre accedere alle informazioni del model facendo currentModelPathRepresentation.get....()
-            System.out.println(command.getDraftpool().get(0)); //example
+            //System.out.println(command.getDraftpool().get(0)); //example
             //TODO NIVES: da command prendo tutte le informazioni come ho fatto per la classe di prova
             //es. command.getDraftPool,... Oss: ho aggiunto anche le descrizioni
+            GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+            gameBoardNotifier.updateGui(new RefreshBoard(command));
         }
     }
 

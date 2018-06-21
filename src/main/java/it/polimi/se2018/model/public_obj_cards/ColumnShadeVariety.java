@@ -7,9 +7,15 @@ import java.util.HashSet;
 
 public class ColumnShadeVariety extends PublicObjectiveCard{
     public ColumnShadeVariety(String name, String description, Integer score) {
-        super(name, description, score);
+        this.name = name;
+        this.description = description;
+        this.score = score;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
     /**
      * Columns with no repeated values
      * @param w WindowPatternCard for which you want to calculate the score

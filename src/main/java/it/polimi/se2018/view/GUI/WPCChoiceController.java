@@ -1,5 +1,7 @@
 package it.polimi.se2018.view.GUI;
 
+import it.polimi.se2018.commands.client_to_server_command.ChosenWindowPatternCard;
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.*;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -7,12 +9,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,7 +28,12 @@ public class WPCChoiceController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(WPCChoiceController.class.getName());
 
+    private GUIView guiViewT;
+
     private List<ToggleButton> wpcards;
+
+    @FXML
+    private Label choose;
 
     @FXML
     private ToggleButton wpc1;
@@ -41,6 +50,7 @@ public class WPCChoiceController extends Observable implements Observer {
     private ToggleGroup wpcs;
 
     private DropShadow shadow = new DropShadow();
+    private DropShadow redShadow = new DropShadow();
 
     private String selectedWPC;
 
@@ -54,15 +64,27 @@ public class WPCChoiceController extends Observable implements Observer {
         WPCChoiceNotifier.getInstance().addObserver(this);
         initWPCards();
         setTGroup();
-        for (ToggleButton tb : wpcards) {
-
-        }
     }
 
     public void update(Observable o, Object arg) {
-        if (arg != null) {
-            setWPCards((String)arg);
-        }
+        GUIReply guiReply = (GUIReply)arg;
+        GUIVisitor guiVisitor = new GUIVisitor() {
+            @Override
+            public void visitGUIReply(GUIViewSetting guiViewSetting) {
+                guiViewT = guiViewSetting.getGuiView();
+            }
+
+            @Override
+            public void visitGUIReply(WPCChoice wpcChoice) {
+                setWPCards(wpcChoice.getWpcards());
+            }
+
+            @Override
+            public void visitGUIReply(RefreshBoard refreshBoard) {}
+            @Override
+            public void visitGUIReply(TurnStart turnStart) {}
+        };
+        guiReply.acceptGUIVisitor(guiVisitor);
     }
 
     private void setTGroup() {
@@ -88,7 +110,7 @@ public class WPCChoiceController extends Observable implements Observer {
                 iv.setFitHeight(184);
                 iv.setFitWidth(230);
                 wpc.setGraphic(iv);
-                wpc.setText("virtus");
+                wpc.setText(img);
                 wpc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> wpc.setEffect(shadow));
                 wpc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
                     if (!wpc.isSelected()) wpc.setEffect(null);
@@ -111,6 +133,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc4.setDisable(false);
         }
         selectedWPC = wpc1.getText();
+        System.out.println("selected WPC: "+selectedWPC);
     }
 
     @FXML
@@ -165,32 +188,34 @@ public class WPCChoiceController extends Observable implements Observer {
 
     @FXML
     public void showGameBoard(){
-        GUISender guiSender = new GUISender();
-        guiSender.chosenWindowPatternCardMenu(selectedWPC);
-        Platform.runLater(() ->  {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/gameboard.fxml"));
-                Parent root = fxmlLoader.load();
-                Stage wpcChoiceStage = new Stage();
-                wpcChoiceStage.setScene(new Scene(root));
-                wpcChoiceStage.show();
-                closeStage();
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch game board", e);
-            }
-        });
+        if (!wpc1.isSelected() && !wpc2.isSelected() && !wpc3.isSelected() && !wpc4.isSelected()) {
+            inputError();
+        } else {
+            guiViewT.notify(new ChosenWindowPatternCard(selectedWPC));
+            Platform.runLater(() -> {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/gameboard.fxml"));
+                    Parent root = fxmlLoader.load();
+                    Stage wpcChoiceStage = new Stage();
+                    wpcChoiceStage.setScene(new Scene(root));
+                    wpcChoiceStage.show();
+                    closeStage();
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch game board", e);
+                }
+            });
+        }
     }
 
     private ArrayList<String> stringToArray(String s1) {
-        String s = s1.toLowerCase();
-        String r = s.replace("[","");
+        String r = s1.replace("[","");
         String r1 = r.replace("]","");
         ArrayList<String> a = new ArrayList<String>(Arrays.asList(r1.split(", ")));
-        ArrayList<String> a1 = new ArrayList<>();
-        for (String card : a) {
-            String card1 = card.replaceAll(" ", "_");
-            a1.add(card1);
-        }
-        return a1;
+        return a;
+    }
+
+    private void inputError() {
+        redShadow.setColor(new Color(0.7, 0,0,1));
+        choose.setEffect(redShadow);
     }
 }

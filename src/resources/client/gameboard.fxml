@@ -17,7 +17,7 @@
             <ImageView fx:id="puboc3" fitHeight="190.0" fitWidth="140.0" layoutX="14.0" layoutY="646.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
             <ToggleButton fx:id="tcb1" layoutX="196.0" layoutY="110.0" mnemonicParsing="false" onAction="#tc1Action" prefHeight="190.0" prefWidth="140.0" styleClass="tcb" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
             <Label fx:id="tc1tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="260.0" layoutY="22.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
-            <Circle layoutX="290.0" layoutY="35.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
+            <Circle fx:id="tcircle1" layoutX="290.0" layoutY="35.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
                <fill>
                   <RadialGradient centerX="0.5115606936416185" centerY="0.5" radius="0.5">
                      <stops>
@@ -30,7 +30,7 @@
             </Circle>
             <ToggleButton fx:id="tcb2" layoutX="206.0" layoutY="120.0" mnemonicParsing="false" onAction="#tc2Action" prefHeight="190.0" prefWidth="140.0" styleClass="tcb" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="220.0" />
             <Label fx:id="tc2tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="260.0" layoutY="227.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
-            <Circle layoutX="290.0" layoutY="240.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
+            <Circle fx:id="tcircle2" layoutX="290.0" layoutY="240.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
                <fill>
                   <RadialGradient centerX="0.5115606936416185" centerY="0.5" radius="0.5">
                      <stops>
@@ -43,7 +43,7 @@
             </Circle>
             <ToggleButton fx:id="tcb3" layoutX="216.0" layoutY="130.0" mnemonicParsing="false" onAction="#tc3Action" prefHeight="190.0" prefWidth="140.0" styleClass="tcb" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
             <Label fx:id="tc3tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="260.0" layoutY="424.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
-            <Circle layoutX="290.0" layoutY="437.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
+            <Circle fx:id="tcircle3" layoutX="290.0" layoutY="437.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
                <fill>
                   <RadialGradient centerX="0.5115606936416185" centerY="0.5" radius="0.5">
                      <stops>
@@ -60,7 +60,7 @@
          <children>
              <Label fx:id="user1" layoutX="15.0" layoutY="5.0" prefHeight="25.0" prefWidth="155.0" style="-fx-font-size: 16px" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="5.0" />
             <Label fx:id="user1tokens" layoutX="193.0" layoutY="5.0" prefHeight="25.0" prefWidth="10.0" style="-fx-font-size: 16px" AnchorPane.topAnchor="5.0" />
-             <Circle fx:id="circle1" layoutX="214.0" layoutY="18.0" radius="8.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5" AnchorPane.topAnchor="10.0">
+             <Circle fx:id="wcircle1" layoutX="214.0" layoutY="18.0" radius="8.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5" AnchorPane.topAnchor="10.0">
                  <fill>
                      <RadialGradient centerX="0.5115606936416185" centerY="0.5" radius="0.5">
                          <stops>
@@ -111,7 +111,7 @@
             </GridPane>
             <Label fx:id="user2" layoutX="285.0" layoutY="5.0" prefHeight="25.0" prefWidth="155.0" style="-fx-font-size: 16px" AnchorPane.leftAnchor="285.0" AnchorPane.topAnchor="5.0" />
             <Label fx:id="user2tokens" layoutX="448.0" layoutY="5.0" prefHeight="25.0" prefWidth="10.0" style="-fx-font-size: 16px" AnchorPane.topAnchor="5.0" />
-            <Circle fx:id="circle2" layoutX="469.0" layoutY="18.0" radius="8.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5" AnchorPane.topAnchor="10.0">
+            <Circle fx:id="wcircle2" layoutX="469.0" layoutY="18.0" radius="8.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5" AnchorPane.topAnchor="10.0">
                <fill>
                   <RadialGradient centerX="0.5115606936416185" centerY="0.5" radius="0.5">
                      <stops>
@@ -162,7 +162,7 @@
             </GridPane>
             <Label fx:id="user3" layoutX="540.0" layoutY="5.0" prefHeight="25.0" prefWidth="155.0" style="-fx-font-size: 16px" AnchorPane.topAnchor="5.0" />
             <Label fx:id="user3tokens" layoutX="699.0" layoutY="5.0" prefHeight="25.0" prefWidth="10.0" style="-fx-font-size: 16px" AnchorPane.topAnchor="5.0" />
-            <Circle fx:id="circle3" layoutX="693.0" layoutY="18.0" radius="8.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0">
+            <Circle fx:id="wcircle3" layoutX="693.0" layoutY="18.0" radius="8.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0">
                <fill>
                   <RadialGradient centerX="0.5115606936416185" centerY="0.5" radius="0.5">
                      <stops>
@@ -237,7 +237,7 @@
          <children>
             <Label fx:id="user0" layoutX="15.0" layoutY="10.0" prefHeight="30.0" prefWidth="235.0" style="-fx-font-size: 20px" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0" />
             <Label fx:id="user0tokens" layoutX="271.0" layoutY="10.0" prefHeight="30.0" prefWidth="16.0" style="-fx-font-size: 20px" AnchorPane.topAnchor="10.0" />
-            <Circle fx:id="circle0" layoutX="298.0" layoutY="15.0" radius="10.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5" AnchorPane.topAnchor="15.0">
+            <Circle fx:id="wcircle0" layoutX="298.0" layoutY="15.0" radius="10.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5" AnchorPane.topAnchor="15.0">
                <fill>
                   <RadialGradient centerX="0.5115606936416185" centerY="0.5" radius="0.5">
                      <stops>
@@ -287,24 +287,24 @@
                </children>
             </GridPane>
             <ImageView fx:id="prioc0" fitHeight="267.0" fitWidth="188.0" layoutX="335.0" layoutY="15.0" preserveRatio="true" AnchorPane.bottomAnchor="15.152801513671875" AnchorPane.topAnchor="15.0" />
-            <TextArea fx:id="msgbox" style="-fx-font-size: 14px" editable="false" layoutX="556.0" layoutY="30.0" prefHeight="238.0" prefWidth="190.0" wrapText="true" />
+            <TextArea fx:id="msgbox" editable="false" layoutX="556.0" layoutY="30.0" prefHeight="238.0" prefWidth="190.0" style="-fx-font-size: 14px" wrapText="true" />
          </children>
       </AnchorPane>
        <AnchorPane fx:id="rtbox" layoutX="1100.0" prefHeight="630.0" prefWidth="158.0">
            <children>
                <ImageView fx:id="rt" fitHeight="600.0" fitWidth="122.0" layoutX="16.0" layoutY="15.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
-               <VBox fx:id="rtd" layoutX="57.0" layoutY="67.0" prefHeight="513.0" prefWidth="40.0" rotate="180.0" spacing="12.5" AnchorPane.leftAnchor="57.0">
+               <VBox fx:id="rtd" layoutX="57.0" layoutY="65.0" prefHeight="513.0" prefWidth="40.0" rotate="180.0" spacing="12.5" AnchorPane.leftAnchor="57.0">
                <children>
-                  <ToggleButton fx:id="tbr1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbr2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbr3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbr4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbr5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbr6" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbr7" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbr8" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbr9" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbr10" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
+                  <ToggleButton fx:id="tbr1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
+                  <ToggleButton fx:id="tbr2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
+                  <ToggleButton fx:id="tbr3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
+                  <ToggleButton fx:id="tbr4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
+                  <ToggleButton fx:id="tbr5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
+                  <ToggleButton fx:id="tbr6" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
+                  <ToggleButton fx:id="tbr7" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
+                  <ToggleButton fx:id="tbr8" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
+                  <ToggleButton fx:id="tbr9" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
+                  <ToggleButton fx:id="tbr10" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
                </children>
             </VBox>
            </children>

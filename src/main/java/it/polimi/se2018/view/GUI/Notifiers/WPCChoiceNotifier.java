@@ -1,5 +1,7 @@
 package it.polimi.se2018.view.GUI.Notifiers;
 
+import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.GUIReply;
+
 import java.util.Observable;
 
 public class WPCChoiceNotifier extends Observable {
@@ -18,8 +20,8 @@ public class WPCChoiceNotifier extends Observable {
         notifyObservers(wpCards);
     }
 
-    public void updateGui() {
+    public void updateGui(GUIReply guiReply) {
         setChanged();
-        notifyObservers();
+        notifyObservers(guiReply);
     }
 }

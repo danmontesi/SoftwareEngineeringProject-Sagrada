@@ -19,16 +19,17 @@ public class ParserPublicObjectiveCard {
         ArrayList<PublicObjectiveCard> cards = new ArrayList<>();
         for(int i = 0; i < jcards.size(); i++){
             JsonObject jcard = jcards.get(i).getAsJsonObject();
-            String name = jcard.get("name").getAsString();
+            String cardName = jcard.get("name").getAsString();
             String description = jcard.get("description").getAsString();
             int score = jcard.get("score").getAsInt();
+            String name = cardName;
             name = name.replaceAll("\\s","");
             name = "it.polimi.se2018.model.public_obj_cards." + name;
 
             try {
                 Class<?> clazz = Class.forName(name);
                 Constructor<?> constructor = clazz.getConstructor(String.class, String.class, Integer.class);
-                PublicObjectiveCard instance = (PublicObjectiveCard)constructor.newInstance(name, description, score);
+                PublicObjectiveCard instance = (PublicObjectiveCard)constructor.newInstance(cardName, description, score);
                 cards.add(instance);
             } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();

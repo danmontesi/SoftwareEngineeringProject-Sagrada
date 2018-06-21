@@ -5,9 +5,15 @@ import it.polimi.se2018.model.WindowPatternCard;
 
 public class DeepShade extends PublicObjectiveCard{
     public DeepShade(String name, String description, Integer score) {
-        super(name, description, score);
+        this.name = name;
+        this.description = description;
+        this.score = score;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
     /**
      * Sets of 5 & 6 values anywhere
      * @param w WindowPatternCard for which you want to calculate the score

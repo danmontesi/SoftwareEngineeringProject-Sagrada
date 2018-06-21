@@ -48,6 +48,7 @@ public class Server {
     private static HashMap<String, VirtualView> userMap = new HashMap<>();
 
     private static Timer timer;
+
     private static boolean itsTimeToStart = false;
 
     public static void main(String[] args) {
@@ -62,9 +63,6 @@ public class Server {
 
         while (activeServer){
 
-            if ((waitingClients.size() >= 4) || (itsTimeToStart)){ //TODO Che succede se tolgo l'or con itsTimeToStart?
-                startNewGame();
-            }
         }
     }
 
@@ -187,8 +185,12 @@ public class Server {
      * @param username
      */
     public static void disconnectClient(String username){
-        if (waitingClients.contains(username)){ //Covers the case in which a player is connected but isn't in a started game
+        if (waitingClients.contains(username)) { //Covers the case in which a player is connected but isn't in a started game
             removeClient(username);
+            if (waitingClients.size() <= 1) {
+                timer.cancel();
+            }
+            return;
         }
         if(connectedClients.containsKey(username)){
             connectedClients.remove(username);
@@ -205,7 +207,7 @@ public class Server {
         }
     }
 
-    public static void addToWaitingClients(String username){ //TODO Gestire la concorrenza: se vengono addati insieme 6 view, faccio partire un timer e l'altro per i 2 player rimanenti?
+    public synchronized static void addToWaitingClients(String username){ //TODO Gestire la concorrenza: se vengono addati insieme 6 view, faccio partire un timer e l'altro per i 2 player rimanenti?
         waitingClients.add(username);
         System.out.println("Addato "+ username);
         notifyNewConnectedPlayer(username);
@@ -216,13 +218,20 @@ public class Server {
                     new TimerTask() {
                         @Override
                         public void run() {
-                            itsTimeToStart = true;  //TODO a cosa serve questa variabile? startNewGame() deve essere controllato da questa variabile? deve essere messo in un thread quindi?
+                            // Inutile -> itsTimeToStart = true;  //TODO a cosa serve questa variabile? startNewGame() deve essere controllato da questa variabile? deve essere messo in un thread quindi?
                             System.out.println("Time expired");
+                            //TODO: check all players from RMI are connected -> Ping
+                            //wait for 1s (time to the ping to be sent)
+
+                            //if arrives here, the client connected are more than 1 (if not, disconnectPlayers can cancel the timer
                             startNewGame(); //DA TOGLIERE, l'ho utilizzato solo come prova. il metodo deve essere contorllato dalla variabile itsTimeToStart
                         }
                     },
                     6000 //TODO import from file
             );
+        }
+        if (waitingClients.size()==4){
+            startNewGame();
         }
     }
 

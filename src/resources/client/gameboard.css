@@ -38,3 +38,11 @@
 .text-area .content {
     -fx-background-color: #f0f0f0;
 }
+
+.button:disabled, .button:disabled > * {
+  -fx-opacity: 1.0 ;
+}
+
+.toggle-button:disabled, .toggle-button:disabled > * {
+  -fx-opacity: 1.0 ;
+}

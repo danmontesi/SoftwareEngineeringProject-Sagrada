@@ -8,9 +8,15 @@ import java.util.HashSet;
 
 public class ColorVariety extends PublicObjectiveCard {
     public ColorVariety(String name, String description, Integer score) {
-        super(name, description, score);
+        this.name = name;
+        this.description = description;
+        this.score = score;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
     /**
      * Sets of one of each color anywhere
      * @param w WindowPatternCard for which you want to calculate the score

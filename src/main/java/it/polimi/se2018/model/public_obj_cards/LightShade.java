@@ -5,9 +5,15 @@ import it.polimi.se2018.model.WindowPatternCard;
 
 public class LightShade extends PublicObjectiveCard{
     public LightShade(String name, String description, Integer score) {
-        super(name, description, score);
+        this.name = name;
+        this.description = description;
+        this.score = score;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
     /**
      * Sets of 1 & 2 values anywhere
      * @param w WindowPatternCard for which you want to calculate the score
