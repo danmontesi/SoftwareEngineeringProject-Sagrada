@@ -1,6 +1,8 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
+import it.polimi.se2018.commands.server_to_client_command.RefreshRoundTrackCommand;
+import it.polimi.se2018.commands.server_to_client_command.RefreshTokensCommand;
 import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.model.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.parser.ParserPrivateObjectiveCard;
@@ -286,30 +288,52 @@ public class Model extends Observable implements Serializable{ //Observable of V
                 }
             }
             ((View) observer).updateWpc(personalWpc, otherPlayersWpcs);
-            System.out.println("Notificando una V.V. della new board -> new WPCards");
+            System.out.println("Notificando una V.V. della new board -> new WPCards for "+currentView.getUsername());
         }
     }
 
     public void notifyRefreshRoundTrack(){
         for (Observer observer : observers) {
-            ArrayList<String> roundTrack = new ArrayList<>(); //Dice in the format: colorNumber/empty
-            roundTrack = getRoundTrack().roundtrackPathRepresentation();
+            ArrayList<String> roundTrackString = new ArrayList<>(); //Dice in the format: colorNumber/empty
+            roundTrackString = getRoundTrack().roundtrackPathRepresentation();
             System.out.println("Notificando una V.V. della new board");
-            //observer.update(model);
+            observer.update(new RefreshRoundTrackCommand(roundTrackString));
         }
     }
 
     public void notifyRefreshTokens(){
+
+        System.out.println("Notificando una V.V. della new board");
+        ArrayList<Integer> tokensToolCards = new ArrayList<>(); //Ordered
+        for (ToolCard toolCard : extractedToolCard) {
+            tokensToolCards.add(toolCard.getTokenCount());
+        }
+
+
+
         for (Observer observer : observers) {
-            System.out.println("Notificando una V.V. della new board");
-            //observer.update(model);
+            View temp = (View) observer;
+            ArrayList<Integer> otherPlayersTokens = new ArrayList<>();
+            Integer myTokens = null;
+            for (Player p : gamePlayers){
+                if (p.getUsername().equals(temp.getUsername()))
+                    myTokens = p.getTokens();
+                else {
+                    otherPlayersTokens.add(p.getTokens());
+                }
+            }
+            observer.update(new RefreshTokensCommand(otherPlayersTokens, myTokens));
         }
     }
 
     public void notifyRefreshToolCardTokens(){
+        ArrayList<Integer> tokensToolCards = new ArrayList<>(); //Ordered
+        for (ToolCard toolCard : extractedToolCard){
+            tokensToolCards.add(toolCard.getTokenCount());
+        }
         for (Observer observer : observers) {
             System.out.println("Notificando una V.V. della new board");
-            //observer.update(model);
+            //observer.update(new RefreshTokensCommand());
         }
     }
 

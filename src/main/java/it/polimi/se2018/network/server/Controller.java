@@ -36,7 +36,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private ToolCard lastUsedToolCard;
     private Die extractedDieForFirmyPastryThinner;
     private Timer checkBlockingTimer;
-    private int numberExpiredPlayers;
     /**
      * ArrayList that contains the ordered players that has to play
      * is created by the model in its constructor
@@ -87,7 +86,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         // Now I will start each player's View
         for (String username : usernamePlayerMap.keySet())
             userViewMap.get(username).startGame(); //notifying game starting
-
         initializeGame();
     }
 
