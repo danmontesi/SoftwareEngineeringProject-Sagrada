@@ -1,11 +1,10 @@
 package it.polimi.se2018.view.CLI;
 
-import it.polimi.se2018.view.View;
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
-import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.model.WindowPatternCard;
-import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
+import it.polimi.se2018.utils.Observer;
+import it.polimi.se2018.view.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,14 +29,15 @@ public class CLIView extends View {
 
     private InputReader inputReader;
 
+    private CLIPrinter cliPrinter = new CLIPrinter();
+
 //TODO          PER CHI FA LA VIEW:
 //TODO          OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO.
 //TODO          ognuno dei metodi quì sotto prima chiede l'input dall'utente, poi fa notify(new chosen
     @Override
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards){
         for (WindowPatternCard card : cards) {
-            System.out.println(":- Difficulty = "+ card.getDifficulty()+ "\n");
-            System.out.println(card.toString());
+            cliPrinter.printWPC(card);
         }
         System.out.println("\n\n Which one do you chose?");
         int chosen;
@@ -345,5 +345,7 @@ public class CLIView extends View {
             //es. command.getDraftPool,... Oss: ho aggiunto anche le descrizioni
         }
     }
+
+
 
 }
