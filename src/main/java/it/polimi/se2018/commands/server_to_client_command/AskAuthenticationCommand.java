@@ -21,7 +21,7 @@ public class AskAuthenticationCommand extends ServerToClientCommand{
 
     @Override
     public void visit(ControllerClientInterface clientController) {
-        //TODO to implement
+
     }
 
 }

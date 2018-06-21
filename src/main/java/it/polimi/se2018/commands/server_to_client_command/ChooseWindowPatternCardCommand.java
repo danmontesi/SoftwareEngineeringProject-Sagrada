@@ -8,7 +8,7 @@ public class ChooseWindowPatternCardCommand extends ServerToClientCommand{
  * String with only NameClass
  */
     /**
-     * Contains nameClass + three names of Toolcards
+     * Contains nameClass + three names of Wpcs
      */
 
     public ChooseWindowPatternCardCommand(String message) {
