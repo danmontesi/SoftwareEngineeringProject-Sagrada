@@ -46,7 +46,7 @@ public class ClientController implements Observer, ControllerClientInterface {
             this.view = new CLIView(this);
         }
         else
-            this.view = new GUIView(this); //TODO MODIFICA;
+            this.view = new GUIView(this);
     }
 
     public void setUsername(String username){

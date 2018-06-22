@@ -1,5 +1,6 @@
 package it.polimi.se2018.view.GUI;
 
+import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardActions.*;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.*;
@@ -74,6 +75,7 @@ public class GUIView extends View {
 
     @Override
     public void authenticatedCorrectlyMessage(String message) {
+        this.username = message;
 
     }
 
@@ -192,8 +194,10 @@ public class GUIView extends View {
     //Sono gli stessi in ogni view
     @Override
     public void notify(Object event) {
+        ClientToServerCommand command = (ClientToServerCommand) event;
+        command.setUsername(this.username);
         for (Observer observer : observers)
-            observer.update(event);
+            observer.update(command);
     }
 
     @Override

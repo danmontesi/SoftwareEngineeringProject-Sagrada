@@ -77,7 +77,7 @@ public class CLIView extends View {
                 int draftPos = scan.nextInt();
                 int schemaRow = scan.nextInt();
                 int schemaCol = scan.nextInt();
-                notify(new MoveChoiceDicePlacement("",schemaRow,schemaCol,draftPos));
+                notify(new MoveChoiceDicePlacement(schemaRow,schemaCol,draftPos));
                 break;
             case 2:
                 System.out.println("Which tool want you to use?");
@@ -101,7 +101,8 @@ public class CLIView extends View {
     }
 
     @Override
-    public void authenticatedCorrectlyMessage(String message) {
+    public void authenticatedCorrectlyMessage(String username) {
+        this.username=username;
         //print that the player authenticated correctly with username
     }
 
@@ -124,7 +125,7 @@ public class CLIView extends View {
                 int draftPos = scan.nextInt();
                 int schemaRow = scan.nextInt();
                 int schemaCol = scan.nextInt();
-                notify(new MoveChoiceDicePlacement("",schemaRow,schemaCol,draftPos));
+                notify(new MoveChoiceDicePlacement(schemaRow,schemaCol,draftPos));
                 break;
             case 2:
                 System.out.println("Which tool want you to use?");
@@ -286,7 +287,7 @@ public class CLIView extends View {
     @Override
     public void correctAuthenthication(String username){
         this.username=username;
-        //TODO. Setta username e mostra solo il messaggio di corretta auth
+        //TODO. Setta username e mostra solo il messaggio di corretta authentication
     }
 
     @Override
@@ -318,8 +319,10 @@ public class CLIView extends View {
 
     @Override
     public void notify(Object event) {
+        ClientToServerCommand command = (ClientToServerCommand) event;
+        command.setUsername(this.username);
         for (Observer observer : observers)
-            observer.update(event);
+            observer.update(command);
     }
 
     @Override
