@@ -19,7 +19,6 @@ public class GUIView extends View {
     //TODO          PER CHI FA LA VIEW:
 //TODO          OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO.
 //TODO          ognuno dei metodi quì sotto prima chiede l'input dall'utente, poi fa notify(new chosen
-    private RefreshBoardCommand currentModelPathRepresentation;
 
     public GUIView(Observer observer) {
         register(observer);
@@ -28,7 +27,6 @@ public class GUIView extends View {
     public GUIView() {}
 
     public void newConnectedPlayer(String username) {
-        //piccola label che segnala il giocatore all'interno della lobby
         LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
         lobbyNotifier.updateGui(username);
     }
@@ -57,11 +55,10 @@ public class GUIView extends View {
     }
 
     public void startTurnMenu() {
-        System.out.println("start turn");
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.updateGui(new TurnStart(null));
 
-        //2) se clicco una toolcard, appare una casewllina in cui scrivo "vuoi usare il tool x?"
+        //2) se clicco una toolcard, appare una casellina in cui scrivo "vuoi usare il tool x?"
         // se sì-> notify(new MoveChoiceToolCard(indice tool);
 
         //notify( new MOVE / new TOOLUSE / new PASSTURN )
@@ -86,11 +83,6 @@ public class GUIView extends View {
     public void continueTurnMenu(boolean move, boolean tool) {
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.updateGui(new TurnUpdate(move, tool));
-    }
-
-    public void correctUseTool(int numTool) {
-        //Switch che in base al tipo di tool
-        //i possibili metodi sono PRIVATI e sono questi quì
     }
 
     public void firmPastryBrushMenu(int value) {
@@ -184,6 +176,7 @@ public class GUIView extends View {
 
     @Override
     public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
+        System.out.println("draftpool update in corso");
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.updateGui(new DraftPoolRoundTrackUpdate("DP", refreshCommand.getDraftpool()));
     }
@@ -208,19 +201,17 @@ public class GUIView extends View {
     @Override
     public void update(Object model) {
         //Osserva il Model e con Update, fa l'update del model locale
-        //Calls the right method to update the Graphical Board;
+        //Calls the right method to update the Graphic Board;
         //The model is already updated by the ClientController, no worries about that
         //In case there is a CLI, does anything
         RefreshBoardCommand command = (RefreshBoardCommand) model;
-        this.currentModelPathRepresentation=command;
         //PER NIVES: PER ORA LE UPDATE SONO DI 2 TIPI: TU LASCIALI ENTRAMBI E FAI L'AGGIORNAMENTO  DELLA BOARD PRENDENDO QUESTO
-        if (command.getMessage()!=null) {
+        if (command.getMessage()!= null) {
             System.out.println("ricevuto " + command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
         }
         else{
-            currentModelPathRepresentation = command;
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -230,5 +221,4 @@ public class GUIView extends View {
             gameBoardNotifier.updateGui(new RefreshBoard(command));
         }
     }
-
 }

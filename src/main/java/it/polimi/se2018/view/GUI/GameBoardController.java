@@ -15,6 +15,9 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -35,31 +38,38 @@ public class GameBoardController extends Observable implements Observer {
 
     private RefreshBoardCommand modelRepresentation;
 
-    private List<Circle> tcircles;
-    private List<Circle> wcircles;
+    private List<Circle> tcCircles;
+    private List<Circle> wpcCircles;
     private List<Circle> circles;
-    private List<ImageView> pubocards;
-    private List<ImageView> wpcards;
-    private List<ImageView> ivw1;
-    private List<ImageView> ivw2;
-    private List<ImageView> ivw3;
-    private List<List<ImageView>> ivw;
-    private List<ToggleButton> tcbuttons;
-    private List<ToggleButton> tbuttons;
-    private List<ToggleButton> tbd;
-    private List<ToggleButton> tbw0;
-    private List<ToggleButton> tbr;
+    private List<ImageView> pubOCards;
+    private List<ImageView> wpCards;
+    private List<ToggleButton> tcButtons;
     private List<Stage> stages;
-    private List<Label> users;
+    private List<Label> usernames;
     private List<Label> usersTokens;
     private List<Label> tcTokens;
+    private List<GridPane> otherWPCsDice;
+    private List<Parent> parents;
 
     @FXML
-    private ImageView puboc1;
+    private GridPane personalWPCDice;
     @FXML
-    private ImageView puboc2;
+    private GridPane wpc1dice;
     @FXML
-    private ImageView puboc3;
+    private GridPane wpc2dice;
+    @FXML
+    private GridPane wpc3dice;
+    @FXML
+    private HBox draftPoolDice;
+    @FXML
+    private VBox roundTrackDice;
+
+    @FXML
+    private ImageView pubOC1;
+    @FXML
+    private ImageView pubOC2;
+    @FXML
+    private ImageView pubOC3;
     @FXML
     private ImageView wpc1;
     @FXML
@@ -69,129 +79,9 @@ public class GameBoardController extends Observable implements Observer {
     @FXML
     private ImageView wpc0;
     @FXML
-    private ImageView prioc0;
+    private ImageView priOC;
     @FXML
-    private ImageView rt;
-    @FXML
-    private ImageView ivw100;
-    @FXML
-    private ImageView ivw110;
-    @FXML
-    private ImageView ivw120;
-    @FXML
-    private ImageView ivw130;
-    @FXML
-    private ImageView ivw140;
-    @FXML
-    private ImageView ivw101;
-    @FXML
-    private ImageView ivw111;
-    @FXML
-    private ImageView ivw121;
-    @FXML
-    private ImageView ivw131;
-    @FXML
-    private ImageView ivw141;
-    @FXML
-    private ImageView ivw102;
-    @FXML
-    private ImageView ivw112;
-    @FXML
-    private ImageView ivw122;
-    @FXML
-    private ImageView ivw132;
-    @FXML
-    private ImageView ivw142;
-    @FXML
-    private ImageView ivw103;
-    @FXML
-    private ImageView ivw113;
-    @FXML
-    private ImageView ivw123;
-    @FXML
-    private ImageView ivw133;
-    @FXML
-    private ImageView ivw143;
-    @FXML
-    private ImageView ivw200;
-    @FXML
-    private ImageView ivw210;
-    @FXML
-    private ImageView ivw220;
-    @FXML
-    private ImageView ivw230;
-    @FXML
-    private ImageView ivw240;
-    @FXML
-    private ImageView ivw201;
-    @FXML
-    private ImageView ivw211;
-    @FXML
-    private ImageView ivw221;
-    @FXML
-    private ImageView ivw231;
-    @FXML
-    private ImageView ivw241;
-    @FXML
-    private ImageView ivw202;
-    @FXML
-    private ImageView ivw212;
-    @FXML
-    private ImageView ivw222;
-    @FXML
-    private ImageView ivw232;
-    @FXML
-    private ImageView ivw242;
-    @FXML
-    private ImageView ivw203;
-    @FXML
-    private ImageView ivw213;
-    @FXML
-    private ImageView ivw223;
-    @FXML
-    private ImageView ivw233;
-    @FXML
-    private ImageView ivw243;
-    @FXML
-    private ImageView ivw300;
-    @FXML
-    private ImageView ivw310;
-    @FXML
-    private ImageView ivw320;
-    @FXML
-    private ImageView ivw330;
-    @FXML
-    private ImageView ivw340;
-    @FXML
-    private ImageView ivw301;
-    @FXML
-    private ImageView ivw311;
-    @FXML
-    private ImageView ivw321;
-    @FXML
-    private ImageView ivw331;
-    @FXML
-    private ImageView ivw341;
-    @FXML
-    private ImageView ivw302;
-    @FXML
-    private ImageView ivw312;
-    @FXML
-    private ImageView ivw322;
-    @FXML
-    private ImageView ivw332;
-    @FXML
-    private ImageView ivw342;
-    @FXML
-    private ImageView ivw303;
-    @FXML
-    private ImageView ivw313;
-    @FXML
-    private ImageView ivw323;
-    @FXML
-    private ImageView ivw333;
-    @FXML
-    private ImageView ivw343;
+    private ImageView roundTrack;
 
     @FXML
     private Label user1;
@@ -226,84 +116,6 @@ public class GameBoardController extends Observable implements Observer {
     private ToggleButton tcb2;
     @FXML
     private ToggleButton tcb3;
-    @FXML
-    private ToggleButton tbd1;
-    @FXML
-    private ToggleButton tbd2;
-    @FXML
-    private ToggleButton tbd3;
-    @FXML
-    private ToggleButton tbd4;
-    @FXML
-    private ToggleButton tbd5;
-    @FXML
-    private ToggleButton tbd6;
-    @FXML
-    private ToggleButton tbd7;
-    @FXML
-    private ToggleButton tbd8;
-    @FXML
-    private ToggleButton tbd9;
-    @FXML
-    private ToggleButton tbw000;
-    @FXML
-    private ToggleButton tbw010;
-    @FXML
-    private ToggleButton tbw020;
-    @FXML
-    private ToggleButton tbw030;
-    @FXML
-    private ToggleButton tbw040;
-    @FXML
-    private ToggleButton tbw001;
-    @FXML
-    private ToggleButton tbw011;
-    @FXML
-    private ToggleButton tbw021;
-    @FXML
-    private ToggleButton tbw031;
-    @FXML
-    private ToggleButton tbw041;
-    @FXML
-    private ToggleButton tbw002;
-    @FXML
-    private ToggleButton tbw012;
-    @FXML
-    private ToggleButton tbw022;
-    @FXML
-    private ToggleButton tbw032;
-    @FXML
-    private ToggleButton tbw042;
-    @FXML
-    private ToggleButton tbw003;
-    @FXML
-    private ToggleButton tbw013;
-    @FXML
-    private ToggleButton tbw023;
-    @FXML
-    private ToggleButton tbw033;
-    @FXML
-    private ToggleButton tbw043;
-    @FXML
-    private ToggleButton tbr1;
-    @FXML
-    private ToggleButton tbr2;
-    @FXML
-    private ToggleButton tbr3;
-    @FXML
-    private ToggleButton tbr4;
-    @FXML
-    private ToggleButton tbr5;
-    @FXML
-    private ToggleButton tbr6;
-    @FXML
-    private ToggleButton tbr7;
-    @FXML
-    private ToggleButton tbr8;
-    @FXML
-    private ToggleButton tbr9;
-    @FXML
-    private ToggleButton tbr10;
 
     @FXML
     private Circle tcircle1;
@@ -327,38 +139,32 @@ public class GameBoardController extends Observable implements Observer {
     private DropShadow redShadow = new DropShadow();
 
     public GameBoardController() {
-        pubocards = new ArrayList<>();
-        wpcards = new ArrayList<>();
-        tcbuttons = new ArrayList<>();
-        tbuttons = new ArrayList<>();
-        tbd = new ArrayList<>();
-        tbw0 = new ArrayList<>();
-        tbr = new ArrayList<>();
-        ivw1 = new ArrayList<>();
-        ivw2 = new ArrayList<>();
-        ivw3 = new ArrayList<>();
-        ivw = new ArrayList<>();
+        pubOCards = new ArrayList<>();
+        wpCards = new ArrayList<>();
+        tcButtons = new ArrayList<>();
         stages = new ArrayList<>();
-        users = new ArrayList<>();
+        usernames = new ArrayList<>();
         usersTokens = new ArrayList<>();
         tcTokens = new ArrayList<>();
-        tcircles = new ArrayList<>();
-        wcircles = new ArrayList<>();
+        tcCircles = new ArrayList<>();
+        wpcCircles = new ArrayList<>();
         circles = new ArrayList<>();
+        otherWPCsDice = new ArrayList<>();
+        parents = new ArrayList<>();
     }
 
     public void initialize() {
         GameBoardNotifier.getInstance().addObserver(this);
         initCards();
-        initToggleButtons();
-        initImageViews();
         initLabels();
         initCircles();
         initButtons();
         initRoundTrack();
+        initParents();
         moveDice();
         disableAllButtons(true);
         msgbox.appendText("waiting for other players to choose WPC...\n");
+        prova();
     }
 
     public void update(Observable o, Object arg) {
@@ -385,10 +191,9 @@ public class GameBoardController extends Observable implements Observer {
                 @Override
                 public void visitGameBoardAction(TurnStart turnStart) {
                     if (turnStart.getUsername() == null) {
-                        disableAllButtons(false);
-                        disableTB(tbd, false);
-                        disableTB(tcbuttons, false);
-                        disableTB(tbw0, false);
+                        disableTCB(false);
+                        disableTB(draftPoolDice, false);
+                        disableTB(personalWPCDice, false);
                         pass.setDisable(false);
                         msgbox.setText("It's your turn!\n");
                     } else {
@@ -400,13 +205,13 @@ public class GameBoardController extends Observable implements Observer {
                 @Override
                 public void visitGameBoardAction(TurnUpdate turnUpdate) {
                     if (!turnUpdate.getMove()) {
-                        disableTB(tbw0, false);
-                        disableTB(tcbuttons, false);
+                        disableTB(personalWPCDice, false);
+                        disableTCB(false);
                         pass.setDisable(false);
                     }
                     if (!turnUpdate.getTool()) {
-                        disableTB(tbw0, false);
-                        disableTB(tbd, false);
+                        disableTB(personalWPCDice, false);
+                        disableTB(draftPoolDice, false);
                         pass.setDisable(false);
                     }
 
@@ -420,7 +225,7 @@ public class GameBoardController extends Observable implements Observer {
 
                 @Override
                 public void visitGameBoardAction(WPCUpdate wpcUpdate) {
-                    setWpcards(wpcUpdate.getOtherWpcs());
+                    setWpCards(wpcUpdate.getOtherWpcs());
                     setPersonalWPC(wpcUpdate.getMyWpc());
                 }
 
@@ -443,148 +248,23 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void initCards(){
-        pubocards.add(puboc1);
-        pubocards.add(puboc2);
-        pubocards.add(puboc3);
+        pubOCards.add(pubOC1);
+        pubOCards.add(pubOC2);
+        pubOCards.add(pubOC3);
 
-        wpcards.add(wpc1);
-        wpcards.add(wpc2);
-        wpcards.add(wpc3);
+        wpCards.add(wpc1);
+        wpCards.add(wpc2);
+        wpCards.add(wpc3);
 
-        tcbuttons.add(tcb1);
-        tcbuttons.add(tcb2);
-        tcbuttons.add(tcb3);
-    }
-
-    private void initToggleButtons() {
-        tbd.add(tbd1);
-        tbd.add(tbd2);
-        tbd.add(tbd3);
-        tbd.add(tbd4);
-        tbd.add(tbd5);
-        tbd.add(tbd6);
-        tbd.add(tbd7);
-        tbd.add(tbd8);
-        tbd.add(tbd9);
-
-        tbw0.add(tbw000);
-        tbw0.add(tbw010);
-        tbw0.add(tbw020);
-        tbw0.add(tbw030);
-        tbw0.add(tbw040);
-        tbw0.add(tbw001);
-        tbw0.add(tbw011);
-        tbw0.add(tbw021);
-        tbw0.add(tbw031);
-        tbw0.add(tbw041);
-        tbw0.add(tbw002);
-        tbw0.add(tbw012);
-        tbw0.add(tbw022);
-        tbw0.add(tbw032);
-        tbw0.add(tbw042);
-        tbw0.add(tbw003);
-        tbw0.add(tbw013);
-        tbw0.add(tbw023);
-        tbw0.add(tbw033);
-        tbw0.add(tbw043);
-
-        tbr.add(tbr1);
-        tbr.add(tbr2);
-        tbr.add(tbr3);
-        tbr.add(tbr4);
-        tbr.add(tbr5);
-        tbr.add(tbr6);
-        tbr.add(tbr7);
-        tbr.add(tbr8);
-        tbr.add(tbr9);
-        tbr.add(tbr10);
-
-        tbuttons.addAll(tbd);
-        tbuttons.addAll(tbw0);
-        tbuttons.addAll(tbr);
-
-        for (ToggleButton tb : tbuttons) {
-            tb.setStyle("-fx-base: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent");
-            tb.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tb.setEffect(shadow));
-            tb.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
-                if (!tb.isSelected()) tb.setEffect(null);
-            });
-        }
-    }
-
-    private void initImageViews() {
-        ivw1.add(ivw100);
-        ivw1.add(ivw110);
-        ivw1.add(ivw120);
-        ivw1.add(ivw130);
-        ivw1.add(ivw140);
-        ivw1.add(ivw101);
-        ivw1.add(ivw111);
-        ivw1.add(ivw121);
-        ivw1.add(ivw131);
-        ivw1.add(ivw141);
-        ivw1.add(ivw102);
-        ivw1.add(ivw112);
-        ivw1.add(ivw122);
-        ivw1.add(ivw132);
-        ivw1.add(ivw142);
-        ivw1.add(ivw103);
-        ivw1.add(ivw113);
-        ivw1.add(ivw123);
-        ivw1.add(ivw133);
-        ivw1.add(ivw143);
-
-        ivw2.add(ivw200);
-        ivw2.add(ivw210);
-        ivw2.add(ivw220);
-        ivw2.add(ivw230);
-        ivw2.add(ivw240);
-        ivw2.add(ivw201);
-        ivw2.add(ivw211);
-        ivw2.add(ivw221);
-        ivw2.add(ivw231);
-        ivw2.add(ivw241);
-        ivw2.add(ivw202);
-        ivw2.add(ivw212);
-        ivw2.add(ivw222);
-        ivw2.add(ivw232);
-        ivw2.add(ivw242);
-        ivw2.add(ivw203);
-        ivw2.add(ivw213);
-        ivw2.add(ivw223);
-        ivw2.add(ivw233);
-        ivw2.add(ivw243);
-
-        ivw3.add(ivw300);
-        ivw3.add(ivw310);
-        ivw3.add(ivw320);
-        ivw3.add(ivw330);
-        ivw3.add(ivw340);
-        ivw3.add(ivw301);
-        ivw3.add(ivw311);
-        ivw3.add(ivw321);
-        ivw3.add(ivw331);
-        ivw3.add(ivw341);
-        ivw3.add(ivw302);
-        ivw3.add(ivw312);
-        ivw3.add(ivw322);
-        ivw3.add(ivw332);
-        ivw3.add(ivw342);
-        ivw3.add(ivw303);
-        ivw3.add(ivw313);
-        ivw3.add(ivw323);
-        ivw3.add(ivw333);
-        ivw3.add(ivw343);
-
-        ivw.add(ivw1);
-        ivw.add(ivw2);
-        ivw.add(ivw3);
+        tcButtons.add(tcb1);
+        tcButtons.add(tcb2);
+        tcButtons.add(tcb3);
     }
 
     private void initLabels() {
-        users.add(user1);
-        users.add(user2);
-        users.add(user3);
+        usernames.add(user1);
+        usernames.add(user2);
+        usernames.add(user3);
 
         usersTokens.add(user1tokens);
         usersTokens.add(user2tokens);
@@ -596,16 +276,16 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void initCircles() {
-        tcircles.add(tcircle1);
-        tcircles.add(tcircle2);
-        tcircles.add(tcircle3);
+        tcCircles.add(tcircle1);
+        tcCircles.add(tcircle2);
+        tcCircles.add(tcircle3);
 
-        wcircles.add(wcircle1);
-        wcircles.add(wcircle2);
-        wcircles.add(wcircle3);
+        wpcCircles.add(wcircle1);
+        wpcCircles.add(wcircle2);
+        wpcCircles.add(wcircle3);
 
-        circles.addAll(tcircles);
-        circles.addAll(wcircles);
+        circles.addAll(tcCircles);
+        circles.addAll(wpcCircles);
         circles.add(wcircle0);
 
         for (Circle c : circles) {
@@ -620,10 +300,40 @@ public class GameBoardController extends Observable implements Observer {
         pass.addEventHandler(MouseEvent.MOUSE_EXITED, e -> pass.setEffect(null));
         quit.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> quit.setEffect(shadow));
         quit.addEventHandler(MouseEvent.MOUSE_EXITED, e -> quit.setEffect(null));
+
+        for (ToggleButton tb : tcButtons) {
+            tb.setStyle("-fx-base: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent");
+            tb.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tb.setEffect(shadow));
+            tb.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                if (!tb.isSelected()) tb.setEffect(null);
+            });
+        }
+        for (int j=0; j<parents.size(); j++) {
+            for (int i = 0; i<parents.get(j).getChildrenUnmodifiable().size(); i++) {
+                int h = i;
+                int k=j;
+                parents.get(j).getChildrenUnmodifiable().get(i).setStyle("-fx-base: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent");
+                parents.get(j).getChildrenUnmodifiable().get(i).addEventHandler(MouseEvent.MOUSE_ENTERED, e -> parents.get(k).getChildrenUnmodifiable().get(h).setEffect(shadow));
+                parents.get(j).getChildrenUnmodifiable().get(i).addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                    if (!((ToggleButton) parents.get(k).getChildrenUnmodifiable().get(h)).isSelected())
+                        parents.get(k).getChildrenUnmodifiable().get(h).setEffect(null);
+                });
+            }
+        }
+    }
+
+    private void initParents() {
+        otherWPCsDice.add(wpc1dice);
+        otherWPCsDice.add(wpc2dice);
+        otherWPCsDice.add(wpc3dice);
+
+        parents.add(draftPoolDice);
+        parents.add(roundTrackDice);
+        parents.add(personalWPCDice);
     }
 
     private void initRoundTrack() {
-            rt.setImage(new Image("/client/images/RoundTrack.png"));
+            roundTrack.setImage(new Image("/client/images/RoundTrack.png"));
     }
 
     private void initPubocards() {
@@ -634,9 +344,9 @@ public class GameBoardController extends Observable implements Observer {
             String img = publicOC.get(i);
                 String path = "/client/OC/" + img + ".jpg";
                 Image image = new Image(path);
-                pubocards.get(i).setImage(image);
+                pubOCards.get(i).setImage(image);
                 Tooltip t = new Tooltip(publicOCDesc.get(i));
-                Tooltip.install(pubocards.get(i), t);
+                Tooltip.install(pubOCards.get(i), t);
                 t.setStyle("-fx-font-size: 15px");
             }
         });
@@ -653,14 +363,14 @@ public class GameBoardController extends Observable implements Observer {
                 ImageView iv = new ImageView(image);
                 iv.setFitHeight(190);
                 iv.setFitWidth(140);
-                tcbuttons.get(i).setGraphic(iv);
+                tcButtons.get(i).setGraphic(iv);
                 Tooltip t = new Tooltip(tCardsDesc.get(i));
-                Tooltip.install(tcbuttons.get(i), t);
+                Tooltip.install(tcButtons.get(i), t);
                 t.setStyle("-fx-font-size: 15px");
                 tcTokens.get(i).setText(modelRepresentation.getTokensToolCards().get(i).toString());
-                tcircles.get(i).setVisible(true);
+                tcCircles.get(i).setVisible(true);
             }
-            for (ToggleButton tc : tcbuttons) {
+            for (ToggleButton tc : tcButtons) {
                 tc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tc.setEffect(shadow));
                 tc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
                     if (!tc.isSelected()) tc.setEffect(null);
@@ -675,14 +385,14 @@ public class GameBoardController extends Observable implements Observer {
                 String img = modelRepresentation.getOtherPlayersWpcs().get(i).get(0).replace("_", " ");
                 String path = "/client/WPC/" + img + ".jpg";
                 Image image = new Image(path);
-                wpcards.get(i).setImage(image);
-                users.get(i).setText(modelRepresentation.getOtherPlayersUsernames().get(i));
+                wpCards.get(i).setImage(image);
+                usernames.get(i).setText(modelRepresentation.getOtherPlayersUsernames().get(i));
                 usersTokens.get(i).setText(modelRepresentation.getOtherPlayersTokens().get(i).toString());
-                wcircles.get(i).setVisible(true);
+                wpcCircles.get(i).setVisible(true);
             }
             for (int j=modelRepresentation.getOtherPlayersWpcs().size(); j<3; j++) {
-                wpcards.get(j).setVisible(false);
-                users.get(j).setVisible(false);
+                wpCards.get(j).setVisible(false);
+                usernames.get(j).setVisible(false);
                 usersTokens.get(j).setVisible(false);
             }
         });
@@ -705,22 +415,26 @@ public class GameBoardController extends Observable implements Observer {
             String img = modelRepresentation.getPrivateObjectiveCard();
             String path = "/client/OC/" + img + ".jpg";
             Image image = new Image(path);
-            prioc0.setImage(image);
+            priOC.setImage(image);
             Tooltip t = new Tooltip(modelRepresentation.getPrivateObjectiveCardDescription());
-            Tooltip.install(prioc0, t);
+            Tooltip.install(priOC, t);
             t.setStyle("-fx-font-size: 15px");
         });
     }
 
     private void moveDice() {
         for (int i=0; i<20; i++) {
+            ToggleButton tb = new ToggleButton();
+            personalWPCDice.add(tb, (i + 1) % 5, (i + 1) % 4);
+        }
+        for (int i=0; i<20; i++) {
             int h = i;
-            tbw0.get(i).setOnAction(event -> {
+            ((ToggleButton)personalWPCDice.getChildren().get(i)).setOnAction(event -> {
                 for (int j=0; j<9; j++) {
-                    if (tbd.get(j).isSelected()) {
-                        tbw0.get(h).setGraphic(tbd.get(j).getGraphic());
-                        tbd.get(j).setSelected(false);
-                        tbw0.get(h).setSelected(false);
+                    if (((ToggleButton)draftPoolDice.getChildren().get(j)).isSelected()) {
+                        ((ToggleButton)personalWPCDice.getChildren().get(h)).setGraphic(((ToggleButton)draftPoolDice.getChildren().get(j)).getGraphic());
+                        ((ToggleButton)draftPoolDice.getChildren().get(j)).setSelected(false);
+                        ((ToggleButton)personalWPCDice.getChildren().get(h)).setSelected(false);
                         inputError(false);
                         notifyMove((h+1)%4, (h+1)%5, j);
                     }
@@ -730,36 +444,46 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void setDrafPool(ArrayList<String> dice) {
+        for (int i=0; i<9; i++){
+            ToggleButton tb = new ToggleButton();
+            draftPoolDice.getChildren().add(tb);
+        }
         for (int i=0; i<dice.size(); i++) {
             String img = dice.get(i);
+            ImageView iv = new ImageView();
             if (img.contains("_")) {
-                String path = "/client/Dice/" + img + ".jpg";
+                String path = "/client/dice/" + img + ".jpg";
                 Image image = new Image(path);
-                ImageView iv = new ImageView(image);
+                iv.setImage(image);
                 iv.setFitWidth(40);
                 iv.setFitHeight(40);
-                tbd.get(i).setGraphic(iv);
+                ((ToggleButton)draftPoolDice.getChildren().get(i)).setGraphic(iv);
             } else {
-                tbd.get(i).setDisable(true);
+                draftPoolDice.getChildren().get(i).setDisable(true);
             }
         }
-        for (int j=dice.size(); j<9; j++) {
-            tbd.get(j).setDisable(true);
+        for (int i=dice.size(); i<9; i++) {
+            draftPoolDice.getChildren().get(i).setDisable(true);
         }
     }
 
     private void setRoundTrack(ArrayList<String> dice) {
+        for (int i=0; i<9; i++){
+            ToggleButton tb = new ToggleButton();
+            draftPoolDice.getChildren().add(tb);
+        }
         for (int i=0; i<10; i++) {
             String img = dice.get(i);
+            ImageView iv = new ImageView();
             if (img.contains("_")) {
-                String path = "/client/Dice/" + img + ".jpg";
+                String path = "/client/dice/" + img + ".jpg";
                 Image image = new Image(path);
-                ImageView iv = new ImageView(image);
+                iv.setImage(image);
                 iv.setFitWidth(40);
                 iv.setFitHeight(40);
-                tbr.get(i).setGraphic(iv);
+                ((ToggleButton)roundTrackDice.getChildren().get(i)).setGraphic(iv);
             } else {
-                tbr.get(i).setDisable(true);
+                roundTrackDice.getChildren().get(i).setDisable(true);
             }
         }
     }
@@ -774,15 +498,19 @@ public class GameBoardController extends Observable implements Observer {
         user0tokens.setText(personalTok.toString());
     }
 
-    private void setWpcards(ArrayList<ArrayList<String>> wpcards)  {
+    private void setWpCards(ArrayList<ArrayList<String>> wpcards)  {
         Platform.runLater(() -> {
             for (int i=0; i<wpcards.size(); i++) {
                 for (int j=0; j<20; j++) {
                     String img = wpcards.get(i).get(j+1);
+                    ImageView iv = new ImageView();
                     if (img.contains("_")) {
-                        String path = "/client/Dice/" + img + ".jpg";
+                        String path = "/client/dice/" + img + ".jpg";
                         Image image = new Image(path);
-                        ivw.get(i).get(j).setImage(image);
+                        iv.setImage(image);
+                        iv.setFitHeight(29);
+                        iv.setFitWidth(29);
+                        otherWPCsDice.get(i).add(iv, (j + 1) % 5, (j + 1) % 4);
                     }
                 }
             }
@@ -793,13 +521,14 @@ public class GameBoardController extends Observable implements Observer {
         Platform.runLater(() -> {
             for (int i=0; i<20; i++) {
                 String img = wpc.get(i+1);
+                ImageView iv = new ImageView();
                 if (img.contains("_")) {
-                    String path = "/client/Dice/" + img + ".jpg";
+                    String path = "/client/dice/" + img + ".jpg";
                     Image image = new Image(path);
-                    ImageView iv = new ImageView(image);
+                    iv.setImage(image);
                     iv.setFitWidth(43);
                     iv.setFitHeight(43);
-                    tbw0.get(i).setGraphic(iv);
+                    ((ToggleButton)personalWPCDice.getChildren().get(i)).setGraphic(iv);
                 }
             }
         });
@@ -865,36 +594,36 @@ public class GameBoardController extends Observable implements Observer {
 
     }
 
-    private void disableTB(List<ToggleButton> l, boolean b) {
+    private void disableTCB(boolean b) {
         if (b) {
-            for (ToggleButton t : l) {
+            for (ToggleButton t : tcButtons) {
                 t.setDisable(true);
             }
         } else {
-            for (ToggleButton t : l) {
+            for (ToggleButton t : tcButtons) {
                 t.setDisable(false);
+            }
+            pass.setDisable(false);
+        }
+    }
+
+    private void disableTB(Parent p, boolean b) {
+        if (b) {
+            for (int i=0; i<p.getChildrenUnmodifiable().size(); i++) {
+                p.getChildrenUnmodifiable().get(i).setDisable(true);
+            }
+        } else {
+            for (int i=0; i<p.getChildrenUnmodifiable().size(); i++) {
+                p.getChildrenUnmodifiable().get(i).setDisable(false);
             }
         }
     }
 
     private void disableAllButtons(boolean b) {
-        if (b) {
-            for (ToggleButton t : tcbuttons) {
-                t.setDisable(true);
-            }
-            for (ToggleButton t : tbuttons) {
-                t.setDisable(true);
-            }
-            pass.setDisable(true);
-        } else {
-            for (ToggleButton t : tcbuttons) {
-                t.setDisable(false);
-            }
-            for (ToggleButton t : tbuttons) {
-                t.setDisable(false);
-            }
-            pass.setDisable(false);
-        }
+        disableTCB(b);
+        disableTB(draftPoolDice, b);
+        disableTB(roundTrackDice, b);
+        disableTB(personalWPCDice, b);
     }
 
     private void notifyMove(Integer r, Integer c, Integer d) {
@@ -939,6 +668,50 @@ public class GameBoardController extends Observable implements Observer {
                 gameBoardStage.show();
             } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch message", e);
+            }
+        });
+    }
+
+    private void prova() {
+        Image img = new Image("/client/WPC/batllo.jpg");
+        wpc0.setImage(img);
+
+        Platform.runLater(() -> {
+            ArrayList<String> wpcards = new ArrayList<>();
+            wpcards.add("violet3");
+            wpcards.add("violet_3");
+            wpcards.add("violet_3");
+            wpcards.add("violet3");
+            wpcards.add("violet_3");
+            wpcards.add("violet3");
+            wpcards.add("violet_3");
+            wpcards.add("violet3");
+            wpcards.add("violet3");
+            wpcards.add("violet_3");
+            wpcards.add("violet_3");
+            wpcards.add("violet3");
+            wpcards.add("violet_3");
+            wpcards.add("violet3");
+            wpcards.add("violet_3");
+            wpcards.add("violet3");
+            wpcards.add("violet_3");
+            wpcards.add("violet_3");
+            wpcards.add("violet3");
+            wpcards.add("violet3");
+            wpcards.add("violet_3");
+            for (int i=0; i<9; i++) {
+                String img1 = wpcards.get(i+1);
+                ImageView iv = new ImageView();
+                ToggleButton tb = new ToggleButton();
+                if (img1.contains("_")) {
+                    String path = "/client/dice/" + img1 + ".jpg";
+                    Image image = new Image(path);
+                    iv.setImage(image);
+                    iv.setFitHeight(40);
+                    iv.setFitWidth(40);
+                    tb.setGraphic(iv);
+                    roundTrackDice.getChildren().add(tb);
+                }
             }
         });
     }

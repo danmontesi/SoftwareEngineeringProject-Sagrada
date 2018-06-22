@@ -370,7 +370,7 @@ public class ClientController implements Observer, ControllerClientInterface {
 
     @Override
     public void applyCommand(PingConnectionTester pingConnectionTester) {
-        System.out.println("ping from server");
+
     }
 
 }
