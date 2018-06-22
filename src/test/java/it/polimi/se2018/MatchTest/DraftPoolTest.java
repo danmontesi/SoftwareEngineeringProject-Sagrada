@@ -29,6 +29,21 @@ public class DraftPoolTest {
     }
 
     @Test
+    public void printRepresentation(){
+        System.out.println(dp.draftpoolPathRepresentation());
+    }
+
+    @Test
+    public void printRepresentationWithTakenDie(){
+        try {
+            dp.takeDie(3);
+        } catch (EmptyCellException e) {
+            Assert.fail();
+        }
+        System.out.println(dp.draftpoolPathRepresentation());
+    }
+
+    @Test
     public void correctNumberOfDice(){
         assertEquals(numberOfPlayers*2+1, dp.draftPoolSize());
     }

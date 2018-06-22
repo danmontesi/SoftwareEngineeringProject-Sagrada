@@ -34,8 +34,11 @@ public class WindowPatternCardTest {
         } catch (IOException e) {
             Assert.fail();
         }
+    }
 
-
+    @Test
+    public void printRepresentation(){
+        System.out.println(wpc.wpcPathRepresentation());
     }
 
     @Test

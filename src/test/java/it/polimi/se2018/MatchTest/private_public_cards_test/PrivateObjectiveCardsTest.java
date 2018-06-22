@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,9 +24,9 @@ public class PrivateObjectiveCardsTest {
 
     @Before
     public void setUp() {
-        ArrayList<Cell> schema = new ArrayList<>();
+        List<Cell> schema = new ArrayList<>();
 
-        ArrayList<WindowPatternCard> mycards = new ArrayList<>();
+        List<WindowPatternCard> mycards = new ArrayList<>();
 
         ParserWindowPatternCard pwpc = null;
         try {

@@ -21,15 +21,15 @@ public class CLIView extends View {
         register(observer);
         System.out.println("ATTESA DI GIOCATORI...");
         inputReader = new InputReader();
+        cliModel = new CLIModel();
     }
 
     //TODO Set! username
 
-    private Scanner scan = new Scanner(System.in); // Can be replaced with BufferedReader?
-
+    private Scanner scanner = new Scanner(System.in); // Can be replaced with BufferedReader?
     private InputReader inputReader;
-
     private CLIPrinter cliPrinter = new CLIPrinter();
+    private CLIModel cliModel;
 
 //TODO          PER CHI FA LA VIEW:
 //TODO          OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO.
@@ -74,14 +74,14 @@ public class CLIView extends View {
         switch(choice){
             case 1:
                 System.out.println("Inserisci rispettivamente");
-                int draftPos = scan.nextInt();
-                int schemaRow = scan.nextInt();
-                int schemaCol = scan.nextInt();
+                int draftPos = scanner.nextInt();
+                int schemaRow = scanner.nextInt();
+                int schemaCol = scanner.nextInt();
                 notify(new MoveChoiceDicePlacement("",schemaRow,schemaCol,draftPos));
                 break;
             case 2:
                 System.out.println("Which tool want you to use?");
-                int chosenToolNum = scan.nextInt();
+                int chosenToolNum = scanner.nextInt();
                 notify(new MoveChoiceToolCard(chosenToolNum));
                 break;
             case 3:
@@ -97,7 +97,7 @@ public class CLIView extends View {
 
     @Override
     public void otherPlayerTurn(String username) {
-        //printother player name fo notify its turn
+        System.out.println("It's " + username + "'s turn");
     }
 
     @Override
@@ -117,13 +117,13 @@ public class CLIView extends View {
         System.out.println(move? "1- Place die": "");
         System.out.println(tool? "2- Use Tool": "");
         System.out.println("3- Pass Turn");
-        int choice = scan.nextInt();
+        int choice = scanner.nextInt();
         switch(choice){
             case 1:
                 System.out.println("Inserisci rispettivamente");
-                int draftPos = scan.nextInt();
-                int schemaRow = scan.nextInt();
-                int schemaCol = scan.nextInt();
+                int draftPos = scanner.nextInt();
+                int schemaRow = scanner.nextInt();
+                int schemaCol = scanner.nextInt();
                 notify(new MoveChoiceDicePlacement("",schemaRow,schemaCol,draftPos));
                 break;
             case 2:
@@ -164,18 +164,18 @@ public class CLIView extends View {
             System.out.println("TOOL USE - Eglomise Brush " +
                     "\n You can move a die without color restriction");
             System.out.println("Select where is the die you want to move in your schema:");
-            Integer schemaOldPos = scan.nextInt();
+            Integer schemaOldPos = scanner.nextInt();
             System.out.println("Select the cell you cant to move the die in");
-            Integer schemaNewPos = scan.nextInt();
+            Integer schemaNewPos = scanner.nextInt();
             notify(new UseToolMoveDieNoRestriction(cardName, schemaOldPos, schemaNewPos));
         }
         else if (cardName.equals("Copper Foil Reamer")){
             System.out.println("TOOL USE - Copper Foil Reamer " +
                     "\n You can move a die without value restriction");
             System.out.println("Select where is the die you want to move in your schema:");
-            Integer schemaOldPos = scan.nextInt();
+            Integer schemaOldPos = scanner.nextInt();
             System.out.println("Select the cell you cant to move the die in");
-            Integer schemaNewPos = scan.nextInt();
+            Integer schemaNewPos = scanner.nextInt();
             notify(new UseToolMoveDieNoRestriction(cardName, schemaOldPos, schemaNewPos));
         }
 
@@ -187,16 +187,16 @@ public class CLIView extends View {
             System.out.println("TOOL USE Increase-Decrease - Roughing Forceps " +
                     "\n TOOL_DESCRIP"); //TODO
             System.out.println("Select the die of Draftpool you want to edit");
-            Integer draftpoolPos = scan.nextInt(); //TODO controllo preventivo
+            Integer draftpoolPos = scanner.nextInt(); //TODO controllo preventivo
             System.out.println("Want you to increase the value? \n 1- Increase" + "\n 2- Decrease"); //TODO: controllo per evitare che il dado scelto sia un 6 e aumenti o sia un 1 e diminuisca
-            Integer chosen = scan.nextInt();
+            Integer chosen = scanner.nextInt();
             boolean increase = chosen==1;
             //TODO: Devo stampare il valore aumentato
             System.out.println("Want you to place the new edited die? type: \n 1- Yes \n2- No");
-            Integer decision = scan.nextInt();
+            Integer decision = scanner.nextInt();
             if (decision==1){
                 System.out.println("Where do you want to place the die?");
-                Integer schemaPosition = scan.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
+                Integer schemaPosition = scanner.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
                 notify(new UseToolChangeDieValue(cardName, draftpoolPos, schemaPosition, increase));
             }
             else{
@@ -207,13 +207,13 @@ public class CLIView extends View {
             System.out.println("TOOL USE Increase-Decrease - Diamond Swab " +
                     "\n TOOL_DESCRIP"); //TODO
             System.out.println("Select the die of Draftpool you want to edit");
-            Integer draftpoolPos = scan.nextInt(); //TODO controllo preventivo
+            Integer draftpoolPos = scanner.nextInt(); //TODO controllo preventivo
             System.out.println("The new value is... "); //TODO stampa
             System.out.println("Want you to place the new die? type: \n 1- Yes \n2- No");
-            Integer decision = scan.nextInt();
+            Integer decision = scanner.nextInt();
             if (decision == 1) {
                 System.out.println("Where do you want to place the die?");
-                Integer schemaPosition = scan.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
+                Integer schemaPosition = scanner.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
                 notify(new UseToolChangeDieValue(cardName, draftpoolPos, schemaPosition, true));
             } else {
                 notify(new UseToolChangeDieValue(cardName, draftpoolPos, null, false));
@@ -227,13 +227,13 @@ public class CLIView extends View {
             System.out.println("With this tool you have to move 2 dice of same color of a die of the roundTrack. Check it out carefully!");
         }
         System.out.println("Select the index of first die you want to move");
-        Integer oldPos1 = scan.nextInt();
+        Integer oldPos1 = scanner.nextInt();
         System.out.println("Select the index of the cell where you want to move it:");
-        Integer newPos1 = scan.nextInt();
+        Integer newPos1 = scanner.nextInt();
         System.out.println("Select next die");
-        Integer oldPos2 = scan.nextInt();
+        Integer oldPos2 = scanner.nextInt();
         System.out.println("Select the index of the cell where you want to move");
-        Integer newPos2 = scan.nextInt();
+        Integer newPos2 = scanner.nextInt();
         notify(new UseToolTwoDicePlacement(cardName, oldPos1, newPos1, oldPos2, newPos2));
     }
 
@@ -312,6 +312,7 @@ public class CLIView extends View {
 
     @Override
     public void updateDraftPool() {
+
     //TODO
     }
 
@@ -328,16 +329,18 @@ public class CLIView extends View {
     }
 
     @Override
+    //update entire board
     public void update(Object event) {
+        clearScreen();
         //Osserva il Model e con Update, fa l'update del model locale
-        //Calls the right method to update the Graphical Board;
+        //Calls the right method to update the Graphical Board
         //The model is already updated by the ClientController, no worries about that
         //In case there is a CLI, does anything
-        System.out.println("\n->Updating board<-\n");
-
         RefreshBoardCommand command = (RefreshBoardCommand) event;
-        if (command.getMessage()!=null) {
-            System.out.println("ricevuto " + command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
+        cliModel.parseRefreshBoard(command);
+        printSyntheticBoard();
+        if (command.getMessage()!= null) {
+
         }
         else{
             //currentModelPathRepresentation = command; //TODO se vuoi, lo associo localmente così posso sempre accedere alle informazioni del model facendo currentModelPathRepresentation.get....()
@@ -345,6 +348,19 @@ public class CLIView extends View {
             //TODO ALLE: da command prendo tutte le informazioni come ho fatto per la classe di prova
             //es. command.getDraftPool,... Oss: ho aggiunto anche le descrizioni
         }
+    }
+
+    private static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    private void printSyntheticBoard(){
+        System.out.println("Draft Pool:\n");
+        cliPrinter.printCellList(cliModel.getDraftpool());
+        System.out.println("Round Track:\n");
+        cliPrinter.printCellList(cliModel.getRoundTrack());
+        cliPrinter.printWPC(cliModel.getPlayers().get(0).getWpc());
     }
 
 

@@ -6,23 +6,35 @@ import it.polimi.se2018.model.Cell;
 import it.polimi.se2018.model.Die;
 import it.polimi.se2018.model.WindowPatternCard;
 
-public class CLIPrinter {
+import java.util.List;
 
-    private static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+class CLIPrinter {
+
     private static final String ANSI_RED_BACKGROUND = "\u001B[41m";
     private static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
     private static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
     private static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
     private static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
-    private static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
-    private static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_BLACK = "\u001B[30m";
 
-    public CLIPrinter() {
+    CLIPrinter() {
     }
 
-    public void printWPC(WindowPatternCard wpc){
+    void printCellList(List<Cell> list){
+        String[][] table = new String[4][list.size()];
+        for (int i = 0; i < list.size(); i++){
+            Cell cell = list.get(i);
+            try{
+                Die die = cell.getAssociatedDie();
+                insertDieValue(table, 0, i, die.getValue(), die.getColor());
+            } catch (EmptyCellException e){
+                insertDieValue(table, 0, i);
+            }
+        }
+    }
+
+    void printWPC(WindowPatternCard wpc){
         String[][] table = new String[16][5];
         System.out.println(wpc.getCardName() + " - " + wpc.getDifficulty() + "\n");
 
@@ -156,10 +168,11 @@ public class CLIPrinter {
     }
 
     private void printTable(String[][] table){
+        StringBuilder line;
         for (int i = 0; i < table.length; i++){
-            String line = "";
+            line = new StringBuilder();
             for(int j = 0; j < table[i].length; j++){
-                line = line + table[i][j];
+                line.append(table[i][j]);
             }
             System.out.println(line);
         }

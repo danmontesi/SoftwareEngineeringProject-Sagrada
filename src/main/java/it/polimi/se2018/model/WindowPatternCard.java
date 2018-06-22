@@ -5,6 +5,7 @@ import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.exceptions.WrongCellIndexException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Describes WindowPatternCard behavior. Dice can be placed on it, after checking restrictions.
@@ -355,7 +356,7 @@ public class WindowPatternCard {
         return this.name;
     }
 
-    public ArrayList<Cell> getSchema() {
+    public List<Cell> getSchema() {
         return this.schema;
     }
 
