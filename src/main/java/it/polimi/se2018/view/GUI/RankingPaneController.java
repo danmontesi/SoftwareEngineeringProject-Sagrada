@@ -1,8 +1,11 @@
 package it.polimi.se2018.view.GUI;
 
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.*;
 import it.polimi.se2018.view.GUI.Notifiers.RankingPaneNotifier;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -10,11 +13,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RankingPaneController extends Observable implements Observer {
 
-    private GUIView guiViewT;
+    private static final Logger LOGGER = Logger.getLogger(GameBoardController.class.getName());
+
     private List<Button> buttons;
     private List<Label> first;
     private List<Label> second;
@@ -135,20 +142,35 @@ public class RankingPaneController extends Observable implements Observer {
         stage.close();
     }
 
+    private void showClientStarter() {
+        Platform.runLater(() ->  {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clientstarter.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage gameBoardStage = new Stage();
+                gameBoardStage.setScene(new Scene(root));
+                gameBoardStage.show();
+                closeStage();
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch ranking pane", e);
+            }
+        });
+    }
+
     @FXML
     public void startNewGame() {
-
+        showClientStarter();
     }
 
     @FXML
     public void exit(){
-
+        closeStage();
     }
 
     private ArrayList<ArrayList<String>> extractElements(ArrayList<String> s) {
         ArrayList<ArrayList<String>> a = new ArrayList<>();
-        for (int i=0; i<s.size(); i++) {
-            ArrayList<String> a1 = new ArrayList<String>(Arrays.asList(s.get(i).split("_")));
+        for (String value : s) {
+            ArrayList<String> a1 = new ArrayList<>(Arrays.asList(value.split("_")));
             a.add(a1);
         }
         return a;

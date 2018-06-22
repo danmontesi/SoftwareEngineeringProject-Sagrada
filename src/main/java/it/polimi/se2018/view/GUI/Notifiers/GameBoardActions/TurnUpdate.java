@@ -1,6 +1,6 @@
-package it.polimi.se2018.view.GUI.Notifiers.GUIReplies;
+package it.polimi.se2018.view.GUI.Notifiers.GameBoardActions;
 
-public class TurnUpdate implements GUIReply {
+public class TurnUpdate implements GameBoardAction {
     private boolean move;
     private boolean tool;
 
@@ -10,8 +10,8 @@ public class TurnUpdate implements GUIReply {
     }
 
     @Override
-    public void acceptGUIVisitor(GUIVisitor guiVisitor) {
-        guiVisitor.visitGUIReply(this);
+    public void acceptGameBoardVisitor(GameBoardVisitor gameBoardVisitor) {
+        gameBoardVisitor.visitGameBoardAction(this);
     }
 
     public boolean getMove() {

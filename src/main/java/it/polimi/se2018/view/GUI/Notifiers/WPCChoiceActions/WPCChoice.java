@@ -1,8 +1,11 @@
-package it.polimi.se2018.view.GUI.Notifiers.GUIReplies;
+package it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions;
+
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardActions.GameBoardAction;
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardActions.GameBoardVisitor;
 
 import java.util.ArrayList;
 
-public class WPCChoice implements GUIReply {
+public class WPCChoice implements WPCChoiceAction {
     private ArrayList<String> wpcNames;
     private ArrayList<Integer> wpcDifficulties;
 
@@ -12,8 +15,8 @@ public class WPCChoice implements GUIReply {
     }
 
     @Override
-    public void acceptGUIVisitor(GUIVisitor guiVisitor) {
-        guiVisitor.visitGUIReply(this);
+    public void acceptWPCChoiceVisitor(WPCChoiceVisitor wpcChoiceVisitor) {
+        wpcChoiceVisitor.visitWPCChoiceAction(this);
     }
 
     public ArrayList<String> getWpcNames() {

@@ -1,7 +1,10 @@
 package it.polimi.se2018.view.GUI;
 
 import it.polimi.se2018.commands.client_to_server_command.ChosenWindowPatternCard;
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.*;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WGUIViewSetting;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WPCChoice;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WPCChoiceAction;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WPCChoiceVisitor;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -75,8 +78,8 @@ public class WPCChoiceController extends Observable implements Observer {
     public WPCChoiceController() {
         wpcards = new ArrayList<>();
         wpcnames = new ArrayList<>();
+        wpcdifficulties = new ArrayList<>();
         wpcs = new ToggleGroup();
-        selectedWPC = new String();
     }
 
     public void initialize() {
@@ -86,36 +89,20 @@ public class WPCChoiceController extends Observable implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        GUIReply guiReply = (GUIReply)arg;
-        GUIVisitor guiVisitor = new GUIVisitor() {
+        WPCChoiceAction guiReply = (WPCChoiceAction)arg;
+        WPCChoiceVisitor wpcChoiceVisitor = new WPCChoiceVisitor() {
             @Override
-            public void visitGUIReply(GUIViewSetting guiViewSetting) {
+            public void visitWPCChoiceAction(WGUIViewSetting guiViewSetting) {
                 guiViewT = guiViewSetting.getGuiView();
             }
 
             @Override
-            public void visitGUIReply(WPCChoice wpcChoice) {
+            public void visitWPCChoiceAction(WPCChoice wpcChoice) {
                 setWPCards(wpcChoice.getWpcNames(), wpcChoice.getWpcDifficulties());
             }
 
-            @Override
-            public void visitGUIReply(RefreshBoard refreshBoard) {}
-            @Override
-            public void visitGUIReply(TurnStart turnStart) {}
-            @Override
-            public void visitGUIReply(TurnUpdate turnUpdate) {}
-            @Override
-            public void visitGUIReply(InvalidAction invalidAction) {}
-            @Override
-            public void visitGUIReply(WPCUpdate wpcUpdate) {}
-            @Override
-            public void visitGUIReply(TokensUpdate tokensUpdate) {}
-            @Override
-            public void visitGUIReply(DraftPoolUpdate draftPoolUpdate) {}
-            @Override
-            public void visitGUIReply(RoundTrackUpdate roundTrackUpdate) {}
         };
-        guiReply.acceptGUIVisitor(guiVisitor);
+        guiReply.acceptWPCChoiceVisitor(wpcChoiceVisitor);
     }
 
     private void setTGroup() {
@@ -221,7 +208,7 @@ public class WPCChoiceController extends Observable implements Observer {
         selectedWPC = wpc4n.getText();
     }
 
-    public void closeStage() {
+    private void closeStage() {
         Stage stage = (Stage)start.getScene().getWindow();
         stage.close();
     }

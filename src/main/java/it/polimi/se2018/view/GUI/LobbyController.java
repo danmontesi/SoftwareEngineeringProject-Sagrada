@@ -61,7 +61,7 @@ public class LobbyController extends Observable implements Observer {
             } else {
                 playerNames.remove(player);
             }
-            if (playerNames.size() > 0) {
+            if (!playerNames.isEmpty()) {
                 for (int i = 0; i < playerNames.size(); i++) {
                     players.get(i).setText(playerNames.get(i) + " just connected");
                 }
@@ -87,7 +87,7 @@ public class LobbyController extends Observable implements Observer {
         });
     }
 
-    public void closeStage() {
+    private void closeStage() {
         Stage stage = (Stage)text.getScene().getWindow();
         stage.close();
     }

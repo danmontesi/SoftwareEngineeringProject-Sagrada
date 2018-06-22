@@ -3,11 +3,9 @@ package it.polimi.se2018.view.GUI;
 import it.polimi.se2018.commands.client_to_server_command.MoveChoiceDicePlacement;
 import it.polimi.se2018.commands.client_to_server_command.MoveChoicePassTurn;
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
-import it.polimi.se2018.view.ExampleBoardStringPaths;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.*;
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardActions.*;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,13 +15,11 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -37,14 +33,12 @@ public class GameBoardController extends Observable implements Observer {
 
     private GUIView guiViewT;
 
-    private ExampleBoardStringPaths exampleBoardStringPaths = new ExampleBoardStringPaths();
     private RefreshBoardCommand modelRepresentation;
 
     private List<Circle> tcircles;
     private List<Circle> wcircles;
     private List<Circle> circles;
     private List<ImageView> pubocards;
-    private List<ImageView> tcards;
     private List<ImageView> wpcards;
     private List<ImageView> ivw1;
     private List<ImageView> ivw2;
@@ -61,40 +55,11 @@ public class GameBoardController extends Observable implements Observer {
     private List<Label> tcTokens;
 
     @FXML
-    private AnchorPane cards;
-    @FXML
-    private AnchorPane usersbox;
-    @FXML
-    private AnchorPane dpbox;
-    @FXML
-    private AnchorPane yourbox;
-    @FXML
-    private AnchorPane rtbox;
-    @FXML
-    private GridPane gwpc1;
-    @FXML
-    private GridPane gwpc2;
-    @FXML
-    private GridPane gwpc3;
-    @FXML
-    private GridPane gwpc0;
-    @FXML
-    private HBox dpd;
-    @FXML
-    private VBox rtd;
-
-    @FXML
     private ImageView puboc1;
     @FXML
     private ImageView puboc2;
     @FXML
     private ImageView puboc3;
-    @FXML
-    private ImageView tc1;
-    @FXML
-    private ImageView tc2;
-    @FXML
-    private ImageView tc3;
     @FXML
     private ImageView wpc1;
     @FXML
@@ -250,8 +215,6 @@ public class GameBoardController extends Observable implements Observer {
     private Label tc2tokens;
     @FXML
     private Label tc3tokens;
-    @FXML
-    private Label dp;
 
     @FXML
     private Button pass;
@@ -365,7 +328,6 @@ public class GameBoardController extends Observable implements Observer {
 
     public GameBoardController() {
         pubocards = new ArrayList<>();
-        tcards = new ArrayList<>();
         wpcards = new ArrayList<>();
         tcbuttons = new ArrayList<>();
         tbuttons = new ArrayList<>();
@@ -386,7 +348,6 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     public void initialize() {
-        System.out.println("entra initialize");
         GameBoardNotifier.getInstance().addObserver(this);
         initCards();
         initToggleButtons();
@@ -398,28 +359,21 @@ public class GameBoardController extends Observable implements Observer {
         moveDice();
         disableAllButtons(true);
         msgbox.appendText("waiting for other players to choose WPC...\n");
-
-        /*setDrafPool();
-        setRoundTrack();
-        setTCTokens();
-        setWpcards();
-        setPersonalWPC();*/
     }
 
     public void update(Observable o, Object arg) {
-        System.out.println("in update");
         if (arg == null) {
             showRanking();
         } else {
-            GUIReply guiReply = (GUIReply)arg;
-            GUIVisitor guiVisitor = new GUIVisitor() {
+            GameBoardAction guiReply = (GameBoardAction)arg;
+            GameBoardVisitor gameBoardVisitor = new GameBoardVisitor() {
                 @Override
-                public void visitGUIReply(GUIViewSetting guiViewSetting) {
+                public void visitGameBoardAction(GUIViewSetting guiViewSetting) {
                     guiViewT = guiViewSetting.getGuiView();
                 }
 
                 @Override
-                public void visitGUIReply(RefreshBoard refreshBoard) {
+                public void visitGameBoardAction(RefreshBoard refreshBoard) {
                     modelRepresentation = refreshBoard.getModelRepresentation();
                     initPubocards();
                     initTcards();
@@ -429,8 +383,7 @@ public class GameBoardController extends Observable implements Observer {
                 }
 
                 @Override
-                public void visitGUIReply(TurnStart turnStart) {
-                    System.out.println("in turn");
+                public void visitGameBoardAction(TurnStart turnStart) {
                     if (turnStart.getUsername() == null) {
                         disableAllButtons(false);
                         disableTB(tbd, false);
@@ -445,7 +398,7 @@ public class GameBoardController extends Observable implements Observer {
                 }
 
                 @Override
-                public void visitGUIReply(TurnUpdate turnUpdate) {
+                public void visitGameBoardAction(TurnUpdate turnUpdate) {
                     if (!turnUpdate.getMove()) {
                         disableTB(tbw0, false);
                         disableTB(tcbuttons, false);
@@ -460,30 +413,32 @@ public class GameBoardController extends Observable implements Observer {
                 }
 
                 @Override
-                public void visitGUIReply(InvalidAction invalidAction) {
+                public void visitGameBoardAction(InvalidAction invalidAction) {
                     msgbox.appendText(invalidAction.getMessage() + "\n");
                     inputError(true);
                 }
 
                 @Override
-                public void visitGUIReply(WPCUpdate wpcUpdate) {
+                public void visitGameBoardAction(WPCUpdate wpcUpdate) {
                     setWpcards(wpcUpdate.getOtherWpcs());
                     setPersonalWPC(wpcUpdate.getMyWpc());
                 }
 
                 @Override
-                public void visitGUIReply(TokensUpdate tokensUpdate) {}
+                public void visitGameBoardAction(TokensUpdate tokensUpdate) {
+                    setTokens(tokensUpdate.getTcTokens(), tokensUpdate.getPlayersTokens(), tokensUpdate.getPersonalTokens());
+                }
 
                 @Override
-                public void visitGUIReply(DraftPoolUpdate draftPoolUpdate) {}
-
-                @Override
-                public void visitGUIReply(RoundTrackUpdate roundTrackUpdate) {}
-
-                @Override
-                public void visitGUIReply(WPCChoice wpcChoice) {}
+                public void visitGameBoardAction(DraftPoolRoundTrackUpdate draftPoolRoundTrackUpdate) {
+                    if (draftPoolRoundTrackUpdate.getType().equals("DP")) {
+                        setDrafPool(draftPoolRoundTrackUpdate.getDice());
+                    } else if (draftPoolRoundTrackUpdate.getType().equals("RT")) {
+                        setRoundTrack(draftPoolRoundTrackUpdate.getDice());
+                    }
+                }
             };
-            guiReply.acceptGUIVisitor(guiVisitor);
+            guiReply.acceptGameBoardVisitor(gameBoardVisitor);
         }
     }
 
@@ -491,10 +446,6 @@ public class GameBoardController extends Observable implements Observer {
         pubocards.add(puboc1);
         pubocards.add(puboc2);
         pubocards.add(puboc3);
-
-        tcards.add(tc1);
-        tcards.add(tc2);
-        tcards.add(tc3);
 
         wpcards.add(wpc1);
         wpcards.add(wpc2);
@@ -551,6 +502,14 @@ public class GameBoardController extends Observable implements Observer {
         tbuttons.addAll(tbd);
         tbuttons.addAll(tbw0);
         tbuttons.addAll(tbr);
+
+        for (ToggleButton tb : tbuttons) {
+            tb.setStyle("-fx-base: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent");
+            tb.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tb.setEffect(shadow));
+            tb.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                if (!tb.isSelected()) tb.setEffect(null);
+            });
+        }
     }
 
     private void initImageViews() {
@@ -762,7 +721,6 @@ public class GameBoardController extends Observable implements Observer {
                         tbw0.get(h).setGraphic(tbd.get(j).getGraphic());
                         tbd.get(j).setSelected(false);
                         tbw0.get(h).setSelected(false);
-                        System.out.println("move");
                         inputError(false);
                         notifyMove((h+1)%4, (h+1)%5, j);
                     }
@@ -771,63 +729,49 @@ public class GameBoardController extends Observable implements Observer {
         }
     }
 
-    private void setDrafPool() {
-        ArrayList<String> draftPool = exampleBoardStringPaths.getDraftpool();
-        for (int i=0; i<draftPool.size(); i++) {
-            String img = exampleBoardStringPaths.getDraftpool().get(i);
-            if (img.equals("empty")) {
-                tbd.get(i).setDisable(true);
-            } else {
+    private void setDrafPool(ArrayList<String> dice) {
+        for (int i=0; i<dice.size(); i++) {
+            String img = dice.get(i);
+            if (img.contains("_")) {
                 String path = "/client/Dice/" + img + ".jpg";
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);
                 iv.setFitWidth(40);
                 iv.setFitHeight(40);
                 tbd.get(i).setGraphic(iv);
+            } else {
+                tbd.get(i).setDisable(true);
             }
         }
-        for (int j=draftPool.size(); j<9; j++) {
+        for (int j=dice.size(); j<9; j++) {
             tbd.get(j).setDisable(true);
-        }
-        for (ToggleButton tb : tbuttons) {
-            tb.setStyle("-fx-base: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent");
-            tb.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent e) {
-                    tb.setEffect(shadow);
-                }
-            });
-            tb.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent e) {
-                    if (!tb.isSelected()) tb.setEffect(null);
-                }
-            });
         }
     }
 
-    private void setRoundTrack() {
+    private void setRoundTrack(ArrayList<String> dice) {
         for (int i=0; i<10; i++) {
-            String img = exampleBoardStringPaths.getRoundTrack().get(i);
-            if (img.equals("empty")) {
-                tbr.get(i).setDisable(true);
-            } else {
+            String img = dice.get(i);
+            if (img.contains("_")) {
                 String path = "/client/Dice/" + img + ".jpg";
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);
                 iv.setFitWidth(40);
                 iv.setFitHeight(40);
                 tbr.get(i).setGraphic(iv);
+            } else {
+                tbr.get(i).setDisable(true);
             }
         }
     }
 
-    private void setTCTokens() {
-        int k=0;
-        for (Label tk : tcTokens) {
-            tk.setText(exampleBoardStringPaths.getTokensToolCards().get(k).toString());
-            k++;
+    private void setTokens(ArrayList<Integer> tcTok, ArrayList<Integer> playersTok, Integer personalTok) {
+        for (int i=0; i<tcTok.size(); i++) {
+            tcTokens.get(i).setText(tcTok.get(i).toString());
         }
+        for (int i=0; i<playersTok.size(); i++) {
+            usersTokens.get(i).setText(playersTok.get(i).toString());
+        }
+        user0tokens.setText(personalTok.toString());
     }
 
     private void setWpcards(ArrayList<ArrayList<String>> wpcards)  {
@@ -866,10 +810,25 @@ public class GameBoardController extends Observable implements Observer {
         stage.close();
     }
 
-    public void showRanking() {
+    private void showRanking() {
         Platform.runLater(() ->  {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/rankingpane.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage gameBoardStage = new Stage();
+                gameBoardStage.setScene(new Scene(root));
+                gameBoardStage.show();
+                closeStage();
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch ranking pane", e);
+            }
+        });
+    }
+
+    private void showClientStarter() {
+        Platform.runLater(() ->  {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clientstarter.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage gameBoardStage = new Stage();
                 gameBoardStage.setScene(new Scene(root));
@@ -888,35 +847,7 @@ public class GameBoardController extends Observable implements Observer {
 
     @FXML
     public void quit() {
-        Platform.runLater(() ->  {
-            try {
-                for (int i=0; i<5; i++) {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ProvaJavaFX/resources/message.fxml"));
-                    Parent root = fxmlLoader.load();
-                    Stage message1Stage = new Stage();
-                    message1Stage.setScene(new Scene(root));
-                    message1Stage.show();
-                    stages.add(message1Stage);
-                }
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch message", e);
-            }
-        });
-        Platform.runLater(() ->  {
-            try {
-                for (int i=stages.size()-1; i>-1; i--) {
-                    stages.get(i).close();
-                    stages.remove(i);
-                }
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ProvaJavaFX/resources/message.fxml"));
-                Parent root = fxmlLoader.load();
-                Stage gameBoardStage = new Stage();
-                gameBoardStage.setScene(new Scene(root));
-                gameBoardStage.show();
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch message", e);
-            }
-        });
+        showClientStarter();
     }
 
     @FXML
@@ -978,6 +909,38 @@ public class GameBoardController extends Observable implements Observer {
         } else {
             msgbox.setEffect(null);
         }
+    }
+
+    private void messages() {
+        Platform.runLater(() ->  {
+            try {
+                for (int i=0; i<5; i++) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ProvaJavaFX/resources/message.fxml"));
+                    Parent root = fxmlLoader.load();
+                    Stage message1Stage = new Stage();
+                    message1Stage.setScene(new Scene(root));
+                    message1Stage.show();
+                    stages.add(message1Stage);
+                }
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch message", e);
+            }
+        });
+        Platform.runLater(() ->  {
+            try {
+                for (int i=stages.size()-1; i>-1; i--) {
+                    stages.get(i).close();
+                    stages.remove(i);
+                }
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ProvaJavaFX/resources/message.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage gameBoardStage = new Stage();
+                gameBoardStage.setScene(new Scene(root));
+                gameBoardStage.show();
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch message", e);
+            }
+        });
     }
 }
 

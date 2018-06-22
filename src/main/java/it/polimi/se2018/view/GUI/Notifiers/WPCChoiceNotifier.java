@@ -1,6 +1,7 @@
 package it.polimi.se2018.view.GUI.Notifiers;
 
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.GUIReply;
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardActions.GameBoardAction;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WPCChoiceAction;
 
 import java.util.Observable;
 
@@ -20,7 +21,7 @@ public class WPCChoiceNotifier extends Observable {
         notifyObservers(wpCards);
     }
 
-    public void updateGui(GUIReply guiReply) {
+    public void updateGui(WPCChoiceAction guiReply) {
         setChanged();
         notifyObservers(guiReply);
     }

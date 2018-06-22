@@ -1,8 +1,8 @@
-package it.polimi.se2018.view.GUI.Notifiers.GUIReplies;
+package it.polimi.se2018.view.GUI.Notifiers.GameBoardActions;
 
 import java.util.ArrayList;
 
-public class WPCUpdate implements GUIReply {
+public class WPCUpdate implements GameBoardAction {
     private ArrayList<String> myWpc;
     private ArrayList<ArrayList<String>> otherWpcs;
 
@@ -12,8 +12,8 @@ public class WPCUpdate implements GUIReply {
     }
 
     @Override
-    public void acceptGUIVisitor(GUIVisitor guiVisitor) {
-        guiVisitor.visitGUIReply(this);
+    public void acceptGameBoardVisitor(GameBoardVisitor gameBoardVisitor) {
+        gameBoardVisitor.visitGameBoardAction(this);
     }
 
     public ArrayList<String> getMyWpc() {
