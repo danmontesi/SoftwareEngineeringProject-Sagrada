@@ -1,5 +1,6 @@
 package it.polimi.se2018.network.server;
 
+import it.polimi.se2018.exceptions.WrongCellIndexException;
 import it.polimi.se2018.view.CLI.CLIView;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.model.*;
@@ -472,12 +473,21 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
         try {
-            Die toPlace = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
+            Die toPlace = null;
+            try{
+                model.getDraftPool().getDie(command.getDieDraftPoolPosition());
+            }
+            catch (WrongCellIndexException e){
+                System.out.println("Wrong cell: sending invalid");
+                userViewMap.get(playerUsername).invalidActionMessage("Incorrect draftpool index, try again");
+                userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+            }
             boolean exit = usernamePlayerMap.get(playerUsername).getWindowPatternCard()
                     .placeDie(toPlace, command.getDieSchemaRowPosition(), command.getDieSchemaColPosition(), true, true, true);
             if (!exit) {
                 userViewMap.get(playerUsername).invalidActionMessage("Incorrect move"); //TODO Sarebbe bello scrivere anche il motivo della mossa incorretta, magari creo un metodo apposito per ogni controllo piazzamentog
                 userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                return;
             }
             else {
                 System.out.println("Mossa applicata correttamente");

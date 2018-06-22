@@ -1,8 +1,6 @@
 package it.polimi.se2018.model;
 
-import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
-import it.polimi.se2018.commands.server_to_client_command.RefreshRoundTrackCommand;
-import it.polimi.se2018.commands.server_to_client_command.RefreshTokensCommand;
+import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.model.public_obj_cards.PublicObjectiveCard;
 import it.polimi.se2018.parser.ParserPrivateObjectiveCard;
@@ -287,7 +285,7 @@ public class Model extends Observable implements Serializable{ //Observable of V
                     otherPlayersWpcs.add(p.getWindowPatternCard().wpcPathRepresentation());
                 }
             }
-            ((View) observer).updateWpc(personalWpc, otherPlayersWpcs);
+            ((View) observer).updateWpc(new RefreshWpcCommand(personalWpc, otherPlayersWpcs));
             System.out.println("Notificando una V.V. della new board -> new WPCards for "+currentView.getUsername());
         }
     }

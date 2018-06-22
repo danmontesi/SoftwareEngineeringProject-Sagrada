@@ -255,22 +255,22 @@ public class VirtualView extends View {
     }
 
     @Override
-    public void updateWpc(ArrayList<String> myWpc, ArrayList<ArrayList<String>> otherWpcs) {
+    public void updateWpc(RefreshWpcCommand refreshCommand) {
         //TODO
     }
 
     @Override
-    public void updateTokens() {
+    public void updateTokens(RefreshTokensCommand refreshCommand) {
 
     }
 
     @Override
-    public void updateRoundTrack() {
+    public void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
 
     }
 
     @Override
-    public void updateDraftPool() {
+    public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
 
     }
 

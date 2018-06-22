@@ -1,17 +1,16 @@
 package it.polimi.se2018.view.GUI;
 
+import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.*;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.LobbyNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.RankingPaneNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GUIView extends View {
     //TODO          PER CHI FA LA VIEW:
@@ -176,24 +175,26 @@ public class GUIView extends View {
     }
 
     @Override
-    public void updateWpc(ArrayList<String> myWpc, ArrayList<ArrayList<String>> otherWpcs) {
+    public void updateWpc(RefreshWpcCommand refreshCommand) {
+        ArrayList<ArrayList<String>> otherWpcs = refreshCommand.getOtherPlayersWpcs();
+        ArrayList<String> myWpc = refreshCommand.getPersonalWpc();
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.updateGui(new WPCUpdate(myWpc, otherWpcs));
     }
 
     @Override
-    public void updateTokens() {
+    public void updateTokens(RefreshTokensCommand refreshCommand) {
         //DO LATER
 
     }
 
     @Override
-    public void updateRoundTrack() {
+    public void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
         //DO LATER
     }
 
     @Override
-    public void updateDraftPool() {
+    public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
         //DO LATER
     }
 

@@ -372,7 +372,7 @@ public class WindowPatternCard {
      * @param column
      * @return
      */
-    public Cell getCell(int row, int column) {
+    public Cell getCell(int row, int column){
         if (row < 0 || row > 3 || column < 0 || column > 4){
             throw new WrongCellIndexException();
         }

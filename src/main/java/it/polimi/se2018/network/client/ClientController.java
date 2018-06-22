@@ -333,22 +333,23 @@ public class ClientController implements Observer, ControllerClientInterface {
 
     @Override
     public void applyCommand(RefreshDraftPoolCommand command) {
+        view.updateDraftPool(command);
 
     }
 
     @Override
     public void applyCommand(RefreshTokensCommand command) {
-
+        view.updateTokens(command);
     }
 
     @Override
     public void applyCommand(RefreshWpcCommand command) {
-
+        view.updateWpc(command);
     }
 
     @Override
     public void applyCommand(RefreshRoundTrackCommand command) {
-
+        view.updateRoundTrack(command);
     }
 
 

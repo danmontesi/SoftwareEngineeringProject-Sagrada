@@ -1,7 +1,7 @@
 package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
-import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
+import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
@@ -295,23 +295,23 @@ public class CLIView extends View {
     }
 
     @Override
-    public void updateWpc(ArrayList<String> myWpc, ArrayList<ArrayList<String>> otherWpcs) {
+    public void updateWpc(RefreshWpcCommand refreshCommand) {
 
         //TODO
     }
 
     @Override
-    public void updateTokens() {
+    public void updateTokens(RefreshTokensCommand refreshCommand) {
     //TODO
     }
 
     @Override
-    public void updateRoundTrack() {
+    public void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
     //TODO
     }
 
     @Override
-    public void updateDraftPool() {
+    public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
     //TODO
     }
 
