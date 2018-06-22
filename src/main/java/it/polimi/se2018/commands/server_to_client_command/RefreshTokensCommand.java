@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class RefreshTokensCommand extends ServerToClientCommand {
 
     private ArrayList<Integer> otherPlayersTokens;
+    private ArrayList<Integer> toolCardsTokens;
     private Integer personalTokens;
 
     public ArrayList<Integer> getOtherPlayersTokens() {
@@ -17,9 +18,14 @@ public class RefreshTokensCommand extends ServerToClientCommand {
         return personalTokens;
     }
 
-    public RefreshTokensCommand(ArrayList<Integer> otherPlayersTokens, Integer personalTokens) {
+    public ArrayList<Integer> getToolCardsTokens() {
+        return toolCardsTokens;
+    }
+
+    public RefreshTokensCommand(ArrayList<Integer> otherPlayersTokens, ArrayList<Integer> toolCardsTokens, Integer personalTokens) {
 
         this.otherPlayersTokens = otherPlayersTokens;
+        this.toolCardsTokens = toolCardsTokens;
         this.personalTokens = personalTokens;
     }
 

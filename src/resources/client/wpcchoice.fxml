@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="570.0" prefWidth="610.0" stylesheets="/client/wpcchoice.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.view.GUI.WPCChoiceController">
+<AnchorPane prefHeight="610.0" prefWidth="610.0" stylesheets="/client/wpcchoice.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.view.GUI.WPCChoiceController">
    <children>
-      <ToggleButton fx:id="wpc1" layoutX="60.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc1Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
-      <ToggleButton fx:id="wpc2" layoutX="320.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc2Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
-      <ToggleButton fx:id="wpc3" layoutX="60.0" layoutY="284.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc3Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
-      <ToggleButton fx:id="wpc4" layoutX="320.0" layoutY="284.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc4Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
       <Label fx:id="choose" layoutX="152.0" layoutY="20.0" prefHeight="30.0" style="-fx-font-size: 22px" text="Choose a Window Pattern Card" />
-      <Button fx:id="start" layoutX="254.0" layoutY="498.0" mnemonicParsing="false" onAction="#showGameBoard" prefWidth="100.0" style="-fx-font-size: 18px" text="Start" />
+      <Label fx:id="wpc1n" layoutX="63.0" layoutY="63.0" prefHeight="27.0" prefWidth="205.0" style="-fx-font-size: 16px" />
+      <Label fx:id="wpc1d" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="268.0" layoutY="63.0" prefHeight="27.0" prefWidth="19.0" style="-fx-font-size: 16px" />
+      <ToggleButton fx:id="wpc1" layoutX="60.0" layoutY="90.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc1Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
+      <Label fx:id="wpc2n" layoutX="323.0" layoutY="63.0" prefHeight="27.0" prefWidth="205.0" style="-fx-font-size: 16px" />
+      <Label fx:id="wpc2d" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="528.0" layoutY="63.0" prefHeight="27.0" prefWidth="19.0" style="-fx-font-size: 16px" />
+      <ToggleButton fx:id="wpc2" layoutX="320.0" layoutY="90.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc2Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
+      <Label fx:id="wpc3n" layoutX="63.0" layoutY="294.0" prefHeight="27.0" prefWidth="205.0" style="-fx-font-size: 16px" />
+      <Label fx:id="wpc3d" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="268.0" layoutY="294.0" prefHeight="27.0" prefWidth="19.0" style="-fx-font-size: 16px" />
+      <ToggleButton fx:id="wpc3" layoutX="60.0" layoutY="321.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc3Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
+      <Label fx:id="wpc4n" layoutX="320.0" layoutY="294.0" prefHeight="27.0" prefWidth="205.0" style="-fx-font-size: 16px" />
+      <Label fx:id="wpc4d" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="528.0" layoutY="294.0" prefHeight="27.0" prefWidth="19.0" style="-fx-font-size: 16px" />
+      <ToggleButton fx:id="wpc4" layoutX="320.0" layoutY="321.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc4Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
+      <Button fx:id="start" layoutX="254.0" layoutY="535.0" mnemonicParsing="false" onAction="#showGameBoard" prefWidth="100.0" style="-fx-font-size: 18px" text="Start" />
    </children>
 </AnchorPane>

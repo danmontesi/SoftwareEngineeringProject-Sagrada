@@ -20,8 +20,6 @@ public abstract class ServerToClientCommand implements Serializable {
         return message;
     }
 
-    //TODO: this method in every ServerToClientCommand
-
     /**
      * Visitor methods, it calls the clientController to perform a move using dynamic binding
      * @param clientController the parameters who calls the dynamic method

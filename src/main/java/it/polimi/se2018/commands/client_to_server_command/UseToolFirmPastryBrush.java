@@ -42,7 +42,7 @@ public class UseToolFirmPastryBrush extends ClientToServerCommand{
     private Integer dieDraftpoolPosition;
 
     public UseToolFirmPastryBrush(String message, Integer dieValue, Integer dieDraftpoolPosition, Integer dieSchemaPosition) {
-        this.message = message;
+        this.message = message; //this variable will contain the preferred action: DRAFTPOOL if the player want to leave the die in draftpool,or MOVE to perform a move with that die
         this.dieValue = dieValue;
         this.dieSchemaPosition = dieSchemaPosition;
         this.dieDraftpoolPosition = dieDraftpoolPosition;

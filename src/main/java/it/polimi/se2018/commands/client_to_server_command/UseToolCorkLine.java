@@ -17,8 +17,7 @@ public class UseToolCorkLine extends ClientToServerCommand{
 
     private Integer dieDraftPoolPosition;
 
-    public UseToolCorkLine(String message, Integer schemaPosition, Integer dieDraftPoolPosition) {
-        this.message = message;
+    public UseToolCorkLine(Integer schemaPosition, Integer dieDraftPoolPosition) {
         this.schemaPosition = schemaPosition;
         this.dieDraftPoolPosition = dieDraftPoolPosition;
     }

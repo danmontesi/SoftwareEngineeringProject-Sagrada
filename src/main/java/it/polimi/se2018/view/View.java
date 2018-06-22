@@ -1,6 +1,6 @@
 package it.polimi.se2018.view;
 
-import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
+import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
@@ -100,10 +100,10 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
     }
     // Methods for Obs/Obsvb
 
-    public abstract void updateWpc(ArrayList<String> myWpc, ArrayList<ArrayList<String>> otherWpcs);
-    public abstract void updateTokens();
-    public abstract void updateRoundTrack();
-    public abstract void updateDraftPool();
+    public abstract void updateWpc(RefreshWpcCommand refreshCommand);
+    public abstract void updateTokens(RefreshTokensCommand refreshCommand);
+    public abstract void updateRoundTrack(RefreshRoundTrackCommand refreshCommand);
+    public abstract void updateDraftPool(RefreshDraftPoolCommand refreshCommand);
     @Override
     public void update(Object event) {
         //Osserva il Model e con Update, fa l'update del model locale

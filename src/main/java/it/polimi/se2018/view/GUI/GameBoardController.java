@@ -1,11 +1,11 @@
 package it.polimi.se2018.view.GUI;
 
+import it.polimi.se2018.commands.client_to_server_command.MoveChoiceDicePlacement;
+import it.polimi.se2018.commands.client_to_server_command.MoveChoicePassTurn;
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
-import it.polimi.se2018.view.ExampleBoardStringPaths;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.*;
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardActions.*;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,12 +15,11 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -34,14 +33,12 @@ public class GameBoardController extends Observable implements Observer {
 
     private GUIView guiViewT;
 
-    private ExampleBoardStringPaths exampleBoardStringPaths = new ExampleBoardStringPaths();
     private RefreshBoardCommand modelRepresentation;
 
     private List<Circle> tcircles;
     private List<Circle> wcircles;
     private List<Circle> circles;
     private List<ImageView> pubocards;
-    private List<ImageView> tcards;
     private List<ImageView> wpcards;
     private List<ImageView> ivw1;
     private List<ImageView> ivw2;
@@ -58,40 +55,11 @@ public class GameBoardController extends Observable implements Observer {
     private List<Label> tcTokens;
 
     @FXML
-    private AnchorPane cards;
-    @FXML
-    private AnchorPane usersbox;
-    @FXML
-    private AnchorPane dpbox;
-    @FXML
-    private AnchorPane yourbox;
-    @FXML
-    private AnchorPane rtbox;
-    @FXML
-    private GridPane gwpc1;
-    @FXML
-    private GridPane gwpc2;
-    @FXML
-    private GridPane gwpc3;
-    @FXML
-    private GridPane gwpc0;
-    @FXML
-    private HBox dpd;
-    @FXML
-    private VBox rtd;
-
-    @FXML
     private ImageView puboc1;
     @FXML
     private ImageView puboc2;
     @FXML
     private ImageView puboc3;
-    @FXML
-    private ImageView tc1;
-    @FXML
-    private ImageView tc2;
-    @FXML
-    private ImageView tc3;
     @FXML
     private ImageView wpc1;
     @FXML
@@ -247,8 +215,6 @@ public class GameBoardController extends Observable implements Observer {
     private Label tc2tokens;
     @FXML
     private Label tc3tokens;
-    @FXML
-    private Label dp;
 
     @FXML
     private Button pass;
@@ -358,10 +324,10 @@ public class GameBoardController extends Observable implements Observer {
     private TextArea msgbox;
 
     private DropShadow shadow = new DropShadow();
+    private DropShadow redShadow = new DropShadow();
 
     public GameBoardController() {
         pubocards = new ArrayList<>();
-        tcards = new ArrayList<>();
         wpcards = new ArrayList<>();
         tcbuttons = new ArrayList<>();
         tbuttons = new ArrayList<>();
@@ -382,7 +348,6 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     public void initialize() {
-        System.out.println("entra initialize");
         GameBoardNotifier.getInstance().addObserver(this);
         initCards();
         initToggleButtons();
@@ -392,63 +357,88 @@ public class GameBoardController extends Observable implements Observer {
         initButtons();
         initRoundTrack();
         moveDice();
-        disableAllButtons();
-        msgbox.appendText("waiting for other players to choose WPC...");
-
-        setDrafPool();
-        setRoundTrack();
-        setTCTokens();
-        setWpcards();
-        setPersonalWPC();
+        disableAllButtons(true);
+        msgbox.appendText("waiting for other players to choose WPC...\n");
     }
 
     public void update(Observable o, Object arg) {
-        System.out.println("in update");
         if (arg == null) {
             showRanking();
         } else {
-            GUIReply guiReply = (GUIReply)arg;
-            GUIVisitor guiVisitor = new GUIVisitor() {
+            GameBoardAction guiReply = (GameBoardAction)arg;
+            GameBoardVisitor gameBoardVisitor = new GameBoardVisitor() {
                 @Override
-                public void visitGUIReply(GUIViewSetting guiViewSetting) {
+                public void visitGameBoardAction(GUIViewSetting guiViewSetting) {
                     guiViewT = guiViewSetting.getGuiView();
                 }
 
                 @Override
-                public void visitGUIReply(WPCChoice wpcChoice) {}
-
-                @Override
-                public void visitGUIReply(RefreshBoard refreshBoard) {
+                public void visitGameBoardAction(RefreshBoard refreshBoard) {
                     modelRepresentation = refreshBoard.getModelRepresentation();
                     initPubocards();
                     initTcards();
                     initWpcards();
                     initPersonalWPC();
                     initPersonalPriOC();
-                    msgbox.setText("");
                 }
 
                 @Override
-                public void visitGUIReply(TurnStart turnStart) {
-                    System.out.println("in turn");
+                public void visitGameBoardAction(TurnStart turnStart) {
                     if (turnStart.getUsername() == null) {
-                        for (ToggleButton t : tcbuttons) {
-                            t.setDisable(false);
-                        }
-                        for (ToggleButton t : tbd) {
-                            t.setDisable(false);
-                        }
-                        for (ToggleButton t : tbw0) {
-                            t.setDisable(false);
-                        }
+                        disableAllButtons(false);
+                        disableTB(tbd, false);
+                        disableTB(tcbuttons, false);
+                        disableTB(tbw0, false);
                         pass.setDisable(false);
-                        msgbox.appendText("It's your turn!\n");
+                        msgbox.setText("It's your turn!\n");
                     } else {
-                        msgbox.appendText("It's " + turnStart.getUsername() + "'s turn!\n");
+                        disableAllButtons(true);
+                        msgbox.setText("It's " + turnStart.getUsername() + "'s turn!\n");
+                    }
+                }
+
+                @Override
+                public void visitGameBoardAction(TurnUpdate turnUpdate) {
+                    if (!turnUpdate.getMove()) {
+                        disableTB(tbw0, false);
+                        disableTB(tcbuttons, false);
+                        pass.setDisable(false);
+                    }
+                    if (!turnUpdate.getTool()) {
+                        disableTB(tbw0, false);
+                        disableTB(tbd, false);
+                        pass.setDisable(false);
+                    }
+
+                }
+
+                @Override
+                public void visitGameBoardAction(InvalidAction invalidAction) {
+                    msgbox.appendText(invalidAction.getMessage() + "\n");
+                    inputError(true);
+                }
+
+                @Override
+                public void visitGameBoardAction(WPCUpdate wpcUpdate) {
+                    setWpcards(wpcUpdate.getOtherWpcs());
+                    setPersonalWPC(wpcUpdate.getMyWpc());
+                }
+
+                @Override
+                public void visitGameBoardAction(TokensUpdate tokensUpdate) {
+                    setTokens(tokensUpdate.getTcTokens(), tokensUpdate.getPlayersTokens(), tokensUpdate.getPersonalTokens());
+                }
+
+                @Override
+                public void visitGameBoardAction(DraftPoolRoundTrackUpdate draftPoolRoundTrackUpdate) {
+                    if (draftPoolRoundTrackUpdate.getType().equals("DP")) {
+                        setDrafPool(draftPoolRoundTrackUpdate.getDice());
+                    } else if (draftPoolRoundTrackUpdate.getType().equals("RT")) {
+                        setRoundTrack(draftPoolRoundTrackUpdate.getDice());
                     }
                 }
             };
-            guiReply.acceptGUIVisitor(guiVisitor);
+            guiReply.acceptGameBoardVisitor(gameBoardVisitor);
         }
     }
 
@@ -456,10 +446,6 @@ public class GameBoardController extends Observable implements Observer {
         pubocards.add(puboc1);
         pubocards.add(puboc2);
         pubocards.add(puboc3);
-
-        tcards.add(tc1);
-        tcards.add(tc2);
-        tcards.add(tc3);
 
         wpcards.add(wpc1);
         wpcards.add(wpc2);
@@ -516,6 +502,14 @@ public class GameBoardController extends Observable implements Observer {
         tbuttons.addAll(tbd);
         tbuttons.addAll(tbw0);
         tbuttons.addAll(tbr);
+
+        for (ToggleButton tb : tbuttons) {
+            tb.setStyle("-fx-base: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent");
+            tb.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tb.setEffect(shadow));
+            tb.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                if (!tb.isSelected()) tb.setEffect(null);
+            });
+        }
     }
 
     private void initImageViews() {
@@ -719,105 +713,96 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void moveDice() {
-        for (ToggleButton tb1 : tbw0) {
-            tb1.setOnAction(event -> {
-                for (ToggleButton tb2 : tbd) {
-                    if (tb2.isSelected()) {
-                        tb1.setGraphic(tb2.getGraphic());
-                        tb2.setSelected(false);
-                        tb1.setSelected(false);
+        for (int i=0; i<20; i++) {
+            int h = i;
+            tbw0.get(i).setOnAction(event -> {
+                for (int j=0; j<9; j++) {
+                    if (tbd.get(j).isSelected()) {
+                        tbw0.get(h).setGraphic(tbd.get(j).getGraphic());
+                        tbd.get(j).setSelected(false);
+                        tbw0.get(h).setSelected(false);
+                        inputError(false);
+                        notifyMove((h+1)%4, (h+1)%5, j);
                     }
                 }
             });
         }
     }
 
-    private void setDrafPool() {
-        ArrayList<String> draftPool = exampleBoardStringPaths.getDraftpool();
-        for (int i=0; i<draftPool.size(); i++) {
-            String img = exampleBoardStringPaths.getDraftpool().get(i);
-            if (img.equals("empty")) {
-                tbd.get(i).setDisable(true);
-            } else {
+    private void setDrafPool(ArrayList<String> dice) {
+        for (int i=0; i<dice.size(); i++) {
+            String img = dice.get(i);
+            if (img.contains("_")) {
                 String path = "/client/Dice/" + img + ".jpg";
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);
                 iv.setFitWidth(40);
                 iv.setFitHeight(40);
                 tbd.get(i).setGraphic(iv);
+            } else {
+                tbd.get(i).setDisable(true);
             }
         }
-        for (int j=draftPool.size(); j<9; j++) {
+        for (int j=dice.size(); j<9; j++) {
             tbd.get(j).setDisable(true);
-        }
-        for (ToggleButton tb : tbuttons) {
-            tb.setStyle("-fx-base: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent");
-            tb.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent e) {
-                    tb.setEffect(shadow);
-                }
-            });
-            tb.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent e) {
-                    if (!tb.isSelected()) tb.setEffect(null);
-                }
-            });
         }
     }
 
-    private void setRoundTrack() {
+    private void setRoundTrack(ArrayList<String> dice) {
         for (int i=0; i<10; i++) {
-            String img = exampleBoardStringPaths.getRoundTrack().get(i);
-            if (img.equals("empty")) {
-                tbr.get(i).setDisable(true);
-            } else {
+            String img = dice.get(i);
+            if (img.contains("_")) {
                 String path = "/client/Dice/" + img + ".jpg";
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);
                 iv.setFitWidth(40);
                 iv.setFitHeight(40);
                 tbr.get(i).setGraphic(iv);
+            } else {
+                tbr.get(i).setDisable(true);
             }
         }
     }
 
-    private void setTCTokens() {
-        int k=0;
-        for (Label tk : tcTokens) {
-            tk.setText(exampleBoardStringPaths.getTokensToolCards().get(k).toString());
-            k++;
+    private void setTokens(ArrayList<Integer> tcTok, ArrayList<Integer> playersTok, Integer personalTok) {
+        for (int i=0; i<tcTok.size(); i++) {
+            tcTokens.get(i).setText(tcTok.get(i).toString());
         }
+        for (int i=0; i<playersTok.size(); i++) {
+            usersTokens.get(i).setText(playersTok.get(i).toString());
+        }
+        user0tokens.setText(personalTok.toString());
     }
 
-    private void setWpcards()  {
-        for (int i=0; i<exampleBoardStringPaths.getOtherPlayersWpcs().size(); i++) {
-            usersTokens.get(i).setText(exampleBoardStringPaths.getOtherPlayersTokens().get(i).toString());
-            for (int j=0; j<20; j++) {
-                String img = exampleBoardStringPaths.getPersonalWpc().get(j+1);
-                if (!img.equals("empty")) {
-                    String path = "/client/Dice/" + img + ".jpg";
-                    Image image = new Image(path);
-                    ivw.get(i).get(j).setImage(image);
+    private void setWpcards(ArrayList<ArrayList<String>> wpcards)  {
+        Platform.runLater(() -> {
+            for (int i=0; i<wpcards.size(); i++) {
+                for (int j=0; j<20; j++) {
+                    String img = wpcards.get(i).get(j+1);
+                    if (img.contains("_")) {
+                        String path = "/client/Dice/" + img + ".jpg";
+                        Image image = new Image(path);
+                        ivw.get(i).get(j).setImage(image);
+                    }
                 }
             }
-        }
+        });
     }
 
-    private void setPersonalWPC() {
-        user0tokens.setText(exampleBoardStringPaths.getPersonalTokens().toString());
-        for (int i=0; i<20; i++) {
-            String img = exampleBoardStringPaths.getPersonalWpc().get(i+1);
-            if (!img.equals("empty")) {
-                String path = "/client/Dice/" + img + ".jpg";
-                Image image = new Image(path);
-                ImageView iv = new ImageView(image);
-                iv.setFitWidth(43);
-                iv.setFitHeight(43);
-                tbw0.get(i).setGraphic(iv);
+    private void setPersonalWPC(ArrayList<String> wpc) {
+        Platform.runLater(() -> {
+            for (int i=0; i<20; i++) {
+                String img = wpc.get(i+1);
+                if (img.contains("_")) {
+                    String path = "/client/Dice/" + img + ".jpg";
+                    Image image = new Image(path);
+                    ImageView iv = new ImageView(image);
+                    iv.setFitWidth(43);
+                    iv.setFitHeight(43);
+                    tbw0.get(i).setGraphic(iv);
+                }
             }
-        }
+        });
     }
 
     private void closeStage() {
@@ -825,7 +810,7 @@ public class GameBoardController extends Observable implements Observer {
         stage.close();
     }
 
-    public void showRanking() {
+    private void showRanking() {
         Platform.runLater(() ->  {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/rankingpane.fxml"));
@@ -840,8 +825,93 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    private void showClientStarter() {
+        Platform.runLater(() ->  {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clientstarter.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage gameBoardStage = new Stage();
+                gameBoardStage.setScene(new Scene(root));
+                gameBoardStage.show();
+                closeStage();
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch ranking pane", e);
+            }
+        });
+    }
+
     @FXML
     public void passTurn() {
+        guiViewT.notify(new MoveChoicePassTurn(user0.getText()));
+    }
+
+    @FXML
+    public void quit() {
+        showClientStarter();
+    }
+
+    @FXML
+    public void tc1Action() {
+
+    }
+
+    @FXML
+    public void tc2Action() {
+
+    }
+
+    @FXML
+    public void tc3Action() {
+
+    }
+
+    private void disableTB(List<ToggleButton> l, boolean b) {
+        if (b) {
+            for (ToggleButton t : l) {
+                t.setDisable(true);
+            }
+        } else {
+            for (ToggleButton t : l) {
+                t.setDisable(false);
+            }
+        }
+    }
+
+    private void disableAllButtons(boolean b) {
+        if (b) {
+            for (ToggleButton t : tcbuttons) {
+                t.setDisable(true);
+            }
+            for (ToggleButton t : tbuttons) {
+                t.setDisable(true);
+            }
+            pass.setDisable(true);
+        } else {
+            for (ToggleButton t : tcbuttons) {
+                t.setDisable(false);
+            }
+            for (ToggleButton t : tbuttons) {
+                t.setDisable(false);
+            }
+            pass.setDisable(false);
+        }
+    }
+
+    private void notifyMove(Integer r, Integer c, Integer d) {
+        guiViewT.notify(new MoveChoiceDicePlacement("", r, c, d));
+        disableAllButtons(true);
+    }
+
+    private void inputError(boolean b) {
+        redShadow.setColor(new Color(0.7, 0,0,1));
+        if (b) {
+            msgbox.setEffect(redShadow);
+        } else {
+            msgbox.setEffect(null);
+        }
+    }
+
+    private void messages() {
         Platform.runLater(() ->  {
             try {
                 for (int i=0; i<5; i++) {
@@ -871,36 +941,6 @@ public class GameBoardController extends Observable implements Observer {
                 LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch message", e);
             }
         });
-    }
-
-    @FXML
-    public void quit() {
-
-    }
-
-    @FXML
-    public void tc1Action() {
-
-    }
-
-    @FXML
-    public void tc2Action() {
-
-    }
-
-    @FXML
-    public void tc3Action() {
-
-    }
-
-    private void disableAllButtons() {
-        for (ToggleButton t : tcbuttons) {
-            t.setDisable(true);
-        }
-        for (ToggleButton t : tbuttons) {
-            t.setDisable(true);
-        }
-        pass.setDisable(true);
     }
 }
 

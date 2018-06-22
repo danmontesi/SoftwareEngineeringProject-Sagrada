@@ -32,6 +32,7 @@ public class InputReader {
             try {
                 Thread.sleep(500);
             } catch (Exception ignore) {
+
             }
         }
 

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -10,7 +8,7 @@
 
 <Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1254.0" stylesheets="/client/gameboard.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.view.GUI.GameBoardController">
    <children>
-       <AnchorPane fx:id="cards" prefHeight="630.0" prefWidth="328.0" styleClass="box">
+       <AnchorPane prefHeight="630.0" prefWidth="328.0" styleClass="box">
          <children>
             <ImageView fx:id="puboc1" fitHeight="190.0" fitWidth="140.0" layoutX="20.0" layoutY="14.0" preserveRatio="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
             <ImageView fx:id="puboc2" fitHeight="190.0" fitWidth="140.0" layoutX="15.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="220.0" />
@@ -56,7 +54,7 @@
             </Circle>
          </children>
        </AnchorPane>
-      <AnchorPane fx:id="usersbox" layoutX="330.0" prefHeight="205.0" prefWidth="760.0">
+      <AnchorPane layoutX="330.0" prefHeight="205.0" prefWidth="760.0">
          <children>
              <Label fx:id="user1" layoutX="15.0" layoutY="5.0" prefHeight="25.0" prefWidth="155.0" style="-fx-font-size: 16px" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="5.0" />
             <Label fx:id="user1tokens" layoutX="193.0" layoutY="5.0" prefHeight="25.0" prefWidth="10.0" style="-fx-font-size: 16px" AnchorPane.topAnchor="5.0" />
@@ -72,7 +70,7 @@
                  </fill>
              </Circle>
              <ImageView fx:id="wpc1" fitHeight="152.0" fitWidth="190.0" layoutX="30.0" layoutY="49.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="30.0" />
-            <GridPane fx:id="gwpc1" hgap="8.0" layoutX="39.0" layoutY="41.0" vgap="8.0">
+            <GridPane hgap="8.0" layoutX="39.0" layoutY="41.0" vgap="8.0">
                <children>
                   <ImageView fx:id="ivw100" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="ivw110" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
@@ -123,7 +121,7 @@
                </fill>
             </Circle>
                <ImageView fx:id="wpc2" fitHeight="152.0" fitWidth="190.0" layoutX="285.0" layoutY="46.0" preserveRatio="true" AnchorPane.bottomAnchor="15.433547973632812" AnchorPane.leftAnchor="285.0" />
-            <GridPane fx:id="gwpc2" hgap="8.0" layoutX="294.0" layoutY="41.0" vgap="8.0">
+            <GridPane hgap="8.0" layoutX="294.0" layoutY="41.0" vgap="8.0">
                 <children>
                     <ImageView fx:id="ivw200" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" />
                     <ImageView fx:id="ivw210" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
@@ -174,7 +172,7 @@
                </fill>
             </Circle>
                <ImageView fx:id="wpc3" fitHeight="152.0" fitWidth="190.0" layoutX="491.0" layoutY="47.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="30.0" />
-            <GridPane fx:id="gwpc3" hgap="8.0" layoutX="549.0" layoutY="41.0" vgap="8.0">
+            <GridPane hgap="8.0" layoutX="549.0" layoutY="41.0" vgap="8.0">
                 <children>
                     <ImageView fx:id="ivw300" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" />
                     <ImageView fx:id="ivw310" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
@@ -213,10 +211,10 @@
             </GridPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="dpbox" layoutX="330.0" layoutY="222.0" prefHeight="100.0" prefWidth="760.0">
+      <AnchorPane layoutX="330.0" layoutY="222.0" prefHeight="100.0" prefWidth="760.0">
          <children>
-            <Label fx:id="dp" alignment="CENTER" contentDisplay="CENTER" layoutX="226.0" layoutY="24.0" prefHeight="2.0" prefWidth="269.0" style="-fx-font-size: 40px" text="Draft  Pool" textAlignment="CENTER" textFill="#00000050" />
-            <HBox fx:id="dpd" layoutX="14.0" layoutY="30.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="400.0" spacing="30.0" styleClass="db" AnchorPane.leftAnchor="30.0">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="226.0" layoutY="24.0" prefHeight="2.0" prefWidth="269.0" style="-fx-font-size: 40px" text="Draft  Pool" textAlignment="CENTER" textFill="#00000050" />
+            <HBox layoutX="14.0" layoutY="30.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="400.0" spacing="30.0" styleClass="db" AnchorPane.leftAnchor="30.0">
                <children>
                   <ToggleButton fx:id="tbd1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
                   <ToggleButton fx:id="tbd2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
@@ -233,7 +231,7 @@
             <Button fx:id="quit" layoutX="954.0" layoutY="91.0" mnemonicParsing="false" onAction="#quit" pickOnBounds="false" prefHeight="25.0" prefWidth="65.0" styleClass="button" text="Quit" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="30.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="yourbox" layoutX="330.0" layoutY="337.0" prefHeight="293.0" prefWidth="760.0">
+      <AnchorPane layoutX="330.0" layoutY="337.0" prefHeight="293.0" prefWidth="760.0">
          <children>
             <Label fx:id="user0" layoutX="15.0" layoutY="10.0" prefHeight="30.0" prefWidth="235.0" style="-fx-font-size: 20px" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0" />
             <Label fx:id="user0tokens" layoutX="271.0" layoutY="10.0" prefHeight="30.0" prefWidth="16.0" style="-fx-font-size: 20px" AnchorPane.topAnchor="10.0" />
@@ -249,7 +247,7 @@
                </fill>
             </Circle>
             <ImageView fx:id="wpc0" fitHeight="230.0" fitWidth="288.0" layoutX="15.0" layoutY="45.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
-            <GridPane fx:id="gwpc0" hgap="12.0" layoutX="25.0" layoutY="56.0" vgap="12.0" AnchorPane.leftAnchor="25.0">
+            <GridPane hgap="12.0" layoutX="25.0" layoutY="56.0" vgap="12.0" AnchorPane.leftAnchor="25.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" prefWidth="43.0" />
                   <ColumnConstraints hgrow="SOMETIMES" prefWidth="43.0" />
@@ -290,10 +288,10 @@
             <TextArea fx:id="msgbox" editable="false" layoutX="556.0" layoutY="30.0" prefHeight="238.0" prefWidth="190.0" style="-fx-font-size: 14px" wrapText="true" />
          </children>
       </AnchorPane>
-       <AnchorPane fx:id="rtbox" layoutX="1100.0" prefHeight="630.0" prefWidth="158.0">
+       <AnchorPane layoutX="1100.0" prefHeight="630.0" prefWidth="158.0">
            <children>
                <ImageView fx:id="rt" fitHeight="600.0" fitWidth="122.0" layoutX="16.0" layoutY="15.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
-               <VBox fx:id="rtd" layoutX="57.0" layoutY="65.0" prefHeight="513.0" prefWidth="40.0" rotate="180.0" spacing="12.5" AnchorPane.leftAnchor="57.0">
+               <VBox layoutX="57.0" layoutY="65.0" prefHeight="513.0" prefWidth="40.0" rotate="180.0" spacing="12.5" AnchorPane.leftAnchor="57.0">
                <children>
                   <ToggleButton fx:id="tbr1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
                   <ToggleButton fx:id="tbr2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />

@@ -35,6 +35,7 @@ public abstract class ClientToServerCommand implements Serializable {
     }
 
     //TODO Maybe has to be in the constructor? because it can be modified in the server.. with a Set
+    //TODO NOW IMPLEMENTED IN CLIENTCONTROLLER.. MAYBE HAS TO BE IN THE VIEW ITSELF
     public void setUsername(String username) {
         this.username = username;
     }

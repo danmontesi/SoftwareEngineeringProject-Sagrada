@@ -46,7 +46,7 @@ public class ClientController implements Observer, ControllerClientInterface {
             this.view = new CLIView(this);
         }
         else
-            this.view = new GUIView(this); //TODO MODIFICA;
+            this.view = new GUIView(this);
     }
 
     public void setUsername(String username){
@@ -333,22 +333,23 @@ public class ClientController implements Observer, ControllerClientInterface {
 
     @Override
     public void applyCommand(RefreshDraftPoolCommand command) {
+        view.updateDraftPool(command);
 
     }
 
     @Override
     public void applyCommand(RefreshTokensCommand command) {
-
+        view.updateTokens(command);
     }
 
     @Override
     public void applyCommand(RefreshWpcCommand command) {
-
+        view.updateWpc(command);
     }
 
     @Override
     public void applyCommand(RefreshRoundTrackCommand command) {
-
+        view.updateRoundTrack(command);
     }
 
 

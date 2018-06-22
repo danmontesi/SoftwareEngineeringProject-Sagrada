@@ -23,7 +23,7 @@ public class UseToolMoveDieNoRestriction extends ClientToServerCommand{
 
     private Integer schemaOldPosition;
 
-    private Integer schemaNewPosition; //Can be null or not. If not null -> player can't place any die
+    private Integer schemaNewPosition;
 
     /**
      * Constructor

@@ -42,7 +42,7 @@ public class UseToolFirmPastryThinner extends ClientToServerCommand{
     private Integer diePosition; //DraftPool/Schema
 
     public UseToolFirmPastryThinner(String message, Integer dieNewValue, Integer dieOldPosition, Integer diePosition) {
-        this.message = message;
+        this.message = message; //this variable will contain the preferred action: DRAFTPOOL if the player want to leave the die in draftpool,or MOVE to perform a move with that die
         this.dieNewValue = dieNewValue;
         this.diePosition = diePosition;
         this.dieOldPosition = dieOldPosition;

@@ -41,8 +41,7 @@ public class UseToolWheelsPincher extends ClientToServerCommand{
 
     private Integer dieDraftPoolPosition2;
 
-    public UseToolWheelsPincher(String message, Integer dieDraftPoolPosition1, Integer dieSchemaPosition1, Integer dieSchemaPosition2, Integer dieDraftPoolPosition2) {
-        this.message = message;
+    public UseToolWheelsPincher(Integer dieDraftPoolPosition1, Integer dieSchemaPosition1, Integer dieSchemaPosition2, Integer dieDraftPoolPosition2) {
         this.dieDraftPoolPosition1 = dieDraftPoolPosition1;
         this.dieSchemaPosition1 = dieSchemaPosition1;
         this.dieSchemaPosition2 = dieSchemaPosition2;

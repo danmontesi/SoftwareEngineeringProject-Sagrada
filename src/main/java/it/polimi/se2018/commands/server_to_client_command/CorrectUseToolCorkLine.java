@@ -12,9 +12,6 @@ public class CorrectUseToolCorkLine extends ServerToClientCommand{
      * Integer diePosition(from 0 to 20)
      */
 
-    private Integer dieValue;
-
-    private Integer dieRoundTrackPosition;
 
     public void visit(ControllerClientInterface clientController) {
         clientController.applyCommand(this);

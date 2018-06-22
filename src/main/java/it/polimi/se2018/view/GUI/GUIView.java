@@ -1,19 +1,19 @@
 package it.polimi.se2018.view.GUI;
 
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.TurnStart;
+import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
+import it.polimi.se2018.commands.server_to_client_command.*;
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardActions.*;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.*;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.GUIViewSetting;
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.RefreshBoard;
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.WPCChoice;
 import it.polimi.se2018.view.GUI.Notifiers.LobbyNotifier;
+import it.polimi.se2018.view.GUI.Notifiers.RankingPaneNotifier;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WGUIViewSetting;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GUIView extends View {
     //TODO          PER CHI FA LA VIEW:
@@ -46,27 +46,20 @@ public class GUIView extends View {
 
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
         ArrayList<String> cardNames = new ArrayList<>();
+        ArrayList<Integer> cardDifficulties = new ArrayList<>();
         for (WindowPatternCard card : cards) {
             cardNames.add(card.getCardName());
+            cardDifficulties.add(card.getDifficulty());
         }
         WPCChoiceNotifier wpcChoiceNotifier = WPCChoiceNotifier.getInstance();
-        wpcChoiceNotifier.updateGui(new GUIViewSetting(this));
-        wpcChoiceNotifier.updateGui(new WPCChoice(cardNames.toString()));
+        wpcChoiceNotifier.updateGui(new WGUIViewSetting(this));
+        wpcChoiceNotifier.updateGui(new WPCChoice(cardNames, cardDifficulties));
     }
 
     public void startTurnMenu() {
         System.out.println("start turn");
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.updateGui(new TurnStart(null));
-        // Abilito bottoni draftpool, toolcard, pass. fatto
-        // Scrivo nel riquadro eventi " It's your turn" fatto
-
-        //3 casi:
-        //1) clicco un dado dells draftpool -> Inizio mossa
-        //se faccio una mossa -> tutti bottoni disattivati
-        ///notify(new MoveChoiceDicePlacement( indice draft, indice schema)
-        //Disattivo tutti i bottoni
-
 
         //2) se clicco una toolcard, appare una casewllina in cui scrivo "vuoi usare il tool x?"
         // se sì-> notify(new MoveChoiceToolCard(indice tool);
@@ -82,6 +75,7 @@ public class GUIView extends View {
 
     @Override
     public void authenticatedCorrectlyMessage(String message) {
+        this.username = message;
 
     }
 
@@ -90,11 +84,8 @@ public class GUIView extends View {
     }
 
     public void continueTurnMenu(boolean move, boolean tool) {
-        //se move = false, draftpool disattivata, se true attivata
-        //tool ""
-
-
-        //notify( new MOVE / new TOOLUSE / new PASSTURN )
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new TurnUpdate(move, tool));
     }
 
     public void correctUseTool(int numTool) {
@@ -148,15 +139,20 @@ public class GUIView extends View {
 
 
     public void invalidActionMessage(String message) {
-        //TODO. non contiene niente, mostra solo i messaggio
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new InvalidAction(message));
     }
 
     public void loseMessage(Integer position, ArrayList<String> scores) {
-        //TODO. non contiene niente, mostra solo i messaggio. attento a parsare bene gli score
+        scores.add(0, position.toString());
+        RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
+        rankingPaneNotifier.updateGui(scores);
     }
 
-    public void winMessage(List<String> scores) {
-        //TODO. non contiene niente, mostra solo i messaggio, attento a parsare bene gli scores
+    public void winMessage(ArrayList<String> scores) {
+        scores.add(0, "1");
+        RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
+        rankingPaneNotifier.updateGui(scores);
     }
 
     public void correctAuthenthication(String username) {
@@ -169,23 +165,27 @@ public class GUIView extends View {
     }
 
     @Override
-    public void updateWpc(ArrayList<String> myWpc, ArrayList<ArrayList<String>> otherWpcs) {
-        //DO LATER
+    public void updateWpc(RefreshWpcCommand refreshCommand) {
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new WPCUpdate(refreshCommand.getPersonalWpc(), refreshCommand.getOtherPlayersWpcs()));
     }
 
     @Override
-    public void updateTokens() {
-        //DO LATER
+    public void updateTokens(RefreshTokensCommand refreshCommand) {
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new TokensUpdate(refreshCommand.getToolCardsTokens(), refreshCommand.getOtherPlayersTokens(), refreshCommand.getPersonalTokens()));
     }
 
     @Override
-    public void updateRoundTrack() {
-        //DO LATER
+    public void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new DraftPoolRoundTrackUpdate("RT", refreshCommand.getRoundTrack()));
     }
 
     @Override
-    public void updateDraftPool() {
-        //DO LATER
+    public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new DraftPoolRoundTrackUpdate("DP", refreshCommand.getDraftpool()));
     }
 
 
@@ -194,8 +194,10 @@ public class GUIView extends View {
     //Sono gli stessi in ogni view
     @Override
     public void notify(Object event) {
+        ClientToServerCommand command = (ClientToServerCommand) event;
+        command.setUsername(this.username);
         for (Observer observer : observers)
-            observer.update(event);
+            observer.update(command);
     }
 
     @Override
@@ -216,11 +218,15 @@ public class GUIView extends View {
             System.out.println("ricevuto " + command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
         }
         else{
-            currentModelPathRepresentation = command; //posso sempre accedere alle informazioni del model facendo currentModelPathRepresentation.get....()
-            //System.out.println(command.getDraftpool().get(0)); //example
-            //TODO NIVES: da command prendo tutte le informazioni come ho fatto per la classe di prova
-            //es. command.getDraftPool,... Oss: ho aggiunto anche le descrizioni
+            currentModelPathRepresentation = command;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //TODO: sistemare meglio
             GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+            gameBoardNotifier.updateGui(new GUIViewSetting(this));
             gameBoardNotifier.updateGui(new RefreshBoard(command));
         }
     }

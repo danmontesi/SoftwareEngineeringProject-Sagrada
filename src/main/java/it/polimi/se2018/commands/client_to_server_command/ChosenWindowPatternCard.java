@@ -5,9 +5,8 @@ import it.polimi.se2018.utils.ControllerServerInterface;
 public class ChosenWindowPatternCard extends ClientToServerCommand{
 
     /**
-     * Contains the message with toolCardName
+     * Contains the message with chosen WindowPatternCard name
      */
-
     public ChosenWindowPatternCard(String message) {
         this.message = message;
     }

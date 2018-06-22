@@ -1,7 +1,7 @@
 package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
-import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
+import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
@@ -26,8 +26,10 @@ public class CLIView extends View {
 
     //TODO Set! username
 
-    private Scanner scanner = new Scanner(System.in); // Can be replaced with BufferedReader?
+    private Scanner scan = new Scanner(System.in); // Can be replaced with BufferedReader?
+
     private InputReader inputReader;
+
     private CLIPrinter cliPrinter = new CLIPrinter();
     private CLIModel cliModel;
 
@@ -74,14 +76,14 @@ public class CLIView extends View {
         switch(choice){
             case 1:
                 System.out.println("Inserisci rispettivamente");
-                int draftPos = scanner.nextInt();
-                int schemaRow = scanner.nextInt();
-                int schemaCol = scanner.nextInt();
-                notify(new MoveChoiceDicePlacement("",schemaRow,schemaCol,draftPos));
+                int draftPos = scan.nextInt();
+                int schemaRow = scan.nextInt();
+                int schemaCol = scan.nextInt();
+                notify(new MoveChoiceDicePlacement(schemaRow,schemaCol,draftPos));
                 break;
             case 2:
                 System.out.println("Which tool want you to use?");
-                int chosenToolNum = scanner.nextInt();
+                int chosenToolNum = scan.nextInt();
                 notify(new MoveChoiceToolCard(chosenToolNum));
                 break;
             case 3:
@@ -101,7 +103,8 @@ public class CLIView extends View {
     }
 
     @Override
-    public void authenticatedCorrectlyMessage(String message) {
+    public void authenticatedCorrectlyMessage(String username) {
+        this.username=username;
         //print that the player authenticated correctly with username
     }
 
@@ -117,14 +120,14 @@ public class CLIView extends View {
         System.out.println(move? "1- Place die": "");
         System.out.println(tool? "2- Use Tool": "");
         System.out.println("3- Pass Turn");
-        int choice = scanner.nextInt();
+        int choice = scan.nextInt();
         switch(choice){
             case 1:
                 System.out.println("Inserisci rispettivamente");
-                int draftPos = scanner.nextInt();
-                int schemaRow = scanner.nextInt();
-                int schemaCol = scanner.nextInt();
-                notify(new MoveChoiceDicePlacement("",schemaRow,schemaCol,draftPos));
+                int draftPos = scan.nextInt();
+                int schemaRow = scan.nextInt();
+                int schemaCol = scan.nextInt();
+                notify(new MoveChoiceDicePlacement(schemaRow,schemaCol,draftPos));
                 break;
             case 2:
                 System.out.println("Which tool want you to use?");
@@ -164,18 +167,18 @@ public class CLIView extends View {
             System.out.println("TOOL USE - Eglomise Brush " +
                     "\n You can move a die without color restriction");
             System.out.println("Select where is the die you want to move in your schema:");
-            Integer schemaOldPos = scanner.nextInt();
+            Integer schemaOldPos = scan.nextInt();
             System.out.println("Select the cell you cant to move the die in");
-            Integer schemaNewPos = scanner.nextInt();
+            Integer schemaNewPos = scan.nextInt();
             notify(new UseToolMoveDieNoRestriction(cardName, schemaOldPos, schemaNewPos));
         }
         else if (cardName.equals("Copper Foil Reamer")){
             System.out.println("TOOL USE - Copper Foil Reamer " +
                     "\n You can move a die without value restriction");
             System.out.println("Select where is the die you want to move in your schema:");
-            Integer schemaOldPos = scanner.nextInt();
+            Integer schemaOldPos = scan.nextInt();
             System.out.println("Select the cell you cant to move the die in");
-            Integer schemaNewPos = scanner.nextInt();
+            Integer schemaNewPos = scan.nextInt();
             notify(new UseToolMoveDieNoRestriction(cardName, schemaOldPos, schemaNewPos));
         }
 
@@ -187,16 +190,16 @@ public class CLIView extends View {
             System.out.println("TOOL USE Increase-Decrease - Roughing Forceps " +
                     "\n TOOL_DESCRIP"); //TODO
             System.out.println("Select the die of Draftpool you want to edit");
-            Integer draftpoolPos = scanner.nextInt(); //TODO controllo preventivo
+            Integer draftpoolPos = scan.nextInt(); //TODO controllo preventivo
             System.out.println("Want you to increase the value? \n 1- Increase" + "\n 2- Decrease"); //TODO: controllo per evitare che il dado scelto sia un 6 e aumenti o sia un 1 e diminuisca
-            Integer chosen = scanner.nextInt();
+            Integer chosen = scan.nextInt();
             boolean increase = chosen==1;
             //TODO: Devo stampare il valore aumentato
             System.out.println("Want you to place the new edited die? type: \n 1- Yes \n2- No");
-            Integer decision = scanner.nextInt();
+            Integer decision = scan.nextInt();
             if (decision==1){
                 System.out.println("Where do you want to place the die?");
-                Integer schemaPosition = scanner.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
+                Integer schemaPosition = scan.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
                 notify(new UseToolChangeDieValue(cardName, draftpoolPos, schemaPosition, increase));
             }
             else{
@@ -207,13 +210,13 @@ public class CLIView extends View {
             System.out.println("TOOL USE Increase-Decrease - Diamond Swab " +
                     "\n TOOL_DESCRIP"); //TODO
             System.out.println("Select the die of Draftpool you want to edit");
-            Integer draftpoolPos = scanner.nextInt(); //TODO controllo preventivo
+            Integer draftpoolPos = scan.nextInt(); //TODO controllo preventivo
             System.out.println("The new value is... "); //TODO stampa
             System.out.println("Want you to place the new die? type: \n 1- Yes \n2- No");
-            Integer decision = scanner.nextInt();
+            Integer decision = scan.nextInt();
             if (decision == 1) {
                 System.out.println("Where do you want to place the die?");
-                Integer schemaPosition = scanner.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
+                Integer schemaPosition = scan.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
                 notify(new UseToolChangeDieValue(cardName, draftpoolPos, schemaPosition, true));
             } else {
                 notify(new UseToolChangeDieValue(cardName, draftpoolPos, null, false));
@@ -227,13 +230,13 @@ public class CLIView extends View {
             System.out.println("With this tool you have to move 2 dice of same color of a die of the roundTrack. Check it out carefully!");
         }
         System.out.println("Select the index of first die you want to move");
-        Integer oldPos1 = scanner.nextInt();
+        Integer oldPos1 = scan.nextInt();
         System.out.println("Select the index of the cell where you want to move it:");
-        Integer newPos1 = scanner.nextInt();
+        Integer newPos1 = scan.nextInt();
         System.out.println("Select next die");
-        Integer oldPos2 = scanner.nextInt();
+        Integer oldPos2 = scan.nextInt();
         System.out.println("Select the index of the cell where you want to move");
-        Integer newPos2 = scanner.nextInt();
+        Integer newPos2 = scan.nextInt();
         notify(new UseToolTwoDicePlacement(cardName, oldPos1, newPos1, oldPos2, newPos2));
     }
 
@@ -286,7 +289,7 @@ public class CLIView extends View {
     @Override
     public void correctAuthenthication(String username){
         this.username=username;
-        //TODO. Setta username e mostra solo il messaggio di corretta auth
+        //TODO. Setta username e mostra solo il messaggio di corretta authentication
     }
 
     @Override
@@ -295,32 +298,33 @@ public class CLIView extends View {
     }
 
     @Override
-    public void updateWpc(ArrayList<String> myWpc, ArrayList<ArrayList<String>> otherWpcs) {
+    public void updateWpc(RefreshWpcCommand refreshCommand) {
 
         //TODO
     }
 
     @Override
-    public void updateTokens() {
+    public void updateTokens(RefreshTokensCommand refreshCommand) {
     //TODO
     }
 
     @Override
-    public void updateRoundTrack() {
+    public void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
     //TODO
     }
 
     @Override
-    public void updateDraftPool() {
-
+    public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
     //TODO
     }
 
 
     @Override
     public void notify(Object event) {
+        ClientToServerCommand command = (ClientToServerCommand) event;
+        command.setUsername(this.username);
         for (Observer observer : observers)
-            observer.update(event);
+            observer.update(command);
     }
 
     @Override

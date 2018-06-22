@@ -6,6 +6,10 @@ import java.util.ArrayList;
 
 public class RefreshDraftPoolCommand extends ServerToClientCommand {
 
+    public ArrayList<String> getDraftpool() {
+        return draftpool;
+    }
+
     private ArrayList<String> draftpool; //Dice in the format: colorNumber/empty
 
     public RefreshDraftPoolCommand(ArrayList<String> draftpool) {

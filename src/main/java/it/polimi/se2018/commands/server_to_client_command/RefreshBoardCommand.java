@@ -9,9 +9,6 @@ public class RefreshBoardCommand extends ServerToClientCommand{
      * That's the unique command that contains an object different from string and integer
      * Contains each player's view of the board.
      */
-
-    //TODO devono essere final? o basta che non abbiano setter? questo comando mi arriverà fino al client
-
     private String privateObjectiveCard;
 
     public String getPrivateObjectiveCardDescription() {

@@ -3,6 +3,7 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.NewConnectedPlayerNotification;
+import it.polimi.se2018.commands.server_to_client_command.PingConnectionTester;
 import it.polimi.se2018.network.client.ClientConnection;
 import it.polimi.se2018.network.client.rmi.RMIClientInterface;
 import it.polimi.se2018.network.server.rmi.RMIServer;
@@ -49,8 +50,6 @@ public class Server {
 
     private static Timer timer;
 
-    private static boolean itsTimeToStart = false;
-
     public static void main(String[] args) {
 
         boolean activeServer = true;
@@ -61,11 +60,24 @@ public class Server {
         new SocketServer().socketStartListening();
         System.out.println("Listening Socket");
 
-        while (activeServer){
 
+        //TODO CHECK
+        new Thread(() -> {
+            while (activeServer) {
+                for (String user : connectedClients.keySet()) {
+                    connectedClients.get(user).notifyClient(new PingConnectionTester());  //Checking if still connected(for RMI)
+                }
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-    }
 
+        ).start();
+
+    }
     public static void handle(ClientToServerCommand command){
         String username = command.getUsername();
         userMap.get(username).notify(command);

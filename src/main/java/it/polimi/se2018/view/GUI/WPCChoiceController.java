@@ -1,7 +1,10 @@
 package it.polimi.se2018.view.GUI;
 
 import it.polimi.se2018.commands.client_to_server_command.ChosenWindowPatternCard;
-import it.polimi.se2018.view.GUI.Notifiers.GUIReplies.*;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WGUIViewSetting;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WPCChoice;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WPCChoiceAction;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WPCChoiceVisitor;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -31,9 +34,27 @@ public class WPCChoiceController extends Observable implements Observer {
     private GUIView guiViewT;
 
     private List<ToggleButton> wpcards;
+    private List<Label> wpcnames;
+    private List<Label> wpcdifficulties;
 
     @FXML
     private Label choose;
+    @FXML
+    private Label wpc1n;
+    @FXML
+    private Label wpc2n;
+    @FXML
+    private Label wpc3n;
+    @FXML
+    private Label wpc4n;
+    @FXML
+    private Label wpc1d;
+    @FXML
+    private Label wpc2d;
+    @FXML
+    private Label wpc3d;
+    @FXML
+    private Label wpc4d;
 
     @FXML
     private ToggleButton wpc1;
@@ -56,8 +77,9 @@ public class WPCChoiceController extends Observable implements Observer {
 
     public WPCChoiceController() {
         wpcards = new ArrayList<>();
+        wpcnames = new ArrayList<>();
+        wpcdifficulties = new ArrayList<>();
         wpcs = new ToggleGroup();
-        selectedWPC = new String();
     }
 
     public void initialize() {
@@ -67,24 +89,20 @@ public class WPCChoiceController extends Observable implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        GUIReply guiReply = (GUIReply)arg;
-        GUIVisitor guiVisitor = new GUIVisitor() {
+        WPCChoiceAction guiReply = (WPCChoiceAction)arg;
+        WPCChoiceVisitor wpcChoiceVisitor = new WPCChoiceVisitor() {
             @Override
-            public void visitGUIReply(GUIViewSetting guiViewSetting) {
+            public void visitWPCChoiceAction(WGUIViewSetting guiViewSetting) {
                 guiViewT = guiViewSetting.getGuiView();
             }
 
             @Override
-            public void visitGUIReply(WPCChoice wpcChoice) {
-                setWPCards(wpcChoice.getWpcards());
+            public void visitWPCChoiceAction(WPCChoice wpcChoice) {
+                setWPCards(wpcChoice.getWpcNames(), wpcChoice.getWpcDifficulties());
             }
 
-            @Override
-            public void visitGUIReply(RefreshBoard refreshBoard) {}
-            @Override
-            public void visitGUIReply(TurnStart turnStart) {}
         };
-        guiReply.acceptGUIVisitor(guiVisitor);
+        guiReply.acceptWPCChoiceVisitor(wpcChoiceVisitor);
     }
 
     private void setTGroup() {
@@ -96,26 +114,36 @@ public class WPCChoiceController extends Observable implements Observer {
         wpcards.add(wpc2);
         wpcards.add(wpc3);
         wpcards.add(wpc4);
+
+        wpcnames.add(wpc1n);
+        wpcnames.add(wpc2n);
+        wpcnames.add(wpc3n);
+        wpcnames.add(wpc4n);
+
+        wpcdifficulties.add(wpc1d);
+        wpcdifficulties.add(wpc2d);
+        wpcdifficulties.add(wpc3d);
+        wpcdifficulties.add(wpc4d);
     }
 
-    private void setWPCards(String cards) {
+    private void setWPCards(ArrayList<String> names, ArrayList<Integer> difficulties) {
         Platform.runLater(() -> {
-            ArrayList<String> wpcCards = stringToArray(cards);
-            int i=0;
-            for (ToggleButton wpc : wpcards) {
-                String img = wpcCards.get(i);
+            for (int i=0; i<names.size(); i++) {
+                String img = names.get(i);
                 String path = "/client/WPC/" + img + ".jpg";
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);
                 iv.setFitHeight(184);
                 iv.setFitWidth(230);
-                wpc.setGraphic(iv);
-                wpc.setText(img);
+                wpcards.get(i).setGraphic(iv);
+                wpcnames.get(i).setText(img);
+                wpcdifficulties.get(i).setText(difficulties.get(i).toString());
+            }
+            for (ToggleButton wpc : wpcards) {
                 wpc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> wpc.setEffect(shadow));
                 wpc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
                     if (!wpc.isSelected()) wpc.setEffect(null);
                 });
-                i++;
             }
         });
     }
@@ -132,8 +160,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc3.setDisable(false);
             wpc4.setDisable(false);
         }
-        selectedWPC = wpc1.getText();
-        System.out.println("selected WPC: "+selectedWPC);
+        selectedWPC = wpc1n.getText();
     }
 
     @FXML
@@ -148,7 +175,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc3.setDisable(false);
             wpc4.setDisable(false);
         }
-        selectedWPC = wpc2.getText();
+        selectedWPC = wpc2n.getText();
     }
 
     @FXML
@@ -163,7 +190,7 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc1.setDisable(false);
             wpc4.setDisable(false);
         }
-        selectedWPC = wpc3.getText();
+        selectedWPC = wpc3n.getText();
     }
 
     @FXML
@@ -178,10 +205,10 @@ public class WPCChoiceController extends Observable implements Observer {
             wpc3.setDisable(false);
             wpc1.setDisable(false);
         }
-        selectedWPC = wpc4.getText();
+        selectedWPC = wpc4n.getText();
     }
 
-    public void closeStage() {
+    private void closeStage() {
         Stage stage = (Stage)start.getScene().getWindow();
         stage.close();
     }
@@ -205,13 +232,6 @@ public class WPCChoiceController extends Observable implements Observer {
                 }
             });
         }
-    }
-
-    private ArrayList<String> stringToArray(String s1) {
-        String r = s1.replace("[","");
-        String r1 = r.replace("]","");
-        ArrayList<String> a = new ArrayList<String>(Arrays.asList(r1.split(", ")));
-        return a;
     }
 
     private void inputError() {

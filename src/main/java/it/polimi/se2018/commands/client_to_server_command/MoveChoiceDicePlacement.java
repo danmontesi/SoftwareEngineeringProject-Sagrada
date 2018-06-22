@@ -28,8 +28,7 @@ public class MoveChoiceDicePlacement extends ClientToServerCommand{
 
     private Integer dieDraftPoolPosition;
 
-    public MoveChoiceDicePlacement(String message, Integer dieSchemaRowPosition, Integer dieSchemaColPosition,Integer dieDraftPoolPosition) {
-        this.message = message;
+    public MoveChoiceDicePlacement(Integer dieSchemaRowPosition, Integer dieSchemaColPosition,Integer dieDraftPoolPosition) {
         this.dieSchemaRowPosition = dieSchemaRowPosition;
         this.dieDraftPoolPosition = dieDraftPoolPosition;
         this.dieSchemaColPosition = dieSchemaColPosition;
