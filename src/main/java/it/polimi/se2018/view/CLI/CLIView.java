@@ -94,7 +94,7 @@ public class CLIView extends View {
 
     @Override
     public void startGame() {
-
+        //da ignorare
     }
 
     @Override
@@ -299,23 +299,30 @@ public class CLIView extends View {
 
     @Override
     public void updateWpc(RefreshWpcCommand refreshCommand) {
-
-        //TODO
+        clearScreen();
+        cliModel.parseRefreshWPC(refreshCommand);
+        printSyntheticBoard();
     }
 
     @Override
     public void updateTokens(RefreshTokensCommand refreshCommand) {
-    //TODO
+        clearScreen();
+        cliModel.parseRefreshTokens(refreshCommand);
+        printSyntheticBoard();
     }
 
     @Override
     public void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
-    //TODO
+        clearScreen();
+        cliModel.parseRefreshRoundTrack(refreshCommand);
+        printSyntheticBoard();
     }
 
     @Override
     public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
-    //TODO
+        clearScreen();
+        cliModel.parseRefreshDraftPool(refreshCommand);
+        printSyntheticBoard();
     }
 
 
@@ -336,22 +343,9 @@ public class CLIView extends View {
     //update entire board
     public void update(Object event) {
         clearScreen();
-        //Osserva il Model e con Update, fa l'update del model locale
-        //Calls the right method to update the Graphical Board
-        //The model is already updated by the ClientController, no worries about that
-        //In case there is a CLI, does anything
         RefreshBoardCommand command = (RefreshBoardCommand) event;
         cliModel.parseRefreshBoard(command);
         printSyntheticBoard();
-        if (command.getMessage()!= null) {
-
-        }
-        else{
-            //currentModelPathRepresentation = command; //TODO se vuoi, lo associo localmente così posso sempre accedere alle informazioni del model facendo currentModelPathRepresentation.get....()
-            System.out.println(command.getDraftpool().get(0)); //example
-            //TODO ALLE: da command prendo tutte le informazioni come ho fatto per la classe di prova
-            //es. command.getDraftPool,... Oss: ho aggiunto anche le descrizioni
-        }
     }
 
     private static void clearScreen() {
@@ -361,9 +355,9 @@ public class CLIView extends View {
 
     private void printSyntheticBoard(){
         System.out.println("Draft Pool:\n");
-        cliPrinter.printCellList(cliModel.getDraftpool());
+        cliPrinter.printInlineList(cliModel.getDraftpool());
         System.out.println("Round Track:\n");
-        cliPrinter.printCellList(cliModel.getRoundTrack());
+        cliPrinter.printInlineList(cliModel.getRoundTrack());
         cliPrinter.printWPC(cliModel.getPlayers().get(0).getWpc());
     }
 

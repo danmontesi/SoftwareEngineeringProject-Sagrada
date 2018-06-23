@@ -1,6 +1,6 @@
 package it.polimi.se2018.view.CLI;
 
-import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
+import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.exceptions.NoSuchColorException;
 import it.polimi.se2018.model.COLOR;
 import it.polimi.se2018.model.Cell;
@@ -22,9 +22,12 @@ public class CLIModel {
     private Map<String, String> publicObjectiveCards;
     private Map<String, ToolcardPair> toolcards;
 
-    private List<Cell> draftpool; //Dice in the format: colorNumber/empty
-    private List<Cell> roundTrack; //Dice in the format: colorNumber/empty
+    private List<String> draftpool; //Dice in the format: colorNumber/empty
+    private List<String> roundTrack; //Dice in the format: colorNumber/empty
 
+    /**
+     * It is guaranteed that at index 0 there is personal player's data
+     */
     private List<CLIPlayer> players;
 
     CLIModel() {
@@ -33,17 +36,35 @@ public class CLIModel {
     }
 
     void parseRefreshBoard(RefreshBoardCommand command){
-
         publicObjectiveCards = parsePublicObjectiveCards(command);
         privateObjectiveCard = command.getPrivateObjectiveCard();
         privateObjectiveCardDescription = command.getPrivateObjectiveCardDescription();
         toolcards = parseToolcards(command);
-
-        parseDraftPool(command);
-        parseRoundTrack(command);
+        draftpool = command.getDraftpool();
+        roundTrack = command.getRoundTrack();
         parsePlayers(command);
+    }
 
+    void parseRefreshDraftPool(RefreshDraftPoolCommand command){
+        draftpool = command.getDraftpool();
+    }
 
+    void parseRefreshRoundTrack(RefreshRoundTrackCommand command){
+        roundTrack = command.getRoundTrack();
+    }
+
+    void parseRefreshWPC(RefreshWpcCommand command){
+        players.get(0).setWpc(command.getPersonalWpc());
+        for(int i = 1; i < command.getOtherPlayersWpcs().size(); i++){
+            players.get(i).setWpc(command.getOtherPlayersWpcs().get(i-1));
+        }
+    }
+
+    void parseRefreshTokens(RefreshTokensCommand command){
+        players.get(0).setTokens(command.getPersonalTokens());
+        for(int i = 1; i < command.getOtherPlayersTokens().size(); i++){
+            players.get(i).setTokens(command.getOtherPlayersTokens().get(i-1));
+        }
     }
 
     private void initPlayers(RefreshBoardCommand command){
@@ -58,13 +79,14 @@ public class CLIModel {
         //set personal data
         players.get(0).setUsername(command.getUsername());
         players.get(0).setTokens(command.getPersonalTokens());
-        players.get(0).setWpc(parseWPC(players.get(0).getWpc(), command.getPersonalWpc()));
-        
+        players.get(0).setWpc(command.getPersonalWpc());
+
+        //set other players data
         for (int i = 0; i < command.getOtherPlayersUsernames().size(); i++){
-            int j = i +1;
+            int j = i + 1;
             players.get(j).setUsername(command.getOtherPlayersUsernames().get(i));
             players.get(j).setTokens(command.getOtherPlayersTokens().get(i));
-            players.get(j).setWpc(parseWPC(players.get(j).getWpc(), command.getOtherPlayersWpcs().get(i)));
+            players.get(j).setWpc(command.getOtherPlayersWpcs().get(i));
         }
     }
 
@@ -119,7 +141,7 @@ public class CLIModel {
         return wpc;
     }
 
-    private void parseDraftPool(RefreshBoardCommand command){
+    /*private void parseDraftPool(RefreshBoardCommand command){
         initDraftPool(command);
         ArrayList<String> stringDraftPool = command.getDraftpool();
         for(int i = 0; i < stringDraftPool.size(); i++){
@@ -153,7 +175,7 @@ public class CLIModel {
             }
         }
     }
-
+*/
     /**
      * Takes a die representation and turns it into a die
      * If the string represents a cell constraint instead of a die, returns null
@@ -188,11 +210,11 @@ public class CLIModel {
         return toolcards;
     }
 
-    public List<Cell> getDraftpool() {
+    public List<String> getDraftpool() {
         return draftpool;
     }
 
-    public List<Cell> getRoundTrack() {
+    public List<String> getRoundTrack() {
         return roundTrack;
     }
 

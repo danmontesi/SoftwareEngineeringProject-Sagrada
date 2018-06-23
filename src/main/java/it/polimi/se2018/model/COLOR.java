@@ -26,7 +26,7 @@ public enum COLOR {
             case "blue":
                 return COLOR.BLUE;
             default:
-                throw new NoSuchColorException();
+                throw new NoSuchColorException("You may want to check COLOR orthography");
         }
     }
 

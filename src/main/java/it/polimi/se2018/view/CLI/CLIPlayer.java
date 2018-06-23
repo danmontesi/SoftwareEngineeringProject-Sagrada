@@ -1,16 +1,17 @@
 package it.polimi.se2018.view.CLI;
 
-import it.polimi.se2018.model.WindowPatternCard;
+
+import java.util.List;
 
 public class CLIPlayer {
     private String username;
     private int tokens;
-    private WindowPatternCard wpc;
+    private List<String> wpc;
 
     public CLIPlayer() {
     }
 
-    public CLIPlayer(String username, int tokens, WindowPatternCard wpc) {
+    public CLIPlayer(String username, int tokens, List<String> wpc) {
         this.username = username;
         this.tokens = tokens;
         this.wpc = wpc;
@@ -32,11 +33,11 @@ public class CLIPlayer {
         this.tokens = tokens;
     }
 
-    public WindowPatternCard getWpc() {
+    public List<String> getWpc() {
         return wpc;
     }
 
-    public void setWpc(WindowPatternCard wpc) {
+    public void setWpc(List<String> wpc) {
         this.wpc = wpc;
     }
 }

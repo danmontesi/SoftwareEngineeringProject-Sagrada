@@ -1,12 +1,15 @@
 package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.exceptions.EmptyCellException;
+import it.polimi.se2018.exceptions.NoSuchColorException;
 import it.polimi.se2018.model.COLOR;
 import it.polimi.se2018.model.Cell;
 import it.polimi.se2018.model.Die;
 import it.polimi.se2018.model.WindowPatternCard;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 class CLIPrinter {
 
@@ -17,6 +20,8 @@ class CLIPrinter {
     private static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_BLACK = "\u001B[30m";
+
+    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
     CLIPrinter() {
     }
@@ -32,6 +37,34 @@ class CLIPrinter {
                 insertDieValue(table, 0, i);
             }
         }
+    }
+
+    /**
+     * Used only to print DraftPool and RoundTrack
+     * @param list
+     */
+    void printInlineList(List<String> list){
+        String[][] table = new String[4][list.size()];
+        for (int i = 0; i < list.size(); i++){
+            insertStringInTable(table, 0, i, list.get(i));
+        }
+        printTable(table);
+        System.out.println("\n");
+    }
+
+    void printWPC(List<String> stringWpc){
+        String[][] table = new String[16][5];
+        System.out.println(stringWpc.get(0) + "\n");
+
+        for (int i = 1; i < stringWpc.size(); i++){
+            int j = i-1;
+            int row = j/5;
+            int column = j%5;
+            //ma siamo sicuri che non ci vada table =...??
+            insertStringInTable(table, row, column, stringWpc.get(i));
+        }
+        printTable(table);
+        System.out.println("\n");
     }
 
     void printWPC(WindowPatternCard wpc){
@@ -58,6 +91,28 @@ class CLIPrinter {
         }
         printTable(table);
         System.out.println("\n");
+    }
+
+    private String[][] insertStringInTable(String[][] table, int row, int column, String string){
+        String[] die = string.split("_");
+        if(die[0]=="empty"){
+            insertDieValue(table, row, column);
+        } else {
+            if(die.length == 2){
+                try {
+                    insertDieValue(table, row, column , Integer.parseInt(die[1]), COLOR.stringToColor(die[0]));
+                } catch (NoSuchColorException e) {
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                }
+            } else {
+                try{
+                    insertDieValue(table, row, column , COLOR.stringToColor(die[0]));
+                } catch (NoSuchColorException e){
+                    insertDieValue(table, row, column, Integer.parseInt(die[0]));
+                }
+            }
+        }
+        return table;
     }
 
     private void insertDieValue(String[][] table, int row, int column, int value, COLOR color){

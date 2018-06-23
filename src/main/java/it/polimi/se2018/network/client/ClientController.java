@@ -18,6 +18,8 @@ import it.polimi.se2018.commands.server_to_client_command.OtherPlayerTurnCommand
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class ClientController implements Observer, ControllerClientInterface {
@@ -36,6 +38,9 @@ public class ClientController implements Observer, ControllerClientInterface {
     private String username;
 
     private ServerConnection connection;
+
+    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
+
 
     /**
      * Contructor:
@@ -321,7 +326,7 @@ public class ClientController implements Observer, ControllerClientInterface {
 
     @Override
     public void applyCommand(TimeOutCommand command){
-        System.out.println("Arriva a clientContorller");
+        LOGGER.log(Level.FINE,"Arriva a clientContorller" );
         view.timeOut();
     }
 
@@ -370,7 +375,7 @@ public class ClientController implements Observer, ControllerClientInterface {
 
     @Override
     public void applyCommand(PingConnectionTester pingConnectionTester) {
-        System.out.println("ping from server");
+        LOGGER.log(Level.FINEST,"ping from server" );
     }
 
 }

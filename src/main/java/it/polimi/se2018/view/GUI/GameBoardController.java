@@ -898,7 +898,7 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void notifyMove(Integer r, Integer c, Integer d) {
-        guiViewT.notify(new MoveChoiceDicePlacement("", r, c, d));
+        guiViewT.notify(new MoveChoiceDicePlacement(r, c, d));
         disableAllButtons(true);
     }
 
