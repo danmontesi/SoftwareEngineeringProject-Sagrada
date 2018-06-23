@@ -18,20 +18,16 @@ public class InputReader {
     public InputReader() {
         isr = new InputStreamReader(System.in);
         reader = new BufferedReader(isr);
-        timeOut=false;
+        timeOut = false;
     }
 
     public String readLine() throws IOException, TimeoutException {
-        LOGGER.log(Level.FINE, "Dentro readLine");
-        timeOut = false; //TODO se lo tolgo il primo turno va avanti perchè non riporto timeOut a false, capire perchè e risolverlo
+        timeOut = false;
         while (!reader.ready()) {
             if (timeOut) {
-                System.out.println("Timeout: passing turn automatically");
-                //setTimeOut(false); //TODO decommenta e elimnina il timeout a linea 23
                 throw new TimeoutException();
             }
-
-            // optional delay between polling
+            // delay checking timeout
             try {
                 Thread.sleep(500);
             } catch (Exception ignore) {
@@ -41,6 +37,54 @@ public class InputReader {
 
         return reader.readLine();
     }
+
+    public String readLine(int minInput, int maxInput) throws TimeoutException {
+        timeOut = false;
+        try {
+            while (!reader.ready()) {
+                if (timeOut) {
+                    throw new TimeoutException();
+                }
+                // delay checking timeout
+                try {
+                    Thread.sleep(500);
+                } catch (Exception ignore) {
+
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Integer choice = -1;
+        try {
+            choice = Integer.parseInt(reader.readLine());
+        } catch (IOException e) {
+            System.out.println("Invalid input: has to be an integer between " + minInput + " and " + maxInput);
+            try {
+                return readLine();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+
+        if (!(choice <= maxInput && choice >= minInput)) {
+            System.out.println("Invalid input: has to be an integer between " + minInput + " and " + maxInput);
+            try {
+                return readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            return reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public void setTimeOut(boolean value){
         timeOut=value;
