@@ -95,7 +95,7 @@ class CLIPrinter {
 
     private String[][] insertStringInTable(String[][] table, int row, int column, String string){
         String[] die = string.split("_");
-        if(die[0]=="empty"){
+        if(die[0].equals("empty")){
             insertDieValue(table, row, column);
         } else {
             if(die.length == 2){

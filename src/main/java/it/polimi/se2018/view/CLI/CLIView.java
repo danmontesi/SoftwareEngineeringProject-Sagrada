@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CLIView extends View {
 
@@ -27,69 +29,78 @@ public class CLIView extends View {
     //TODO Set! username
 
     private Scanner scan = new Scanner(System.in); // Can be replaced with BufferedReader?
-
     private InputReader inputReader;
-
     private CLIPrinter cliPrinter = new CLIPrinter();
     private CLIModel cliModel;
+    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
-//TODO          PER CHI FA LA VIEW:
-//TODO          OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO.
-//TODO          ognuno dei metodi quì sotto prima chiede l'input dall'utente, poi fa notify(new chosen
+    //OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO
+
     @Override
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards){
         for (WindowPatternCard card : cards) {
             cliPrinter.printWPC(card);
         }
-        System.out.println("\n\n Which one do you chose?");
-        int chosen;
-        //TODO: menu per numero scorretto
+        System.out.println("\n Which one do you chose?");
+        for (int i = 0; i < cards.size(); i++){
+            System.out.println(i+1 + ")" + cards.get(i).getCardName());
+        }
         try {
-            try {
-                chosen = Integer.parseInt(inputReader.readLine());
-                notify(new ChosenWindowPatternCard(cards.get(chosen).getCardName()));
-            } catch (TimeoutException e) {
-                System.out.println("Timeout: your wpc is chosen randomly");
-            }
+            int chosen = Integer.parseInt(inputReader.readLine());
+            notify(new ChosenWindowPatternCard(cards.get(chosen-1).getCardName()));
+        } catch (TimeoutException e) {
+            LOGGER.log(Level.INFO, "Timeout: your wpc is chosen randomly");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
     @Override
     public void startTurnMenu(){
-        //notify( new MOVE / new TOOLUSE / new PASSTURN )
+        boolean performedAction = false;
+        int choice;
         System.out.println("What do you want to do?");
-        System.out.println("1- Place die");
-        System.out.println("2- Use Tool");
-        System.out.println("3- Pass Turn");
-        int choice = 3;
+        System.out.println("1 - Place die");
+        System.out.println("2 - Use Tool");
+        System.out.println("3 - Pass Turn");
         try {
-            try {
-                choice = Integer.parseInt(inputReader.readLine());
-            } catch (TimeoutException e) {
-                System.out.println("Timeout: you will skip this turn");
-            }
+            choice = Integer.parseInt(inputReader.readLine());
+        } catch (TimeoutException e) {
+            LOGGER.log(Level.INFO, "Timeout: you will skip this turn");
+            return;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            return;
         }
-        switch(choice){
-            case 1:
-                System.out.println("Inserisci rispettivamente");
-                int draftPos = scan.nextInt();
-                int schemaRow = scan.nextInt();
-                int schemaCol = scan.nextInt();
-                notify(new MoveChoiceDicePlacement(schemaRow,schemaCol,draftPos));
-                break;
-            case 2:
-                System.out.println("Which tool want you to use?");
-                int chosenToolNum = scan.nextInt();
-                notify(new MoveChoiceToolCard(chosenToolNum));
-                break;
-            case 3:
-                System.out.println("passed turn");
-                notify(new MoveChoicePassTurn(""));
+        while(!performedAction){
+            switch(choice){
+                case 1:
+                    System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliModel.getDraftpool().size()));
+                    int draftPos = scan.nextInt();
+                    draftPos -= 1;
+                    System.out.println("Select row");
+                    int schemaRow = scan.nextInt();
+                    System.out.println("Select column");
+                    int schemaCol = scan.nextInt();
+                    notify(new MoveChoiceDicePlacement(schemaRow,schemaCol,draftPos));
+                    performedAction = true;
+                    break;
+                case 2:
+                    System.out.println("Which tool want you to use?");
+                    int chosenToolNum = scan.nextInt();
+                    notify(new MoveChoiceToolCard(chosenToolNum));
+                    performedAction = true;
+                    break;
+                case 3:
+                    System.out.println("Passed turn");
+                    notify(new MoveChoicePassTurn(cliModel.getPlayer(0).getUsername()));
+                    performedAction = true;
+                    break;
+                default:
+                    System.out.println("Incorrect action, please select a number among the valid ones in menu");
+            }
         }
+
     }
 
     @Override
@@ -105,12 +116,13 @@ public class CLIView extends View {
     @Override
     public void authenticatedCorrectlyMessage(String username) {
         this.username=username;
-        //print that the player authenticated correctly with username
+        cliModel.getPlayer(0).setUsername(username);
+        System.out.println("Authenticated correctly!\nWelcome to Sagrada, " + this.username);
     }
 
 
     public void AllowedUseToolMessage(String message){
-        //TODO Questo metodo non invia niente, mostra solo il messaggio
+        LOGGER.log(Level.INFO, "Toolcard used correctly");
     }
 
     @Override
@@ -259,20 +271,17 @@ public class CLIView extends View {
 
     @Override
     public void invalidActionMessage(String message){
-        System.out.println(message);
-        //TODO. non contiene niente, mostra solo i messaggio
+        System.out.println("Invalid action: " + message);
     }
 
     @Override
     public void loseMessage(Integer position, ArrayList<String> scores){
-        //TODO. non contiene niente, mostra solo i messaggio. attento a parsare bene gli score
         System.out.println("You lost! Your rank is " + position + "\n");
 
         System.out.println("Here other players ordered scores:");
         for (String score : scores){
             System.out.println(score);
         }
-        //TODO. non contiene niente, mostra solo i messaggio, attento a parsare bene gli scores
     }
 
     @Override
@@ -283,7 +292,6 @@ public class CLIView extends View {
         for (String score : scores){
             System.out.println(score);
         }
-        //TODO. non contiene niente, mostra solo i messaggio, attento a parsare bene gli scores
     }
 
     @Override
@@ -358,7 +366,7 @@ public class CLIView extends View {
         cliPrinter.printInlineList(cliModel.getDraftpool());
         System.out.println("Round Track:\n");
         cliPrinter.printInlineList(cliModel.getRoundTrack());
-        cliPrinter.printWPC(cliModel.getPlayers().get(0).getWpc());
+        cliPrinter.printWPC(cliModel.getPlayer(0).getWpc());
     }
 
 

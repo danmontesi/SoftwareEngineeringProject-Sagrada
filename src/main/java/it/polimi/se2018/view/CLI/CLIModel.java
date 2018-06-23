@@ -218,7 +218,11 @@ public class CLIModel {
         return roundTrack;
     }
 
-    public List<CLIPlayer> getPlayers() {
+    public List<CLIPlayer> getAllPlayers() {
         return players;
+    }
+
+    public CLIPlayer getPlayer(int playerNumber){
+        return players.get(playerNumber);
     }
 }

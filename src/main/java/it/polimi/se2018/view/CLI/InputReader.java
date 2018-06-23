@@ -4,12 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class InputReader {
 
     private boolean timeOut;
     private InputStreamReader isr;
     private BufferedReader reader;
+    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
 
     public InputReader() {
@@ -19,7 +22,7 @@ public class InputReader {
     }
 
     public String readLine() throws IOException, TimeoutException {
-        System.out.println("Dentro readLine");
+        LOGGER.log(Level.FINE, "Dentro readLine");
         timeOut = false; //TODO se lo tolgo il primo turno va avanti perchè non riporto timeOut a false, capire perchè e risolverlo
         while (!reader.ready()) {
             if (timeOut) {
