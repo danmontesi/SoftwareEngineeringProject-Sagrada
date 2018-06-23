@@ -256,22 +256,42 @@ public class VirtualView extends View {
 
     @Override
     public void updateWpc(RefreshWpcCommand refreshCommand) {
-        //TODO
+        //RefreshBoardCommand
+        if (Server.getConnectedClients().get(username)==null){ //disconnected
+            System.out.println("Disconnected -> No updating model");
+        }
+        else
+            Server.getConnectedClients().get(username).notifyClient(refreshCommand);
     }
 
     @Override
     public void updateTokens(RefreshTokensCommand refreshCommand) {
-
+        //RefreshBoardCommand
+        if (Server.getConnectedClients().get(username)==null){ //disconnected
+            System.out.println("Disconnected -> No updating model");
+        }
+        else
+            Server.getConnectedClients().get(username).notifyClient(refreshCommand);
     }
 
     @Override
     public void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
-
+        //RefreshBoardCommand
+        if (Server.getConnectedClients().get(username)==null){ //disconnected
+            System.out.println("Disconnected -> No updating model");
+        }
+        else
+            Server.getConnectedClients().get(username).notifyClient(refreshCommand);
     }
 
     @Override
     public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
-
+        //RefreshBoardCommand
+        if (Server.getConnectedClients().get(username)==null){ //disconnected
+            System.out.println("Disconnected -> No updating model");
+        }
+        else
+            Server.getConnectedClients().get(username).notifyClient(refreshCommand);
     }
 
     public void update(Object model){ //TODO Change with all model representation

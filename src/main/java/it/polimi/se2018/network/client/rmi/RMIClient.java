@@ -39,7 +39,9 @@ public class RMIClient implements Remote, ServerConnection{
     }
 
     public void notifyRMI(ServerToClientCommand command){
-        System.out.println("RMI: arriva comando "+ command.toString());
+        if (!command.toString().contains("Ping")) {
+            System.out.println("RMI: arriva comando " + command.toString());
+        }
         clientController.dispatchCommand(command);
     }
 

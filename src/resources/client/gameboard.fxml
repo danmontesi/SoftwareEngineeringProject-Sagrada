@@ -10,9 +10,9 @@
    <children>
        <AnchorPane prefHeight="630.0" prefWidth="328.0" styleClass="box">
          <children>
-            <ImageView fx:id="puboc1" fitHeight="190.0" fitWidth="140.0" layoutX="20.0" layoutY="14.0" preserveRatio="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
-            <ImageView fx:id="puboc2" fitHeight="190.0" fitWidth="140.0" layoutX="15.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="220.0" />
-            <ImageView fx:id="puboc3" fitHeight="190.0" fitWidth="140.0" layoutX="14.0" layoutY="646.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
+            <ImageView fx:id="pubOC1" fitHeight="190.0" fitWidth="140.0" layoutX="20.0" layoutY="14.0" preserveRatio="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
+            <ImageView fx:id="pubOC2" fitHeight="190.0" fitWidth="140.0" layoutX="15.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="220.0" />
+            <ImageView fx:id="pubOC3" fitHeight="190.0" fitWidth="140.0" layoutX="14.0" layoutY="646.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
             <ToggleButton fx:id="tcb1" layoutX="196.0" layoutY="110.0" mnemonicParsing="false" onAction="#tc1Action" prefHeight="190.0" prefWidth="140.0" styleClass="tcb" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
             <Label fx:id="tc1tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="260.0" layoutY="22.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
             <Circle fx:id="tcircle1" layoutX="290.0" layoutY="35.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
@@ -70,29 +70,7 @@
                  </fill>
              </Circle>
              <ImageView fx:id="wpc1" fitHeight="152.0" fitWidth="190.0" layoutX="30.0" layoutY="49.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="30.0" />
-            <GridPane hgap="8.0" layoutX="39.0" layoutY="41.0" vgap="8.0">
-               <children>
-                  <ImageView fx:id="ivw100" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="ivw110" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                  <ImageView fx:id="ivw120" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-                  <ImageView fx:id="ivw130" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
-                  <ImageView fx:id="ivw140" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
-                  <ImageView fx:id="ivw101" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
-                  <ImageView fx:id="ivw111" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <ImageView fx:id="ivw121" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <ImageView fx:id="ivw131" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <ImageView fx:id="ivw141" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                  <ImageView fx:id="ivw102" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
-                  <ImageView fx:id="ivw112" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <ImageView fx:id="ivw122" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <ImageView fx:id="ivw132" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <ImageView fx:id="ivw142" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                  <ImageView fx:id="ivw103" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
-                  <ImageView fx:id="ivw113" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <ImageView fx:id="ivw123" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <ImageView fx:id="ivw133" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                  <ImageView fx:id="ivw143" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-               </children>
+            <GridPane fx:id="wpc1dice" hgap="8.0" layoutX="39.0" layoutY="41.0" vgap="8.0">
                 <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" prefWidth="29.0" />
                     <ColumnConstraints hgrow="SOMETIMES" prefWidth="29.0" />
@@ -121,29 +99,7 @@
                </fill>
             </Circle>
                <ImageView fx:id="wpc2" fitHeight="152.0" fitWidth="190.0" layoutX="285.0" layoutY="46.0" preserveRatio="true" AnchorPane.bottomAnchor="15.433547973632812" AnchorPane.leftAnchor="285.0" />
-            <GridPane hgap="8.0" layoutX="294.0" layoutY="41.0" vgap="8.0">
-                <children>
-                    <ImageView fx:id="ivw200" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" />
-                    <ImageView fx:id="ivw210" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                    <ImageView fx:id="ivw220" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-                    <ImageView fx:id="ivw230" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
-                    <ImageView fx:id="ivw240" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
-                    <ImageView fx:id="ivw201" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
-                    <ImageView fx:id="ivw211" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    <ImageView fx:id="ivw221" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                    <ImageView fx:id="ivw231" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                    <ImageView fx:id="ivw241" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                    <ImageView fx:id="ivw202" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
-                    <ImageView fx:id="ivw212" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                    <ImageView fx:id="ivw222" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                    <ImageView fx:id="ivw232" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                    <ImageView fx:id="ivw242" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                    <ImageView fx:id="ivw203" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
-                    <ImageView fx:id="ivw213" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                    <ImageView fx:id="ivw223" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                    <ImageView fx:id="ivw233" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                    <ImageView fx:id="ivw243" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-                </children>
+            <GridPane fx:id="wpc2dice" hgap="8.0" layoutX="294.0" layoutY="41.0" vgap="8.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" prefWidth="29.0" />
                   <ColumnConstraints hgrow="SOMETIMES" prefWidth="29.0" />
@@ -172,29 +128,7 @@
                </fill>
             </Circle>
                <ImageView fx:id="wpc3" fitHeight="152.0" fitWidth="190.0" layoutX="491.0" layoutY="47.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="30.0" />
-            <GridPane hgap="8.0" layoutX="549.0" layoutY="41.0" vgap="8.0">
-                <children>
-                    <ImageView fx:id="ivw300" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" />
-                    <ImageView fx:id="ivw310" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-                    <ImageView fx:id="ivw320" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-                    <ImageView fx:id="ivw330" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
-                    <ImageView fx:id="ivw340" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
-                    <ImageView fx:id="ivw301" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
-                    <ImageView fx:id="ivw311" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    <ImageView fx:id="ivw321" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                    <ImageView fx:id="ivw331" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                    <ImageView fx:id="ivw341" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                    <ImageView fx:id="ivw302" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
-                    <ImageView fx:id="ivw312" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                    <ImageView fx:id="ivw322" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                    <ImageView fx:id="ivw332" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                    <ImageView fx:id="ivw342" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                    <ImageView fx:id="ivw303" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3" />
-                    <ImageView fx:id="ivw313" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                    <ImageView fx:id="ivw323" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                    <ImageView fx:id="ivw333" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                    <ImageView fx:id="ivw343" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-                </children>
+            <GridPane fx:id="wpc3dice" hgap="8.0" layoutX="549.0" layoutY="41.0" vgap="8.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" prefWidth="29.0" />
                   <ColumnConstraints hgrow="SOMETIMES" prefWidth="29.0" />
@@ -214,19 +148,7 @@
       <AnchorPane layoutX="330.0" layoutY="222.0" prefHeight="100.0" prefWidth="760.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="226.0" layoutY="24.0" prefHeight="2.0" prefWidth="269.0" style="-fx-font-size: 40px" text="Draft  Pool" textAlignment="CENTER" textFill="#00000050" />
-            <HBox layoutX="14.0" layoutY="30.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="400.0" spacing="30.0" styleClass="db" AnchorPane.leftAnchor="30.0">
-               <children>
-                  <ToggleButton fx:id="tbd1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbd2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbd3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbd4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbd5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbd6" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbd7" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbd8" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-                  <ToggleButton fx:id="tbd9" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" />
-               </children>
-            </HBox>
+            <HBox fx:id="draftPoolDice" layoutX="14.0" layoutY="30.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="400.0" spacing="30.0" styleClass="db" AnchorPane.leftAnchor="30.0" />
             <Button fx:id="pass" layoutX="680.0" layoutY="15.0" mnemonicParsing="false" onAction="#passTurn" pickOnBounds="false" prefHeight="25.0" prefWidth="65.0" styleClass="button" text="Pass" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="15.0" />
             <Button fx:id="quit" layoutX="954.0" layoutY="91.0" mnemonicParsing="false" onAction="#quit" pickOnBounds="false" prefHeight="25.0" prefWidth="65.0" styleClass="button" text="Quit" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="30.0" />
          </children>
@@ -247,7 +169,7 @@
                </fill>
             </Circle>
             <ImageView fx:id="wpc0" fitHeight="230.0" fitWidth="288.0" layoutX="15.0" layoutY="45.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
-            <GridPane hgap="12.0" layoutX="25.0" layoutY="56.0" vgap="12.0" AnchorPane.leftAnchor="25.0">
+            <GridPane fx:id="personalWPCDice" hgap="12.0" layoutX="25.0" layoutY="56.0" vgap="12.0" AnchorPane.leftAnchor="25.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" prefWidth="43.0" />
                   <ColumnConstraints hgrow="SOMETIMES" prefWidth="43.0" />
@@ -261,50 +183,15 @@
                   <RowConstraints prefHeight="43.0" vgrow="SOMETIMES" />
                   <RowConstraints prefHeight="43.0" vgrow="SOMETIMES" />
                </rowConstraints>
-               <children>
-                  <ToggleButton fx:id="tbw000" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" />
-                  <ToggleButton fx:id="tbw010" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="1" />
-                  <ToggleButton fx:id="tbw020" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="2" />
-                  <ToggleButton fx:id="tbw030" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="3" />
-                  <ToggleButton fx:id="tbw040" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="4" />
-                  <ToggleButton fx:id="tbw001" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.rowIndex="1" />
-                  <ToggleButton fx:id="tbw011" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <ToggleButton fx:id="tbw021" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <ToggleButton fx:id="tbw031" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <ToggleButton fx:id="tbw041" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                  <ToggleButton fx:id="tbw002" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.rowIndex="2" />
-                  <ToggleButton fx:id="tbw012" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <ToggleButton fx:id="tbw022" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <ToggleButton fx:id="tbw032" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <ToggleButton fx:id="tbw042" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                  <ToggleButton fx:id="tbw003" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.rowIndex="3" />
-                  <ToggleButton fx:id="tbw013" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <ToggleButton fx:id="tbw023" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <ToggleButton fx:id="tbw033" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                  <ToggleButton fx:id="tbw043" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-               </children>
             </GridPane>
-            <ImageView fx:id="prioc0" fitHeight="267.0" fitWidth="188.0" layoutX="335.0" layoutY="15.0" preserveRatio="true" AnchorPane.bottomAnchor="15.152801513671875" AnchorPane.topAnchor="15.0" />
+            <ImageView fx:id="priOC" fitHeight="267.0" fitWidth="188.0" layoutX="335.0" layoutY="15.0" preserveRatio="true" AnchorPane.bottomAnchor="15.152801513671875" AnchorPane.topAnchor="15.0" />
             <TextArea fx:id="msgbox" editable="false" layoutX="556.0" layoutY="30.0" prefHeight="238.0" prefWidth="190.0" style="-fx-font-size: 14px" wrapText="true" />
          </children>
       </AnchorPane>
        <AnchorPane layoutX="1100.0" prefHeight="630.0" prefWidth="158.0">
            <children>
-               <ImageView fx:id="rt" fitHeight="600.0" fitWidth="122.0" layoutX="16.0" layoutY="15.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
-               <VBox layoutX="57.0" layoutY="65.0" prefHeight="513.0" prefWidth="40.0" rotate="180.0" spacing="12.5" AnchorPane.leftAnchor="57.0">
-               <children>
-                  <ToggleButton fx:id="tbr1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
-                  <ToggleButton fx:id="tbr2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
-                  <ToggleButton fx:id="tbr3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
-                  <ToggleButton fx:id="tbr4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
-                  <ToggleButton fx:id="tbr5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
-                  <ToggleButton fx:id="tbr6" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
-                  <ToggleButton fx:id="tbr7" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
-                  <ToggleButton fx:id="tbr8" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
-                  <ToggleButton fx:id="tbr9" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
-                  <ToggleButton fx:id="tbr10" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" rotate="180.0" />
-               </children>
-            </VBox>
+               <ImageView fx:id="roundTrack" fitHeight="600.0" fitWidth="122.0" layoutX="16.0" layoutY="15.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
+               <VBox fx:id="roundTrackDice" layoutX="57.0" layoutY="65.0" prefHeight="513.0" prefWidth="40.0" rotate="180.0" spacing="12.5" AnchorPane.leftAnchor="57.0" />
            </children>
        </AnchorPane>
    </children>

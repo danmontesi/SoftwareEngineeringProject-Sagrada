@@ -54,8 +54,9 @@ public class SocketClient implements ServerConnection {
                 while (true){
                     try {
                         ServerToClientCommand command = (ServerToClientCommand) input.readObject();
-                        System.out.println("SOCKET: arriva comando "+ command.toString());
-
+                        if (!command.toString().contains("Ping")) {
+                            System.out.println("SOCKET: arriva comando " + command.toString());
+                        }
                         new Thread(() -> {
                                 clientController.dispatchCommand(command);
                             }).start();
