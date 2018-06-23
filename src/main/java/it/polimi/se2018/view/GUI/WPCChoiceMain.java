@@ -1,6 +1,5 @@
 package it.polimi.se2018.view.GUI;
 
-import it.polimi.se2018.view.ClientStarterMain;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

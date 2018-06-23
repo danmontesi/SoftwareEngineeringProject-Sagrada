@@ -1,4 +1,4 @@
-package it.polimi.se2018.view;
+package it.polimi.se2018.view.GUI;
 
 import it.polimi.se2018.network.client.rmi.RMIClient;
 import it.polimi.se2018.network.client.socket.SocketClient;
