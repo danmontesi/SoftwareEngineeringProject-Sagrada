@@ -12,6 +12,15 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 
 public class DraftPool {
+    public Die getLastDie() throws EmptyCellException {
+        for (Cell c : cells){
+            if (c.hasDie()){
+                return c.removeDie();
+            }
+        }
+        throw new EmptyCellException();
+    }
+
     /**
      * The arraylist is a List of Die.
      * If a Die is picked, the value has to remain NULL in order to let the Graphic to remain the same when a die is removed

@@ -402,6 +402,16 @@ public class Model extends Observable implements Serializable{ //Observable of V
         }
     }
 
+    public void putDieOnRoundTrack(Die die) {
+        roundTrack.placeDie(die);
+        notifyRefreshRoundTrack();
+    }
+
+    public Die getLastDie() throws EmptyCellException {
+        Die toReturn = draftPool.getLastDie();
+        return toReturn;
+    }
+
     //Aready has
     //public void notify(Object event) {
 
