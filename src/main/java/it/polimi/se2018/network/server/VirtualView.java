@@ -36,6 +36,7 @@ public class VirtualView extends View {
 
     public void setUsername(String username){
         Server.getUserMap().put(username, this);
+        this.username=username; //TODO perchè è quì? magari lo tolgo dal costruttore
         System.out.println("Creata virtual view di username: " + username);
     }
 
@@ -117,7 +118,7 @@ public class VirtualView extends View {
 
     @Override
     public void otherPlayerTurn(String username) {
-        if (Server.getConnectedClients().get(username) == null) { //disconnected
+        if (Server.getConnectedClients().get(this.username) == null) { //disconnected
             disconnected=true;
             System.out.println("Disconnected-> No action");
         } else
@@ -125,7 +126,7 @@ public class VirtualView extends View {
             Server.requestRefreshBoard(this.username);
             disconnected=false;
         }
-            Server.getConnectedClients().get(username).notifyClient(new OtherPlayerTurnCommand(username));
+            Server.getConnectedClients().get(this.username).notifyClient(new OtherPlayerTurnCommand(username));
 
     }
 

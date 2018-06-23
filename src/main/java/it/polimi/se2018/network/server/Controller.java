@@ -220,7 +220,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     private void startGame() {
-        model.notifyRefreshBoard();
         assignRoundPlayers(orderedPlayers);
         startNewRound();
     }
@@ -304,6 +303,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             model.setPlayerWpcs(orderedPlayers); //Used for notify eventual modifics of wpcs to the Players
             //initialize DraftPool
             //Start a new round-> pick the first of the RoundList
+            model.notifyRefreshBoard();
             currentRoundOrderedPlayers=orderedRoundPlayers.remove(0);
             currentPlayer=currentRoundOrderedPlayers.remove(0);
             System.out.println("current è " + currentPlayer.getUsername());
@@ -315,7 +315,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
             for (Player p : orderedPlayers){
                 if (!(p.getUsername().equals(currentPlayer.getUsername()))) {
-                    userViewMap.get(p.getUsername()).otherPlayerTurn(p.getUsername());
+                    userViewMap.get(p.getUsername()).otherPlayerTurn(currentPlayer.getUsername());
                 }
             }
 
@@ -350,8 +350,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             hasUsedTool=false;
 
             for (Player p : orderedPlayers){
-                if (!(p.getUsername().equals(currentPlayer.getUsername()))) {
-                    userViewMap.get(p.getUsername()).otherPlayerTurn(p.getUsername());
+                if (!p.getUsername().equals(currentPlayer.getUsername())) {
+                    userViewMap.get(p.getUsername()).otherPlayerTurn(currentPlayer.getUsername());
                 }
             }
 
@@ -481,19 +481,20 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
+        System.out.println("Entra in moveChoice");
         try {
             Die toPlace = null;
             try{
-                model.getDraftPool().getDie(command.getDieDraftPoolPosition());
+                toPlace = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
             }
             catch (WrongCellIndexException e){
                 System.out.println("Wrong cell: sending invalid");
                 userViewMap.get(playerUsername).invalidActionMessage("Incorrect draftpool index, try again");
                 userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             }
-            boolean exit = usernamePlayerMap.get(playerUsername).getWindowPatternCard()
-                    .placeDie(toPlace, command.getDieSchemaRowPosition(), command.getDieSchemaColPosition(), true, true, true);
-            if (!exit) {
+            if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard()
+                    .placeDie(toPlace, command.getDieSchemaRowPosition(), command.getDieSchemaColPosition(),
+                            true, true, true)){
                 userViewMap.get(playerUsername).invalidActionMessage("Incorrect move"); //TODO Sarebbe bello scrivere anche il motivo della mossa incorretta, magari creo un metodo apposito per ogni controllo piazzamentog
                 userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 return;
