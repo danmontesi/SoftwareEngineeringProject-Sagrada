@@ -11,14 +11,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SocketClient implements ServerConnection {
     private static final int port = 11111;
     private static final String host = "127.0.0.1";
-    Socket socket;
-    ObjectOutputStream output;
-    ObjectInputStream input;
-    ControllerClientInterface clientController;
+    private Socket socket;
+    private ObjectOutputStream output;
+    private ObjectInputStream input;
+    private ControllerClientInterface clientController;
+    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
+
 
 
     public SocketClient(int viewChoice){
@@ -29,14 +33,14 @@ public class SocketClient implements ServerConnection {
     public void send(ClientToServerCommand command) {
         try {
             if (!command.hasUsername()){
-                System.out.println("Connection not open yet: please start connection first");
+                LOGGER.log(Level.INFO, "Connection not open yet: please start connection first");
                 return;
             }
             output.writeObject(command);
             output.flush();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -55,21 +59,21 @@ public class SocketClient implements ServerConnection {
                     try {
                         ServerToClientCommand command = (ServerToClientCommand) input.readObject();
                         if (!command.toString().contains("Ping")) {
-                            System.out.println("SOCKET: arriva comando " + command.toString());
+                            LOGGER.log(Level.FINE,"SOCKET: arriva comando ", command);
                         }
                         new Thread(() -> {
                                 clientController.dispatchCommand(command);
                             }).start();
 
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
                     } catch (ClassNotFoundException e) {
-                        continue;
+                        //nothing
                     }
                 }
             }).start();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
     }
