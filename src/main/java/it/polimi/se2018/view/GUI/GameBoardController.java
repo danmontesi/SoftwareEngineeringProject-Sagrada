@@ -30,6 +30,8 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Node;
+
 public class GameBoardController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(GameBoardController.class.getName());
@@ -161,10 +163,9 @@ public class GameBoardController extends Observable implements Observer {
         initButtons();
         initRoundTrack();
         initParents();
-        moveDice();
         disableAllButtons(true);
-        msgbox.appendText("waiting for other players to choose WPC...\n");
-        prova();
+        msgbox.appendText("waiting for other players to choose their Window Pattern Card...\n");
+        //prova();
     }
 
     public void update(Observable o, Object arg) {
@@ -186,6 +187,10 @@ public class GameBoardController extends Observable implements Observer {
                     initWpcards();
                     initPersonalWPC();
                     initPersonalPriOC();
+                    setDrafPool(modelRepresentation.getDraftpool());
+                    setRoundTrack(modelRepresentation.getRoundTrack());
+                    initBStyle();
+                    moveDice();
                 }
 
                 @Override
@@ -197,7 +202,7 @@ public class GameBoardController extends Observable implements Observer {
                         pass.setDisable(false);
                         msgbox.setText("It's your turn!\n");
                     } else {
-                        disableAllButtons(true);
+                        //disableAllButtons(true);
                         msgbox.setText("It's " + turnStart.getUsername() + "'s turn!\n");
                     }
                 }
@@ -294,6 +299,27 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void initButtons() {
+        Platform.runLater(() -> {
+            for (int i=0; i<10; i++){
+                ToggleButton tb = new ToggleButton();
+                roundTrackDice.getChildren().add(tb);
+            }
+            for (int i=0; i<9; i++){
+                ToggleButton tb = new ToggleButton();
+                draftPoolDice.getChildren().add(tb);
+            }
+            for (int i=0; i<20; i++) {
+                ToggleButton tb = new ToggleButton();
+                ImageView iv = new ImageView();
+                iv.setFitWidth(43);
+                iv.setFitHeight(43);
+                tb.setGraphic(iv);
+                personalWPCDice.add(tb, (i + 1) % 5, (i + 1) % 4);
+            }
+        });
+    }
+
+    private void initBStyle() {
         pass.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
         quit.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
         pass.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> pass.setEffect(shadow));
@@ -308,6 +334,7 @@ public class GameBoardController extends Observable implements Observer {
                 if (!tb.isSelected()) tb.setEffect(null);
             });
         }
+
         for (int j=0; j<parents.size(); j++) {
             for (int i = 0; i<parents.get(j).getChildrenUnmodifiable().size(); i++) {
                 int h = i;
@@ -423,69 +450,63 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void moveDice() {
-        for (int i=0; i<20; i++) {
-            ToggleButton tb = new ToggleButton();
-            personalWPCDice.add(tb, (i + 1) % 5, (i + 1) % 4);
-        }
-        for (int i=0; i<20; i++) {
-            int h = i;
-            ((ToggleButton)personalWPCDice.getChildren().get(i)).setOnAction(event -> {
-                for (int j=0; j<9; j++) {
-                    if (((ToggleButton)draftPoolDice.getChildren().get(j)).isSelected()) {
-                        ((ToggleButton)personalWPCDice.getChildren().get(h)).setGraphic(((ToggleButton)draftPoolDice.getChildren().get(j)).getGraphic());
-                        ((ToggleButton)draftPoolDice.getChildren().get(j)).setSelected(false);
-                        ((ToggleButton)personalWPCDice.getChildren().get(h)).setSelected(false);
-                        inputError(false);
-                        notifyMove((h+1)%4, (h+1)%5, j);
+        Platform.runLater(() -> {
+            for (int i=0; i<20; i++) {
+                int h = i;
+                ((ToggleButton)personalWPCDice.getChildren().get(i)).setOnAction(event -> {
+                    for (int j=0; j<9; j++) {
+                        if (((ToggleButton)draftPoolDice.getChildren().get(j)).isSelected()) {
+                            ((ToggleButton)personalWPCDice.getChildren().get(h)).setGraphic(((ToggleButton)draftPoolDice.getChildren().get(j)).getGraphic());
+                            ((ToggleButton)draftPoolDice.getChildren().get(j)).setSelected(false);
+                            ((ToggleButton)personalWPCDice.getChildren().get(h)).setSelected(false);
+                            inputError(false);
+                            notifyMove((h+1)%4, (h+1)%5, j);
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
+        });
     }
 
     private void setDrafPool(ArrayList<String> dice) {
-        for (int i=0; i<9; i++){
-            ToggleButton tb = new ToggleButton();
-            draftPoolDice.getChildren().add(tb);
-        }
-        for (int i=0; i<dice.size(); i++) {
-            String img = dice.get(i);
-            ImageView iv = new ImageView();
-            if (img.contains("_")) {
-                String path = "/client/dice/" + img + ".jpg";
-                Image image = new Image(path);
-                iv.setImage(image);
-                iv.setFitWidth(40);
-                iv.setFitHeight(40);
-                ((ToggleButton)draftPoolDice.getChildren().get(i)).setGraphic(iv);
-            } else {
+        Platform.runLater(() -> {
+            for (int i=0; i<dice.size(); i++) {
+                String img = dice.get(i);
+                ImageView iv = new ImageView();
+                if (img.contains("_")) {
+                    String path = "/client/dice/" + img + ".jpg";
+                    Image image = new Image(path);
+                    iv.setImage(image);
+                    iv.setFitWidth(43);
+                    iv.setFitHeight(43);
+                    ((ToggleButton)draftPoolDice.getChildren().get(i)).setGraphic(iv);
+                } else {
+                    draftPoolDice.getChildren().get(i).setDisable(true);
+                }
+            }
+            for (int i=dice.size(); i<9; i++) {
                 draftPoolDice.getChildren().get(i).setDisable(true);
             }
-        }
-        for (int i=dice.size(); i<9; i++) {
-            draftPoolDice.getChildren().get(i).setDisable(true);
-        }
+        });
     }
 
     private void setRoundTrack(ArrayList<String> dice) {
-        for (int i=0; i<9; i++){
-            ToggleButton tb = new ToggleButton();
-            draftPoolDice.getChildren().add(tb);
-        }
-        for (int i=0; i<10; i++) {
-            String img = dice.get(i);
-            ImageView iv = new ImageView();
-            if (img.contains("_")) {
-                String path = "/client/dice/" + img + ".jpg";
-                Image image = new Image(path);
-                iv.setImage(image);
-                iv.setFitWidth(40);
-                iv.setFitHeight(40);
-                ((ToggleButton)roundTrackDice.getChildren().get(i)).setGraphic(iv);
-            } else {
-                roundTrackDice.getChildren().get(i).setDisable(true);
+        Platform.runLater(() -> {
+            for (int i=0; i<10; i++) {
+                String img = dice.get(i);
+                ImageView iv = new ImageView();
+                if (img.contains("_")) {
+                    String path = "/client/dice/" + img + ".jpg";
+                    Image image = new Image(path);
+                    iv.setImage(image);
+                    iv.setFitWidth(43);
+                    iv.setFitHeight(43);
+                    ((ToggleButton)roundTrackDice.getChildren().get(i)).setGraphic(iv);
+                } else {
+                    roundTrackDice.getChildren().get(i).setDisable(true);
+                }
             }
-        }
+        });
     }
 
     private void setTokens(ArrayList<Integer> tcTok, ArrayList<Integer> playersTok, Integer personalTok) {
@@ -627,7 +648,7 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void notifyMove(Integer r, Integer c, Integer d) {
-        guiViewT.notify(new MoveChoiceDicePlacement( r, c, d));
+        guiViewT.notify(new MoveChoiceDicePlacement(r, c, d));
         disableAllButtons(true);
     }
 
@@ -673,47 +694,30 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void prova() {
-        Image img = new Image("/client/WPC/batllo.jpg");
+        Image img = new Image("/client/WPC/Batllo.jpg");
         wpc0.setImage(img);
-
-        Platform.runLater(() -> {
-            ArrayList<String> wpcards = new ArrayList<>();
-            wpcards.add("violet3");
-            wpcards.add("violet_3");
-            wpcards.add("violet_3");
-            wpcards.add("violet3");
-            wpcards.add("violet_3");
-            wpcards.add("violet3");
-            wpcards.add("violet_3");
-            wpcards.add("violet3");
-            wpcards.add("violet3");
-            wpcards.add("violet_3");
-            wpcards.add("violet_3");
-            wpcards.add("violet3");
-            wpcards.add("violet_3");
-            wpcards.add("violet3");
-            wpcards.add("violet_3");
-            wpcards.add("violet3");
-            wpcards.add("violet_3");
-            wpcards.add("violet_3");
-            wpcards.add("violet3");
-            wpcards.add("violet3");
-            wpcards.add("violet_3");
-            for (int i=0; i<9; i++) {
-                String img1 = wpcards.get(i+1);
-                ImageView iv = new ImageView();
-                ToggleButton tb = new ToggleButton();
-                if (img1.contains("_")) {
-                    String path = "/client/dice/" + img1 + ".jpg";
-                    Image image = new Image(path);
-                    iv.setImage(image);
-                    iv.setFitHeight(40);
-                    iv.setFitWidth(40);
-                    tb.setGraphic(iv);
-                    roundTrackDice.getChildren().add(tb);
-                }
-            }
-        });
+        ArrayList<String> w = new ArrayList<>();
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        w.add("blue_3");
+        setPersonalWPC(w);
     }
 }
-

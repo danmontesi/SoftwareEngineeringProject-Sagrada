@@ -268,6 +268,30 @@ public class Server {
         activeGames.add(controller);
     }
 
+    public static void requestRefreshBoard(String username){
+        for (Controller game : activeGames){
+            for (String user : game.getUserViewMap().keySet()){
+                if (username.equals(user)){
+                    game.getModel().notifyRefreshBoard(); //TODO forse possibile indirizzarla ad solo a un player, che la richiede
+                    return;
+                }
+            }
+        }
+    }
+
+    public static void updateDisconnectedUser(String username){
+        for (Controller game : activeGames){
+            for (String user : game.getUserViewMap().keySet()){
+                if (username.equals(user)){ //found the right controller
+                    for (String usernameToNotify : game.getUserViewMap().keySet())
+                        if (!username.equals(usernameToNotify))
+                            game.getUserViewMap().get(user).playerDisconnection(username);
+                    return;
+                }
+            }
+        }
+    }
+
     public static ArrayList<String> getWaitingClients(){
         return waitingClients;
     }

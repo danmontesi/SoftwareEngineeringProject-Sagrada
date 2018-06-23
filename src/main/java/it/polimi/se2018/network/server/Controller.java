@@ -18,6 +18,14 @@ import java.util.concurrent.ThreadLocalRandom;
 //TODO has to extend controllerInterface to avoid access of Controller from view
 public class Controller implements Observer, ControllerServerInterface { //Observer perchè osserva la View tramite le classi di mezzo (ClientConnection)
 
+    public Model getModel() {
+        return model;
+    }
+
+    public HashMap<String, View> getUserViewMap() {
+        return userViewMap;
+    }
+
     /**
      * This is the main controller of the game
      * It lives in the Server side, and contains all references to Players and their Connections
@@ -212,6 +220,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     private void startGame() {
+        model.notifyRefreshBoard();
         assignRoundPlayers(orderedPlayers);
         startNewRound();
     }

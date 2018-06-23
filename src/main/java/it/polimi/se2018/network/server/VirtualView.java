@@ -19,11 +19,13 @@ public class VirtualView extends View {
 
     Observer observer; //Il controller TODO: Togli e usa quello dato dall'Observable
     Observable observable; // Il model
+    boolean disconnected;
 
     public VirtualView(Observer controller, Model model, String username) {
         this.observer = controller;
         this.observable = model; //this can be omitted
         this.username = username;
+        this.disconnected = false;
         Server.getUserMap().put(username, this);
         System.out.println("Creata virtual view di username: " + username);
     }
@@ -58,12 +60,15 @@ public class VirtualView extends View {
     @Override
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> choosing a random Wpc");
             notify(new ChosenWindowPatternCard(cards.get(0).getCardName()));
         }
         else {
-            Server.getConnectedClients().get(username).notifyClient(new PingConnectionTester()); //TODO implement the command
+            Server.getConnectedClients().get(username).notifyClient(new PingConnectionTester());
             if (Server.getConnectedClients().get(username) == null) { //disconnected
+                disconnected=true;
+                Server.updateDisconnectedUser(this.username);
                 System.out.println("Disconnected-> choosing a random Wpc");
                 notify(new ChosenWindowPatternCard(cards.get(0).getCardName()));
             } else {
@@ -83,24 +88,43 @@ public class VirtualView extends View {
     public void startTurnMenu() {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             System.out.println("Disconnected-> Passing automatically turn");
+            Server.updateDisconnectedUser(this.username); //Every turn a message saying the player is disconnected and will pass its turn//TODO magari cambia
+            disconnected=true;
+            Server.updateDisconnectedUser(this.username);
             notify(new MoveChoicePassTurn(username));
-        } else
+        } else {
+            if (disconnected){
+                Server.requestRefreshBoard(this.username);
+                disconnected=false;
+            }
             Server.getConnectedClients().get(username).notifyClient(new StartPlayerTurnCommand());
+        }
     }
 
     @Override
     public void startGame() {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected->No action");
-        } else
+        } else {
+            if (disconnected){
+                Server.requestRefreshBoard(this.username);
+                disconnected=false;
+            }
             Server.getConnectedClients().get(username).notifyClient(new StartGameCommand());
+        }
     }
 
     @Override
     public void otherPlayerTurn(String username) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> No action");
         } else
+        if (disconnected){
+            Server.requestRefreshBoard(this.username);
+            disconnected=false;
+        }
             Server.getConnectedClients().get(username).notifyClient(new OtherPlayerTurnCommand(username));
 
     }
@@ -112,6 +136,7 @@ public class VirtualView extends View {
     @Override
     public void continueTurnMenu(boolean move, boolean tool) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> Passing automatically turn");
             notify(new MoveChoicePassTurn(username));
         } else {
@@ -123,6 +148,7 @@ public class VirtualView extends View {
     @Override
     public void newConnectedPlayer(String username) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> No action");
         } else {
             Server.getConnectedClients().get(username).notifyClient(new PlayerDisconnectionNotification(username));
@@ -133,6 +159,7 @@ public class VirtualView extends View {
     @Override
     public void playerDisconnection(String username) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> No action");
         } else {
             System.out.println("SENDING CONTINUETURNMENU");
@@ -143,6 +170,7 @@ public class VirtualView extends View {
     @Override
     public void firmPastryBrushMenu(int value) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> Passing automatically turn");
             notify(new MoveChoicePassTurn(username));
         } else
@@ -152,6 +180,7 @@ public class VirtualView extends View {
     @Override
     public void firmPastryThinnerMenu(String color, int value) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> Passing automatically turn");
             notify(new MoveChoicePassTurn(username));
         } else
@@ -161,6 +190,7 @@ public class VirtualView extends View {
     @Override
     public void moveDieNoRestrictionMenu(String cardName) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> Passing automatically turn");
             notify(new MoveChoicePassTurn(username));
         } else
@@ -170,6 +200,7 @@ public class VirtualView extends View {
     @Override
     public void changeDieValueMenu(String cardName) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> Passing automatically turn");
             notify(new MoveChoicePassTurn(username));
         } else
@@ -179,6 +210,7 @@ public class VirtualView extends View {
     @Override
     public void twoDiceMoveMenu(String cardName) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> Passing automatically turn");
             notify(new MoveChoicePassTurn(username));
         } else
@@ -188,6 +220,7 @@ public class VirtualView extends View {
     @Override
     public void corkLineMenu() {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> Passing automatically turn");
             notify(new MoveChoicePassTurn(username));
         } else
@@ -197,6 +230,7 @@ public class VirtualView extends View {
     @Override
     public void wheelsPincherMenu() {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> Passing automatically turn");
             notify(new MoveChoicePassTurn(username));
         } else
@@ -206,6 +240,7 @@ public class VirtualView extends View {
     @Override
     public void circularCutter() {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> Passing automatically turn");
             notify(new MoveChoicePassTurn(username));
         } else
@@ -215,6 +250,7 @@ public class VirtualView extends View {
     @Override
     public void invalidActionMessage(String message) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> No action");
         } else {
             System.out.println("SENDING INVALID ACTION");
@@ -230,6 +266,7 @@ public class VirtualView extends View {
     @Override
     public void loseMessage(Integer position, ArrayList<String> scores) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> No action");
         } else {
             Server.getConnectedClients().get(username).notifyClient(new LoseCommand(scores, position));
@@ -239,6 +276,7 @@ public class VirtualView extends View {
     @Override
     public void winMessage(ArrayList<String> scores) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> No action");
         } else
             Server.getConnectedClients().get(username).notifyClient(new WinCommand(scores));
@@ -247,6 +285,7 @@ public class VirtualView extends View {
     @Override
     public void timeOut() {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> Passing automatically turn");
             notify(new MoveChoicePassTurn(username));
         } else {
@@ -258,6 +297,7 @@ public class VirtualView extends View {
     public void updateWpc(RefreshWpcCommand refreshCommand) {
         //RefreshBoardCommand
         if (Server.getConnectedClients().get(username)==null){ //disconnected
+            disconnected=true;
             System.out.println("Disconnected -> No updating model");
         }
         else
@@ -268,6 +308,7 @@ public class VirtualView extends View {
     public void updateTokens(RefreshTokensCommand refreshCommand) {
         //RefreshBoardCommand
         if (Server.getConnectedClients().get(username)==null){ //disconnected
+            disconnected=true;
             System.out.println("Disconnected -> No updating model");
         }
         else
@@ -278,6 +319,7 @@ public class VirtualView extends View {
     public void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
         //RefreshBoardCommand
         if (Server.getConnectedClients().get(username)==null){ //disconnected
+            disconnected=true;
             System.out.println("Disconnected -> No updating model");
         }
         else
@@ -288,6 +330,7 @@ public class VirtualView extends View {
     public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
         //RefreshBoardCommand
         if (Server.getConnectedClients().get(username)==null){ //disconnected
+            disconnected=true;
             System.out.println("Disconnected -> No updating model");
         }
         else
@@ -302,6 +345,7 @@ public class VirtualView extends View {
             return;
         }
         if (Server.getConnectedClients().get(username)==null){ //disconnected
+            disconnected=true;
             System.out.println("Disconnected -> No updating model");
         }
         else
@@ -311,6 +355,7 @@ public class VirtualView extends View {
     public void update(RefreshBoardCommand command){ //TODO Change with all model representation
         //RefreshBoardCommand
         if (Server.getConnectedClients().get(username)==null){ //disconnected
+            disconnected=true;
             System.out.println("Disconnected -> No updating model");
         }
         else
@@ -320,6 +365,7 @@ public class VirtualView extends View {
     @Override
     public void messageBox(String message) {
         if (Server.getConnectedClients().get(username)==null){ //disconnected
+            disconnected=true;
             System.out.println("Disconnected-> No action");
         }
         else
