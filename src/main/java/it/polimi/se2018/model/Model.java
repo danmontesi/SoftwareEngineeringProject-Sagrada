@@ -182,7 +182,7 @@ public class Model extends Observable implements Serializable{ //Observable of V
     public void setGamePlayers(ArrayList<Player> gamePlayers) {
         this.gamePlayers = gamePlayers;
         //notifyEditWpcs();
-        notify(this);
+        //notify(this);
         notifyRefreshWpcs();
     }
 
@@ -213,7 +213,9 @@ public class Model extends Observable implements Serializable{ //Observable of V
 
     public Die removeDieFromDraftPool(int index){
         try {
-            return getDraftPool().takeDie(index);
+            Die temp = getDraftPool().takeDie(index);
+            notifyRefreshDraftPool();
+            return temp;
         } catch (EmptyCellException e) {
             return null;
         }
@@ -222,6 +224,7 @@ public class Model extends Observable implements Serializable{ //Observable of V
     public void changeDieValueOnDraftPool(int index, int value){
         try {
             draftPool.getDie(index).setValue(value);
+            notifyRefreshDraftPool();
         } catch (EmptyCellException e) {
             e.printStackTrace();
         }
@@ -252,7 +255,7 @@ public class Model extends Observable implements Serializable{ //Observable of V
         this.gamePlayers = players;
         notifyRefreshBoard();
     }
-
+/*
     //TODO Versione toString, eventualmente da farle tornare il model stesso
     @Override
     public void notify(Object obj){
@@ -262,13 +265,13 @@ public class Model extends Observable implements Serializable{ //Observable of V
             observer.update(model.toString());
         }
     }
-
+*/
     public void notifyRefreshDraftPool(){
         for (Observer observer : observers) {
             ArrayList<String> draftpool= new ArrayList<>(); //Dice in the format: colorNumber/empty
             draftpool = getDraftPool().draftpoolPathRepresentation();
             System.out.println("Notificando una V.V. della new board");
-            //observer.update(model);
+            ((View) observer).updateDraftPool(new RefreshDraftPoolCommand(draftpool));
         }
     }
 
@@ -295,7 +298,7 @@ public class Model extends Observable implements Serializable{ //Observable of V
             ArrayList<String> roundTrackString = new ArrayList<>(); //Dice in the format: colorNumber/empty
             roundTrackString = getRoundTrack().roundtrackPathRepresentation();
             System.out.println("Notificando una V.V. della new board");
-            observer.update(new RefreshRoundTrackCommand(roundTrackString));
+            ((View) observer).updateRoundTrack(new RefreshRoundTrackCommand(roundTrackString));
         }
     }
 
@@ -317,7 +320,7 @@ public class Model extends Observable implements Serializable{ //Observable of V
                     otherPlayersTokens.add(p.getTokens());
                 }
             }
-            observer.update(new RefreshTokensCommand(otherPlayersTokens, tokensToolCards, myTokens));
+            ((View) observer).updateTokens(new RefreshTokensCommand(otherPlayersTokens, tokensToolCards, myTokens));
         }
     }
 
