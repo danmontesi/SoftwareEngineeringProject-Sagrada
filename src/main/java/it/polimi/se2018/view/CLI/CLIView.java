@@ -5,6 +5,9 @@ import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
+import it.polimi.se2018.view.clientModel.ClientModel;
+import it.polimi.se2018.view.clientModel.PlayerLight;
+import it.polimi.se2018.view.clientModel.ToolcardLight;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +26,7 @@ public class CLIView extends View {
         register(observer);
         System.out.println("ATTESA DI GIOCATORI...");
         inputReader = new InputReader();
-        cliModel = new CLIModel();
+        cliModel = new ClientModel();
     }
 
     //TODO Set! username
@@ -31,7 +34,7 @@ public class CLIView extends View {
     private Scanner scan = new Scanner(System.in); // Can be replaced with BufferedReader?
     private InputReader inputReader;
     private CLIPrinter cliPrinter = new CLIPrinter();
-    private CLIModel cliModel;
+    private ClientModel cliModel;
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
     //OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO
@@ -297,7 +300,8 @@ public class CLIView extends View {
     @Override
     public void correctAuthenthication(String username){
         this.username=username;
-        //TODO. Setta username e mostra solo il messaggio di corretta authentication
+        cliModel.getPlayer(0).setUsername(username);
+        System.out.println("Correct authentication!\nWelcome to Sagrada, " + cliModel.getPlayer(0).getUsername());
     }
 
     @Override
@@ -307,28 +311,24 @@ public class CLIView extends View {
 
     @Override
     public void updateWpc(RefreshWpcCommand refreshCommand) {
-        clearScreen();
         cliModel.parseRefreshWPC(refreshCommand);
         printSyntheticBoard();
     }
 
     @Override
     public void updateTokens(RefreshTokensCommand refreshCommand) {
-        clearScreen();
         cliModel.parseRefreshTokens(refreshCommand);
         printSyntheticBoard();
     }
 
     @Override
     public void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
-        clearScreen();
         cliModel.parseRefreshRoundTrack(refreshCommand);
         printSyntheticBoard();
     }
 
     @Override
     public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
-        clearScreen();
         cliModel.parseRefreshDraftPool(refreshCommand);
         printSyntheticBoard();
     }
@@ -344,13 +344,12 @@ public class CLIView extends View {
 
     @Override
     public void messageBox(String message) {
-        System.out.println(message);
+        System.out.println("Message from Server: " + message);
     }
 
     @Override
     //update entire board
     public void update(Object event) {
-        clearScreen();
         RefreshBoardCommand command = (RefreshBoardCommand) event;
         cliModel.parseRefreshBoard(command);
         printSyntheticBoard();
@@ -361,12 +360,41 @@ public class CLIView extends View {
         System.out.flush();
     }
 
-    private void printSyntheticBoard(){
+
+
+    private void printSyntheticBoard(boolean clearScreen){
+        if (clearScreen){
+            clearScreen();
+        }
         System.out.println("Draft Pool:\n");
         cliPrinter.printInlineList(cliModel.getDraftpool());
         System.out.println("Round Track:\n");
         cliPrinter.printInlineList(cliModel.getRoundTrack());
         cliPrinter.printWPC(cliModel.getPlayer(0).getWpc());
+    }
+
+    private void printSyntheticBoard(){
+        printSyntheticBoard(true);
+    }
+
+    private void printToolcards(){
+        System.out.println("Toolcards:");
+        for(int i = 0; i < cliModel.getToolcards().size(); i++){
+            ToolcardLight card = cliModel.getToolcards().get(i);
+            System.out.println(String.format("%d) %s - Tokens: %d", i+1, card.getToolcardName(), card.getTokens()));
+            System.out.println("\t" + card.getDescription());
+        }
+    }
+
+    private void printCompleteBoard(){
+        clearScreen();
+        for (int i = 1; i < cliModel.getAllPlayers().size(); i++){
+            PlayerLight player = cliModel.getPlayer(i);
+            System.out.println(player.getUsername() + " - Tokens: " + player.getWpc());
+            cliPrinter.printWPC(player.getWpc());
+            System.out.println("\n");
+        }
+        printSyntheticBoard(false);
     }
 
 
