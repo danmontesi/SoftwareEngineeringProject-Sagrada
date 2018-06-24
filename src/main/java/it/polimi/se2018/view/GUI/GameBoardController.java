@@ -166,7 +166,7 @@ public class GameBoardController extends Observable implements Observer {
         initParents();
         disableAllButtons(true);
         msgbox.appendText("waiting for other players to choose their Window Pattern Card...\n");
-        //prova();
+        prova();
     }
 
     public void update(Observable o, Object arg) {
@@ -203,7 +203,7 @@ public class GameBoardController extends Observable implements Observer {
                         pass.setDisable(false);
                         msgbox.setText("It's your turn!\n");
                     } else {
-                        //disableAllButtons(true);
+                        disableAllButtons(true);
                         msgbox.setText("It's " + turnStart.getUsername() + "'s turn!\n");
                     }
                 }
@@ -377,8 +377,10 @@ public class GameBoardController extends Observable implements Observer {
                 Image image = new Image(path);
                 pubOCards.get(i).setImage(image);
                 Tooltip t = new Tooltip(publicOCDesc.get(i));
-                Tooltip.install(pubOCards.get(i), t);
                 t.setStyle("-fx-font-size: 15px");
+                t.setPrefWidth(200);
+                t.setWrapText(true);
+                Tooltip.install(pubOCards.get(i), t);
             }
         });
     }
@@ -396,8 +398,10 @@ public class GameBoardController extends Observable implements Observer {
                 iv.setFitWidth(140);
                 tcButtons.get(i).setGraphic(iv);
                 Tooltip t = new Tooltip(tCardsDesc.get(i));
-                Tooltip.install(tcButtons.get(i), t);
                 t.setStyle("-fx-font-size: 15px");
+                t.setPrefWidth(200);
+                t.setWrapText(true);
+                Tooltip.install(tcButtons.get(i), t);
                 tcTokens.get(i).setText(modelRepresentation.getTokensToolCards().get(i).toString());
                 tcCircles.get(i).setVisible(true);
             }
@@ -457,9 +461,6 @@ public class GameBoardController extends Observable implements Observer {
         Platform.runLater(() -> {
             for (int i=0; i<20; i++) {
                 int h = i;
-                System.out.println(h+". col: "+personalWPCDice.getColumnIndex(personalWPCDice.getChildren().get(h)));
-                System.out.println(h+". row: "+personalWPCDice.getRowIndex(personalWPCDice.getChildren().get(h)));
-                System.out.println("-----------");
                 ((ToggleButton)personalWPCDice.getChildren().get(i)).setOnAction(event -> {
                     for (int j=0; j<9; j++) {
                         if (((ToggleButton)draftPoolDice.getChildren().get(j)).isSelected()) {
@@ -467,7 +468,7 @@ public class GameBoardController extends Observable implements Observer {
                             ((ToggleButton)draftPoolDice.getChildren().get(j)).setSelected(false);
                             ((ToggleButton)personalWPCDice.getChildren().get(h)).setSelected(false);
                             inputError(false);
-                            notifyMove(personalWPCDice.getRowIndex(personalWPCDice.getChildren().get(h)), personalWPCDice.getColumnIndex(personalWPCDice.getChildren().get(h)), j);
+                            notifyMove(GridPane.getRowIndex(personalWPCDice.getChildren().get(h)), GridPane.getColumnIndex(personalWPCDice.getChildren().get(h)), j);
                         }
                     }
                 });
@@ -559,6 +560,7 @@ public class GameBoardController extends Observable implements Observer {
                     iv.setFitWidth(43);
                     iv.setFitHeight(43);
                     ((ToggleButton)personalWPCDice.getChildren().get(i)).setGraphic(iv);
+                    personalWPCDice.getChildren().get(i).setDisable(true);
                 } else {
                     ImageView iv = new ImageView();
                     ((ToggleButton)personalWPCDice.getChildren().get(i)).setGraphic(iv);
@@ -590,14 +592,14 @@ public class GameBoardController extends Observable implements Observer {
     private void showClientStarter() {
         Platform.runLater(() ->  {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/clientstarter.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/clientstarter.fxml"));
                 Parent root = fxmlLoader.load();
-                Stage gameBoardStage = new Stage();
-                gameBoardStage.setScene(new Scene(root));
-                gameBoardStage.show();
+                Stage wpcChoiceStage = new Stage();
+                wpcChoiceStage.setScene(new Scene(root));
+                wpcChoiceStage.show();
                 closeStage();
             } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch ranking pane", e);
+                e.printStackTrace();
             }
         });
     }
@@ -614,7 +616,8 @@ public class GameBoardController extends Observable implements Observer {
 
     @FXML
     public void tc1Action() {
-
+        if (tcb1.isSelected())
+        guiViewT.notify();
     }
 
     @FXML
@@ -706,22 +709,5 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void prova() {
-        GridPane gridPane = new GridPane();
-        int j=-1;
-        for (int i=0; i<20; i++) {
-            int h;
-            h=i%5;
-            if (h==0) j++;
-            Label label = new Label();
-            label.setText(""+i);
-            gridPane.add(label, h, j);
-        }
-
-        for (javafx.scene.Node l : gridPane.getChildren()) {
-            System.out.println("col: "+gridPane.getColumnIndex(l));
-            System.out.println("row: "+gridPane.getRowIndex(l));
-            System.out.println("-------");
-        }
-    }
+    private void prova() {}
 }

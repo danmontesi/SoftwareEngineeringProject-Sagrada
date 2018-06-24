@@ -2,17 +2,16 @@ package it.polimi.se2018.view.GUI;
 
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
+import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardActions.*;
-import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.*;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.LobbyNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.RankingPaneNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WGUIViewSetting;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WPCChoice;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.model.WindowPatternCard;
-import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.view.clientModel.ClientModel;
 
 import java.util.ArrayList;
 
@@ -46,7 +45,8 @@ public class GUIView extends View {
 
     @Override
     public void endGame() {
-
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui();
     }
 
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
@@ -80,7 +80,6 @@ public class GUIView extends View {
     @Override
     public void authenticatedCorrectlyMessage(String message) {
         this.username = message;
-
     }
 
     public void AllowedUseToolMessage(String message) {
@@ -143,12 +142,24 @@ public class GUIView extends View {
     }
 
     public void loseMessage(Integer position, ArrayList<String> scores) {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //TODO: fare come si deve
         scores.add(0, position.toString());
         RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
         rankingPaneNotifier.updateGui(scores);
     }
 
     public void winMessage(ArrayList<String> scores) {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //TODO: fare come si deve
         scores.add(0, "1");
         RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
         rankingPaneNotifier.updateGui(scores);
@@ -183,15 +194,10 @@ public class GUIView extends View {
 
     @Override
     public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
-        System.out.println("draftpool update in corso");
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.updateGui(new DraftPoolRoundTrackUpdate("DP", refreshCommand.getDraftpool()));
     }
 
-
-    // Methods for Obs/Obsvb
-
-    //Sono gli stessi in ogni view
     @Override
     public void notify(Object event) {
         ClientToServerCommand command = (ClientToServerCommand) event;
@@ -201,20 +207,13 @@ public class GUIView extends View {
     }
 
     @Override
-    public void messageBox(String message) {
-
-    }
+    public void messageBox(String message) {}
 
     @Override
     public void update(Object model) {
-        //Osserva il Model e con Update, fa l'update del model locale
-        //Calls the right method to update the Graphic Board;
-        //The model is already updated by the ClientController, no worries about that
-        //In case there is a CLI, does anything
         RefreshBoardCommand command = (RefreshBoardCommand) model;
-        //PER NIVES: PER ORA LE UPDATE SONO DI 2 TIPI: TU LASCIALI ENTRAMBI E FAI L'AGGIORNAMENTO  DELLA BOARD PRENDENDO QUESTO
         if (command.getMessage()!= null) {
-            System.out.println("ricevuto " + command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
+            System.out.println("ricevuto " + command.getMessage());
         }
         else{
             try {
@@ -222,11 +221,10 @@ public class GUIView extends View {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //TODO: sistemare meglio
+            //TODO: fare come si deve
             GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
             gameBoardNotifier.updateGui(new GUIViewSetting(this));
             gameBoardNotifier.updateGui(new RefreshBoard(command));
-            System.out.println("board update");
         }
     }
 }
