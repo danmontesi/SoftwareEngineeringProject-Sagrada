@@ -5,9 +5,11 @@ import it.polimi.se2018.commands.client_to_server_command.MoveChoicePassTurn;
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardActions.*;
+import it.polimi.se2018.view.clientModel.ClientModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -37,7 +39,6 @@ public class GameBoardController extends Observable implements Observer {
     private static final Logger LOGGER = Logger.getLogger(GameBoardController.class.getName());
 
     private GUIView guiViewT;
-
     private RefreshBoardCommand modelRepresentation;
 
     private List<Circle> tcCircles;
@@ -308,13 +309,16 @@ public class GameBoardController extends Observable implements Observer {
                 ToggleButton tb = new ToggleButton();
                 draftPoolDice.getChildren().add(tb);
             }
+            int k=-1;
             for (int i=0; i<20; i++) {
+                int h=i%5;
+                if (h==0) k++;
                 ToggleButton tb = new ToggleButton();
                 ImageView iv = new ImageView();
                 iv.setFitWidth(43);
                 iv.setFitHeight(43);
                 tb.setGraphic(iv);
-                personalWPCDice.add(tb, (i + 1) % 5, (i + 1) % 4);
+                personalWPCDice.add(tb, h, k);
             }
         });
     }
@@ -453,6 +457,9 @@ public class GameBoardController extends Observable implements Observer {
         Platform.runLater(() -> {
             for (int i=0; i<20; i++) {
                 int h = i;
+                System.out.println(h+". col: "+personalWPCDice.getColumnIndex(personalWPCDice.getChildren().get(h)));
+                System.out.println(h+". row: "+personalWPCDice.getRowIndex(personalWPCDice.getChildren().get(h)));
+                System.out.println("-----------");
                 ((ToggleButton)personalWPCDice.getChildren().get(i)).setOnAction(event -> {
                     for (int j=0; j<9; j++) {
                         if (((ToggleButton)draftPoolDice.getChildren().get(j)).isSelected()) {
@@ -460,7 +467,7 @@ public class GameBoardController extends Observable implements Observer {
                             ((ToggleButton)draftPoolDice.getChildren().get(j)).setSelected(false);
                             ((ToggleButton)personalWPCDice.getChildren().get(h)).setSelected(false);
                             inputError(false);
-                            notifyMove((h+1)%4, (h+1)%5, j);
+                            notifyMove(personalWPCDice.getRowIndex(personalWPCDice.getChildren().get(h)), personalWPCDice.getColumnIndex(personalWPCDice.getChildren().get(h)), j);
                         }
                     }
                 });
@@ -522,7 +529,10 @@ public class GameBoardController extends Observable implements Observer {
     private void setWpCards(ArrayList<ArrayList<String>> wpcards)  {
         Platform.runLater(() -> {
             for (int i=0; i<wpcards.size(); i++) {
+                int k=-1;
                 for (int j=0; j<20; j++) {
+                    int h=j%5;
+                    if (h==0) k++;
                     String img = wpcards.get(i).get(j+1);
                     ImageView iv = new ImageView();
                     if (img.contains("_")) {
@@ -531,7 +541,7 @@ public class GameBoardController extends Observable implements Observer {
                         iv.setImage(image);
                         iv.setFitHeight(29);
                         iv.setFitWidth(29);
-                        otherWPCsDice.get(i).add(iv, (j + 1) % 5, (j + 1) % 4);
+                        otherWPCsDice.get(i).add(iv, h, k);
                     }
                 }
             }
@@ -542,13 +552,15 @@ public class GameBoardController extends Observable implements Observer {
         Platform.runLater(() -> {
             for (int i=0; i<20; i++) {
                 String img = wpc.get(i+1);
-                ImageView iv = new ImageView();
                 if (img.contains("_")) {
                     String path = "/client/dice/" + img + ".jpg";
                     Image image = new Image(path);
-                    iv.setImage(image);
+                    ImageView iv = new ImageView(image);
                     iv.setFitWidth(43);
                     iv.setFitHeight(43);
+                    ((ToggleButton)personalWPCDice.getChildren().get(i)).setGraphic(iv);
+                } else {
+                    ImageView iv = new ImageView();
                     ((ToggleButton)personalWPCDice.getChildren().get(i)).setGraphic(iv);
                 }
             }
@@ -645,6 +657,7 @@ public class GameBoardController extends Observable implements Observer {
         disableTB(draftPoolDice, b);
         disableTB(roundTrackDice, b);
         disableTB(personalWPCDice, b);
+        pass.setDisable(true);
     }
 
     private void notifyMove(Integer r, Integer c, Integer d) {
@@ -694,30 +707,21 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void prova() {
-        Image img = new Image("/client/WPC/Batllo.jpg");
-        wpc0.setImage(img);
-        ArrayList<String> w = new ArrayList<>();
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        w.add("blue_3");
-        setPersonalWPC(w);
+        GridPane gridPane = new GridPane();
+        int j=-1;
+        for (int i=0; i<20; i++) {
+            int h;
+            h=i%5;
+            if (h==0) j++;
+            Label label = new Label();
+            label.setText(""+i);
+            gridPane.add(label, h, j);
+        }
+
+        for (javafx.scene.Node l : gridPane.getChildren()) {
+            System.out.println("col: "+gridPane.getColumnIndex(l));
+            System.out.println("row: "+gridPane.getRowIndex(l));
+            System.out.println("-------");
+        }
     }
 }

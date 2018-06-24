@@ -12,6 +12,7 @@ import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
+import it.polimi.se2018.view.clientModel.ClientModel;
 
 import java.util.ArrayList;
 
@@ -219,6 +220,7 @@ public class GUIView extends View {
             GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
             gameBoardNotifier.updateGui(new GUIViewSetting(this));
             gameBoardNotifier.updateGui(new RefreshBoard(command));
+            System.out.println("board update");
         }
     }
 }
