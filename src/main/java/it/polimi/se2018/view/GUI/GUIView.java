@@ -38,9 +38,15 @@ public class GUIView extends View {
         lobbyNotifier.updateGui(username);
     }
 
+    @Override
     public void startGame() {
         LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
         lobbyNotifier.updateGui();
+    }
+
+    @Override
+    public void endGame() {
+
     }
 
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {

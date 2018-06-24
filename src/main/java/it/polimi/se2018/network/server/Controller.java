@@ -225,6 +225,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     private void endGame(){
+        for (Player p : orderedPlayers){
+            getUserViewMap().get(p.getUsername()).endGame();
+        }
         //For each player, create an HashMap calling on every player a Win/Lose command
         HashMap<String, Integer> playerScoreMap = new HashMap<>();
         Integer tempScore;

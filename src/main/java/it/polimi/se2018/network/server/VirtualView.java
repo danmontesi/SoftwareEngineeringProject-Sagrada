@@ -117,6 +117,16 @@ public class VirtualView extends View {
     }
 
     @Override
+    public void endGame() {
+        if (Server.getConnectedClients().get(username) == null) { //disconnected
+            disconnected=true;
+            System.out.println("Disconnected->No action");
+        } else {
+            Server.getConnectedClients().get(username).notifyClient(new EndGameCommand());
+        }
+    }
+
+    @Override
     public void otherPlayerTurn(String username) {
         if (Server.getConnectedClients().get(this.username) == null) { //disconnected
             disconnected=true;

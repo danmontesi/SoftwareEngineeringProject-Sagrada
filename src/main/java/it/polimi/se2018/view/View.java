@@ -29,6 +29,10 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
 
     public abstract void startGame();
 
+    public void endGame(){
+
+    }
+
     public abstract void otherPlayerTurn(String username);
 
     public abstract void authenticatedCorrectlyMessage(String message);

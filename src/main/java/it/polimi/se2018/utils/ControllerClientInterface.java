@@ -125,4 +125,6 @@ public interface ControllerClientInterface{
     void applyCommand(PingConnectionTester pingConnectionTester);
 
     void applyCommand(StartGameCommand startGameCommand);
+
+    void applyCommand(EndGameCommand endGameCommand);
 }
