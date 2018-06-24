@@ -22,6 +22,7 @@ public class PlayerLight {
     }
 
     public void setUsername(String username) {
+        username = username.replace("_", " ");
         this.username = username;
     }
 

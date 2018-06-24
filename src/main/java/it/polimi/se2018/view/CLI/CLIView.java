@@ -7,6 +7,7 @@ import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.clientModel.ClientModel;
 import it.polimi.se2018.view.clientModel.PlayerLight;
+import it.polimi.se2018.view.clientModel.PublicObjectiveLight;
 import it.polimi.se2018.view.clientModel.ToolcardLight;
 
 import java.io.IOException;
@@ -29,8 +30,6 @@ public class CLIView extends View {
         cliModel = new ClientModel();
     }
 
-    //TODO Set! username
-
     private Scanner scan = new Scanner(System.in); // Can be replaced with BufferedReader?
     private InputReader inputReader;
     private CLIPrinter cliPrinter = new CLIPrinter();
@@ -50,7 +49,8 @@ public class CLIView extends View {
         }
         try {
             int chosen = Integer.parseInt(inputReader.readLine());
-            notify(new ChosenWindowPatternCard(cards.get(chosen-1).getCardName()));
+            notify(new ChosenWindowPatternCard(cards.get(chosen - 1).getCardName()));
+            System.out.println("Hai scelto: " + cards.get(chosen - 1).getCardName());
         } catch (TimeoutException e) {
             LOGGER.log(Level.INFO, "Timeout: your wpc is chosen randomly");
         } catch (IOException e) {
@@ -60,55 +60,13 @@ public class CLIView extends View {
 
     @Override
     public void startTurnMenu(){
-        boolean performedAction = false;
-        int choice;
-        System.out.println("What do you want to do?");
-        System.out.println("1 - Place die");
-        System.out.println("2 - Use Tool");
-        System.out.println("3 - Pass Turn");
-        try {
-            choice = Integer.parseInt(inputReader.readLine());
-        } catch (TimeoutException e) {
-            LOGGER.log(Level.INFO, "Timeout: you will skip this turn");
-            return;
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return;
-        }
-        while(!performedAction){
-            switch(choice){
-                case 1:
-                    System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliModel.getDraftpool().size()));
-                    int draftPos = scan.nextInt();
-                    draftPos -= 1;
-                    System.out.println("Select row");
-                    int schemaRow = scan.nextInt();
-                    System.out.println("Select column");
-                    int schemaCol = scan.nextInt();
-                    notify(new MoveChoiceDicePlacement(schemaRow,schemaCol,draftPos));
-                    performedAction = true;
-                    break;
-                case 2:
-                    System.out.println("Which tool want you to use?");
-                    int chosenToolNum = scan.nextInt();
-                    notify(new MoveChoiceToolCard(chosenToolNum));
-                    performedAction = true;
-                    break;
-                case 3:
-                    System.out.println("Passed turn");
-                    notify(new MoveChoicePassTurn(cliModel.getPlayer(0).getUsername()));
-                    performedAction = true;
-                    break;
-                default:
-                    System.out.println("Incorrect action, please select a number among the valid ones in menu");
-            }
-        }
-
+        System.out.println("IT'S YOUR TURN!\n");
+        continueTurnMenu(true, true);
     }
 
     @Override
     public void startGame() {
-        //da ignorare
+        //useless for CLI
     }
 
     @Override
@@ -130,38 +88,61 @@ public class CLIView extends View {
 
     @Override
     public void continueTurnMenu(boolean move, boolean tool){
-        //notify( new MOVE / new TOOLUSE / new PASSTURN )
+
+        boolean performedAction = false;
+        int choice;
         System.out.println("What do you want to do?");
-        System.out.println(move? "1- Place die": "");
-        System.out.println(tool? "2- Use Tool": "");
-        System.out.println("3- Pass Turn");
-        int choice = scan.nextInt();
-        switch(choice){
-            case 1:
-                System.out.println("Inserisci rispettivamente");
-                int draftPos = scan.nextInt();
-                int schemaRow = scan.nextInt();
-                int schemaCol = scan.nextInt();
-                notify(new MoveChoiceDicePlacement(schemaRow,schemaCol,draftPos));
-                break;
-            case 2:
-                System.out.println("Which tool want you to use?");
-                break;
-            case 3:
-                System.out.println("passed turn");
-                notify(new MoveChoicePassTurn(""));
+        System.out.println(move ? "1 - Place die" : "");
+        System.out.println(tool ? "2 - Use Tool" : "");
+        System.out.println("3 - Pass Turn");
+        try {
+            choice = Integer.parseInt(inputReader.readLine());
+        } catch (TimeoutException e) {
+            LOGGER.log(Level.INFO, "Timeout: you will skip this turn");
+            return;
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            return;
         }
+        while(!performedAction){
+            switch(choice){
+                case 1:
+                    System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliModel.getDraftpool().size()));
+                    int draftPos = scan.nextInt();
+                    System.out.println("Select row (number between 1 and 4)");
+                    int schemaRow = scan.nextInt();
+                    System.out.println("Select column (number between 1 and 5)");
+                    int schemaCol = scan.nextInt();
+                    notify(new MoveChoiceDicePlacement(schemaRow - 1,schemaCol - 1,draftPos - 1));
+                    performedAction = true;
+                    break;
+                case 2:
+                    System.out.println("Which tool want you to use?");
+                    int chosenToolNum = scan.nextInt();
+                    notify(new MoveChoiceToolCard(chosenToolNum));
+                    performedAction = true;
+                    break;
+                case 3:
+                    System.out.println("Passed turn");
+                    notify(new MoveChoicePassTurn(cliModel.getPlayer(0).getUsername()));
+                    performedAction = true;
+                    break;
+                default:
+                    System.out.println("Incorrect action, please select a number among the valid ones in menu");
+            }
+        }
+
     }
 
     @Override
     public void newConnectedPlayer(String username) {
-        //print that player connected
+        System.out.println(username + " just joined the game");
 
     }
 
     @Override
     public void playerDisconnection(String username) {
-        //print that player disconnected
+        System.out.println(username + "got disconnected");
 
     }
 
@@ -275,6 +256,7 @@ public class CLIView extends View {
     @Override
     public void invalidActionMessage(String message){
         System.out.println("Invalid action: " + message);
+        printSyntheticBoard();
     }
 
     @Override
@@ -300,7 +282,6 @@ public class CLIView extends View {
     @Override
     public void correctAuthenthication(String username){
         this.username=username;
-        cliModel.getPlayer(0).setUsername(username);
         System.out.println("Correct authentication!\nWelcome to Sagrada, " + cliModel.getPlayer(0).getUsername());
     }
 
@@ -366,14 +347,16 @@ public class CLIView extends View {
         if (clearScreen){
             clearScreen();
         }
-        System.out.println("Draft Pool:\n");
-        cliPrinter.printInlineList(cliModel.getDraftpool());
         System.out.println("Round Track:\n");
         cliPrinter.printInlineList(cliModel.getRoundTrack());
-        cliPrinter.printWPC(cliModel.getPlayer(0).getWpc());
+        System.out.println("Draft Pool:\n");
+        cliPrinter.printInlineList(cliModel.getDraftpool());
+        PlayerLight me = cliModel.getPlayer(0);
+        System.out.println(me.getUsername() + " - Tokens: " + me.getTokens());
+        cliPrinter.printWPC(me.getWpc());
     }
 
-    private void printSyntheticBoard(){
+    private synchronized void printSyntheticBoard(){
         printSyntheticBoard(true);
     }
 
@@ -386,11 +369,22 @@ public class CLIView extends View {
         }
     }
 
-    private void printCompleteBoard(){
+    private void printPublicObjectiveCards(){
+        System.out.println("Public Objective Cards:");
+        for(int i = 0; i < cliModel.getPublicObjectiveCards().size(); i++){
+            PublicObjectiveLight card = cliModel.getPublicObjectiveCards().get(i);
+            System.out.println(card.getName()+ "\n\t" + card.getDescription());
+        }
+    }
+
+    private synchronized void printCompleteBoard(){
         clearScreen();
+        printPublicObjectiveCards();
+        printToolcards();
+
         for (int i = 1; i < cliModel.getAllPlayers().size(); i++){
             PlayerLight player = cliModel.getPlayer(i);
-            System.out.println(player.getUsername() + " - Tokens: " + player.getWpc());
+            System.out.println(player.getUsername() + " - Tokens: " + player.getTokens());
             cliPrinter.printWPC(player.getWpc());
             System.out.println("\n");
         }

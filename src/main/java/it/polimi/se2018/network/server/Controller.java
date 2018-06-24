@@ -342,6 +342,14 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private void startNewTurn(){
         //Case in which everybody has played in the round
         if (currentRoundOrderedPlayers.isEmpty()){
+            Die temp = null;
+            try {
+                temp = model.getLastDie();
+                model.putDieOnRoundTrack(temp);
+            } catch (EmptyCellException e) {
+                e.printStackTrace();
+                System.out.println("No dice remained! No added die on RoundTrack");
+            }
             startNewRound();
         }
         else{
@@ -410,7 +418,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public synchronized void applyCommand(String playerUsername, MoveChoiceToolCard command){
         if (!isAllowed(playerUsername)){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
         Player current= usernamePlayerMap.get(playerUsername);
@@ -440,7 +448,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 }
                 else if (toolName.equals("Gavel")) {
                 if (currentRoundOrderedPlayers.contains(usernamePlayerMap.get(playerUsername))) { //Can't use the tool, has to be in second turn
-                    userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You have to be in your second turn to use the tool");
+                    userViewMap.get(playerUsername).invalidActionMessage("You have to be in your second turn to use the tool");
                     userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 } else {
                     model.rollDraftpoolDice();
@@ -459,7 +467,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     userViewMap.get(playerUsername).changeDieValueMenu(chosen.getName());
             else if (toolName.equals("Wheels Pincher")) {
                 if (!currentRoundOrderedPlayers.contains(usernamePlayerMap.get(playerUsername))) { //Can't use the tool, has to be in first turn
-                    userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You have to be in your first turn to use the tool");
+                    userViewMap.get(playerUsername).invalidActionMessage("You have to be in your first turn to use the tool");
                     userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 } else {
                     userViewMap.get(playerUsername).wheelsPincherMenu();
@@ -469,7 +477,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 System.out.println("Error in toolNames");
             }
         else{ //Not enough tokens
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You haven't enough tokens to use this tool");
+            userViewMap.get(playerUsername).invalidActionMessage("You haven't enough tokens to use this tool");
             userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove,hasUsedTool);
         }
     }
@@ -478,7 +486,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, MoveChoiceDicePlacement command){
         if (!isAllowed(playerUsername)){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
         System.out.println("Entra in moveChoice");
@@ -522,7 +530,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
         if (!isAllowed(playerUsername)){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
         if (extractedDieForFirmyPastryThinner!=null) { //Case in which a timeout forced the player turn skip -> the die hasn't to be lost
@@ -544,7 +552,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UseToolCorkLine command){
         if (!isAllowed(playerUsername)){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
         Die temp = null;
@@ -552,13 +560,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             temp = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
         } catch (EmptyCellException e) {
             e.printStackTrace();
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid index, try again");
+            userViewMap.get(playerUsername).invalidActionMessage("Invalid index, try again");
             userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
         //TODO mosssa speciale , ragiona se devo creare un altro metodo o va bene questo
         if (!currentPlayer.getWindowPatternCard().placeDie(temp, command.getSchemaPosition(), true, true, false)){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid move, try again");
+            userViewMap.get(playerUsername).invalidActionMessage("Invalid move, try again");
             userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
@@ -574,13 +582,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UseToolTwoDicePlacement command){
         if (!isAllowed(playerUsername)){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
         if (command.getCardName().equals("Manual Cutter")) {
             Player current = usernamePlayerMap.get(playerUsername);
             if (!current.getWindowPatternCard().getCell(command.getSchemaOldPosition1()).hasDie() || !current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).hasDie()) {
-                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid index, try again");
+                userViewMap.get(playerUsername).invalidActionMessage("Invalid index, try again");
                 userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 return;
             }
@@ -590,22 +598,22 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 die2 = current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).getAssociatedDie();
 
             } catch (EmptyCellException e) {
-                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid index! Try again");
+                userViewMap.get(playerUsername).invalidActionMessage("Invalid index! Try again");
                 userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 return;
             }
             if (die1.getColor() == die2.getColor()) {
-                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Your dice has different color! Try again");
+                userViewMap.get(playerUsername).invalidActionMessage("Your dice has different color! Try again");
                 userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 return;
             } else try {
                 if (!model.getRoundTrack().isPresent(die1.getColor())) {
-                    userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("The RoundTrack hasn't the chosen color, try with another ones");
+                    userViewMap.get(playerUsername).invalidActionMessage("The RoundTrack hasn't the chosen color, try with another ones");
                     userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                     return;
                 }
             } catch (EmptyCellException e) {
-                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid index! Try again");
+                userViewMap.get(playerUsername).invalidActionMessage("Invalid index! Try again");
                 userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 return;
             }
@@ -613,7 +621,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
         Player current = usernamePlayerMap.get(playerUsername);
         if (!current.getWindowPatternCard().getCell(command.getSchemaOldPosition1()).hasDie() || !current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).hasDie()) {
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid index! Try again");
+            userViewMap.get(playerUsername).invalidActionMessage("Invalid index! Try again");
             userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
@@ -621,12 +629,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         try {
             if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().move2Dice(command.getSchemaOldPosition1(),
                     command.getSchemaNewPosition1(), command.getSchemaOldPosition2(), command.getSchemaNewPosition2(), true, true, true)) {
-                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the die here! Try again");
+                userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! Try again");
                 userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 return;
             }
         } catch (EmptyCellException e) {
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("Invalid index! Try again");
+            userViewMap.get(playerUsername).invalidActionMessage("Invalid index! Try again");
             userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
@@ -639,7 +647,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UndoActionCommand command) {
         if (!isAllowed(playerUsername)){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
@@ -651,12 +659,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UseToolMoveDieNoRestriction command) {
         if (!isAllowed(playerUsername)){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
         Player current = usernamePlayerMap.get(playerUsername);
         if (!current.getWindowPatternCard().getCell(command.getSchemaOldPosition()).hasDie()) {
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("The index given is incorrect, try again!");
+            userViewMap.get(playerUsername).invalidActionMessage("The index given is incorrect, try again!");
             userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
@@ -664,7 +672,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             if (command.getCardName().equalsIgnoreCase("Eglomise Brush")) {
                 if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().switchDie(command.getSchemaOldPosition(),
                         command.getSchemaNewPosition(), false, true, true)) {
-                    userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the die here! Try again");
+                    userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! Try again");
                     userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                     return;
                 }
@@ -672,7 +680,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             else if (command.getCardName().equalsIgnoreCase("Copper Foil Reamer")){
                 if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().switchDie(command.getSchemaOldPosition(),
                         command.getSchemaNewPosition(), true, false, true)) {
-                    userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the die here! Try again");
+                    userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! Try again");
                     userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                     return;
                 }
@@ -693,7 +701,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername , UseToolFirmPastryBrush command){
         if (!isAllowed(playerUsername)){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
         Die tempOk;
@@ -701,7 +709,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             tempOk = model.getDraftPool().getDie(command.getDieDraftpoolPosition());
         } catch (EmptyCellException e) {
             e.printStackTrace();
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("The chosen cell index from draftpool is incorrect");
+            userViewMap.get(playerUsername).invalidActionMessage("The chosen cell index from draftpool is incorrect");
             userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
@@ -710,7 +718,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         if (words[0].equals("MOVE")){
             if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().placeDie(tempOk
                     , command.getDieSchemaPosition(), true, true, true)){
-                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the die here! Automatically put the die on draftpool"); //TODO forse do la possibilità di rifare la mssa
+                userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! Automatically put the die on draftpool"); //TODO forse do la possibilità di rifare la mssa
                 model.changeDieValueOnDraftPool(command.getDieDraftpoolPosition(), command.getDieValue());
                 userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             }
@@ -737,7 +745,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername , UseToolFirmPastryThinner command){
         if (!isAllowed(playerUsername) || extractedDieForFirmyPastryThinner==null){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
         Die toReinsert = model.removeDieFromDraftPool(command.getDieOldPosition());
@@ -757,7 +765,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 return;
             }
             else{
-                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the die here! Automatically put the die on DraftPool");//TODO forse richiama il metodo per fargli provare ancora
+                userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! Automatically put the die on DraftPool");//TODO forse richiama il metodo per fargli provare ancora
                 userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             }
         }
@@ -776,7 +784,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername ,UseToolChangeDieValue command){ //Has to place it!
         if (!isAllowed(playerUsername)){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
         Die temp = null;
@@ -795,7 +803,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                         //correct
                         if (!usernamePlayerMap.get(currentPlayer.getUsername()).getWindowPatternCard()
                                 .placeDie(temp, command.getSchemaPosition(), true, true, true)){
-                            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the die here! Try again");
+                            userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! Try again");
                             userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                             return;
                         }
@@ -804,7 +812,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                         }
                     }
                     else{
-                        userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("The die has value 6, can't be increased");
+                        userViewMap.get(playerUsername).invalidActionMessage("The die has value 6, can't be increased");
                         userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                         return;
                     }
@@ -828,7 +836,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                         }
                     }
                     else{
-                        userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("The die has value 1, can't be decreased");
+                        userViewMap.get(playerUsername).invalidActionMessage("The die has value 1, can't be decreased");
                         userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                         return;
                     }
@@ -842,7 +850,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             temp.flip();
             if (!usernamePlayerMap.get(currentPlayer.getUsername()).getWindowPatternCard()
                     .placeDie(temp, command.getSchemaPosition(), true, true, true)){
-                userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place TODO");
+                userViewMap.get(playerUsername).invalidActionMessage("You can't place TODO");
                 userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 return;
             }
@@ -865,7 +873,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UseToolCircularCutter command){
         if (!isAllowed(playerUsername)){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
 
@@ -888,7 +896,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UseToolWheelsPincher command){
         if (!isAllowed(playerUsername)){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
         //Already checked that the player is in his first turn
@@ -903,7 +911,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().place2Die(toPlace1, toPlace2,
                 command.getDieSchemaPosition1(), command.getDieSchemaPosition2(),
                 true, true, true)){
-            userViewMap.get(currentPlayer.getUsername()).invalidActionMessage("You can't place the dice there! Try Again");
+            userViewMap.get(playerUsername).invalidActionMessage("You can't place the dice there! Try Again");
             userViewMap.get(currentPlayer.getUsername()).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }

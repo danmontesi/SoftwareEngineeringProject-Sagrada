@@ -64,12 +64,11 @@ public class ClientController implements Observer, ControllerClientInterface {
     public void update(Object command) {
         try {
             ClientToServerCommand castedCommand = (ClientToServerCommand) command;
-            System.out.println("Sto inviando un command " + castedCommand.getMessage());
+            LOGGER.log(Level.FINE, "Sto inviando un command ", castedCommand);
             castedCommand.setUsername(username);
             connection.send(castedCommand);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
     /*
@@ -244,7 +243,7 @@ public class ClientController implements Observer, ControllerClientInterface {
      */
     @Override
     public void applyCommand(ContinueTurnCommand command){
-        System.out.println("Arrivo a continueturn sul clientcontr.");
+        LOGGER.log(Level.FINE, "Arrivo a continueturn sul clientController");
         view.continueTurnMenu(command.canShowMove(),command.canShowTool());
     }
 
