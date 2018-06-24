@@ -1,6 +1,6 @@
 package it.polimi.se2018.view.clientModel;
 
-class PublicObjectiveLight {
+public class PublicObjectiveLight {
     private String name;
     private String description;
 
