@@ -14,7 +14,7 @@ public class ClientStarterMain extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/client/clientstarter.fxml"));
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(new Scene(root, 400, 500));
-        Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
+//        Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
         primaryStage.show();
     }
 
