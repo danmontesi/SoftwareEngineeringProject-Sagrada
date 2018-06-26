@@ -22,40 +22,30 @@ public class UseToolChangeDieValue extends ClientToServerCommand {
         return draftPoolPosition;
     }
 
-    public Integer getSchemaPosition() {
-        return schemaPosition;
-    }
-
     private boolean increase; //ONLY for Roughing forceps
 
     private Integer draftPoolPosition;
-
-    private Integer schemaPosition;
 
     /**
      * For increase/decrease tool
      * @param cardName
      * @param draftPoolPosition
-     * @param schemaPosition
      * @param increase
      */
-    public UseToolChangeDieValue(String cardName, Integer draftPoolPosition, Integer schemaPosition, boolean increase) {
+    public UseToolChangeDieValue(String cardName, Integer draftPoolPosition, boolean increase) {
         this.cardName = cardName;
         this.increase = increase;
         this.draftPoolPosition = draftPoolPosition;
-        this.schemaPosition = schemaPosition;
     }
 
     /**
      * For flipDie tool
      * @param cardName
      * @param draftPoolPosition
-     * @param schemaPosition
      */
-    public UseToolChangeDieValue(String cardName, Integer draftPoolPosition, Integer schemaPosition) {
+    public UseToolChangeDieValue(String cardName, Integer draftPoolPosition) {
         this.cardName = cardName;
         this.draftPoolPosition = draftPoolPosition;
-        this.schemaPosition = schemaPosition;
     }
 
     public void visit(ControllerServerInterface observer){

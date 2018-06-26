@@ -213,7 +213,7 @@ public class Model extends Observable implements Serializable { //Observable of 
         return toReturn;
     }
 
-    public void setPlayerWpcs(ArrayList<Player> players) {
+    public void assignRefreshedPlayersCardsAndTokens(ArrayList<Player> players) {
         this.gamePlayers = players;
         notifyRefreshBoard();
     }
