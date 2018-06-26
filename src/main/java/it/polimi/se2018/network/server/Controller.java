@@ -36,8 +36,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private HashMap<Player, Timer> playerTimerMap;
     private int requiredTokensForLastToolUse;
     private int lastUsedToolCardNum;
-    private Die extractedDieForFirmyPastryThinner;
-    private int randomValueForFirmyPastryBrush;
+
+    private Die extractedDieForFirmPastryThinner;
+    private Integer randomValueForFirmPastryBrush;
+
     private Timer checkBlockingTimer;
 
     /**
@@ -285,7 +287,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             for (PublicObjectiveCard card : model.getExtractedPublicObjectiveCard()) {
                 tempScore += card.calculateScore(player.getWindowPatternCard());
             }
-            tempScore -= penalityScore(player.getWindowPatternCard());
+            tempScore -= penaltyScore(player.getWindowPatternCard());
             playerScoreMap.put(player.getUsername(), tempScore);
         }
 
@@ -326,7 +328,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
     }
 
-    private Integer penalityScore(WindowPatternCard card) {
+    private Integer penaltyScore(WindowPatternCard card) {
         int tempScore = 0;
         for (Cell c : card.getSchema()) {
             tempScore += c.isEmpty() ? 1 : 0;
@@ -346,10 +348,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         } else {
             LOGGER.log(Level.INFO, "Start turn " + (10 - orderedRoundPlayers.size()) + 1);
             model.setDraftPool(model.extractDraftPoolDice(orderedPlayers.size()));
-            model.setPlayerWpcs(orderedPlayers); //Used for notify eventual modifics of wpcs to the Players
+            model.assignRefreshedPlayersCardsAndTokens(orderedPlayers); //Used for notify the modifics of players //TODO forse faccio un metodo apposito sul model
             //initialize DraftPool
             //Start a new round-> pick the first of the RoundList
-            model.notifyRefreshBoard();
             currentRoundOrderedPlayers = orderedRoundPlayers.remove(0);
             currentPlayer = currentRoundOrderedPlayers.remove(0);
             LOGGER.log(Level.INFO, "current è " + currentPlayer);
@@ -472,13 +473,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             else if (toolName.equals("Eglomise Brush"))
                 userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
             else if (toolName.equals("Firm Pastry Brush")) {
-                randomValueForFirmyPastryBrush = ThreadLocalRandom.current().nextInt(1, 7);
-                userViewMap.get(currentPlayer).firmPastryBrushMenu(randomValueForFirmyPastryBrush);
+                randomValueForFirmPastryBrush = ThreadLocalRandom.current().nextInt(1, 7);
+                userViewMap.get(currentPlayer).firmPastryBrushMenu(randomValueForFirmPastryBrush);
             } else if (toolName.equals("Firm Pastry Thinner")) {
-                extractedDieForFirmyPastryThinner = model.extractDieFromDiceBag();
-                userViewMap.get(currentPlayer).firmPastryThinnerMenu(extractedDieForFirmyPastryThinner.getColor().toString(), extractedDieForFirmyPastryThinner.getValue());
+                extractedDieForFirmPastryThinner = model.extractDieFromDiceBag();
+                userViewMap.get(currentPlayer).firmPastryThinnerMenu(extractedDieForFirmPastryThinner.getColor().toString(), extractedDieForFirmPastryThinner.getValue());
             } else if (toolName.equals("Gavel")) {
-                if (currentRoundOrderedPlayers.contains(usernamePlayerMap.get(playerUsername))) { //Can't use the tool, has to be in second turn
+                if (currentRoundOrderedPlayers.contains(playerUsername)) { //Can't use the tool, has to be in second turn
                     userViewMap.get(playerUsername).invalidActionMessage("You have to be in your second turn to use the tool");
                     userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 } else {
@@ -496,7 +497,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             else if (toolName.equals("Roughing Forceps"))
                 userViewMap.get(playerUsername).changeDieValueMenu(chosen.getName());
             else if (toolName.equals("Wheels Pincher")) {
-                if (!currentRoundOrderedPlayers.contains(usernamePlayerMap.get(playerUsername))) { //Can't use the tool, has to be in first turn
+                if (!currentRoundOrderedPlayers.contains(playerUsername)) { //Can't use the tool, has to be in first turn
                     userViewMap.get(playerUsername).invalidActionMessage("You have to be in your first turn to use the tool");
                     userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 } else {
@@ -526,7 +527,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                             true, true, true)) {
                 userViewMap.get(playerUsername).invalidActionMessage("The move performed is incorrect. Check the rules and retry");
                 userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
-                return;
             } else {
                 LOGGER.log(Level.INFO, "Mossa applicata correttamente");
                 model.removeDieFromDraftPool(command.getDieDraftPoolPosition());
@@ -552,9 +552,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
-        if (extractedDieForFirmyPastryThinner != null) { //Case in which a timeout forced the player turn skip -> the die hasn't to be lost
-            model.insertDieInDiceBag(extractedDieForFirmyPastryThinner);
-            extractedDieForFirmyPastryThinner = null;
+        if (extractedDieForFirmPastryThinner != null) { //Case in which a timeout forced the player turn skip -> the die hasn't to be lost
+            model.insertDieInDiceBag(extractedDieForFirmPastryThinner);
+            extractedDieForFirmPastryThinner = null;
         }
         playerTimerMap.get(usernamePlayerMap.get(currentPlayer)).cancel();
         startNewTurn();
@@ -610,7 +610,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
                 return;
             }
-            Die die1,die2;
+            Die die1;
+            Die die2;
             try {
                 die1 = current.getWindowPatternCard().getCell(command.getSchemaOldPosition1()).getAssociatedDie();
                 die2 = current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).getAssociatedDie();
@@ -693,10 +694,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     return;
                 }
             } else if (command.getCardName().equalsIgnoreCase("Copper Foil Reamer")) {
-                if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().switchDie(command.getSchemaOldPosition(),
-                        command.getSchemaNewPosition(), true, false, true)) {
-                    userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! Try again");
-                    userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                if (usernamePlayerMap.get(playerUsername).getWindowPatternCard().switchDie(command.getSchemaOldPosition(),
+                                        command.getSchemaNewPosition(), true, false, true)) {
+                } else {
+            userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! Try again");
+            userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
                     return;
                 }
             }
@@ -726,7 +728,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             dpDie = model.getDraftPool().getDie(command.getDieDraftpoolPosition());
         } catch (EmptyCellException e) {
             userViewMap.get(playerUsername).invalidActionMessage("The chosen cell index from draftpool is incorrect");
-            userViewMap.get(currentPlayer).firmPastryBrushMenu(randomValueForFirmyPastryBrush);
+            userViewMap.get(currentPlayer).firmPastryBrushMenu(randomValueForFirmPastryBrush);
             return;
         }
         dpDie.setValue(command.getDieValue());
@@ -735,7 +737,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().placeDie(dpDie
                     , command.getDieSchemaPosition(), true, true, true)) {
                 userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! Automatically put the die on draftpool");
-                userViewMap.get(currentPlayer).firmPastryBrushMenu(randomValueForFirmyPastryBrush);
+                userViewMap.get(currentPlayer).firmPastryBrushMenu(randomValueForFirmPastryBrush);
                 return;
             } else {
                 model.removeDieFromDraftPool(command.getDieDraftpoolPosition());
@@ -745,6 +747,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             model.changeDieValueOnDraftPool(command.getDieDraftpoolPosition(), command.getDieValue());
         }
 
+        randomValueForFirmPastryBrush=null;
         usernamePlayerMap.get(currentPlayer).decreaseTokens(requiredTokensForLastToolUse);
         model.increaseToolCardTokens(lastUsedToolCardNum, requiredTokensForLastToolUse);
         hasUsedTool = true;
@@ -758,7 +761,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     @Override
     public void applyCommand(String playerUsername, UseToolFirmPastryThinner command) {
-        if (!isAllowed(playerUsername) || extractedDieForFirmyPastryThinner == null) {
+        if (!isAllowed(playerUsername) || extractedDieForFirmPastryThinner == null) {
             userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
             return;
         }
@@ -768,33 +771,33 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             oldFromDraft = model.getDraftPool().getDie(command.getDieOldPosition());
         } catch (EmptyCellException e) {
             userViewMap.get(playerUsername).invalidActionMessage("Invalid index of Draftpool, retry");
-            userViewMap.get(currentPlayer).firmPastryThinnerMenu(extractedDieForFirmyPastryThinner.getColor().toString(), extractedDieForFirmyPastryThinner.getValue());
+            userViewMap.get(currentPlayer).firmPastryThinnerMenu(extractedDieForFirmPastryThinner.getColor().toString(), extractedDieForFirmPastryThinner.getValue());
             return;
         }
 
-        extractedDieForFirmyPastryThinner.setValue(command.getDieNewValue());
+        extractedDieForFirmPastryThinner.setValue(command.getDieNewValue());
         String[] words = command.getMessage().split(" ");
         if (words[0].equals("MOVE")) {
             if (usernamePlayerMap.get(playerUsername).getWindowPatternCard()
-                    .placeDie(extractedDieForFirmyPastryThinner,
+                    .placeDie(extractedDieForFirmPastryThinner,
                             command.getDiePosition(), true, true, true)) {
                 usernamePlayerMap.get(currentPlayer).decreaseTokens(requiredTokensForLastToolUse);
                 model.increaseToolCardTokens(lastUsedToolCardNum, requiredTokensForLastToolUse);
                 hasUsedTool = true;
                 hasPerformedMove = true;
                 userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
-                extractedDieForFirmyPastryThinner = null;
+                extractedDieForFirmPastryThinner = null;
                 model.removeDieFromDraftPool(command.getDieOldPosition());
                 model.insertDieInDiceBag(oldFromDraft);
                 return;
             } else {
                 userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! retry:");
-                userViewMap.get(currentPlayer).firmPastryThinnerMenu(extractedDieForFirmyPastryThinner.getColor().toString(), extractedDieForFirmyPastryThinner.getValue());
+                userViewMap.get(currentPlayer).firmPastryThinnerMenu(extractedDieForFirmPastryThinner.getColor().toString(), extractedDieForFirmPastryThinner.getValue());
                 return;
             }
         }
-        model.setDieOnDraftPool(extractedDieForFirmyPastryThinner, command.getDieOldPosition());
-        extractedDieForFirmyPastryThinner = null;
+        model.setDieOnDraftPool(extractedDieForFirmPastryThinner, command.getDieOldPosition());
+        extractedDieForFirmPastryThinner = null;
         usernamePlayerMap.get(currentPlayer).decreaseTokens(requiredTokensForLastToolUse);
         model.increaseToolCardTokens(lastUsedToolCardNum, requiredTokensForLastToolUse);
         hasUsedTool = true;

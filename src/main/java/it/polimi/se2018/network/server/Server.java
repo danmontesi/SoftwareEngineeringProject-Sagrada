@@ -64,13 +64,14 @@ public class Server {
         //TODO CHECK
         new Thread(() -> {
             while (activeServer) {
-                for (String user : connectedClients.keySet()) {
-                    connectedClients.get(user).notifyClient(new PingConnectionTester());  //Checking if still connected(for RMI)
-                }
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    System.out.println("Problem ");
+                    Thread.currentThread().interrupt();
+                }
+                for (String user : connectedClients.keySet()) {
+                    connectedClients.get(user).notifyClient(new PingConnectionTester());  //Checking if still connected(for RMI)
                 }
             }
         }
