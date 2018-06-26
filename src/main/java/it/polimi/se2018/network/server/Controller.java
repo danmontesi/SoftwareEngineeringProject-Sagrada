@@ -346,7 +346,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         if (orderedRoundPlayers.isEmpty()) {
             endGame();
         } else {
-            LOGGER.log(Level.INFO, "Start turn " + (10 - orderedRoundPlayers.size()) + 1);
+            LOGGER.log(Level.INFO, "Start round " + (10 - orderedRoundPlayers.size()) + 1);
             model.setDraftPool(model.extractDraftPoolDice(orderedPlayers.size()));
             model.assignRefreshedPlayersCardsAndTokens(orderedPlayers); //Used for notify the modifics of players //TODO forse faccio un metodo apposito sul model
             //initialize DraftPool
@@ -535,7 +535,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             }
         } catch (EmptyCellException e) {
-            LOGGER.log(Level.INFO, "Empty cell, sending an IncorrectMoveCommand");
+            LOGGER.log(Level.SEVERE, "Empty cell, sending an IncorrectMoveCommand");
             userViewMap.get(playerUsername).invalidActionMessage("The Draftpool cell you selected is empty, try again");
             userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
         }
@@ -695,10 +695,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 }
             } else if (command.getCardName().equalsIgnoreCase("Copper Foil Reamer")) {
                 if (usernamePlayerMap.get(playerUsername).getWindowPatternCard().switchDie(command.getSchemaOldPosition(),
-                                        command.getSchemaNewPosition(), true, false, true)) {
+                        command.getSchemaNewPosition(), true, false, true)) {
                 } else {
-            userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! Try again");
-            userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                    userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! Try again");
+                    userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
                     return;
                 }
             }
@@ -747,7 +747,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             model.changeDieValueOnDraftPool(command.getDieDraftpoolPosition(), command.getDieValue());
         }
 
-        randomValueForFirmPastryBrush=null;
+        randomValueForFirmPastryBrush = null;
         usernamePlayerMap.get(currentPlayer).decreaseTokens(requiredTokensForLastToolUse);
         model.increaseToolCardTokens(lastUsedToolCardNum, requiredTokensForLastToolUse);
         hasUsedTool = true;
@@ -836,15 +836,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
                     return;
                 }
-
-                if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard()
-                        .placeDie(temp, command.getSchemaPosition(), true, true, true)) {
-                    userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! Try again");
-                    userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
-                    return;
-                } else {
-                    model.removeDieFromDraftPool(command.getDraftPoolPosition());
-                }
+                model.changeDieValueOnDraftPool(command.getDraftPoolPosition(), temp.getValue() + 1);
             } else {
                 try {
                     if (usernamePlayerMap.get(playerUsername).getWindowPatternCard()
@@ -858,26 +850,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
                     return;
                 }
-                if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard()
-                        .placeDie(temp, command.getSchemaPosition(), true, true, true)) {
-                    LOGGER.log(Level.INFO, "Incorrect placement from player, sending invalid message");
-                    userViewMap.get(playerUsername).invalidActionMessage("Incorrect placement, try again");
-                    userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
-                    return;
-                } else {
-                    model.removeDieFromDraftPool(command.getDraftPoolPosition());
-                }
-            }
+                model.changeDieValueOnDraftPool(command.getDraftPoolPosition(), temp.getValue() - 1);
+            }//TODO
         } else {
             temp.flip();
-            if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard()
-                    .placeDie(temp, command.getSchemaPosition(), true, true, true)) {
-                userViewMap.get(playerUsername).invalidActionMessage("You can't place TODO");
-                userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
-                return;
-            } else {
-                model.removeDieFromDraftPool(command.getDraftPoolPosition());
-            }
+            model.changeDieValueOnDraftPool(command.getDraftPoolPosition(), temp.getValue());
         }
         usernamePlayerMap.get(currentPlayer).decreaseTokens(requiredTokensForLastToolUse);
         model.increaseToolCardTokens(lastUsedToolCardNum, requiredTokensForLastToolUse);

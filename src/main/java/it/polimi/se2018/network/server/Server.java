@@ -61,7 +61,6 @@ public class Server {
         System.out.println("Listening Socket");
 
 
-        //TODO CHECK
         new Thread(() -> {
             while (activeServer) {
                 try {

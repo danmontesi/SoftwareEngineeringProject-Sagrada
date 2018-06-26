@@ -202,10 +202,10 @@ public class CLIView extends View implements Observer {
             if (decision==1){
                 System.out.println("Where do you want to place the die?");
                 Integer schemaPosition = scan.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
-                notify(new UseToolChangeDieValue(cardName, draftpoolPos, schemaPosition, increase));
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, increase));
             }
             else{
-                notify(new UseToolChangeDieValue(cardName, draftpoolPos, null, increase));
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, increase));
             }
         }
         else if (cardName.equals("Diamond Swab")) {
@@ -219,9 +219,9 @@ public class CLIView extends View implements Observer {
             if (decision == 1) {
                 System.out.println("Where do you want to place the die?");
                 Integer schemaPosition = scan.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
-                notify(new UseToolChangeDieValue(cardName, draftpoolPos, schemaPosition, true));
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, true));
             } else {
-                notify(new UseToolChangeDieValue(cardName, draftpoolPos, null, false));
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, false));
             }
         }
     }
