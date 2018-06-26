@@ -325,7 +325,7 @@ public class ClientController extends Observable implements Observer, Controller
     @Override
     public void dispatchCommand(Object command) {
         ServerToClientCommand castedCommand = (ServerToClientCommand) command;
-        System.out.println("Arriva il command" + command);
+        LOGGER.log(Level.FINE, "Arriva il command", command);
         castedCommand.visit(this);
     }
 

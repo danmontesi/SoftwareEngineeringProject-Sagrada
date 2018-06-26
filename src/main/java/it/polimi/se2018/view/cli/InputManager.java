@@ -16,14 +16,10 @@ public class InputManager implements Runnable, Observer {
     private CliState cliState;
     private CLIPrinter cliPrinter = new CLIPrinter();
 
-
-
     public InputManager(Observable observable){
         inputReader = new InputReader();
         cliState = new CliState();
     }
-
-
 
     @Override
     public void run() {
@@ -31,8 +27,6 @@ public class InputManager implements Runnable, Observer {
             try {
                 String command = inputReader.readLine();
                 manageCommand(command);
-            } catch (IOException e) {
-                Logger.logMsg(1, "Qualcosa è andato storto");
             } catch (TimeUpException e){
                 //nothing
             }
@@ -58,7 +52,7 @@ public class InputManager implements Runnable, Observer {
                     }
                     break;
                 case "2":
-                    System.out.println("Hai scritto b");
+                    System.out.println("So che vuoi usare una toolcard, ma devo ancora implementarle");
                     break;
                 case "3":
                     passTurn();
@@ -88,9 +82,8 @@ public class InputManager implements Runnable, Observer {
                 default:
                     System.out.println("Invalid command, print help for further information");
             }
-        } catch (IOException e){
-            System.out.println("Something went wrong");
         } catch (TimeUpException e){
+            //nothing
         }
     }
 

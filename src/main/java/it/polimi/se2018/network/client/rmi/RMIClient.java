@@ -3,9 +3,7 @@ package it.polimi.se2018.network.client.rmi;
 
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
-import it.polimi.se2018.network.client.ClientConnection;
 import it.polimi.se2018.network.client.ClientController;
-import it.polimi.se2018.network.server.Server;
 import it.polimi.se2018.network.server.ServerConnection;
 import it.polimi.se2018.network.server.rmi.RMIServerInterface;
 import it.polimi.se2018.utils.ControllerClientInterface;
@@ -17,7 +15,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Deque;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,8 +67,6 @@ public class RMIClient extends Thread implements Remote, ServerConnection{
         }).start();
         */
         commandQueue.add(command);
-        System.out.println("added "+command);
-
     }
         /*
         synchronized (waiter) {
@@ -89,8 +84,6 @@ public class RMIClient extends Thread implements Remote, ServerConnection{
         while (true) {
             synchronized (commandQueue) {
                 if (!commandQueue.isEmpty()) {
-                    System.out.println("Sono fuori");
-                    System.out.println("Sono vivo");
                     clientController.dispatchCommand(commandQueue.poll());
                 }
             }

@@ -6,6 +6,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Every method can throw a TimeUpException when a Timeout occurs from server
+ */
 public class InputReader{
     private BufferedReader br;
     boolean timeout = false;
@@ -14,28 +17,49 @@ public class InputReader{
         br = new BufferedReader(new InputStreamReader(System.in));
     }
 
-    public String readLine() throws IOException {
-        return readLine(Integer.MAX_VALUE, Integer.MIN_VALUE);
+    /**
+     * Return null if an IOException is caught
+     */
+    public String readLine(){
+        try{
+            while(!br.ready()){
+                if(timeout){
+                    timeout = false;
+                    System.out.println("\nTime's up!");
+                    throw new TimeUpException("Time's up for your turn");
+                }
+            }
+            String input = br.readLine();
+            return input;
+        } catch (IOException e){
+            return null;
+        }
     }
 
-    public String readLine(int validInferior, int validSuperior) throws IOException{
+    /**
+     * Return null if an IOException is caught
+     */
+    public int readInt(){
+        return readInt(Integer.MAX_VALUE, Integer.MIN_VALUE);
+    }
 
-        while(!br.ready()){
-            if(timeout){
-                timeout = false;
-                System.out.println("\nTime's up!");
-                throw new TimeUpException("Time's up for your turn");
+    /**
+     * Return null if an IOException is caught
+     */
+    public int readInt(int validInferior, int validSuperior){
+        while(true){
+            String inputString = readLine();
+            if (inputString.matches("\\d")) {
+                int input = Integer.parseInt(inputString);
+                if ((input < validInferior) || (input > validSuperior)) {
+                    System.out.println("Input not compliant to rules");
+                } else {
+                    return input;
+                }
+            } else {
+                System.out.println("Input is not a number, retry");
             }
         }
-        String input = br.readLine();
-        if (input.matches("/d")){
-            int inputNumber = Integer.parseInt(input);
-            if((inputNumber < validInferior) || (inputNumber > validSuperior)){
-                throw new IllegalArgumentException("Input not compliant to rules");
-            }
-        }
-        //TODO: e se l'input non è un numero? Bisogna ritornare un'eccezione
-        return input;
     }
 
     public void setTimeOut() {

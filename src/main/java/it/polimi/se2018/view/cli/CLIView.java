@@ -2,19 +2,19 @@ package it.polimi.se2018.view.cli;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.server_to_client_command.*;
-import it.polimi.se2018.exceptions.TimeUpException;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.cli.cliState.CliState;
+import it.polimi.se2018.view.cli.cliState.PublicObjectiveLight;
+import it.polimi.se2018.view.cli.cliState.ToolcardLight;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CLIView extends View {
+public class CLIView extends View implements Runnable{
 
     /**
      * CliView receives a clone of current model each time it's Player's turn
@@ -25,7 +25,8 @@ public class CLIView extends View {
     private InputManager inputManager;
     private Scanner scan = new Scanner(System.in);
     //non deve esserci, è solo nell'input manager
-    private InputReader inputReader = new InputReader();
+    private InputReader inputReader;
+    private boolean active = true;
 
     public CLIView(Observer observer){
         register(observer);
@@ -46,18 +47,11 @@ public class CLIView extends View {
         for (int i = 0; i < cards.size(); i++){
             System.out.println(i+1 + ")" + cards.get(i).getCardName());
         }
-        try {
-            //TODO: gestire l'errore del parseInt
-            int chosen = Integer.parseInt(new InputReader().readLine());
+            int chosen = new InputReader().readInt(1, cards.size());
             notify(new ChosenWindowPatternCard(cards.get(chosen - 1).getCardName()));
             System.out.println("Hai scelto: " + cards.get(chosen - 1).getCardName());
-        } catch (TimeUpException e) {
-            System.out.println("Card chosen automatically");
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        } finally {
-            new Thread(inputManager).start();
-        }
+            //avvia l'inputReader
+            new Thread(this).start();
     }
 
     @Override
@@ -98,16 +92,8 @@ public class CLIView extends View {
         System.out.println(move ? "1 - Place die" : "");
         System.out.println(tool ? "2 - Use Tool" : "");
         System.out.println("3 - Pass Turn");
-        try {
-            choice = Integer.parseInt(inputReader.readLine());
-        } catch (TimeUpException e) {
-            LOGGER.log(Level.INFO, "Timeout: you will skip this turn");
-            return;
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return;
-        }
-        while(!performedAction){
+
+       /* while(!performedAction){
             switch(choice){
                 case 1:
                     System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliState.getDraftpool().size()));
@@ -136,7 +122,7 @@ public class CLIView extends View {
                     System.out.println("Incorrect action, please select a number among the valid ones in menu");
 
             }
-        }
+        }*/
 
     }
 
@@ -288,7 +274,7 @@ public class CLIView extends View {
     @Override
     public void correctAuthenthication(String username){
         this.username=username;
-        System.out.println("Correct authentication!\nWelcome to Sagrada, " + cliState.getPlayer(0).getUsername());
+        System.out.println("Correct authentication!\nWelcome to Sagrada, " + username);
     }
 
     @Override
@@ -344,5 +330,79 @@ public class CLIView extends View {
     }
 
 
+    @Override
+    public void run() {
+        inputReader = new InputReader();
+        while(active){
+            String command = inputReader.readLine();
+            manageCommand(command);
+        }
+    }
+
+    private void manageCommand(String command){
+        switch (command) {
+            case "1":
+                if (cliState.isYourTurn()) {
+                    System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliState.getDraftpool().size()));
+                    int draftPos = inputReader.readInt(1, cliState.getDraftpool().size());
+
+                    System.out.println("Select row (number between 1 and 4)");
+                    int schemaRow = inputReader.readInt(1, 4);
+
+                    System.out.println("Select column (number between 1 and 5)");
+                    int schemaCol = inputReader.readInt(1, 5);
+
+                    notify(new MoveChoiceDicePlacement(schemaRow - 1, schemaCol - 1, draftPos - 1));
+                } else {
+                    System.out.println("Non è il tuo turno, mossa non permessa");
+                }
+                break;
+            case "2":
+                System.out.println("So che vuoi usare una toolcard, ma devo ancora implementarle");
+                break;
+            case "3":
+                System.out.println("Passed turn");
+                notify(new MoveChoicePassTurn(username));
+                break;
+            case "print -c":
+                cliPrinter.printCompleteBoard(cliState);
+                break;
+            case "print -pr":
+                System.out.println(cliState.getPrivateObjectiveCard());
+                System.out.println(cliState.getPrivateObjectiveCardDescription());
+                break;
+            case "print -pu":
+                for (int i = 0; i < cliState.getPublicObjectiveCards().size(); i++) {
+                    PublicObjectiveLight card = cliState.getPublicObjectiveCards().get(i);
+                    System.out.println(card.getName() + "\n\t" + card.getDescription());
+                }
+                break;
+            case "print -t":
+                for (int i = 0; i < cliState.getToolcards().size(); i++) {
+                    ToolcardLight card = cliState.getToolcards().get(i);
+                    System.out.println(String.format("%d) %s - Tokens: %d\n\t%s", i + 1, card.getToolcardName(), card.getTokens(), card.getDescription()));
+                }
+                break;
+            case "help":
+                printHelp();
+                break;
+            default:
+                System.out.println("Invalid command, print help for further information");
+        }
+    }
+
+    private void printHelp(){
+        System.out.println(
+                "Here's what you can do:\n" +
+                        "If it is your turn you can choose between:\n" +
+                        "1 : Place a die\n" +
+                        "2 : Use a toolcard\n" +
+                        "3 : Pass your turn\n\n" +
+                        "Furthermore, in any moment you can type:\n" +
+                        "print -c : print complete board\n" +
+                        "print -pr : print your Private Objective Card\n" +
+                        "print -pu : print Public Objective Cards\n" +
+                        "print -t : print Toolcards\n");
+    }
 
 }
