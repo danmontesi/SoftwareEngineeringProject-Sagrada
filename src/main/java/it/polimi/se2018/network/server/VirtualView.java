@@ -348,6 +348,11 @@ public class VirtualView extends View {
             Server.getConnectedClients().get(username).notifyClient(refreshCommand);
     }
 
+    @Override
+    public void updateBoard(RefreshBoardCommand refreshCommand) {
+
+    }
+
     public void update(Object model){ //TODO Change with all model representation
         //RefreshBoardCommand
         //TODO TOGLI!! PERR ORA SOLO

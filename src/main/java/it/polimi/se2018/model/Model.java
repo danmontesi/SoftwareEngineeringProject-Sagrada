@@ -213,7 +213,7 @@ public class Model extends Observable implements Serializable { //Observable of 
         return toReturn;
     }
 
-    public void assignRefreshedPlayersCardsAndTokens(ArrayList<Player> players) {
+    public void forceRefreshEntireBoard(String reconnectedPlayer, ArrayList<Player> players) { //TODO rivedi
         this.gamePlayers = players;
         notifyRefreshBoard();
     }
@@ -283,6 +283,8 @@ public class Model extends Observable implements Serializable { //Observable of 
      * Method for initial setting of the board
      */
     public void notifyRefreshBoard() {
+
+
         ArrayList<String> draftpool; //Dice in the format: colorNumber/empty
         draftpool = getDraftPool().draftpoolPathRepresentation();
         ArrayList<String> roundTrackString; //Dice in the format: colorNumber/empty

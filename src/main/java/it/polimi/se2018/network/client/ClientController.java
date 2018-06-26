@@ -11,7 +11,7 @@ import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.utils.ControllerClientInterface;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.view.GUI.GUIView;
+import it.polimi.se2018.view.gui.GUIView;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.cli.CLIView;
 
@@ -30,7 +30,6 @@ public class ClientController extends Observable implements Observer, Controller
      * First role of ClientController is to send commands to Server requesting a move, or a Tool use.
      *
      */
-
     private View view;
     private String username;
     private ServerConnection connection;
@@ -68,81 +67,7 @@ public class ClientController extends Observable implements Observer, Controller
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
-    /*
 
-    public void performMove(Integer draftPoolPosition, Integer schemaPosition){
-        //Create the Command and send to Server to wait for validation
-        sendCommand(new MoveChoiceDicePlacement("MoveChoiceDicePlacement", schemaPosition, draftPoolPosition));
-    }
-
-    public void useToolCard(Integer toolNumber){
-        sendCommand(new MoveChoiceToolCard("MoveChoiceToolCard", toolNumber));
-    }
-
-    public void passTurn(){
-        sendCommand(new MoveChoicePassTurn("MoveChoicePassTurn"));
-    }
-
-    public void chosenWindowPatternCard(WindowPatternCard card){
-        sendCommand(new ChosenWindowPatternCard(card.getCardName()));
-    }
-
-    public void useToolFirmPastryBrushDRAFTPOOL(Integer dieNewValue, Integer dieOldPosition){
-        //Gives the chosen DraftPoolDie (position)
-        //and the second word says DRAFTPOOL
-        sendCommand(new UseToolFirmPastryBrush("DRAFTPOOL", dieNewValue, dieOldPosition , null));
-
-    }
-    public void useToolFirmPastryBrushMOVE(Integer dieNewValue, Integer dieOldPosition, Integer diePosition){
-        //Gives the old position of the chosen die from DraftPool
-        //Gives the new position in the Schema
-        //if gives the new Value (received from the server before!!)
-        //and the second word says MOVE
-        sendCommand(new UseToolFirmPastryBrush("MOVE", dieNewValue, dieOldPosition, diePosition));
-    }
-
-    public void useToolFirmPastryThinnerMOVE(Integer dieNewValue, Integer dieOldPosition, Integer diePosition){
-        //Gives the position of the old die in the DraftPool (to reinsert in the diceBag
-        //Gives the new position in the Schema
-        //if gives the new Value (decided by the Client!)
-        //and the second word says MOVE
-        sendCommand(new UseToolFirmPastryThinner("MOVE", dieNewValue, dieOldPosition, diePosition));
-    }
-
-    public void useToolFirmPastryThinnerDRAFTPOOL(Integer dieNewValue, Integer dieOldPosition){
-        //Gives the position of the old die in the DraftPool (to reinsert in the diceBag
-        //Gives the new position in the Schema
-        //if gives the new Value (decided by the Client!)
-        //and the second word says MOVE
-        sendCommand(new UseToolFirmPastryThinner("DRAFTPOOL", dieNewValue, dieOldPosition, null));
-    }
-    */
-
-    /**
-     * Second role of the ClientController is to receive commands from Server and apply them (to Client)
-     *
-     * I have multiple methods called applyCommand with a different command as parameter
-     * Firstly from calling distinguishCommand(), ClientController understand which kind of event server sent and applies it through calling
-     * correct applyCommand() methods
-     * @param
-     */
-
-    /**
-     * USO TOOL:
-     * LA RICHIESTA PARTE DAL CLIENTCONTROLLER->
-     * Caso Richiedo il dado dalla dicebag
-     * Caso ..
-     *
-     *
-     *
-     * TUTTI GLI ALTRI:
-     * Faccio la richiesta al ClientController, lei mi controlla che ho abbastanza token , e se sì raccoglie i dati per la mossa ufficiale
-     * Se la mossa ufficiale parte, -> Costruisco il metodo Richeista
-     */
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
     @Override
     public void applyCommand(ChooseWindowPatternCardCommand command){
         //Splitting the string obtaining the correct Wpc
@@ -213,7 +138,7 @@ public class ClientController extends Observable implements Observer, Controller
     @Override
     public void applyCommand(RefreshBoardCommand command) {
         //setPlayerModel(command.getMessage());
-        view.update(command);
+        view.updateBoard(command);
         //TODO Decidere con alle e nives
     }
     @Override
@@ -281,7 +206,6 @@ public class ClientController extends Observable implements Observer, Controller
     @Override
     public void applyCommand(CorrectUseToolFirmPastryThinner1 command){
         String[] words = command.getMessage().split(" ");
-        Die dieFromDiceBag = new Die(COLOR.valueOf(words[1]), command.getDieValue());
         view.firmPastryThinnerMenu(command.getColor(), command.getDieValue());
     }
 
@@ -349,7 +273,6 @@ public class ClientController extends Observable implements Observer, Controller
     public void applyCommand(RefreshRoundTrackCommand command) {
         view.updateRoundTrack(command);
     }
-
 
     @Override
     public void applyCommand(PlayerDisconnectionNotification command) {

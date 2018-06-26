@@ -1,7 +1,7 @@
 package it.polimi.se2018.network.client;
 
 
-import it.polimi.se2018.view.GUI.ClientStarterMain;
+import it.polimi.se2018.view.gui.ClientStarterMain;
 import it.polimi.se2018.network.client.rmi.RMIClient;
 import it.polimi.se2018.network.client.socket.SocketClient;
 import it.polimi.se2018.network.server.ServerConnection;
@@ -12,7 +12,7 @@ public class Client{
     public static void main(String[] args) {
         ServerConnection server;
         Scanner scanner2 = new Scanner(System.in);
-        System.out.println("Select \n1) cli\n2) GUI");
+        System.out.println("Select \n1) CLI\n2) GUI");
         int choice2 = scanner2.nextInt();
         if (choice2 == 1) {
             Scanner scanner = new Scanner(System.in);

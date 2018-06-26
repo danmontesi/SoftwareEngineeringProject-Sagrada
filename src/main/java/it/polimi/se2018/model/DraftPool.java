@@ -163,11 +163,17 @@ public class DraftPool {
     }
 
     /**
-     * Representation of the patch of the whole draftpool. Useful for GUI
+     * Representation of the patch of the whole draftpool. Useful for gui
      * @return List of path last name
      */
     public ArrayList<String> draftpoolPathRepresentation() {
         ArrayList<String> draftpoolString = new ArrayList<>();
+        if (this.cells==null){
+            for (int i = 0; i < 9; i++) {
+                draftpoolString.add("empty");
+            }
+            return draftpoolString;
+        }
         for (int i = 0; i < cells.size(); i++) {
             try {
                 if (cells.get(i).isEmpty()) {

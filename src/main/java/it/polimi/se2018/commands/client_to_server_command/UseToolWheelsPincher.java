@@ -3,22 +3,13 @@ package it.polimi.se2018.commands.client_to_server_command;
 import it.polimi.se2018.utils.ControllerServerInterface;
 
 public class UseToolWheelsPincher extends ClientToServerCommand{
-    public Integer getDieDraftPoolPosition1() {
-        return dieDraftPoolPosition1;
+    public Integer getDieDraftPoolPosition() {
+        return dieDraftPoolPosition;
     }
 
-    public Integer getDieSchemaPosition1() {
-        return dieSchemaPosition1;
+    public Integer getDieSchemaPosition() {
+        return dieSchemaPosition;
     }
-
-    public Integer getDieSchemaPosition2() {
-        return dieSchemaPosition2;
-    }
-
-    public Integer getDieDraftPoolPosition2() {
-        return dieDraftPoolPosition2;
-    }
-
     /**
      * Muovi 2 dadi in uno stesso turno
      * String that let you do 2 dice moves, and let you skip the turn
@@ -33,19 +24,13 @@ public class UseToolWheelsPincher extends ClientToServerCommand{
      * Integer diePosition2(from 0 to 20)
      */
 
-    private Integer dieDraftPoolPosition1;
+    private Integer dieDraftPoolPosition;
 
-    private Integer dieSchemaPosition1;
+    private Integer dieSchemaPosition;
 
-    private Integer dieSchemaPosition2;
-
-    private Integer dieDraftPoolPosition2;
-
-    public UseToolWheelsPincher(Integer dieDraftPoolPosition1, Integer dieSchemaPosition1, Integer dieSchemaPosition2, Integer dieDraftPoolPosition2) {
-        this.dieDraftPoolPosition1 = dieDraftPoolPosition1;
-        this.dieSchemaPosition1 = dieSchemaPosition1;
-        this.dieSchemaPosition2 = dieSchemaPosition2;
-        this.dieDraftPoolPosition2 = dieDraftPoolPosition2;
+    public UseToolWheelsPincher(Integer dieDraftPoolPosition, Integer dieSchemaPosition) {
+        this.dieDraftPoolPosition = dieDraftPoolPosition;
+        this.dieSchemaPosition = dieSchemaPosition;
     }
 
     public void visit(ControllerServerInterface observer){

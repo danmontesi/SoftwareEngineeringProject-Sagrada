@@ -307,6 +307,13 @@ public class CLIView extends View implements Runnable{
         cliPrinter.printSyntheticBoard(cliState);
     }
 
+    @Override
+    public void updateBoard(RefreshBoardCommand refreshCommand) {
+        RefreshBoardCommand command = refreshCommand;
+        cliState.parseRefreshBoard(command);
+        cliPrinter.printSyntheticBoard(cliState);
+    }
+
 
     @Override
     public void notify(Object event) {
