@@ -2,20 +2,28 @@ package it.polimi.se2018.view.cli;
 
 import com.sun.media.jfxmedia.logging.Logger;
 import it.polimi.se2018.exceptions.TimeUpException;
+import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
+import it.polimi.se2018.view.cli.cliState.CliState;
+import it.polimi.se2018.view.cli.cliState.PublicObjectiveLight;
+import it.polimi.se2018.view.cli.cliState.ToolcardLight;
 
 import java.io.IOException;
 
 public class InputManager implements Runnable, Observer {
     private InputReader inputReader;
-    private boolean yourTurn = false;
     private boolean active = true;
+    private CliState cliState;
+    private CLIPrinter cliPrinter = new CLIPrinter();
 
 
 
-    public InputManager() {
+    public InputManager(Observable observable){
         inputReader = new InputReader();
+        cliState = new CliState();
     }
+
+
 
     @Override
     public void run() {
@@ -26,21 +34,21 @@ public class InputManager implements Runnable, Observer {
             } catch (IOException e) {
                 Logger.logMsg(1, "Qualcosa è andato storto");
             } catch (TimeUpException e){
-                yourTurn = false;
+                //nothing
             }
         }
     }
 
     @Override
     public void update(Object event) {
-
+        cliState = (CliState) event;
     }
 
     private void manageCommand(String command){
         try{
             switch(command){
                 case "1":
-                    if(yourTurn){
+                    if(cliState.isYourTurn()){
                         System.out.println("Hai scritto a");
                         System.out.println("Scrivi il numero del dado");
                         String dado = inputReader.readLine();
@@ -55,6 +63,25 @@ public class InputManager implements Runnable, Observer {
                 case "3":
                     passTurn();
                     break;
+                case "print -c":
+                    cliPrinter.printCompleteBoard(cliState);
+                    break;
+                case "print -pr":
+                    System.out.println(cliState.getPrivateObjectiveCard());
+                    System.out.println(cliState.getPrivateObjectiveCardDescription());
+                    break;
+                case "print -pu":
+                    for(int i = 0; i < cliState.getPublicObjectiveCards().size(); i++){
+                        PublicObjectiveLight card = cliState.getPublicObjectiveCards().get(i);
+                        System.out.println(card.getName() + "\n\t" + card.getDescription());
+                    }
+                    break;
+                case "print -t":
+                    for(int i = 0; i < cliState.getToolcards().size(); i++){
+                        ToolcardLight card = cliState.getToolcards().get(i);
+                        System.out.println(String.format("%d) %s - Tokens: %d\n\t%s", i+1, card.getToolcardName(), card.getTokens(), card.getDescription()));
+                    }
+                    break;
                 case "help":
                     printHelp();
                     break;
@@ -64,13 +91,9 @@ public class InputManager implements Runnable, Observer {
         } catch (IOException e){
             System.out.println("Something went wrong");
         } catch (TimeUpException e){
-            yourTurn = false;
         }
     }
 
-    public void setYourTurn(boolean yourTurn) {
-        this.yourTurn = yourTurn;
-    }
 
     public void setTimeout(){
         inputReader.setTimeOut();
@@ -78,7 +101,6 @@ public class InputManager implements Runnable, Observer {
 
     private void passTurn(){
         System.out.println("Passed turn");
-        yourTurn = false;
     }
 
     private void printHelp(){
@@ -96,7 +118,7 @@ public class InputManager implements Runnable, Observer {
     }
 
     private void placeDie(){
-        if(!yourTurn){
+        if(!cliState.isYourTurn()){
             System.out.println("You cannot place a die if it's not your turn");
         } else {
 
