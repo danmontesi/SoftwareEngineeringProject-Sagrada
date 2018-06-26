@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.CLI;
+package it.polimi.se2018.view.cli;
 
 import com.sun.media.jfxmedia.logging.Logger;
 import it.polimi.se2018.exceptions.TimeUpException;

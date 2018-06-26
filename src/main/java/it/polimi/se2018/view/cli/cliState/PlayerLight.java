@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.CLI.cliState;
+package it.polimi.se2018.view.cli.cliState;
 
 
 import java.util.List;

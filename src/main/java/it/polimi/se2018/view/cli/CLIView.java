@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.CLI;
+package it.polimi.se2018.view.cli;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.server_to_client_command.*;
@@ -6,10 +6,10 @@ import it.polimi.se2018.exceptions.TimeUpException;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.view.CLI.cliState.CliState;
-import it.polimi.se2018.view.CLI.cliState.PlayerLight;
-import it.polimi.se2018.view.CLI.cliState.PublicObjectiveLight;
-import it.polimi.se2018.view.CLI.cliState.ToolcardLight;
+import it.polimi.se2018.view.cli.cliState.CliState;
+import it.polimi.se2018.view.cli.cliState.PlayerLight;
+import it.polimi.se2018.view.cli.cliState.PublicObjectiveLight;
+import it.polimi.se2018.view.cli.cliState.ToolcardLight;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class CLIView extends View implements Observer {
 
     @Override
     public void startGame() {
-        //useless for CLI
+        //useless for cli
     }
 
     @Override

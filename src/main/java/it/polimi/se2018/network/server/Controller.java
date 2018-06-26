@@ -1,6 +1,6 @@
 package it.polimi.se2018.network.server;
 
-import it.polimi.se2018.view.CLI.CLIView;
+import it.polimi.se2018.view.cli.CLIView;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.ControllerServerInterface;

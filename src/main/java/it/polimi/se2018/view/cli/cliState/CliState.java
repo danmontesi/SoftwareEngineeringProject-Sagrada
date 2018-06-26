@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.CLI.cliState;
+package it.polimi.se2018.view.cli.cliState;
 
 import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.exceptions.NoSuchColorException;

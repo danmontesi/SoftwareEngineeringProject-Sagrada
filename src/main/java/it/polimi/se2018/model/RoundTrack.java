@@ -92,7 +92,7 @@ public class RoundTrack {
     }
 
     /**
-     * Representation of the patch of the whole roundtrack. Useful for GUI and CLI
+     * Representation of the patch of the whole roundtrack. Useful for GUI and cli
      * @return List of path last name
      */
     public ArrayList<String> roundtrackPathRepresentation() {

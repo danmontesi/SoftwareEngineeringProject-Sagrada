@@ -12,7 +12,7 @@ public class Client{
     public static void main(String[] args) {
         ServerConnection server;
         Scanner scanner2 = new Scanner(System.in);
-        System.out.println("Select \n1) CLI\n2) GUI");
+        System.out.println("Select \n1) cli\n2) GUI");
         int choice2 = scanner2.nextInt();
         if (choice2 == 1) {
             Scanner scanner = new Scanner(System.in);
