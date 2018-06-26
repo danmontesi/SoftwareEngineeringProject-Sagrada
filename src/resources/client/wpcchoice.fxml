@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="610.0" prefWidth="610.0" stylesheets="/client/wpcchoice.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.view.GUI.WPCChoiceController">
+<AnchorPane prefHeight="610.0" prefWidth="610.0" stylesheets="/client/wpcchoice.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.view.gui.WPCChoiceController">
    <children>
       <Label fx:id="choose" layoutX="152.0" layoutY="20.0" prefHeight="30.0" style="-fx-font-size: 22px" text="Choose a Window Pattern Card" />
       <Label fx:id="wpc1n" layoutX="63.0" layoutY="63.0" prefHeight="27.0" prefWidth="205.0" style="-fx-font-size: 16px" />

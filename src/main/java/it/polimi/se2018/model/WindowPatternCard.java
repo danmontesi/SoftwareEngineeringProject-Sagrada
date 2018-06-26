@@ -423,7 +423,7 @@ public class WindowPatternCard {
     }
 
     /**
-     * Representation of the patch of the whole Wpc. Useful for GUI
+     * Representation of the patch of the whole Wpc. Useful for gui
      * @return List of path last name
      */
     public ArrayList<String> wpcPathRepresentation(){

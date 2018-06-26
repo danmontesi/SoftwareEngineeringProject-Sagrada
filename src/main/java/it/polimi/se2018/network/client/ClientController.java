@@ -13,7 +13,7 @@ import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.CLI.CLIView;
 import it.polimi.se2018.view.CLI.InputManager;
-import it.polimi.se2018.view.GUI.GUIView;
+import it.polimi.se2018.view.gui.GUIView;
 import it.polimi.se2018.view.View;
 
 import java.io.IOException;
