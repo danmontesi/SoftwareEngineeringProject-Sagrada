@@ -28,10 +28,17 @@ public class MoveChoiceDicePlacement extends ClientToServerCommand{
 
     private Integer dieDraftPoolPosition;
 
-    public MoveChoiceDicePlacement(Integer dieSchemaRowPosition, Integer dieSchemaColPosition,Integer dieDraftPoolPosition) {
+    private Integer dieSchemaPosition;
+
+    public MoveChoiceDicePlacement(Integer dieSchemaRowPosition, Integer dieSchemaColPosition, Integer dieDraftPoolPosition) {
         this.dieSchemaRowPosition = dieSchemaRowPosition;
         this.dieDraftPoolPosition = dieDraftPoolPosition;
         this.dieSchemaColPosition = dieSchemaColPosition;
+    }
+
+    public MoveChoiceDicePlacement(Integer dieSchemaPosition, Integer dieDraftPoolPosition) {
+        this.dieSchemaPosition = dieSchemaPosition ;
+        this.dieDraftPoolPosition = dieDraftPoolPosition;
     }
     public Integer getDieSchemaRowPosition() {
         return dieSchemaRowPosition;
@@ -43,6 +50,10 @@ public class MoveChoiceDicePlacement extends ClientToServerCommand{
 
     public Integer getDieDraftPoolPosition() {
         return dieDraftPoolPosition;
+    }
+
+    public Integer getDieSchemaPosition() {
+        return dieSchemaPosition;
     }
 
     public void visit(ControllerServerInterface observer){
