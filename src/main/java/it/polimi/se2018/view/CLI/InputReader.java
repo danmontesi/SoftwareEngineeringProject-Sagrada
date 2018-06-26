@@ -1,93 +1,44 @@
 package it.polimi.se2018.view.CLI;
 
+import it.polimi.se2018.exceptions.TimeUpException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class InputReader {
-
-    private boolean timeOut;
-    private InputStreamReader isr;
-    private BufferedReader reader;
-    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
-
+public class InputReader{
+    private BufferedReader br;
+    boolean timeout = false;
 
     public InputReader() {
-        isr = new InputStreamReader(System.in);
-        reader = new BufferedReader(isr);
-        timeOut = false;
+        br = new BufferedReader(new InputStreamReader(System.in));
     }
 
-    public String readLine() throws IOException, TimeoutException {
-        timeOut = false;
-        while (!reader.ready()) {
-            if (timeOut) {
-                throw new TimeoutException();
-            }
-            // delay checking timeout
-            try {
-                Thread.sleep(500);
-            } catch (Exception ignore) {
-
-            }
-        }
-
-        return reader.readLine();
+    public String readLine() throws IOException {
+        return readLine(Integer.MAX_VALUE, Integer.MIN_VALUE);
     }
 
-    public String readLine(int minInput, int maxInput) throws TimeoutException {
-        timeOut = false;
-        try {
-            while (!reader.ready()) {
-                if (timeOut) {
-                    throw new TimeoutException();
-                }
-                // delay checking timeout
-                try {
-                    Thread.sleep(500);
-                } catch (Exception ignore) {
+    public String readLine(int validInferior, int validSuperior) throws IOException{
 
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Integer choice = -1;
-        try {
-            choice = Integer.parseInt(reader.readLine());
-        } catch (IOException e) {
-            System.out.println("Invalid input: has to be an integer between " + minInput + " and " + maxInput);
-            try {
-                return readLine();
-            } catch (IOException e1) {
-                e1.printStackTrace();
+        while(!br.ready()){
+            if(timeout){
+                timeout = false;
+                System.out.println("\nTime's up!");
+                throw new TimeUpException("Time's up for your turn");
             }
         }
-
-        if (!(choice <= maxInput && choice >= minInput)) {
-            System.out.println("Invalid input: has to be an integer between " + minInput + " and " + maxInput);
-            try {
-                return readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
+        String input = br.readLine();
+        if (input.matches("/d")){
+            int inputNumber = Integer.parseInt(input);
+            if((inputNumber < validInferior) || (inputNumber > validSuperior)){
+                throw new IllegalArgumentException("Input not compliant to rules");
             }
         }
-
-        try {
-            return reader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        //TODO: e se l'input non è un numero? Bisogna ritornare un'eccezione
+        return input;
     }
 
-
-    public void setTimeOut(boolean value){
-        timeOut=value;
+    public void setTimeOut() {
+        timeout = true;
     }
-
 }

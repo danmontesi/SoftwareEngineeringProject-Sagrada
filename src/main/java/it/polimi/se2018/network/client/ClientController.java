@@ -5,24 +5,25 @@ import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.model.COLOR;
 import it.polimi.se2018.model.Die;
-import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.network.server.ServerConnection;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.utils.ControllerClientInterface;
+import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.CLI.CLIView;
+import it.polimi.se2018.view.CLI.InputManager;
 import it.polimi.se2018.view.GUI.GUIView;
 import it.polimi.se2018.view.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 
-public class ClientController implements Observer, ControllerClientInterface {
+public class ClientController extends Observable implements Observer, ControllerClientInterface {
 
     /**
      * La classe che viene in contatto con la connessione (Socket o RMI)
@@ -32,13 +33,9 @@ public class ClientController implements Observer, ControllerClientInterface {
      */
 
     private View view;
-
-    private Model playerModel;
-
     private String username;
-
+    private InputManager inputManager;
     private ServerConnection connection;
-
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
 
@@ -50,8 +47,10 @@ public class ClientController implements Observer, ControllerClientInterface {
         if (viewChoice == 1){
             this.view = new CLIView(this);
         }
-        else
+        else{
             this.view = new GUIView(this);
+        }
+
     }
 
     public void setUsername(String username){
@@ -130,9 +129,6 @@ public class ClientController implements Observer, ControllerClientInterface {
      * @param
      */
 
-
-
-
     /**
      * USO TOOL:
      * LA RICHIESTA PARTE DAL CLIENTCONTROLLER->
@@ -145,7 +141,6 @@ public class ClientController implements Observer, ControllerClientInterface {
      * Faccio la richiesta al ClientController, lei mi controlla che ho abbastanza token , e se sì raccoglie i dati per la mossa ufficiale
      * Se la mossa ufficiale parte, -> Costruisco il metodo Richeista
      */
-
 
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
@@ -177,7 +172,7 @@ public class ClientController implements Observer, ControllerClientInterface {
      * @param command Command received
      */
     @Override
-    public void applyCommand(AuthenticatedCorrectlyCommand command){ //TODO quando ale finisce la rete
+    public void applyCommand(AuthenticatedCorrectlyCommand command){
         //AGGIORNO USERNAME
         this.username = command.getMessage();
         view.correctAuthenthication(command.getMessage());

@@ -12,12 +12,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientModel {
+public class ClientState{
     
     private String privateObjectiveCard;
     private String privateObjectiveCardDescription;
-
-
 
     private List<PublicObjectiveLight> publicObjectiveCards;
     private List<ToolcardLight> toolcards;
@@ -30,7 +28,7 @@ public class ClientModel {
      */
     private List<PlayerLight> players;
 
-    public ClientModel() {
+    public ClientState() {
         publicObjectiveCards = new ArrayList<>();
         toolcards = new ArrayList<>();
         players = new ArrayList<>();

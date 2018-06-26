@@ -2,10 +2,11 @@ package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.server_to_client_command.*;
+import it.polimi.se2018.exceptions.TimeUpException;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.view.clientModel.ClientModel;
+import it.polimi.se2018.view.clientModel.ClientState;
 import it.polimi.se2018.view.clientModel.PlayerLight;
 import it.polimi.se2018.view.clientModel.PublicObjectiveLight;
 import it.polimi.se2018.view.clientModel.ToolcardLight;
@@ -13,28 +14,27 @@ import it.polimi.se2018.view.clientModel.ToolcardLight;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CLIView extends View {
+public class CLIView extends View implements Observer {
 
     /**
      * CliView receives a clone of current model each time it's Player's turn
      */
+    private CLIPrinter cliPrinter = new CLIPrinter();
+    private ClientState clientState;
+    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
+    private InputManager inputManager;
+    private Scanner scan = new Scanner(System.in);
+    private InputReader inputReader = new InputReader();
 
     public CLIView(Observer observer){
         register(observer);
         System.out.println("ATTESA DI GIOCATORI...");
-        inputReader = new InputReader();
-        cliModel = new ClientModel();
+        inputManager = new InputManager();
+        clientState = new ClientState();
     }
-
-    private Scanner scan = new Scanner(System.in); // Can be replaced with BufferedReader?
-    private InputReader inputReader;
-    private CLIPrinter cliPrinter = new CLIPrinter();
-    private ClientModel cliModel;
-    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
     //OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO
 
@@ -48,13 +48,16 @@ public class CLIView extends View {
             System.out.println(i+1 + ")" + cards.get(i).getCardName());
         }
         try {
-            int chosen = Integer.parseInt(inputReader.readLine());
+            //TODO: gestire l'errore del parseInt
+            int chosen = Integer.parseInt(new InputReader().readLine());
             notify(new ChosenWindowPatternCard(cards.get(chosen - 1).getCardName()));
             System.out.println("Hai scelto: " + cards.get(chosen - 1).getCardName());
-        } catch (TimeoutException e) {
-            LOGGER.log(Level.INFO, "Timeout: your wpc is chosen randomly");
+        } catch (TimeUpException e) {
+            System.out.println("Card chosen automatically");
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+            new Thread(inputManager).start();
         }
     }
 
@@ -76,19 +79,19 @@ public class CLIView extends View {
 
     @Override
     public void authenticatedCorrectlyMessage(String username) {
-        this.username=username;
-        cliModel.getPlayer(0).setUsername(username);
+        this.username = username;
+        clientState.getPlayer(0).setUsername(username);
         System.out.println("Authenticated correctly!\nWelcome to Sagrada, " + this.username);
     }
 
 
-    public void AllowedUseToolMessage(String message){
-        LOGGER.log(Level.INFO, "Toolcard used correctly");
+    public void allowedUseToolMessage(String message){
+        LOGGER.log(Level.INFO, "Toolcard used correctly" + message);
     }
 
     @Override
     public void continueTurnMenu(boolean move, boolean tool){
-
+        inputManager.setYourTurn(true);
         boolean performedAction = false;
         int choice;
         System.out.println("What do you want to do?");
@@ -97,7 +100,7 @@ public class CLIView extends View {
         System.out.println("3 - Pass Turn");
         try {
             choice = Integer.parseInt(inputReader.readLine());
-        } catch (TimeoutException e) {
+        } catch (TimeUpException e) {
             LOGGER.log(Level.INFO, "Timeout: you will skip this turn");
             return;
         } catch (IOException e) {
@@ -107,14 +110,16 @@ public class CLIView extends View {
         while(!performedAction){
             switch(choice){
                 case 1:
-                    System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliModel.getDraftpool().size()));
+                    System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", clientState.getDraftpool().size()));
                     int draftPos = scan.nextInt();
+
                     System.out.println("Select row (number between 1 and 4)");
                     int schemaRow = scan.nextInt();
+
                     System.out.println("Select column (number between 1 and 5)");
                     int schemaCol = scan.nextInt();
+
                     notify(new MoveChoiceDicePlacement(schemaRow - 1,schemaCol - 1,draftPos - 1));
-                    performedAction = true;
                     break;
                 case 2:
                     System.out.println("Which tool want you to use?");
@@ -124,11 +129,12 @@ public class CLIView extends View {
                     break;
                 case 3:
                     System.out.println("Passed turn");
-                    notify(new MoveChoicePassTurn(cliModel.getPlayer(0).getUsername()));
+                    notify(new MoveChoicePassTurn(clientState.getPlayer(0).getUsername()));
                     performedAction = true;
                     break;
                 default:
                     System.out.println("Incorrect action, please select a number among the valid ones in menu");
+
             }
         }
 
@@ -282,35 +288,35 @@ public class CLIView extends View {
     @Override
     public void correctAuthenthication(String username){
         this.username=username;
-        System.out.println("Correct authentication!\nWelcome to Sagrada, " + cliModel.getPlayer(0).getUsername());
+        System.out.println("Correct authentication!\nWelcome to Sagrada, " + clientState.getPlayer(0).getUsername());
     }
 
     @Override
     public synchronized void timeOut() {
-        this.inputReader.setTimeOut(true);
+        inputManager.setTimeout();
     }
 
     @Override
     public void updateWpc(RefreshWpcCommand refreshCommand) {
-        cliModel.parseRefreshWPC(refreshCommand);
+        clientState.parseRefreshWPC(refreshCommand);
         printSyntheticBoard();
     }
 
     @Override
     public void updateTokens(RefreshTokensCommand refreshCommand) {
-        cliModel.parseRefreshTokens(refreshCommand);
+        clientState.parseRefreshTokens(refreshCommand);
         printSyntheticBoard();
     }
 
     @Override
     public void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
-        cliModel.parseRefreshRoundTrack(refreshCommand);
+        clientState.parseRefreshRoundTrack(refreshCommand);
         printSyntheticBoard();
     }
 
     @Override
     public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
-        cliModel.parseRefreshDraftPool(refreshCommand);
+        clientState.parseRefreshDraftPool(refreshCommand);
         printSyntheticBoard();
     }
 
@@ -332,7 +338,7 @@ public class CLIView extends View {
     //update entire board
     public void update(Object event) {
         RefreshBoardCommand command = (RefreshBoardCommand) event;
-        cliModel.parseRefreshBoard(command);
+        clientState.parseRefreshBoard(command);
         printSyntheticBoard();
     }
 
@@ -348,10 +354,10 @@ public class CLIView extends View {
             clearScreen();
         }
         System.out.println("Round Track:\n");
-        cliPrinter.printInlineList(cliModel.getRoundTrack());
+        cliPrinter.printInlineList(clientState.getRoundTrack());
         System.out.println("Draft Pool:\n");
-        cliPrinter.printInlineList(cliModel.getDraftpool());
-        PlayerLight me = cliModel.getPlayer(0);
+        cliPrinter.printInlineList(clientState.getDraftpool());
+        PlayerLight me = clientState.getPlayer(0);
         System.out.println(me.getUsername() + " - Tokens: " + me.getTokens());
         cliPrinter.printWPC(me.getWpc());
     }
@@ -362,8 +368,8 @@ public class CLIView extends View {
 
     private void printToolcards(){
         System.out.println("Toolcards:");
-        for(int i = 0; i < cliModel.getToolcards().size(); i++){
-            ToolcardLight card = cliModel.getToolcards().get(i);
+        for(int i = 0; i < clientState.getToolcards().size(); i++){
+            ToolcardLight card = clientState.getToolcards().get(i);
             System.out.println(String.format("%d) %s - Tokens: %d", i+1, card.getToolcardName(), card.getTokens()));
             System.out.println("\t" + card.getDescription());
         }
@@ -371,8 +377,8 @@ public class CLIView extends View {
 
     private void printPublicObjectiveCards(){
         System.out.println("Public Objective Cards:");
-        for(int i = 0; i < cliModel.getPublicObjectiveCards().size(); i++){
-            PublicObjectiveLight card = cliModel.getPublicObjectiveCards().get(i);
+        for(int i = 0; i < clientState.getPublicObjectiveCards().size(); i++){
+            PublicObjectiveLight card = clientState.getPublicObjectiveCards().get(i);
             System.out.println(card.getName()+ "\n\t" + card.getDescription());
         }
     }
@@ -382,15 +388,13 @@ public class CLIView extends View {
         printPublicObjectiveCards();
         printToolcards();
 
-        for (int i = 1; i < cliModel.getAllPlayers().size(); i++){
-            PlayerLight player = cliModel.getPlayer(i);
+        for (int i = 1; i < clientState.getAllPlayers().size(); i++){
+            PlayerLight player = clientState.getPlayer(i);
             System.out.println(player.getUsername() + " - Tokens: " + player.getTokens());
             cliPrinter.printWPC(player.getWpc());
             System.out.println("\n");
         }
         printSyntheticBoard(false);
     }
-
-
 
 }

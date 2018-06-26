@@ -5,11 +5,9 @@ import it.polimi.se2018.commands.client_to_server_command.MoveChoicePassTurn;
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardActions.*;
-import it.polimi.se2018.view.clientModel.ClientModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -31,8 +29,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Node;
 
 public class GameBoardController extends Observable implements Observer {
 
