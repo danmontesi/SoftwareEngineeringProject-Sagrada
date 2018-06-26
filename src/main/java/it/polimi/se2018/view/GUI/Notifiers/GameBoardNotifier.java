@@ -5,7 +5,11 @@ import it.polimi.se2018.view.GUI.Notifiers.GameBoardActions.GameBoardAction;
 import java.util.Observable;
 
 public class GameBoardNotifier extends Observable {
-    private GameBoardNotifier() {}
+    private boolean open;
+
+    private GameBoardNotifier() {
+        open = false;
+    }
 
     private static class GameBoardNotifierHolder {
         private static final GameBoardNotifier INSTANCE = new GameBoardNotifier();
@@ -20,8 +24,16 @@ public class GameBoardNotifier extends Observable {
         notifyObservers();
     }
 
-    public void updateGui(GameBoardAction guiReply) {
+    public void updateGui(GameBoardAction gameBoardAction) {
         setChanged();
-        notifyObservers(guiReply);
+        notifyObservers(gameBoardAction);
+    }
+
+    public void setOpen() {
+        this.open=true;
+    }
+
+    public boolean isOpen() {
+        return open;
     }
 }

@@ -9,4 +9,5 @@ public interface GameBoardVisitor {
     void visitGameBoardAction(WPCUpdate wpcUpdate);
     void visitGameBoardAction(TokensUpdate tokensUpdate);
     void visitGameBoardAction(DraftPoolRoundTrackUpdate draftPoolUpdate);
+    void visitGameBoardAction(ToolCardUse toolCardUse);
 }

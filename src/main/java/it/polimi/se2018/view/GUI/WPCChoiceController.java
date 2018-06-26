@@ -1,6 +1,7 @@
 package it.polimi.se2018.view.GUI;
 
 import it.polimi.se2018.commands.client_to_server_command.ChosenWindowPatternCard;
+import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WGUIViewSetting;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WPCChoice;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WPCChoiceAction;
@@ -231,6 +232,7 @@ public class WPCChoiceController extends Observable implements Observer {
                     LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch game board", e);
                 }
             });
+            GameBoardNotifier.getInstance().setOpen();
         }
     }
 
