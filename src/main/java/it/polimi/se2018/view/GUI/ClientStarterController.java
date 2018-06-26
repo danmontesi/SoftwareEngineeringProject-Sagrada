@@ -25,10 +25,6 @@ public class ClientStarterController implements Observer {
     private static final Logger LOGGER = Logger.getLogger(ClientStarterController.class.getName());
 
     @FXML
-    private Label username;
-    @FXML
-    private Label connection;
-    @FXML
     private Label ipAddress;
 
     @FXML
@@ -133,8 +129,8 @@ public class ClientStarterController implements Observer {
 
 
     public void closeScene() {
-        //PlayerLoginNotifier.getInstance().deleteObserver(this);
-        ClientStarterMain.getStage().close();
+        Stage stage = (Stage)connect.getScene().getWindow();
+        stage.close();
     }
 
     private void inputError() {

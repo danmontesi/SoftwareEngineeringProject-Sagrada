@@ -42,7 +42,7 @@ public abstract class ClientToServerCommand implements Serializable {
 
     //THIS METHOD IS IN EVERY SON
 
-    public abstract void visit(ControllerServerInterface observer) throws EmptyCellException;
+    public abstract void visit(ControllerServerInterface observer);
 
 }
 

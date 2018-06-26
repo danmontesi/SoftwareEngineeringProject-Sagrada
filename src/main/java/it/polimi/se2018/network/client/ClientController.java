@@ -363,6 +363,11 @@ public class ClientController extends Observable implements Observer, Controller
     }
 
     @Override
+    public void applyCommand(EndGameCommand endGameCommand) {
+        view.endGame();
+    }
+
+    @Override
     public void applyCommand(NewConnectedPlayerNotification command) {
         view.newConnectedPlayer(command.getUsername());
     }

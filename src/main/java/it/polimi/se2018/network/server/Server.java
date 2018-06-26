@@ -122,12 +122,11 @@ public class Server {
                 i++;
             }
         }
-
     }
 
     private static void notifyNewConnectedPlayer(String username){
         for (String connectionReference : waitingClients){
-            if (!waitingClients.equals(username)) {
+            if (!connectionReference.equals(username)) {
                 getConnectedClients().get(connectionReference).notifyClient(new NewConnectedPlayerNotification(username));
             }
         }

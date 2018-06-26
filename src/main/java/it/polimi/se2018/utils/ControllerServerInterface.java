@@ -63,7 +63,7 @@ public interface ControllerServerInterface {
 
     public void applyCommand(String playerUsername, UseToolMoveDieNoRestriction command);
 
-    public void applyCommand(String playerUsername, UseToolTwoDicePlacement command) throws EmptyCellException;
+    public void applyCommand(String playerUsername, UseToolTwoDicePlacement command);
 
     public void applyCommand(String playerUsername, UndoActionCommand command);
 

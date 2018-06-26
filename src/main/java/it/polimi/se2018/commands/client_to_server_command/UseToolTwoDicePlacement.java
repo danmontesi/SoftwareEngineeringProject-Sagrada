@@ -47,7 +47,7 @@ public class UseToolTwoDicePlacement extends ClientToServerCommand {
         this.schemaNewPosition2 = schemaNewPosition2;
     }
 
-    public void visit(ControllerServerInterface observer) throws EmptyCellException {
+    public void visit(ControllerServerInterface observer){
         observer.applyCommand(getUsername(), this);
     }
 }

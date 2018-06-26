@@ -15,18 +15,23 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
  * This is the model, the class that maintain the State of the game
  * It is an Observable from a VirtualView (the Observer).
  * The Virtual View just send "broadcast" all graphical changes of the board
- *
+ * <p>
  * The controller directly modifies the Model.
- *
  */
-public class Model extends Observable implements Serializable{ //Observable of View
+public class Model extends Observable implements Serializable { //Observable of View
+
+
+    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
     private DiceBag diceBag;
 
@@ -39,10 +44,6 @@ public class Model extends Observable implements Serializable{ //Observable of V
     private ArrayList<Player> gamePlayers;
 
     private RoundTrack roundTrack;
-
-    public DraftPool getDraftPool() {
-        return draftPool;
-    }
 
     private DraftPool draftPool;
 
@@ -57,9 +58,10 @@ public class Model extends Observable implements Serializable{ //Observable of V
      * uploading all WindowPatternCards, PublicObjectiveCards, PrivateObjectiveCards and ToolCards
      * extracting 3 PublicObjectiveCards, creating 10 rounds
      * initializing the diceBag, the game players list, the roundTrack
+     *
      * @param players list of game players
      */
-    public Model(ArrayList<Player> players){
+    public Model(ArrayList<Player> players) {
         gamePlayers = players;
         diceBag = new DiceBag();
         roundTrack = new RoundTrack();
@@ -76,7 +78,6 @@ public class Model extends Observable implements Serializable{ //Observable of V
         ArrayList<PublicObjectiveCard> publicObjectiveCardDeck = new ArrayList<>();
 
         windowPatternCardDeck = parserWindowPatternCard.parseAllCards();
-
 
         try {
             privateObjectiveCardDeck = parserPrivateObjectiveCard.parseCards();
@@ -105,52 +106,37 @@ public class Model extends Observable implements Serializable{ //Observable of V
             e.printStackTrace();
         }
         extractedToolCard = new ArrayList<>();
-        for (int i=0; i<3; i++){
-            int index = ThreadLocalRandom.current().nextInt(0,  toolCardDeck.size());
+        for (int i = 0; i < 3; i++) {
+            int index = ThreadLocalRandom.current().nextInt(0, toolCardDeck.size());
             extractedToolCard.add(i, toolCardDeck.remove(index));
         }
 
         Collections.shuffle(privateObjectiveCardDeck);
         for (Player p : gamePlayers)
             p.setPrivateObjectiveCard(privateObjectiveCardDeck.remove(0));
-
     }
 
-    public ArrayList<Die> extractDraftPoolDice(int numPlayers){
+    public ArrayList<Die> extractDraftPoolDice(int numPlayers) {
         ArrayList<Die> temp = new ArrayList<>();
-        for (int i = 0; i < 2*numPlayers+1; i++) {
+        for (int i = 0; i < 2 * numPlayers + 1; i++) {
             temp.add(diceBag.extractDie());
         }
         return temp;
     }
 
-
-    //Metodo boolean per fare una mossa alla casella X del giocatore Y con il dado D con le condizioni valore, colore, placement
-    // che torna True o False
-
-    //Metodo per get vari dei giocatori
-
-    //...
-
-
-
-
-
-
-
-
-    public ArrayList<PublicObjectiveCard> getExtractedPublicObjectiveCard(){
+    public ArrayList<PublicObjectiveCard> getExtractedPublicObjectiveCard() {
         return extractedPublicObjectiveCard;
     }
 
     /**
      * Returns an ArrayList of 4 WindowPatternCards
+     *
      * @return list of extracted cards
      */
-    public ArrayList<WindowPatternCard> extractWindowPatternCard(){
+    public ArrayList<WindowPatternCard> extractWindowPatternCard() {
         ArrayList<WindowPatternCard> toReturn = new ArrayList<>();
-        for (int i=0; i<4; i++){
-            int index = ThreadLocalRandom.current().nextInt(0,  windowPatternCardDeck.size());
+        for (int i = 0; i < 4; i++) {
+            int index = ThreadLocalRandom.current().nextInt(0, windowPatternCardDeck.size());
             toReturn.add(i, windowPatternCardDeck.remove(index));
         }
         return toReturn;
@@ -158,13 +144,14 @@ public class Model extends Observable implements Serializable{ //Observable of V
 
     /**
      * Returns an ArrayList of 3 ToolCard
+     *
      * @return list of extracted cards
      */
-    public ArrayList<ToolCard> getExtractedToolCard(){
+    public List<ToolCard> getExtractedToolCard() {
         return extractedToolCard;
     }
 
-    public RoundTrack getRoundTrack(){
+    public RoundTrack getRoundTrack() {
         return roundTrack;
     }
 
@@ -172,77 +159,51 @@ public class Model extends Observable implements Serializable{ //Observable of V
         return diceBag;
     }
 
-    public void insertDieInDiceBag(Die die){
+    public void insertDieInDiceBag(Die die) {
         getDiceBag().insertDie(die);
     }
 
-    public Die extractDieFromDiceBag(){
+    public Die extractDieFromDiceBag() {
         return getDiceBag().extractDie();
     }
+
     public void setGamePlayers(ArrayList<Player> gamePlayers) {
         this.gamePlayers = gamePlayers;
-        //notifyEditWpcs();
-        //notify(this);
         notifyRefreshWpcs();
     }
 
-
-
-    public String toString() {
-        StringBuilder string = new StringBuilder();
-        for (int i = 0; i < gamePlayers.size(); i++) {
-            string.append("\n" + gamePlayers.get(i).getUsername() + ":" +
-                    "\n" + gamePlayers.get(i).getWindowPatternCard().toString() + "\n");
-            string.append("Tokens: "+ gamePlayers.get(i).getTokens()+ "\n");
-        }
-        string.append("\n ->Toolcards<- \n");
-        for (int i = 0; i < extractedToolCard.size(); i++) {
-            string.append("-> Number " + i + ", Name: " +extractedToolCard.get(i).getName() + "\n" + "Description: " + extractedToolCard.get(i).getDescription()
-                    + "\n TokenCount = " + extractedToolCard.get(i).getTokenCount());
-        }
-
-        for (int i = 0; i < extractedPublicObjectiveCard.size(); i++) {
-            string.append("\nName: " + extractedPublicObjectiveCard.get(i).getName() + "\n" + "Description: " + extractedPublicObjectiveCard.get(i).getDescription() + "\n");
-        }
-        string.append("\n Roundtrack: ");
-        //....
-        string.append("\n DraftPool: \n");
-        string.append(draftPool.toString());
-        return string.toString();
-    }
-
-    public Die removeDieFromDraftPool(int index){
+    public Die removeDieFromDraftPool(int index) {
+        Die temp = null;
         try {
-            Die temp = getDraftPool().takeDie(index);
-            notifyRefreshDraftPool();
-            return temp;
-        } catch (EmptyCellException e) {
-            return null;
-        }
-    }
-
-    public void changeDieValueOnDraftPool(int index, int value){
-        try {
-            draftPool.getDie(index).setValue(value);
-            notifyRefreshDraftPool();
+            temp = getDraftPool().takeDie(index);
         } catch (EmptyCellException e) {
             e.printStackTrace();
         }
+        notifyRefreshDraftPool();
+        return temp;
     }
 
-    public void setDieOnDraftPool(Die die, int index){
+    public void changeDieValueOnDraftPool(int index, int value) {
+        try {
+            draftPool.getDie(index).setValue(value);
+        } catch (EmptyCellException e) {
+            e.printStackTrace();
+        }
+        notifyRefreshDraftPool();
+    }
+
+    public void setDieOnDraftPool(Die die, int index) {
         this.draftPool.placeDie(index, die);
         notifyRefreshDraftPool();
     }
 
-    public void rollDraftpoolDice(){
+    public void rollDraftpoolDice() {
         this.getDraftPool().rollDice();
         notifyRefreshDraftPool();
-        //TODO notify Draftpool changes
     }
 
-    public Die swapDieOnRoundTrack(Die die, int index){
-        Die toReturn=null;
+    public Die swapDieOnRoundTrack(Die die, int index) {
+        Die toReturn = null;
         try {
             toReturn = getRoundTrack().switchDie(index, die);
         } catch (EmptyCellException e) {
@@ -251,59 +212,53 @@ public class Model extends Observable implements Serializable{ //Observable of V
         notifyRefreshRoundTrack();
         return toReturn;
     }
-    public void setPlayerWpcs(ArrayList<Player> players){
+
+    public void setPlayerWpcs(ArrayList<Player> players) {
         this.gamePlayers = players;
         notifyRefreshBoard();
     }
-/*
-    //TODO Versione toString, eventualmente da farle tornare il model stesso
-    @Override
-    public void notify(Object obj){
-        Model model = (Model) obj;
-        for (Observer observer : observers) {
-            System.out.println("Notificando una V.V. della new board");
-            observer.update(model.toString());
-        }
+
+    public void increaseToolCardTokens(int toolCardNumber, int tokens) {
+        extractedToolCard.get(toolCardNumber).increaseTokens(tokens);
+        notifyRefreshTokens();
     }
-*/
-    public void notifyRefreshDraftPool(){
+
+    private void notifyRefreshDraftPool() {
+        ArrayList<String> draftpool;
+        draftpool = getDraftPool().draftpoolPathRepresentation();
         for (Observer observer : observers) {
-            ArrayList<String> draftpool= new ArrayList<>(); //Dice in the format: colorNumber/empty
-            draftpool = getDraftPool().draftpoolPathRepresentation();
-            System.out.println("Notificando una V.V. della new board");
             ((View) observer).updateDraftPool(new RefreshDraftPoolCommand(draftpool));
         }
     }
 
-    public void notifyRefreshWpcs(){
+    private void notifyRefreshWpcs() {
         for (Observer observer : observers) {
             ArrayList<String> personalWpc = new ArrayList<>(); //Dice in the format: colorNumber/empty
             ArrayList<ArrayList<String>> otherPlayersWpcs = new ArrayList<>();
             View currentView = (View) observer;
-            for (Player p : gamePlayers){
-                if (p.getUsername().equals(currentView.getUsername())){
+            for (Player p : gamePlayers) {
+                if (p.getUsername().equals(currentView.getUsername())) {
                     personalWpc = p.getWindowPatternCard().wpcPathRepresentation();
-                }
-                else{
+                } else {
                     otherPlayersWpcs.add(p.getWindowPatternCard().wpcPathRepresentation());
                 }
             }
             ((View) observer).updateWpc(new RefreshWpcCommand(personalWpc, otherPlayersWpcs));
-            System.out.println("Notificando una V.V. della new board -> new WPCards for "+currentView.getUsername());
+            LOGGER.log(Level.INFO,"Notificando una V.V. della new board -> new WPCards for " + currentView.getUsername());
         }
     }
 
-    public void notifyRefreshRoundTrack(){
+    private void notifyRefreshRoundTrack() {
         for (Observer observer : observers) {
             ArrayList<String> roundTrackString = new ArrayList<>(); //Dice in the format: colorNumber/empty
             roundTrackString = getRoundTrack().roundtrackPathRepresentation();
-            System.out.println("Notificando una V.V. della new board");
+            LOGGER.log(Level.INFO,"Notificando una V.V. della new board");
             ((View) observer).updateRoundTrack(new RefreshRoundTrackCommand(roundTrackString));
         }
     }
 
-    public void notifyRefreshTokens(){
-        System.out.println("Notificando una V.V. della new board");
+    private void notifyRefreshTokens() {
+        LOGGER.log(Level.INFO,"Notificando una V.V. della new board");
         ArrayList<Integer> tokensToolCards = new ArrayList<>(); //Ordered
         for (ToolCard toolCard : extractedToolCard) {
             tokensToolCards.add(toolCard.getTokenCount());
@@ -313,7 +268,7 @@ public class Model extends Observable implements Serializable{ //Observable of V
             View temp = (View) observer;
             ArrayList<Integer> otherPlayersTokens = new ArrayList<>();
             Integer myTokens = null;
-            for (Player p : gamePlayers){
+            for (Player p : gamePlayers) {
                 if (p.getUsername().equals(temp.getUsername()))
                     myTokens = p.getTokens();
                 else {
@@ -324,32 +279,18 @@ public class Model extends Observable implements Serializable{ //Observable of V
         }
     }
 
-    //TODO ELIMINA
-    public void notifyRefreshToolCardTokens(){
-        ArrayList<Integer> tokensToolCards = new ArrayList<>(); //Ordered
-        for (ToolCard toolCard : extractedToolCard){
-            tokensToolCards.add(toolCard.getTokenCount());
-        }
-        for (Observer observer : observers) {
-            System.out.println("Notificando una V.V. della new board");
-            //observer.update(new RefreshTokensCommand());
-        }
-    }
-
-
     /**
      * Method for initial setting of the board
      */
-    public void notifyRefreshBoard(){
-        System.out.println("CALLED REFRESHBOARD");
-        ArrayList<String> draftpool= new ArrayList<>(); //Dice in the format: colorNumber/empty
+    public void notifyRefreshBoard() {
+        ArrayList<String> draftpool; //Dice in the format: colorNumber/empty
         draftpool = getDraftPool().draftpoolPathRepresentation();
-        ArrayList<String> roundTrackString = new ArrayList<>(); //Dice in the format: colorNumber/empty
+        ArrayList<String> roundTrackString; //Dice in the format: colorNumber/empty
         roundTrackString = getRoundTrack().roundtrackPathRepresentation();
 
         ArrayList<String> publicObjectiveCards = new ArrayList<>();
         ArrayList<String> publicObjectiveDescription = new ArrayList<>();
-        for (PublicObjectiveCard card : extractedPublicObjectiveCard){
+        for (PublicObjectiveCard card : extractedPublicObjectiveCard) {
             publicObjectiveCards.add(card.getName());
             publicObjectiveDescription.add(card.getDescription());
         }
@@ -357,7 +298,7 @@ public class Model extends Observable implements Serializable{ //Observable of V
         ArrayList<String> toolCards = new ArrayList<>();
         ArrayList<String> toolCardDescription = new ArrayList<>();
         ArrayList<Integer> tokensToolCards = new ArrayList<>(); //Ordered
-        for (ToolCard toolCard : extractedToolCard){
+        for (ToolCard toolCard : extractedToolCard) {
             toolCards.add(toolCard.getName());
             toolCardDescription.add(toolCard.getDescription());
             tokensToolCards.add(toolCard.getTokenCount());
@@ -373,21 +314,20 @@ public class Model extends Observable implements Serializable{ //Observable of V
             //WPC initialization
             ArrayList<String> personalWpc = new ArrayList<>(); //Dice in the format: colorNumber/empty
             ArrayList<ArrayList<String>> otherPlayersWpcs = new ArrayList<>();
-            for (Player p : gamePlayers){
-                if (p.getUsername().equals(username)){
+            for (Player p : gamePlayers) {
+                if (p.getUsername().equals(username)) {
                     personalWpc = p.getWindowPatternCard().wpcPathRepresentation();
                     privateObjectiveCard = p.getPrivateObjectiveCard().getName();
                     privateObjectiveCardDescription = p.getPrivateObjectiveCard().getDescription();
-                }
-                else{
+                } else {
                     otherPlayersWpcs.add(p.getWindowPatternCard().wpcPathRepresentation());
                 }
             }
             ArrayList<Integer> otherPlayersTokens = new ArrayList<>();
             ArrayList<String> otherPlayersUsernames = new ArrayList<>();
             Integer myTokens = null;
-            String myUsername = username;
-            for (Player p : gamePlayers){
+            String playerUsr = username;
+            for (Player p : gamePlayers) {
                 if (p.getUsername().equals(username))
                     myTokens = p.getTokens();
                 else {
@@ -397,8 +337,7 @@ public class Model extends Observable implements Serializable{ //Observable of V
             }
 
             observer.update(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
-                    draftpool, roundTrackString, personalWpc, myTokens, myUsername, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
-            System.out.println("Notificando una V.V. della new board COMPLETA");
+                    draftpool, roundTrackString, personalWpc, myTokens, playerUsr, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
         }
     }
 
@@ -408,11 +347,14 @@ public class Model extends Observable implements Serializable{ //Observable of V
     }
 
     public Die getLastDie() throws EmptyCellException {
-        Die toReturn = draftPool.getLastDie();
+        Die toReturn;
+        toReturn = draftPool.getLastDie();
+        notifyRefreshDraftPool();
         return toReturn;
     }
 
-    //Aready has
-    //public void notify(Object event) {
+    public DraftPool getDraftPool() {
+        return draftPool;
+    }
 
 }

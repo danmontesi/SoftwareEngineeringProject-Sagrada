@@ -2,16 +2,17 @@ package it.polimi.se2018.view.GUI;
 
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
+import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardActions.*;
-import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.*;
 import it.polimi.se2018.view.GUI.Notifiers.GameBoardNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.LobbyNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.RankingPaneNotifier;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WGUIViewSetting;
+import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceActions.WPCChoice;
 import it.polimi.se2018.view.GUI.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.model.WindowPatternCard;
-import it.polimi.se2018.utils.Observer;
+import org.apache.maven.model.Notifier;
 
 import java.util.ArrayList;
 
@@ -37,11 +38,19 @@ public class GUIView extends View {
         lobbyNotifier.updateGui(username);
     }
 
+    @Override
     public void startGame() {
         LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
         lobbyNotifier.updateGui();
     }
 
+    @Override
+    public void endGame() {
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui();
+    }
+
+    @Override
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
         ArrayList<String> cardNames = new ArrayList<>();
         ArrayList<Integer> cardDifficulties = new ArrayList<>();
@@ -57,15 +66,19 @@ public class GUIView extends View {
     public void startTurnMenu() {
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.updateGui(new TurnStart(null));
-
-        //2) se clicco una toolcard, appare una casellina in cui scrivo "vuoi usare il tool x?"
+        //casellina in cui scrivo "vuoi usare il tool x?"
         // se sì-> notify(new MoveChoiceToolCard(indice tool);
-
-        //notify( new MOVE / new TOOLUSE / new PASSTURN )
     }
 
     @Override
     public void otherPlayerTurn(String username) {
+        while(!GameBoardNotifier.getInstance().isOpen()){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.updateGui(new TurnStart(username));
     }
@@ -73,7 +86,6 @@ public class GUIView extends View {
     @Override
     public void authenticatedCorrectlyMessage(String message) {
         this.username = message;
-
     }
 
     public void AllowedUseToolMessage(String message) {
@@ -85,68 +97,89 @@ public class GUIView extends View {
         gameBoardNotifier.updateGui(new TurnUpdate(move, tool));
     }
 
+    @Override
     public void firmPastryBrushMenu(int value) {
-
+        GameBoardNotifier gameBoardNotifier  = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new ToolCardUse("Firm Pastry Brush", null, value));
     }
 
+    @Override
     public void firmPastryThinnerMenu(String color, int value) {
-
+        GameBoardNotifier gameBoardNotifier  = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new ToolCardUse("Firm Pastry Thinner", color, value));
     }
 
+    @Override
     public void moveDieNoRestrictionMenu(String cardName) {
-
+        GameBoardNotifier gameBoardNotifier  = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new ToolCardUse(cardName, null, null));
     }
 
+    @Override
     public void changeDieValueMenu(String cardName) {
-        //if CardName.equals(Roughing Forceps):
-        //1- scrivi nelle notifiche "Scegli un dado draftpool" abilitando solo draftpool
-        //2- scegli se aumentare / diminuire (Faccio apparire 2 bottoni + o - )"
-        //notify( cardName, Integer draftPoolPosition, Integer schemaPosition, boolean increase, boolean placedDie)
-        // -> 2 bottoni
-
+        GameBoardNotifier gameBoardNotifier  = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new ToolCardUse(cardName, null, null));
     }
 
+    @Override
     public void twoDiceMoveMenu(String cardName) {
-
+        GameBoardNotifier gameBoardNotifier  = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new ToolCardUse(cardName, null, null));
     }
 
+    @Override
     public void corkLineMenu() {
-        // Attivo draftpool
-        // Attivo schema
-        //l'utente preme gli indici e invio l'evento
-        // notify(new UseToolCorkLine(schemaPos, draftPos);
-        //disabiliti tutto
-
+        GameBoardNotifier gameBoardNotifier  = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new ToolCardUse("Cork Line", null, null));
     }
 
-
+    @Override
     public void wheelsPincherMenu() {
-
-
+        GameBoardNotifier gameBoardNotifier  = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new ToolCardUse("Wheels Pincher", null, null));
     }
 
+    @Override
     public void circularCutter() {
-
+        GameBoardNotifier gameBoardNotifier  = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new ToolCardUse("Circular Cutter", null, null));
     }
 
-
+    @Override
     public void invalidActionMessage(String message) {
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.updateGui(new InvalidAction(message));
     }
 
+    @Override
     public void loseMessage(Integer position, ArrayList<String> scores) {
+        while(!GameBoardNotifier.getInstance().isOpen()){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
         scores.add(0, position.toString());
         RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
         rankingPaneNotifier.updateGui(scores);
     }
 
+    @Override
     public void winMessage(ArrayList<String> scores) {
+        while(!GameBoardNotifier.getInstance().isOpen()){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
         scores.add(0, "1");
         RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
         rankingPaneNotifier.updateGui(scores);
     }
 
+    @Override
     public void correctAuthenthication(String username) {
         //TODO. non contiene niente, mostra solo i messaggio
     }
@@ -176,15 +209,10 @@ public class GUIView extends View {
 
     @Override
     public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
-        System.out.println("draftpool update in corso");
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.updateGui(new DraftPoolRoundTrackUpdate("DP", refreshCommand.getDraftpool()));
     }
 
-
-    // Methods for Obs/Obsvb
-
-    //Sono gli stessi in ogni view
     @Override
     public void notify(Object event) {
         ClientToServerCommand command = (ClientToServerCommand) event;
@@ -194,32 +222,25 @@ public class GUIView extends View {
     }
 
     @Override
-    public void messageBox(String message) {
-
-    }
+    public void messageBox(String message) {}
 
     @Override
     public void update(Object model) {
-        //Osserva il Model e con Update, fa l'update del model locale
-        //Calls the right method to update the Graphic Board;
-        //The model is already updated by the ClientController, no worries about that
-        //In case there is a CLI, does anything
         RefreshBoardCommand command = (RefreshBoardCommand) model;
-        //PER NIVES: PER ORA LE UPDATE SONO DI 2 TIPI: TU LASCIALI ENTRAMBI E FAI L'AGGIORNAMENTO  DELLA BOARD PRENDENDO QUESTO
         if (command.getMessage()!= null) {
-            System.out.println("ricevuto " + command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
+            System.out.println("ricevuto " + command.getMessage());
         }
         else{
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            while(!GameBoardNotifier.getInstance().isOpen()){
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
-            //TODO: sistemare meglio
             GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
             gameBoardNotifier.updateGui(new GUIViewSetting(this));
             gameBoardNotifier.updateGui(new RefreshBoard(command));
-            System.out.println("board update");
         }
     }
 }
