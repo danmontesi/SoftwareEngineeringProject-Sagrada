@@ -6,10 +6,10 @@ import it.polimi.se2018.exceptions.TimeUpException;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.view.clientModel.ClientState;
-import it.polimi.se2018.view.clientModel.PlayerLight;
-import it.polimi.se2018.view.clientModel.PublicObjectiveLight;
-import it.polimi.se2018.view.clientModel.ToolcardLight;
+import it.polimi.se2018.view.CLI.cliState.CliState;
+import it.polimi.se2018.view.CLI.cliState.PlayerLight;
+import it.polimi.se2018.view.CLI.cliState.PublicObjectiveLight;
+import it.polimi.se2018.view.CLI.cliState.ToolcardLight;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class CLIView extends View implements Observer {
      * CliView receives a clone of current model each time it's Player's turn
      */
     private CLIPrinter cliPrinter = new CLIPrinter();
-    private ClientState clientState;
+    private CliState cliState;
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
     private InputManager inputManager;
     private Scanner scan = new Scanner(System.in);
@@ -33,7 +33,7 @@ public class CLIView extends View implements Observer {
         register(observer);
         System.out.println("ATTESA DI GIOCATORI...");
         inputManager = new InputManager();
-        clientState = new ClientState();
+        cliState = new CliState();
     }
 
     //OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO
@@ -80,7 +80,7 @@ public class CLIView extends View implements Observer {
     @Override
     public void authenticatedCorrectlyMessage(String username) {
         this.username = username;
-        clientState.getPlayer(0).setUsername(username);
+        cliState.getPlayer(0).setUsername(username);
         System.out.println("Authenticated correctly!\nWelcome to Sagrada, " + this.username);
     }
 
@@ -110,7 +110,7 @@ public class CLIView extends View implements Observer {
         while(!performedAction){
             switch(choice){
                 case 1:
-                    System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", clientState.getDraftpool().size()));
+                    System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliState.getDraftpool().size()));
                     int draftPos = scan.nextInt();
 
                     System.out.println("Select row (number between 1 and 4)");
@@ -129,7 +129,7 @@ public class CLIView extends View implements Observer {
                     break;
                 case 3:
                     System.out.println("Passed turn");
-                    notify(new MoveChoicePassTurn(clientState.getPlayer(0).getUsername()));
+                    notify(new MoveChoicePassTurn(cliState.getPlayer(0).getUsername()));
                     performedAction = true;
                     break;
                 default:
@@ -288,7 +288,7 @@ public class CLIView extends View implements Observer {
     @Override
     public void correctAuthenthication(String username){
         this.username=username;
-        System.out.println("Correct authentication!\nWelcome to Sagrada, " + clientState.getPlayer(0).getUsername());
+        System.out.println("Correct authentication!\nWelcome to Sagrada, " + cliState.getPlayer(0).getUsername());
     }
 
     @Override
@@ -298,25 +298,25 @@ public class CLIView extends View implements Observer {
 
     @Override
     public void updateWpc(RefreshWpcCommand refreshCommand) {
-        clientState.parseRefreshWPC(refreshCommand);
+        cliState.parseRefreshWPC(refreshCommand);
         printSyntheticBoard();
     }
 
     @Override
     public void updateTokens(RefreshTokensCommand refreshCommand) {
-        clientState.parseRefreshTokens(refreshCommand);
+        cliState.parseRefreshTokens(refreshCommand);
         printSyntheticBoard();
     }
 
     @Override
     public void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
-        clientState.parseRefreshRoundTrack(refreshCommand);
+        cliState.parseRefreshRoundTrack(refreshCommand);
         printSyntheticBoard();
     }
 
     @Override
     public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
-        clientState.parseRefreshDraftPool(refreshCommand);
+        cliState.parseRefreshDraftPool(refreshCommand);
         printSyntheticBoard();
     }
 
@@ -338,7 +338,7 @@ public class CLIView extends View implements Observer {
     //update entire board
     public void update(Object event) {
         RefreshBoardCommand command = (RefreshBoardCommand) event;
-        clientState.parseRefreshBoard(command);
+        cliState.parseRefreshBoard(command);
         printSyntheticBoard();
     }
 
@@ -354,10 +354,10 @@ public class CLIView extends View implements Observer {
             clearScreen();
         }
         System.out.println("Round Track:\n");
-        cliPrinter.printInlineList(clientState.getRoundTrack());
+        cliPrinter.printInlineList(cliState.getRoundTrack());
         System.out.println("Draft Pool:\n");
-        cliPrinter.printInlineList(clientState.getDraftpool());
-        PlayerLight me = clientState.getPlayer(0);
+        cliPrinter.printInlineList(cliState.getDraftpool());
+        PlayerLight me = cliState.getPlayer(0);
         System.out.println(me.getUsername() + " - Tokens: " + me.getTokens());
         cliPrinter.printWPC(me.getWpc());
     }
@@ -368,8 +368,8 @@ public class CLIView extends View implements Observer {
 
     private void printToolcards(){
         System.out.println("Toolcards:");
-        for(int i = 0; i < clientState.getToolcards().size(); i++){
-            ToolcardLight card = clientState.getToolcards().get(i);
+        for(int i = 0; i < cliState.getToolcards().size(); i++){
+            ToolcardLight card = cliState.getToolcards().get(i);
             System.out.println(String.format("%d) %s - Tokens: %d", i+1, card.getToolcardName(), card.getTokens()));
             System.out.println("\t" + card.getDescription());
         }
@@ -377,8 +377,8 @@ public class CLIView extends View implements Observer {
 
     private void printPublicObjectiveCards(){
         System.out.println("Public Objective Cards:");
-        for(int i = 0; i < clientState.getPublicObjectiveCards().size(); i++){
-            PublicObjectiveLight card = clientState.getPublicObjectiveCards().get(i);
+        for(int i = 0; i < cliState.getPublicObjectiveCards().size(); i++){
+            PublicObjectiveLight card = cliState.getPublicObjectiveCards().get(i);
             System.out.println(card.getName()+ "\n\t" + card.getDescription());
         }
     }
@@ -388,8 +388,8 @@ public class CLIView extends View implements Observer {
         printPublicObjectiveCards();
         printToolcards();
 
-        for (int i = 1; i < clientState.getAllPlayers().size(); i++){
-            PlayerLight player = clientState.getPlayer(i);
+        for (int i = 1; i < cliState.getAllPlayers().size(); i++){
+            PlayerLight player = cliState.getPlayer(i);
             System.out.println(player.getUsername() + " - Tokens: " + player.getTokens());
             cliPrinter.printWPC(player.getWpc());
             System.out.println("\n");

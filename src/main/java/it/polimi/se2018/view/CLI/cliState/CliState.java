@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.clientModel;
+package it.polimi.se2018.view.CLI.cliState;
 
 import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.exceptions.NoSuchColorException;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientState{
+public class CliState {
     
     private String privateObjectiveCard;
     private String privateObjectiveCardDescription;
@@ -28,7 +28,7 @@ public class ClientState{
      */
     private List<PlayerLight> players;
 
-    public ClientState() {
+    public CliState() {
         publicObjectiveCards = new ArrayList<>();
         toolcards = new ArrayList<>();
         players = new ArrayList<>();
