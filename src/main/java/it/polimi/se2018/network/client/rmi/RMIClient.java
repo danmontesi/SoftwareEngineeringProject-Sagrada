@@ -39,15 +39,24 @@ public class RMIClient extends Thread implements Remote, ServerConnection{
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
     private ServerToClientCommand command;
     private boolean dispatched = false;
-    private final static Object waiter = new Object();
+    private static Object waiter = new Object();
 
     private static Deque<ServerToClientCommand> commandQueue;
 
     public RMIClient(int viewChoice){
         clientController = new ClientController(viewChoice, this);
         commandQueue = new ConcurrentLinkedDeque<>();
-        Thread commandHandlerRMI = new Thread(new CommandHandlerRMI(this));
+        Thread commandHandlerRMI = new Thread(new CommandHandlerRMI());
         commandHandlerRMI.start();
+    }
+
+
+    public static Object getWaiter() {
+        return waiter;
+    }
+
+    public static void setWaiter(Object waiter) {
+        RMIClient.waiter = waiter;
     }
 
     @Override
@@ -64,13 +73,17 @@ public class RMIClient extends Thread implements Remote, ServerConnection{
     }
 
     public void notifyRMI(ServerToClientCommand command) {
-        /*
+
         new Thread(() -> {
             clientController.dispatchCommand(command);
         }).start();
-        */
-        commandQueue.add(command);
-        System.out.println("added "+command);
+        /*
+        synchronized (waiter) {
+            commandQueue.add(command);
+            System.out.println("added "+command);
+            waiter.notifyAll();
+        }
+*/
 
     }
         /*
@@ -83,7 +96,7 @@ public class RMIClient extends Thread implements Remote, ServerConnection{
             waiter.notifyAll();
         }
         System.out.println("Uscito da synchronized Sta finendo!" + command.toString());*/
-
+/*
     @Override
     public void run() {
         while (true) {
@@ -95,7 +108,7 @@ public class RMIClient extends Thread implements Remote, ServerConnection{
                 }
             }
         }
-        }
+    }*/
         /*
         System.out.println(this);
         while (true) {

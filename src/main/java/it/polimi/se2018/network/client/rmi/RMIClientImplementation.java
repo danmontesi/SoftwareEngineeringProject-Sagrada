@@ -13,7 +13,6 @@ public class RMIClientImplementation implements RMIClientInterface {
     @Override
     public void rmiNotifyClient(ServerToClientCommand command) {
         client.notifyRMI(command);
-        //Deve essere sostituito da un dispatchEvent...
     }
 
 }

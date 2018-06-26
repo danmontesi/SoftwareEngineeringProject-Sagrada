@@ -851,7 +851,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     return;
                 }
                 model.changeDieValueOnDraftPool(command.getDraftPoolPosition(), temp.getValue() - 1);
-            }//TODO
+            }
         } else {
             temp.flip();
             model.changeDieValueOnDraftPool(command.getDraftPoolPosition(), temp.getValue());
@@ -859,7 +859,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         usernamePlayerMap.get(currentPlayer).decreaseTokens(requiredTokensForLastToolUse);
         model.increaseToolCardTokens(lastUsedToolCardNum, requiredTokensForLastToolUse);
         hasUsedTool = true;
-        hasPerformedMove = true;
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
     }
 
@@ -898,10 +897,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
 
-        Die toPlace1 = null, toPlace2 = null;
+        Die toPlace;
         try {
-            toPlace1 = model.getDraftPool().getDie(command.getDieDraftPoolPosition2());
-            toPlace2 = model.getDraftPool().getDie(command.getDieDraftPoolPosition2());
+            toPlace = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
         } catch (EmptyCellException e) {
             LOGGER.log(Level.INFO, "No die in draftpool, sending Invalid Move");
             userViewMap.get(playerUsername).invalidActionMessage("There is no die in the index you selected");
@@ -909,15 +907,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
 
-        if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().place2Die(toPlace1, toPlace2,
-                command.getDieSchemaPosition1(), command.getDieSchemaPosition2(),
-                true, true, true)) {
+        if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().placeDie(toPlace,
+                command.getDieSchemaPosition(),true, true, true)) {
             userViewMap.get(playerUsername).invalidActionMessage("You can't place the dice there! Try Again");
             userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
-        model.removeDieFromDraftPool(command.getDieDraftPoolPosition1());
-        model.removeDieFromDraftPool(command.getDieDraftPoolPosition2());
+        model.removeDieFromDraftPool(command.getDieDraftPoolPosition());
         usernamePlayerMap.get(currentPlayer).decreaseTokens(requiredTokensForLastToolUse);
         model.increaseToolCardTokens(lastUsedToolCardNum, requiredTokensForLastToolUse);
         hasUsedTool = true;
@@ -935,6 +931,5 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     public void update(Object event) {
         ClientToServerCommand command = (ClientToServerCommand) event;
         command.visit(this);
-
     }
 }

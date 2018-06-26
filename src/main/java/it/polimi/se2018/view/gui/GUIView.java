@@ -211,6 +211,20 @@ public class GUIView extends View {
     }
 
     @Override
+    public void updateBoard(RefreshBoardCommand refreshCommand) {
+        while(!GameBoardNotifier.getInstance().isOpen()){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.updateGui(new GUIViewSetting(this));
+        gameBoardNotifier.updateGui(new RefreshBoard(refreshCommand));
+    }
+
+    @Override
     public void notify(Object event) {
         ClientToServerCommand command = (ClientToServerCommand) event;
         command.setUsername(this.username);
@@ -221,23 +235,4 @@ public class GUIView extends View {
     @Override
     public void messageBox(String message) {}
 
-    @Override
-    public void update(Object model) {
-        RefreshBoardCommand command = (RefreshBoardCommand) model;
-        if (command.getMessage()!= null) {
-            System.out.println("ricevuto " + command.getMessage());
-        }
-        else{
-            while(!GameBoardNotifier.getInstance().isOpen()){
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-            GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
-            gameBoardNotifier.updateGui(new GUIViewSetting(this));
-            gameBoardNotifier.updateGui(new RefreshBoard(command));
-        }
-    }
 }

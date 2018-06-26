@@ -321,6 +321,13 @@ public class CLIView extends View {
         cliPrinter.printSyntheticBoard(cliState);
     }
 
+    @Override
+    public void updateBoard(RefreshBoardCommand refreshCommand) {
+        RefreshBoardCommand command = refreshCommand;
+        cliState.parseRefreshBoard(command);
+        cliPrinter.printSyntheticBoard(cliState);
+    }
+
 
     @Override
     public void notify(Object event) {
@@ -334,15 +341,5 @@ public class CLIView extends View {
     public void messageBox(String message) {
         System.out.println("Message from Server: " + message);
     }
-
-    @Override
-    //update entire board
-    public void update(Object event) {
-        RefreshBoardCommand command = (RefreshBoardCommand) event;
-        cliState.parseRefreshBoard(command);
-        cliPrinter.printSyntheticBoard(cliState);
-    }
-
-
 
 }
