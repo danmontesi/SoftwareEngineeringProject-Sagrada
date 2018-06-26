@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.CLI;
+package it.polimi.se2018.view.cli;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.server_to_client_command.*;
@@ -6,10 +6,7 @@ import it.polimi.se2018.exceptions.TimeUpException;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.view.CLI.cliState.CliState;
-import it.polimi.se2018.view.CLI.cliState.PlayerLight;
-import it.polimi.se2018.view.CLI.cliState.PublicObjectiveLight;
-import it.polimi.se2018.view.CLI.cliState.ToolcardLight;
+import it.polimi.se2018.view.cli.cliState.CliState;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +14,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CLIView extends View implements Observer {
+public class CLIView extends View {
 
     /**
      * CliView receives a clone of current model each time it's Player's turn
@@ -27,13 +24,15 @@ public class CLIView extends View implements Observer {
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
     private InputManager inputManager;
     private Scanner scan = new Scanner(System.in);
+    //non deve esserci, è solo nell'input manager
     private InputReader inputReader = new InputReader();
 
     public CLIView(Observer observer){
         register(observer);
         System.out.println("ATTESA DI GIOCATORI...");
-        inputManager = new InputManager();
         cliState = new CliState();
+        inputManager = new InputManager(cliState);
+        cliState.register(inputManager);
     }
 
     //OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO
@@ -69,11 +68,12 @@ public class CLIView extends View implements Observer {
 
     @Override
     public void startGame() {
-        //useless for CLI
+        //useless for cli
     }
 
     @Override
     public void otherPlayerTurn(String username) {
+        cliState.setYourTurn(false);
         System.out.println("It's " + username + "'s turn");
     }
 
@@ -91,7 +91,7 @@ public class CLIView extends View implements Observer {
 
     @Override
     public void continueTurnMenu(boolean move, boolean tool){
-        inputManager.setYourTurn(true);
+        cliState.setYourTurn(true);
         boolean performedAction = false;
         int choice;
         System.out.println("What do you want to do?");
@@ -202,10 +202,10 @@ public class CLIView extends View implements Observer {
             if (decision==1){
                 System.out.println("Where do you want to place the die?");
                 Integer schemaPosition = scan.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
-                notify(new UseToolChangeDieValue(cardName, draftpoolPos, schemaPosition, increase));
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, increase));
             }
             else{
-                notify(new UseToolChangeDieValue(cardName, draftpoolPos, null, increase));
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, increase));
             }
         }
         else if (cardName.equals("Diamond Swab")) {
@@ -219,9 +219,9 @@ public class CLIView extends View implements Observer {
             if (decision == 1) {
                 System.out.println("Where do you want to place the die?");
                 Integer schemaPosition = scan.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
-                notify(new UseToolChangeDieValue(cardName, draftpoolPos, schemaPosition, true));
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, true));
             } else {
-                notify(new UseToolChangeDieValue(cardName, draftpoolPos, null, false));
+                notify(new UseToolChangeDieValue(cardName, draftpoolPos, false));
             }
         }
     }
@@ -262,7 +262,7 @@ public class CLIView extends View implements Observer {
     @Override
     public void invalidActionMessage(String message){
         System.out.println("Invalid action: " + message);
-        printSyntheticBoard();
+        cliPrinter.printSyntheticBoard(cliState);
     }
 
     @Override
@@ -293,31 +293,32 @@ public class CLIView extends View implements Observer {
 
     @Override
     public synchronized void timeOut() {
+        cliState.setYourTurn(false);
         inputManager.setTimeout();
     }
 
     @Override
     public void updateWpc(RefreshWpcCommand refreshCommand) {
         cliState.parseRefreshWPC(refreshCommand);
-        printSyntheticBoard();
+        cliPrinter.printSyntheticBoard(cliState);
     }
 
     @Override
     public void updateTokens(RefreshTokensCommand refreshCommand) {
         cliState.parseRefreshTokens(refreshCommand);
-        printSyntheticBoard();
+        cliPrinter.printSyntheticBoard(cliState);
     }
 
     @Override
     public void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
         cliState.parseRefreshRoundTrack(refreshCommand);
-        printSyntheticBoard();
+        cliPrinter.printSyntheticBoard(cliState);
     }
 
     @Override
     public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
         cliState.parseRefreshDraftPool(refreshCommand);
-        printSyntheticBoard();
+        cliPrinter.printSyntheticBoard(cliState);
     }
 
 
@@ -339,62 +340,9 @@ public class CLIView extends View implements Observer {
     public void update(Object event) {
         RefreshBoardCommand command = (RefreshBoardCommand) event;
         cliState.parseRefreshBoard(command);
-        printSyntheticBoard();
-    }
-
-    private static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        cliPrinter.printSyntheticBoard(cliState);
     }
 
 
-
-    private void printSyntheticBoard(boolean clearScreen){
-        if (clearScreen){
-            clearScreen();
-        }
-        System.out.println("Round Track:\n");
-        cliPrinter.printInlineList(cliState.getRoundTrack());
-        System.out.println("Draft Pool:\n");
-        cliPrinter.printInlineList(cliState.getDraftpool());
-        PlayerLight me = cliState.getPlayer(0);
-        System.out.println(me.getUsername() + " - Tokens: " + me.getTokens());
-        cliPrinter.printWPC(me.getWpc());
-    }
-
-    private synchronized void printSyntheticBoard(){
-        printSyntheticBoard(true);
-    }
-
-    private void printToolcards(){
-        System.out.println("Toolcards:");
-        for(int i = 0; i < cliState.getToolcards().size(); i++){
-            ToolcardLight card = cliState.getToolcards().get(i);
-            System.out.println(String.format("%d) %s - Tokens: %d", i+1, card.getToolcardName(), card.getTokens()));
-            System.out.println("\t" + card.getDescription());
-        }
-    }
-
-    private void printPublicObjectiveCards(){
-        System.out.println("Public Objective Cards:");
-        for(int i = 0; i < cliState.getPublicObjectiveCards().size(); i++){
-            PublicObjectiveLight card = cliState.getPublicObjectiveCards().get(i);
-            System.out.println(card.getName()+ "\n\t" + card.getDescription());
-        }
-    }
-
-    private synchronized void printCompleteBoard(){
-        clearScreen();
-        printPublicObjectiveCards();
-        printToolcards();
-
-        for (int i = 1; i < cliState.getAllPlayers().size(); i++){
-            PlayerLight player = cliState.getPlayer(i);
-            System.out.println(player.getUsername() + " - Tokens: " + player.getTokens());
-            cliPrinter.printWPC(player.getWpc());
-            System.out.println("\n");
-        }
-        printSyntheticBoard(false);
-    }
 
 }

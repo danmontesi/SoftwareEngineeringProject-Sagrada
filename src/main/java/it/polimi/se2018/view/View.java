@@ -113,7 +113,7 @@ public abstract class View extends Observable implements Observer { //VIEW: Osse
         //Osserva il Model e con Update, fa l'update del model locale
         //Calls the right method to update the Graphical Board;
         //The model is already updated by the ClientController, no worries about that
-        //In case there is a CLI, does anything
+        //In case there is a cli, does anything
         ServerToClientCommand command = (ServerToClientCommand) event;
         System.out.println("ricevuto "+ command.getMessage()); // DEVE ESSERE USATO ESCLUSIVAMENTE PER L'AGGIORNAMENTO MODEL
     }

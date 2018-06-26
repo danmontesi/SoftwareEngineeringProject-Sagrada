@@ -11,10 +11,9 @@ import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.utils.ControllerClientInterface;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.view.CLI.CLIView;
-import it.polimi.se2018.view.CLI.InputManager;
-import it.polimi.se2018.view.gui.GUIView;
+import it.polimi.se2018.view.GUI.GUIView;
 import it.polimi.se2018.view.View;
+import it.polimi.se2018.view.cli.CLIView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ public class ClientController extends Observable implements Observer, Controller
 
     private View view;
     private String username;
-    private InputManager inputManager;
     private ServerConnection connection;
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
@@ -327,6 +325,7 @@ public class ClientController extends Observable implements Observer, Controller
     @Override
     public void dispatchCommand(Object command) {
         ServerToClientCommand castedCommand = (ServerToClientCommand) command;
+        System.out.println("Arriva il command" + command);
         castedCommand.visit(this);
     }
 

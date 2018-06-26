@@ -14,7 +14,7 @@ public class ClientLauncher {
 
         System.out.println("Choose the view interface you desire: \n1 - Command Line Interface\n2 - Graphic User Interface");
 
-        //Default: CLI
+        //Default: cli
         int chosen = i.nextInt();
 
         if (chosen == 2)

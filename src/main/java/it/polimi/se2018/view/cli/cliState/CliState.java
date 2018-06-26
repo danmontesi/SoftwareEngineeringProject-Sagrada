@@ -1,18 +1,17 @@
-package it.polimi.se2018.view.CLI.cliState;
+package it.polimi.se2018.view.cli.cliState;
 
 import it.polimi.se2018.commands.server_to_client_command.*;
-import it.polimi.se2018.exceptions.NoSuchColorException;
-import it.polimi.se2018.model.COLOR;
-import it.polimi.se2018.model.Cell;
-import it.polimi.se2018.model.Die;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
+import it.polimi.se2018.utils.Observable;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CliState {
+public class CliState extends Observable {
+
+    private boolean yourTurn;
     
     private String privateObjectiveCard;
     private String privateObjectiveCardDescription;
@@ -42,14 +41,17 @@ public class CliState {
         parsePublicObjectiveCards(command);
         parseToolcards(command);
         parsePlayers(command);
+        notify(this);
     }
 
     public void parseRefreshDraftPool(RefreshDraftPoolCommand command){
         draftpool = command.getDraftpool();
+        notify(this);
     }
 
     public void parseRefreshRoundTrack(RefreshRoundTrackCommand command){
         roundTrack = command.getRoundTrack();
+        notify(this);
     }
 
     public void parseRefreshWPC(RefreshWpcCommand command){
@@ -57,6 +59,7 @@ public class CliState {
         for(int i = 1; i < command.getOtherPlayersWpcs().size(); i++){
             players.get(i).setWpc(command.getOtherPlayersWpcs().get(i-1));
         }
+        notify(this);
     }
 
     public void parseRefreshTokens(RefreshTokensCommand command){
@@ -64,6 +67,7 @@ public class CliState {
         for(int i = 1; i < command.getOtherPlayersTokens().size(); i++){
             players.get(i).setTokens(command.getOtherPlayersTokens().get(i-1));
         }
+        notify(this);
     }
 
     private void initPlayers(RefreshBoardCommand command){
@@ -144,73 +148,6 @@ public class CliState {
         return card;
     }
 
-    private WindowPatternCard parseWPC(WindowPatternCard wpc, ArrayList<String> stringWPC){
-        ArrayList<Cell> cells = new ArrayList<>();
-        wpc = initWPC(wpc, stringWPC.get(0));
-
-        //element 0 is name so i starts from 1
-        for(int i = 1; i < stringWPC.size(); i++){
-            int j = i - 1;
-            cells.add(wpc.getCell(j));
-            cells.get(j).setAssociatedDie(parseDie(stringWPC.get(i)));
-        }
-        wpc.setSchema(cells);
-        return wpc;
-    }
-
-    /*private void parseDraftPool(RefreshBoardCommand command){
-        initDraftPool(command);
-        ArrayList<String> stringDraftPool = command.getDraftpool();
-        for(int i = 0; i < stringDraftPool.size(); i++){
-            draftpool.add(new Cell(i));
-            draftpool.get(i).setAssociatedDie(parseDie(stringDraftPool.get(i)));
-        }
-    }
-
-    private void initDraftPool(RefreshBoardCommand command){
-        if (draftpool == null){
-            draftpool = new ArrayList<>();
-            for (int i = 0; i < command.getDraftpool().size(); i++){
-                draftpool.add(new Cell(i));
-            }
-        }
-    }
-
-    private void parseRoundTrack(RefreshBoardCommand command){
-        initRoundTrack(command);
-        ArrayList<String> stringRoundTrack = command.getRoundTrack();
-        for(int i = 0; i < stringRoundTrack.size(); i++){
-            roundTrack.get(i).setAssociatedDie(parseDie(stringRoundTrack.get(i)));
-        }
-    }
-
-    private void initRoundTrack(RefreshBoardCommand command){
-        if (roundTrack == null){
-            roundTrack = new ArrayList<>();
-            for (int i = 0; i < command.getRoundTrack().size(); i++){
-                roundTrack.add(new Cell(i));
-            }
-        }
-    }
-*/
-    /**
-     * Takes a die representation and turns it into a die
-     * If the string represents a cell constraint instead of a die, returns null
-     * @param stringDie Die representation
-     * @return object Die
-     */
-    private Die parseDie(String stringDie){
-        if(stringDie.matches("[A-Z]*_[0-6]")){
-            String[] arrayDie = stringDie.split("_");
-            try {
-                return new Die(COLOR.stringToColor(arrayDie[0]), Integer.parseInt(arrayDie[1]));
-            } catch (NoSuchColorException e) {
-                //nothing
-            }
-        }
-        return null;
-    }
-
     public String getPrivateObjectiveCard() {
         return privateObjectiveCard;
     }
@@ -241,5 +178,13 @@ public class CliState {
 
     public PlayerLight getPlayer(int playerNumber){
         return players.get(playerNumber);
+    }
+
+    public boolean isYourTurn() {
+        return yourTurn;
+    }
+
+    public void setYourTurn(boolean yourTurn) {
+        this.yourTurn = yourTurn;
     }
 }

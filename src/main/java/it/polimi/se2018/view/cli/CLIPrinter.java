@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.CLI;
+package it.polimi.se2018.view.cli;
 
 import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.exceptions.NoSuchColorException;
@@ -6,6 +6,10 @@ import it.polimi.se2018.model.COLOR;
 import it.polimi.se2018.model.Cell;
 import it.polimi.se2018.model.Die;
 import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.view.cli.cliState.CliState;
+import it.polimi.se2018.view.cli.cliState.PlayerLight;
+import it.polimi.se2018.view.cli.cliState.PublicObjectiveLight;
+import it.polimi.se2018.view.cli.cliState.ToolcardLight;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -26,17 +30,57 @@ class CLIPrinter {
     CLIPrinter() {
     }
 
-    void printCellList(List<Cell> list){
-        String[][] table = new String[4][list.size()];
-        for (int i = 0; i < list.size(); i++){
-            Cell cell = list.get(i);
-            try{
-                Die die = cell.getAssociatedDie();
-                insertDieValue(table, 0, i, die.getValue(), die.getColor());
-            } catch (EmptyCellException e){
-                insertDieValue(table, 0, i);
-            }
+    private static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    private void printSyntheticBoard(CliState cliState, boolean clearScreen){
+        if (clearScreen){
+            clearScreen();
         }
+        System.out.println("Round Track:\n");
+        printInlineList(cliState.getRoundTrack());
+        System.out.println("Draft Pool:\n");
+        printInlineList(cliState.getDraftpool());
+        PlayerLight me = cliState.getPlayer(0);
+        System.out.println(me.getUsername() + " - Tokens: " + me.getTokens());
+        printWPC(me.getWpc());
+    }
+
+    public synchronized void printSyntheticBoard(CliState cliState){
+        printSyntheticBoard(cliState,true);
+    }
+
+    public void printToolcards(CliState cliState){
+        System.out.println("Toolcards:");
+        for(int i = 0; i < cliState.getToolcards().size(); i++){
+            ToolcardLight card = cliState.getToolcards().get(i);
+            System.out.println(String.format("%d) %s - Tokens: %d", i+1, card.getToolcardName(), card.getTokens()));
+            System.out.println("\t" + card.getDescription());
+        }
+    }
+
+    public void printPublicObjectiveCards(CliState cliState){
+        System.out.println("Public Objective Cards:");
+        for(int i = 0; i < cliState.getPublicObjectiveCards().size(); i++){
+            PublicObjectiveLight card = cliState.getPublicObjectiveCards().get(i);
+            System.out.println(card.getName()+ "\n\t" + card.getDescription());
+        }
+    }
+
+    public synchronized void printCompleteBoard(CliState cliState){
+        clearScreen();
+        printPublicObjectiveCards(cliState);
+        printToolcards(cliState);
+
+        for (int i = 1; i < cliState.getAllPlayers().size(); i++){
+            PlayerLight player = cliState.getPlayer(i);
+            System.out.println(player.getUsername() + " - Tokens: " + player.getTokens());
+            printWPC(player.getWpc());
+            System.out.println("\n");
+        }
+        printSyntheticBoard(cliState,false);
     }
 
     /**
@@ -232,7 +276,5 @@ class CLIPrinter {
             System.out.println(line);
         }
     }
-
-
 
 }

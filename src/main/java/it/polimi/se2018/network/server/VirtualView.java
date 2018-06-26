@@ -60,7 +60,7 @@ public class VirtualView extends View {
 
     @Override
     public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
-        if (Server.getConnectedClients().get(username) == null) { //disconnected
+        if (!Server.getConnectedClients().containsKey(username)) { //disconnected
             disconnected=true;
             System.out.println("Disconnected-> choosing a random Wpc");
             notify(new ChosenWindowPatternCard(cards.get(0).getCardName()));
