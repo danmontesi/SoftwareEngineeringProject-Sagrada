@@ -11,7 +11,7 @@ import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.utils.ControllerClientInterface;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.view.GUI.GUIView;
+import it.polimi.se2018.view.gui.GUIView;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.cli.CLIView;
 

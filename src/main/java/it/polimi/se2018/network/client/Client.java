@@ -1,7 +1,7 @@
 package it.polimi.se2018.network.client;
 
 
-import it.polimi.se2018.view.GUI.ClientStarterMain;
+import it.polimi.se2018.view.gui.ClientStarterMain;
 import it.polimi.se2018.network.client.rmi.RMIClient;
 import it.polimi.se2018.network.client.socket.SocketClient;
 import it.polimi.se2018.network.server.ServerConnection;
