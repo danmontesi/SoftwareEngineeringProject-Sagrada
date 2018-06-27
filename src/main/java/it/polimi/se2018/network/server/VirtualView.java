@@ -10,19 +10,19 @@ import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The class represents the virtual view. Is Observable of Controller, Observer of Model
  */
 public class VirtualView extends View {
 
-    Observer observer; //Il controller TODO: Togli e usa quello dato dall'Observable
+    //Observer observer; //Il controller TODO: Togli e usa quello dato dall'Observable
     Observable observable; // Il model
     boolean disconnected;
 
     public VirtualView(Observer controller, Model model, String username) {
-        this.observer = controller;
+        super(controller);
         this.observable = model; //this can be omitted
         this.username = username;
         this.disconnected = false;
@@ -31,7 +31,7 @@ public class VirtualView extends View {
     }
 
     public VirtualView(Observer controller) {
-        this.observer = controller;
+        super(controller);
     }
 
     public void setUsername(String username){
@@ -55,11 +55,12 @@ public class VirtualView extends View {
      */
 
     public void notify(ClientToServerCommand command) { // chiamata dalla rete
-        observer.update(command);
+        for (Observer o : observers)
+            o.update(command);
     }
 
     @Override
-    public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
+    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards) {
         if (!Server.getConnectedClients().containsKey(username)) { //disconnected
             disconnected=true;
             System.out.println("Disconnected-> choosing a random Wpc");
@@ -275,7 +276,7 @@ public class VirtualView extends View {
     }
 
     @Override
-    public void loseMessage(Integer position, ArrayList<String> scores) {
+    public void loseMessage(Integer position, List<String> scores) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             disconnected=true;
             System.out.println("Disconnected-> No action");
@@ -285,7 +286,7 @@ public class VirtualView extends View {
     }
 
     @Override
-    public void winMessage(ArrayList<String> scores) {
+    public void winMessage(List<String> scores) {
         if (Server.getConnectedClients().get(username) == null) { //disconnected
             disconnected=true;
             System.out.println("Disconnected-> No action");

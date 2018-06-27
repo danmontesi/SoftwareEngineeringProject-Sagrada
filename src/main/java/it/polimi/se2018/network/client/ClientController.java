@@ -3,8 +3,6 @@ package it.polimi.se2018.network.client;
 import com.google.gson.stream.MalformedJsonException;
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
-import it.polimi.se2018.model.COLOR;
-import it.polimi.se2018.model.Die;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.network.server.ServerConnection;
 import it.polimi.se2018.parser.ParserWindowPatternCard;

@@ -3,19 +3,20 @@ package it.polimi.se2018.commands.server_to_client_command;
 import it.polimi.se2018.utils.ControllerClientInterface;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class WinCommand extends ServerToClientCommand{
 
-    public ArrayList<String> getScores() {
+    public List<String> getScores() {
         return scores;
     }
 
-    private ArrayList<String> scores;
+    private List<String> scores;
 
     /**
      * @param scores is in the format NameClass + playerUsername1,score1 + " " + playerUsername2,score2 + " " + ...
      */
-    public WinCommand(ArrayList<String> scores){
+    public WinCommand(List<String> scores){
         this.scores=scores;
     }
 

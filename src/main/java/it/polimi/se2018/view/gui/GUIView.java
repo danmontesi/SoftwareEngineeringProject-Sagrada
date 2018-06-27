@@ -14,14 +14,13 @@ import it.polimi.se2018.view.gui.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.view.View;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GUIView extends View {
 
     public GUIView(Observer observer) {
-        register(observer);
+        super(observer);
     }
-
-    public GUIView() {}
 
     public void newConnectedPlayer(String username) {
         LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
@@ -47,7 +46,7 @@ public class GUIView extends View {
     }
 
     @Override
-    public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards) {
+    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards) {
         ArrayList<String> cardNames = new ArrayList<>();
         ArrayList<Integer> cardDifficulties = new ArrayList<>();
         for (WindowPatternCard card : cards) {
@@ -147,7 +146,7 @@ public class GUIView extends View {
     }
 
     @Override
-    public void loseMessage(Integer position, ArrayList<String> scores) {
+    public void loseMessage(Integer position, List<String> scores) {
         while(!GameBoardNotifier.getInstance().isOpen()){
             try {
                 Thread.sleep(100);
@@ -161,7 +160,7 @@ public class GUIView extends View {
     }
 
     @Override
-    public void winMessage(ArrayList<String> scores) {
+    public void winMessage(List<String> scores) {
         while(!GameBoardNotifier.getInstance().isOpen()){
             try {
                 Thread.sleep(100);

@@ -10,7 +10,7 @@ import it.polimi.se2018.view.cli.cliState.CliState;
 import it.polimi.se2018.view.cli.cliState.PublicObjectiveLight;
 import it.polimi.se2018.view.cli.cliState.ToolcardLight;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +28,7 @@ public class CLIView extends View implements Runnable{
     private boolean active = true;
 
     public CLIView(Observer observer){
-        register(observer);
+        super(observer);
         System.out.println("ATTESA DI GIOCATORI...");
         cliState = new CliState();
     }
@@ -36,7 +36,7 @@ public class CLIView extends View implements Runnable{
     //OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO
 
     @Override
-    public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards){
+    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards){
         for (WindowPatternCard card : cards) {
             cliPrinter.printWPC(card);
         }
@@ -222,7 +222,7 @@ public class CLIView extends View implements Runnable{
     }
 
     @Override
-    public void loseMessage(Integer position, ArrayList<String> scores){
+    public void loseMessage(Integer position, List<String> scores){
         System.out.println("You lost! Your rank is " + position + "\n");
 
         System.out.println("Here other players ordered scores:");
@@ -232,7 +232,7 @@ public class CLIView extends View implements Runnable{
     }
 
     @Override
-    public void winMessage(ArrayList<String> scores){
+    public void winMessage(List<String> scores){
         System.out.println("Congratulation! You won!");
 
         System.out.println("Here other players ordered scores:");
