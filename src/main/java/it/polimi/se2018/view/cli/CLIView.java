@@ -12,7 +12,6 @@ import it.polimi.se2018.view.cli.cliState.ToolcardLight;
 
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CLIView extends View implements Runnable{
@@ -26,6 +25,7 @@ public class CLIView extends View implements Runnable{
     private Scanner scan = new Scanner(System.in);
     private InputReader inputReader = new InputReader();
     private boolean active = true;
+    private boolean usedToolCard = true;
     private static final String NOT_YOUR_TURN = "Invalid action: it's not your turn";
 
     public CLIView(Observer observer){
@@ -80,11 +80,6 @@ public class CLIView extends View implements Runnable{
         System.out.println("Authenticated correctly!\nWelcome to Sagrada, " + this.username);
     }
 
-
-    public void allowedUseToolMessage(String message){
-        LOGGER.log(Level.INFO, "Toolcard used correctly" + message);
-    }
-
     @Override
     public void continueTurnMenu(boolean move, boolean tool){
         cliState.setYourTurn(true);
@@ -98,13 +93,11 @@ public class CLIView extends View implements Runnable{
     @Override
     public void newConnectedPlayer(String username) {
         System.out.println(username + " just joined the game");
-
     }
 
     @Override
     public void playerDisconnection(String username) {
         System.out.println(username + "got disconnected");
-
     }
 
     @Override
@@ -186,33 +179,48 @@ public class CLIView extends View implements Runnable{
         System.out.println("YOU Used - " + cardName);
         if (cardName.equals("Manual Cutter")){
             System.out.println("With this tool you have to move 2 dice of same color of a die of the roundTrack. Check it out carefully!");
+        } else {
+            System.out.println("Move exactly two dice respecting placement restrictions");
         }
-        System.out.println("Select the index of first die you want to move");
-        Integer oldPos1 = scan.nextInt();
-        System.out.println("Select the index of the cell where you want to move it:");
-        Integer newPos1 = scan.nextInt();
-        System.out.println("Select next die");
-        Integer oldPos2 = scan.nextInt();
-        System.out.println("Select the index of the cell where you want to move");
-        Integer newPos2 = scan.nextInt();
+        System.out.println("FIRST DIE:");
+        int oldPos1 = (selectRow()*4+selectColumn()-1);
+        System.out.println("NEW DIE COORDINATES");
+        int newPos1 = (selectRow()*4+selectColumn()-1);
+        System.out.println("SECOND DIE");
+        int oldPos2 = (selectRow()*4+selectColumn()-1);
+        System.out.println("NEW DIE COORDINATES");
+        int newPos2 = (selectRow()*4+selectColumn()-1);
         notify(new UseToolTwoDicePlacement(cardName, oldPos1, newPos1, oldPos2, newPos2));
+        usedToolCard = true;
     }
 
     @Override
-    public void corkLineMenu(){ //Move with no placement restriction
-        // notify(UseToolCorkLine(Integer draftpoolPosition, integer schemaPosition)
+    public void corkLineMenu() {
+        System.out.println("Place a die ignoring placement restriction");
+        int draftpoolPosition = selectFromDraftPool();
+        int row = selectRow();
+        int column = selectColumn();
+        notify(new UseToolCorkLine(draftpoolPosition-1, row*4+column-1));
+        usedToolCard = true;
     }
 
-    // Place another die instead of 1 per turn. Skip next turn
     @Override
     public void wheelsPincherMenu(){
-        //notify(new UseToolWheelsPincher(Integer drafpoolDieIndex, Integer schemaIndex)
+        System.out.println("Select another die, you will skip next turn");
+        int draftpoolPosition = selectFromDraftPool();
+        int row = selectRow();
+        int column = selectColumn();
+        notify(new UseToolWheelsPincher(draftpoolPosition-1, row*4+column-1));
+        usedToolCard = true;
     }
 
     @Override
-    public void circularCutter(){ //Swap a die of draftpool with a die of roundtrack
-        //notify(new UseToolCircularCutter(Integer draftpoolIndex, Integer roundtrackIndex)
-
+    public void circularCutter(){
+        System.out.println("Swap a die from draftpool with a die from roundtrack");
+        int draftpoolPosition = selectFromDraftPool();
+        int roundTrackPosition = selectFromRoundTrack();
+        notify(new UseToolCircularCutter(draftpoolPosition-1, roundTrackPosition-1));
+        usedToolCard = true;
     }
 
     @Override
@@ -224,7 +232,6 @@ public class CLIView extends View implements Runnable{
     @Override
     public void loseMessage(Integer position, List<String> scores){
         System.out.println("You lost! Your rank is " + position + "\n");
-
         System.out.println("Here other players ordered scores:");
         for (String score : scores){
             System.out.println(score);
@@ -234,7 +241,6 @@ public class CLIView extends View implements Runnable{
     @Override
     public void winMessage(List<String> scores){
         System.out.println("Congratulation! You won!");
-
         System.out.println("Here other players ordered scores:");
         for (String score : scores){
             System.out.println(score);
@@ -284,13 +290,13 @@ public class CLIView extends View implements Runnable{
         cliPrinter.printSyntheticBoard(cliState);
     }
 
-
     @Override
     public void notify(Object event) {
         ClientToServerCommand command = (ClientToServerCommand) event;
         command.setUsername(this.username);
-        for (Observer observer : observers)
+        for (Observer observer : observers){
             observer.update(command);
+        }
     }
 
     @Override
@@ -313,6 +319,16 @@ public class CLIView extends View implements Runnable{
                 break;
             case "2":
                 useToolcard();
+                //until card has been used, flow control is switched to toolcard menu
+                usedToolCard = false;
+                while(!usedToolCard){
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        //nothing
+                    }
+                //flow control switch back to thread
+                }
                 break;
             case "3":
                 passTurn();
@@ -365,15 +381,9 @@ public class CLIView extends View implements Runnable{
 
     private void placeDie(){
         if (cliState.isYourTurn()) {
-            System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliState.getDraftpool().size()));
-            int draftPos = inputReader.readInt(1, cliState.getDraftpool().size());
-
-            System.out.println("Select row (number between 1 and 4)");
-            int schemaRow = inputReader.readInt(1, 4);
-
-            System.out.println("Select column (number between 1 and 5)");
-            int schemaCol = inputReader.readInt(1, 5);
-
+            int draftPos = selectFromDraftPool();
+            int schemaCol = selectColumn();
+            int schemaRow = selectRow();
             notify(new MoveChoiceDicePlacement(schemaRow - 1, schemaCol - 1, draftPos - 1));
         } else {
             System.out.println(NOT_YOUR_TURN);
@@ -398,5 +408,25 @@ public class CLIView extends View implements Runnable{
         } else {
             System.out.println(NOT_YOUR_TURN);
         }
+    }
+
+    private int selectFromDraftPool(){
+        System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliState.getDraftpool().size()));
+        return inputReader.readInt(1, cliState.getDraftpool().size());
+    }
+
+    public int selectFromRoundTrack(){
+        System.out.println(String.format("Select die position in Round Track (number between 1 and %d)", cliState.getRoundTrack().size()));
+        return inputReader.readInt(1, cliState.getRoundTrack().size());
+    }
+
+    private int selectRow(){
+        System.out.println("Select row (number between 1 and 4)");
+        return inputReader.readInt(1, 4);
+    }
+
+    private int selectColumn(){
+        System.out.println("Select column (number between 1 and 5)");
+        return inputReader.readInt(1, 5);
     }
 }

@@ -20,15 +20,22 @@ public class InputReader{
         br = new BufferedReader(new InputStreamReader(System.in));
     }
 
+    public String readLine(){
+       return readLine(false);
+    }
+
     /**
      * Return null if an IOException is caught
      */
-    public String readLine(){
+    public String readLine(boolean throwException){
         try{
             while(!br.ready()){
                 if(timeout){
                     timeout = false;
                     System.out.println("\nTime's up!");
+                    if(throwException){
+                        throw new TimeUpException("Time's up!");
+                    }
                 }
             }
             return br.readLine();
@@ -49,22 +56,15 @@ public class InputReader{
      */
     public int readInt(int validInferior, int validSuperior, boolean throwException){
         while (true) {
-            String inputString = readLine();
+            String inputString = readLine(throwException);
             try {
                 int input = Integer.parseInt(inputString);
                 if ((input < validInferior) || (input > validSuperior)) {
                     System.out.println("Input not compliant to rules");
-                    if (throwException){
-                        throw new TimeUpException("Input not compliant to rules");
-                    }
-                } else {
                     return input;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Input is not a number, retry");
-                if (throwException){
-                    throw new TimeUpException("Input is not a number, retry");
-                }
             }
         }
     }
