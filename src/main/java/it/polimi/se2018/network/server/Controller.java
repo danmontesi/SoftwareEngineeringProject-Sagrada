@@ -46,7 +46,25 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private Die extractedDieForFirmPastryThinner;
     private Integer randomValueForFirmPastryBrush;
 
+    public HashMap<Player, Timer> getPlayerTimerMap() { //just for testing
+        return playerTimerMap;
+    }
+
+    public Timer getCheckBlockingTimer() { //just for testing
+        return checkBlockingTimer;
+    }
+
+    public ArrayList<Player> getOrderedPlayers() {
+        return orderedPlayers;
+    }
+
+    public ArrayList<Player> getUninitializedOrderedPlayers() {
+        return uninitializedOrderedPlayers;
+    }
+
     private Timer checkBlockingTimer;
+
+    private final Object mutex = new Object();
 
     /**
      * ArrayList that contains the ordered players that has to play
@@ -87,7 +105,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         this.orderedPlayers = new ArrayList<>();
 
-        this.timerCostant = 6000;
+        this.timerCostant = 60000;
         // Now I will start each player's View
         for (String username : usernamePlayerMap.keySet())
             userViewMap.get(username).startGame(); //notifying game starting
@@ -108,7 +126,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         this.model = new Model(uninitializedOrderedPlayers);
 
         for (String username : usernameList) {
-            View tempView = new CLIView(this); //Vedi meglio
+            View tempView = new View(); //Vedi meglio
             userViewMap.put(username, tempView);
             model.register(tempView);
         }
@@ -118,14 +136,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         // Now I will start each player's View
         for (String username : usernamePlayerMap.keySet())
             userViewMap.get(username).startGame(); //notifying game starting
-
-        initializeGame();
     }
 
-    private void initializeGame() {
+    public void initializeGame() {
         //Let people chose their Wpc, and call a method that waits until all chose theirs.
         //Once i receive all -> move to orderedPlayers List
         ArrayList<WindowPatternCard> localWpc;
+
         //Gives to each a player 4 WindowPatternCard to choose from
         for (Player p : uninitializedOrderedPlayers) {
             // I give the cards (in strings) to the command, and to the method that waits until all players finishes to chose
@@ -140,20 +157,22 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 new TimerTask() {
                     @Override
                     public void run() {
-                        LOGGER.log(Level.INFO, "This is last call for chosing Wpc: starting the game with disconnected Players");
-                        if (!uninitializedOrderedPlayers.isEmpty()) {
-                            for (Player p : uninitializedOrderedPlayers) {
-                                LOGGER.log(Level.INFO, "Dimension of orderedP" + uninitializedOrderedPlayers.size());
-                                userViewMap.get(p.getUsername()).timeOut();
-                                orderedPlayers.add(p);
-                                LOGGER.log(Level.INFO, "Added " + p.getUsername());
+                        synchronized (mutex) {
+                            LOGGER.log(Level.INFO, "This is last call for chosing Wpc: starting the game with disconnected Players");
+                            if (!uninitializedOrderedPlayers.isEmpty()) {
+                                for (Player p : uninitializedOrderedPlayers) {
+                                    LOGGER.log(Level.INFO, "Dimension of orderedP" + uninitializedOrderedPlayers.size());
+                                    userViewMap.get(p.getUsername()).timeOut();
+                                    orderedPlayers.add(p);
+                                    LOGGER.log(Level.INFO, "Added " + p.getUsername());
+                                }
+                                uninitializedOrderedPlayers.clear();
+                                startGame();
                             }
-                            uninitializedOrderedPlayers.clear();
-                            startGame();
                         }
                     }
                 },
-                100000);
+                100000); //TODO timer
     }
 
     /**
@@ -429,21 +448,25 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     @Override
-    public synchronized void applyCommand(String playerUsername, ChosenWindowPatternCard command) {
+    public void applyCommand(String playerUsername, ChosenWindowPatternCard command) {
         LOGGER.log(Level.INFO, "entra controller command" + command.getMessage());
-        ParserWindowPatternCard parser = null;
-        try {
-            parser = new ParserWindowPatternCard();
-            usernamePlayerMap.get(playerUsername).setWindowPatternCard(parser.parseCardByName(command.getMessage()));
-        } catch (IOException e) {
-            LOGGER.log(Level.INFO, "Bad parser of Wpcs");
-        }
-        if (uninitializedOrderedPlayers.contains(usernamePlayerMap.get(playerUsername))) {
-            uninitializedOrderedPlayers.remove(usernamePlayerMap.get(playerUsername));
-            orderedPlayers.add(usernamePlayerMap.get(playerUsername));
-            if (uninitializedOrderedPlayers.isEmpty()) {
-                checkBlockingTimer.cancel();
-                startGame();
+        synchronized (mutex) {
+            if (uninitializedOrderedPlayers.contains(usernamePlayerMap.get(playerUsername))) { //so the timer isn't finished yet
+
+                ParserWindowPatternCard parser = null;
+                try {
+                    parser = new ParserWindowPatternCard();
+                    usernamePlayerMap.get(playerUsername).setWindowPatternCard(parser.parseCardByName(command.getMessage()));
+                } catch (IOException e) {
+                    LOGGER.log(Level.INFO, "Bad parser of Wpcs");
+                }
+
+                uninitializedOrderedPlayers.remove(usernamePlayerMap.get(playerUsername));
+                orderedPlayers.add(usernamePlayerMap.get(playerUsername));
+                if (uninitializedOrderedPlayers.isEmpty()) {
+                    checkBlockingTimer.cancel();
+                    startGame();
+                }
             }
         }
     }

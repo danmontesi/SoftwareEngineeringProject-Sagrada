@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Observable{
+
+    public List<Observer> getObservers() {
+        return observers;
+    }
+
     protected List<Observer> observers = new ArrayList<>();
 
     public void notify(Object event){

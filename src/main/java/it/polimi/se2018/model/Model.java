@@ -206,11 +206,13 @@ public class Model extends Observable implements Serializable { //Observable of 
 
     public Die swapDieOnRoundTrack(Die die, int index) {
         Die toReturn = null;
+
         try {
             toReturn = getRoundTrack().switchDie(index, die);
         } catch (EmptyCellException e) {
             e.printStackTrace();
         }
+
         notifyRefreshRoundTrack();
         return toReturn;
     }
@@ -228,16 +230,20 @@ public class Model extends Observable implements Serializable { //Observable of 
     private void notifyRefreshDraftPool() {
         ArrayList<String> draftpool;
         draftpool = getDraftPool().draftpoolPathRepresentation();
+
         for (Observer observer : observers) {
             ((View) observer).updateDraftPool(new RefreshDraftPoolCommand(draftpool));
         }
+
     }
 
     private void notifyRefreshWpcs() {
+
         for (Observer observer : observers) {
             ArrayList<String> personalWpc = new ArrayList<>(); //Dice in the format: colorNumber/empty
             ArrayList<ArrayList<String>> otherPlayersWpcs = new ArrayList<>();
             View currentView = (View) observer;
+
             for (Player p : gamePlayers) {
                 if (p.getUsername().equals(currentView.getUsername())) {
                     personalWpc = p.getWindowPatternCard().wpcPathRepresentation();
@@ -245,26 +251,33 @@ public class Model extends Observable implements Serializable { //Observable of 
                     otherPlayersWpcs.add(p.getWindowPatternCard().wpcPathRepresentation());
                 }
             }
+
             ((View) observer).updateWpc(new RefreshWpcCommand(personalWpc, otherPlayersWpcs));
-            LOGGER.log(Level.INFO,"Notificando una V.V. della new board -> new WPCards for " + currentView.getUsername());
+            LOGGER.log(Level.INFO, "Notificando una V.V. della new board -> new WPCards for " + currentView.getUsername());
+
         }
     }
 
     private void notifyRefreshRoundTrack() {
+
         for (Observer observer : observers) {
             ArrayList<String> roundTrackString = new ArrayList<>(); //Dice in the format: colorNumber/empty
             roundTrackString = getRoundTrack().roundtrackPathRepresentation();
-            LOGGER.log(Level.INFO,"Notificando una V.V. della new board");
+            LOGGER.log(Level.INFO, "Notificando una V.V. della new board");
             ((View) observer).updateRoundTrack(new RefreshRoundTrackCommand(roundTrackString));
         }
+
     }
 
     private void notifyRefreshTokens() {
-        LOGGER.log(Level.INFO,"Notificando una V.V. della new board");
+        LOGGER.log(Level.INFO, "Notificando una V.V. della new board");
         ArrayList<Integer> tokensToolCards = new ArrayList<>(); //Ordered
+
+
         for (ToolCard toolCard : extractedToolCard) {
             tokensToolCards.add(toolCard.getTokenCount());
         }
+
 
         for (Observer observer : observers) {
             View temp = (View) observer;
@@ -277,6 +290,8 @@ public class Model extends Observable implements Serializable { //Observable of 
                     otherPlayersTokens.add(p.getTokens());
                 }
             }
+
+
             ((View) observer).updateTokens(new RefreshTokensCommand(otherPlayersTokens, tokensToolCards, myTokens));
         }
     }
@@ -285,6 +300,7 @@ public class Model extends Observable implements Serializable { //Observable of 
      * Method for initial setting of the board
      */
     public void notifyRefreshBoard() {
+
         ArrayList<String> draftpool = new ArrayList<>(); //Dice in the format: colorNumber/empty
 
         if (this.draftPool == null) { //not istantiated yet
@@ -294,11 +310,15 @@ public class Model extends Observable implements Serializable { //Observable of 
         } else {
             draftpool = getDraftPool().draftpoolPathRepresentation();
         }
+
+
         ArrayList<String> roundTrackString; //Dice in the format: colorNumber/empty
         roundTrackString = getRoundTrack().roundtrackPathRepresentation();
 
         ArrayList<String> publicObjectiveCards = new ArrayList<>();
         ArrayList<String> publicObjectiveDescription = new ArrayList<>();
+
+
         for (PublicObjectiveCard card : extractedPublicObjectiveCard) {
             publicObjectiveCards.add(card.getName());
             publicObjectiveDescription.add(card.getDescription());
@@ -307,22 +327,24 @@ public class Model extends Observable implements Serializable { //Observable of 
         ArrayList<String> toolCards = new ArrayList<>();
         ArrayList<String> toolCardDescription = new ArrayList<>();
         ArrayList<Integer> tokensToolCards = new ArrayList<>(); //Ordered
+
+
         for (ToolCard toolCard : extractedToolCard) {
             toolCards.add(toolCard.getName());
             toolCardDescription.add(toolCard.getDescription());
             tokensToolCards.add(toolCard.getTokenCount());
         }
 
+
         for (Observer observer : observers) {
             View currentView = (View) observer;
             String username = currentView.getUsername();
-
-            //Private obj card
             String privateObjectiveCard = null;
             String privateObjectiveCardDescription = null;
-            //WPC initialization
             ArrayList<String> personalWpc = new ArrayList<>(); //Dice in the format: colorNumber/empty
             ArrayList<ArrayList<String>> otherPlayersWpcs = new ArrayList<>();
+
+
             for (Player p : gamePlayers) {
                 if (p.getUsername().equals(username)) {
                     personalWpc = p.getWindowPatternCard().wpcPathRepresentation();
@@ -332,9 +354,13 @@ public class Model extends Observable implements Serializable { //Observable of 
                     otherPlayersWpcs.add(p.getWindowPatternCard().wpcPathRepresentation());
                 }
             }
+
+
             ArrayList<Integer> otherPlayersTokens = new ArrayList<>();
             ArrayList<String> otherPlayersUsernames = new ArrayList<>();
             Integer myTokens = null;
+
+
             for (Player p : gamePlayers) {
                 if (p.getUsername().equals(username))
                     myTokens = p.getTokens();
