@@ -2,50 +2,38 @@ package it.polimi.se2018.MatchTest;
 
 import it.polimi.se2018.model.Model;
 import it.polimi.se2018.model.Player;
+import it.polimi.se2018.network.server.Controller;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class GameMatchTest {
 
-   Model model;
+   private Model model;
 
-   Player p1 = new Player("Gabriele");
-   Player p2 = new Player("Antonio");
+   private Controller controller;
 
-   @Test
-    public void setUp() {
-      ArrayList<Player> arrayPlayer = new ArrayList<>();
-      arrayPlayer.add(p1);
-      arrayPlayer.add(p2);
-   }
-       //model = new Model(arrayPlayer);
-/*
-       assertEquals(2, model.getGamePlayers().size());
-       assertEquals(2, model.getConnectedPlayers().size());
-       assertEquals(3, model.getExtractedPublicObjectiveCard());
-       assertEquals(3, model.getExtractedToolCard());
-       assertEquals(10, model.getGameRounds());
-   }
-
-   /*@Test
-    public void newTurn(){
-        model.nextRound();
-
-        assertEquals(9, model.getGameRounds().size());
-   }
-
-   @Test
-    public void newTurn2(){
-        model.nextRound();
-
-        assertEquals(8, model.getGameRounds().size());
-   }
-
-   //Testing Player
+    private List<String> players;
    @Before
-    public void assignCardsToPlayers(){
-
+   public void setUp(){
+       players = new ArrayList<>();
+       players.add("Antonio");
+       players.add("Gabriele");
+       players.add("Luca");
    }
-*/
+
+
+   @Test
+    public void checkUpController() {
+      controller = new Controller(players, true);
+      this.model = controller.getModel();
+      assertEquals(controller.getUninitializedOrderedPlayers().size(), 3);
+      assertEquals(model.getObservers().size(), 3);
+   }
+
+
 }

@@ -9,12 +9,13 @@ import it.polimi.se2018.view.gui.Notifiers.GameBoardActions.RefreshBoard;
 
 import java.util.ArrayList;
 
-public abstract class View extends Observable implements ObserverView { //VIEW: Osserva Model, Osservato da Controller
+public class View extends Observable implements ObserverView { //VIEW: Osserva Model, Osservato da Controller
 
     /**
      * OSS: LA VIEW INCAPSULA DEGLI EVENTI! E POI LI MANDA GRAZIE AL CONTROLLER (update..)
      *
      */
+
     protected String username;
 
     public String getUsername() {
@@ -29,23 +30,33 @@ public abstract class View extends Observable implements ObserverView { //VIEW: 
         //Calls chooseWindowPatternCard(..)
     }
 
-    public abstract void startGame();
+    public void startGame(){
+
+    }
 
     public void endGame(){
 
     }
 
-    public abstract void otherPlayerTurn(String username);
+    public void otherPlayerTurn(String username){
 
-    public abstract void authenticatedCorrectlyMessage(String message);
+    }
+
+    public void authenticatedCorrectlyMessage(String message){
+
+    }
 
     public void continueTurnMenu(boolean move, boolean tool){
 
     }
 
-    public abstract void newConnectedPlayer(String username);
+    public void newConnectedPlayer(String username){
 
-    public abstract void playerDisconnection(String username);
+    }
+
+    public void playerDisconnection(String username){
+
+    }
 
     public void firmPastryBrushMenu(int value){
 
@@ -120,5 +131,32 @@ public abstract class View extends Observable implements ObserverView { //VIEW: 
         //observer.update(command);
     }
 
-    public abstract void messageBox(String message);
+    public void messageBox(String message){
+
+    }
+
+    @Override
+    public void updateWpc(RefreshWpcCommand refreshCommand) {
+
+    }
+
+    @Override
+    public void updateTokens(RefreshTokensCommand refreshCommand) {
+
+    }
+
+    @Override
+    public void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
+
+    }
+
+    @Override
+    public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
+
+    }
+
+    @Override
+    public void updateBoard(RefreshBoardCommand refreshCommand) {
+
+    }
 }
