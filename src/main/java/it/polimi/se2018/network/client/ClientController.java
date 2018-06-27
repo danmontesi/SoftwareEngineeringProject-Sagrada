@@ -254,7 +254,6 @@ public class ClientController extends Observable implements Observer, Controller
     @Override
     public void applyCommand(RefreshDraftPoolCommand command) {
         view.updateDraftPool(command);
-
     }
 
     @Override

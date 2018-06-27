@@ -104,7 +104,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         this.orderedPlayers = new ArrayList<>();
 
-        this.timerCostant = 60000;
+        this.timerCostant = 2000;
         // Now I will start each player's View
         for (String username : usernamePlayerMap.keySet())
             userViewMap.get(username).startGame(); //notifying game starting
@@ -390,9 +390,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     new TimerTask() {
                         @Override
                         public void run() {
-                            startNewTurn();
                             LOGGER.log(Level.INFO, "Sending timeout");
                             userViewMap.get(currentPlayer).timeOut();
+                            startNewTurn();
                         }
                     },
                     timerCostant
@@ -431,9 +431,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     new TimerTask() {
                         @Override
                         public void run() {
-                            startNewTurn();
                             LOGGER.log(Level.INFO, "Sending timeout");
                             userViewMap.get(currentPlayer).timeOut();
+                            startNewTurn();
+
                         }
                     },
                     timerCostant
