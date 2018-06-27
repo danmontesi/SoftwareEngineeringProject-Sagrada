@@ -21,6 +21,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private final String WRONG_INDEX = "...";
     private final String WRONG_PLACEMENT = "...";
     private final String EMPTY_INDEX = "...";
+
     private final String EMPTY_DRAFTPOOL_INDEX = "...";
 
     public Model getModel() {
@@ -104,7 +105,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         this.orderedPlayers = new ArrayList<>();
 
-        this.timerCostant = 2000;
+        this.timerCostant = 20000;
         // Now I will start each player's View
         for (String username : usernamePlayerMap.keySet())
             userViewMap.get(username).startGame(); //notifying game starting
@@ -920,6 +921,46 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     public void applyCommand(String playerUsername, ClientToServerCommand command) {
         LOGGER.log(Level.INFO, "You shouldn't be here");
     }
+
+
+    /**
+     * Getters
+     */
+
+    public int getLastUsedToolCardNum() {
+        return lastUsedToolCardNum;
+    }
+
+    public Die getExtractedDieForFirmPastryThinner() {
+        return extractedDieForFirmPastryThinner;
+    }
+
+    public ArrayList<ArrayList<String>> getOrderedRoundPlayers() {
+        return orderedRoundPlayers;
+    }
+
+    public ArrayList<String> getCurrentRoundOrderedPlayers() {
+        return currentRoundOrderedPlayers;
+    }
+
+    public boolean isHasUsedTool() {
+        return hasUsedTool;
+    }
+
+    public boolean isHasPerformedMove() {
+        return hasPerformedMove;
+    }
+
+    public String getCurrentPlayer() {
+
+        return currentPlayer;
+    }
+
+
+
+
+
+
 
     @Override
     public void update(Object event) {

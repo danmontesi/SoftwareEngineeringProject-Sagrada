@@ -24,6 +24,14 @@ public class Die {
         this.value = value;
     }
 
+    public void setColor(COLOR color) {
+        this.color = color;
+    }
+
+    public Die(int value) {
+        this.value = value;
+    }
+
     /**
      * Sets the die's value to 7 - the die's value (the value on the die's side opposed to the exposed one)
      */
