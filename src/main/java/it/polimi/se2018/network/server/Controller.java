@@ -1,6 +1,5 @@
 package it.polimi.se2018.network.server;
 
-import it.polimi.se2018.view.cli.CLIView;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.ControllerServerInterface;
@@ -39,15 +38,15 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private HashMap<String, View> userViewMap;
     private ArrayList<Player> orderedPlayers;
     private ArrayList<Player> uninitializedOrderedPlayers;
-    private HashMap<Player, Timer> playerTimerMap;
+    private HashMap<String, Timer> usernameTimerMap;
     private int requiredTokensForLastToolUse;
     private int lastUsedToolCardNum;
 
     private Die extractedDieForFirmPastryThinner;
     private Integer randomValueForFirmPastryBrush;
 
-    public HashMap<Player, Timer> getPlayerTimerMap() { //just for testing
-        return playerTimerMap;
+    public Map<String, Timer> getUsernameTimerMap() { //just for testing
+        return usernameTimerMap;
     }
 
     public Timer getCheckBlockingTimer() { //just for testing
@@ -87,7 +86,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     public Controller(List<String> usernameList) {
         usernamePlayerMap = new HashMap<>();
-        playerTimerMap = new HashMap<>();
+        usernameTimerMap = new HashMap<>();
         uninitializedOrderedPlayers = new ArrayList<>();
         userViewMap = new HashMap<>();
         // I have to create the list that connects Usernames and Players and VirtualViews
@@ -114,7 +113,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     public Controller(List<String> usernameList, boolean forTesting) {
         usernamePlayerMap = new HashMap<>();
-        playerTimerMap = new HashMap<>();
+        usernameTimerMap = new HashMap<String, Timer>();
         uninitializedOrderedPlayers = new ArrayList<>();
         userViewMap = new HashMap<>();
         // I have to create the list that connects Usernames and Players and VirtualViews
@@ -126,7 +125,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         this.model = new Model(uninitializedOrderedPlayers);
 
         for (String username : usernameList) {
-            View tempView = new View(); //Vedi meglio
+            View tempView = new View(this); //Vedi meglio
             userViewMap.put(username, tempView);
             model.register(tempView);
         }
@@ -386,8 +385,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 }
             }
 
-            playerTimerMap.put(usernamePlayerMap.get(currentPlayer), new Timer());
-            playerTimerMap.get(usernamePlayerMap.get(currentPlayer)).schedule(
+            usernameTimerMap.put(currentPlayer, new Timer());
+            usernameTimerMap.get(currentPlayer).schedule(
                     new TimerTask() {
                         @Override
                         public void run() {
@@ -427,8 +426,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 }
             }
 
-            playerTimerMap.put(usernamePlayerMap.get(currentPlayer), new Timer());
-            playerTimerMap.get(usernamePlayerMap.get(currentPlayer)).schedule(
+            usernameTimerMap.put(currentPlayer, new Timer());
+            usernameTimerMap.get(currentPlayer).schedule(
                     new TimerTask() {
                         @Override
                         public void run() {
@@ -451,10 +450,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     public void applyCommand(String playerUsername, ChosenWindowPatternCard command) {
         LOGGER.log(Level.INFO, "entra controller command" + command.getMessage());
         synchronized (mutex) {
+            LOGGER.log(Level.INFO, "Dentro il mutex il comm" + command.getMessage());
             if (uninitializedOrderedPlayers.contains(usernamePlayerMap.get(playerUsername))) { //so the timer isn't finished yet
-
+                LOGGER.log(Level.INFO, "Entra nell'if" + command.getMessage());
                 ParserWindowPatternCard parser = null;
                 try {
+                    System.out.println("Added ti player" + command.getMessage());
                     parser = new ParserWindowPatternCard();
                     usernamePlayerMap.get(playerUsername).setWindowPatternCard(parser.parseCardByName(command.getMessage()));
                 } catch (IOException e) {
@@ -571,7 +572,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             extractedDieForFirmPastryThinner = null;
         }
 
-        playerTimerMap.get(usernamePlayerMap.get(currentPlayer)).cancel();
+        usernameTimerMap.get(currentPlayer).cancel();
         startNewTurn();
     }
 

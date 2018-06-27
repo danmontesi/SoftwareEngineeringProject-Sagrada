@@ -3,6 +3,7 @@ package it.polimi.se2018.commands.server_to_client_command;
 import it.polimi.se2018.utils.ControllerClientInterface;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LoseCommand extends ServerToClientCommand{
 
@@ -12,16 +13,16 @@ public class LoseCommand extends ServerToClientCommand{
 
     private Integer position;
 
-    public ArrayList<String> getScores() {
+    public List<String> getScores() {
         return scores;
     }
 
-    private ArrayList<String> scores;
+    private List<String> scores;
     /**
      * @param scores contains the scores of other players, ordered
      * @param position contains relative position
      */
-    public LoseCommand(ArrayList<String> scores, Integer position){
+    public LoseCommand(List<String> scores, Integer position){
         this.scores=scores;
         this.position=position;
     }

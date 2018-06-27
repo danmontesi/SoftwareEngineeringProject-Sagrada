@@ -5,11 +5,14 @@ import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.utils.ObserverView;
-import it.polimi.se2018.view.gui.Notifiers.GameBoardActions.RefreshBoard;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class View extends Observable implements ObserverView { //VIEW: Osserva Model, Osservato da Controller
+
+    public View(Observer observer) {
+        register(observer);
+    }
 
     /**
      * OSS: LA VIEW INCAPSULA DEGLI EVENTI! E POI LI MANDA GRAZIE AL CONTROLLER (update..)
@@ -22,7 +25,7 @@ public class View extends Observable implements ObserverView { //VIEW: Osserva M
         return username;
     }
 
-    public void chooseWindowPatternCardMenu(ArrayList<WindowPatternCard> cards){
+    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards){
 
     }
 
@@ -99,11 +102,11 @@ public class View extends Observable implements ObserverView { //VIEW: Osserva M
         //OSS: il message contiene il messaggio con le informazioni dell'errore
     }
 
-    public void loseMessage(Integer position, ArrayList<String> scores){
+    public void loseMessage(Integer position, List<String> scores){
 
     }
 
-    public void winMessage(ArrayList<String> scores){
+    public void winMessage(List<String> scores){
 
     }
 
