@@ -1,5 +1,6 @@
 package it.polimi.se2018.network.server;
 
+import it.polimi.se2018.CONSTANTS;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.ControllerServerInterface;
@@ -105,7 +106,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         this.orderedPlayers = new ArrayList<>();
 
-        this.timerCostant = 20000;
+        this.timerCostant = CONSTANTS.TURN_TIMER;
         // Now I will start each player's View
         for (String username : usernamePlayerMap.keySet())
             userViewMap.get(username).startGame(); //notifying game starting
