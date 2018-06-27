@@ -61,6 +61,7 @@ public class InputReader{
                 int input = Integer.parseInt(inputString);
                 if ((input < validInferior) || (input > validSuperior)) {
                     System.out.println("Input not compliant to rules");
+                } else {
                     return input;
                 }
             } catch (NumberFormatException e) {

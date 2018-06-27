@@ -11,7 +11,6 @@ import it.polimi.se2018.view.cli.cliState.PublicObjectiveLight;
 import it.polimi.se2018.view.cli.cliState.ToolcardLight;
 
 import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class CLIView extends View implements Runnable{
@@ -22,7 +21,6 @@ public class CLIView extends View implements Runnable{
     private CLIPrinter cliPrinter = new CLIPrinter();
     private CliState cliState;
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
-    private Scanner scan = new Scanner(System.in);
     private InputReader inputReader = new InputReader();
     private boolean active = true;
     private boolean usedToolCard = true;
@@ -117,36 +115,29 @@ public class CLIView extends View implements Runnable{
             System.out.println("TOOL USE - Eglomise Brush " +
                     "\n You can move a die without color restriction");
             System.out.println("Select where is the die you want to move in your schema:");
-            Integer schemaOldPos = scan.nextInt();
             System.out.println("Select the cell you cant to move the die in");
-            Integer schemaNewPos = scan.nextInt();
-            notify(new UseToolMoveDieNoRestriction(cardName, schemaOldPos, schemaNewPos));
+//            notify(new UseToolMoveDieNoRestriction(cardName, schemaOldPos, schemaNewPos));
         }
         else if (cardName.equals("Copper Foil Reamer")){
             System.out.println("TOOL USE - Copper Foil Reamer " +
                     "\n You can move a die without value restriction");
             System.out.println("Select where is the die you want to move in your schema:");
-            Integer schemaOldPos = scan.nextInt();
             System.out.println("Select the cell you cant to move the die in");
-            Integer schemaNewPos = scan.nextInt();
-            notify(new UseToolMoveDieNoRestriction(cardName, schemaOldPos, schemaNewPos));
+//            notify(new UseToolMoveDieNoRestriction(cardName, schemaOldPos, schemaNewPos));
         }
 
     }
 
     @Override
     public void changeDieValueMenu(String cardName){
-        if (cardName.equals("Roughing Forceps")){
+        /*if (cardName.equals("Roughing Forceps")){
             System.out.println("TOOL USE Increase-Decrease - Roughing Forceps " +
                     "\n TOOL_DESCRIP"); //TODO
             System.out.println("Select the die of Draftpool you want to edit");
-            Integer draftpoolPos = scan.nextInt(); //TODO controllo preventivo
             System.out.println("Want you to increase the value? \n 1- Increase" + "\n 2- Decrease"); //TODO: controllo per evitare che il dado scelto sia un 6 e aumenti o sia un 1 e diminuisca
-            Integer chosen = scan.nextInt();
             boolean increase = chosen==1;
             //TODO: Devo stampare il valore aumentato
             System.out.println("Want you to place the new edited die? type: \n 1- Yes \n2- No");
-            Integer decision = scan.nextInt();
             if (decision==1){
                 System.out.println("Where do you want to place the die?");
                 Integer schemaPosition = scan.nextInt(); //TODO Controllo preventivo che vada bene la cella selezionata
@@ -171,7 +162,7 @@ public class CLIView extends View implements Runnable{
             } else {
                 notify(new UseToolChangeDieValue(cardName, draftpoolPos, false));
             }
-        }
+        }*/
     }
 
     @Override
