@@ -42,8 +42,8 @@ public class WindowPatternCard {
     }
 
     public boolean isEmpty() {
-        for (Cell cell : schema){
-            if (cell.hasDie()){
+        for (Cell cell : schema) {
+            if (cell.hasDie()) {
                 return false;
             }
         }
@@ -92,6 +92,7 @@ public class WindowPatternCard {
 
     /**
      * Same of place die, but has index instead of row/column
+     *
      * @param d
      * @param index
      * @param colorRestriction
@@ -125,6 +126,7 @@ public class WindowPatternCard {
 
     /**
      * Same of place die, but has index for 2 dice
+     *
      * @param d1
      * @param d2
      * @param index1
@@ -135,7 +137,7 @@ public class WindowPatternCard {
      * @return
      */
     public boolean place2Die(Die d1, Die d2, int index1, int index2, boolean colorRestriction, boolean valueRestriction,
-                            boolean placementRestriction) {
+                             boolean placementRestriction) {
         if (this.getCell(index1).hasDie() || this.getCell(index2).hasDie()) {
             return false;
         }
@@ -161,17 +163,18 @@ public class WindowPatternCard {
 
     /**
      * Overloaded method for ordinary moves (without toolcards)
-     * @param d Die to be placed
-     * @param row Cell row
+     *
+     * @param d      Die to be placed
+     * @param row    Cell row
      * @param column Cell column
      * @return true if the move is valid
      */
-    public boolean placeDie(Die d, int row, int column){
+    public boolean placeDie(Die d, int row, int column) {
         Cell c = this.getCell(row, column);
-        if(c.hasDie()){
+        if (c.hasDie()) {
             return false;
         }
-        if(checkColorRestriction(c, d) && checkPlacementRestriction(c, d) && checkValueRestriction(c, d)){
+        if (checkColorRestriction(c, d) && checkPlacementRestriction(c, d) && checkValueRestriction(c, d)) {
             c.setAssociatedDie(d);
             return true;
         } else {
@@ -180,74 +183,91 @@ public class WindowPatternCard {
     }
 
     public boolean switchDie(int oldPosition, int newPosition, boolean colorRestriction, boolean valueRestriction,
-                            boolean placementRestriction) throws EmptyCellException {
-        Die d = this.getCell(oldPosition).getAssociatedDie();
+                             boolean placementRestriction) throws EmptyCellException {
+
+        Die d = this.removeDie(oldPosition);
+
         if (this.getCell(newPosition).hasDie()) {
             return false;
         }
         if (colorRestriction) {
             if (!checkColorRestriction(this.getCell(newPosition), d)) {
+                this.schema.get(oldPosition).setAssociatedDie(d);
                 return false;
             }
         }
         if (valueRestriction) {
             if (!checkValueRestriction(this.getCell(newPosition), d)) {
+                this.schema.get(oldPosition).setAssociatedDie(d);
                 return false;
             }
         }
         if (placementRestriction) {
             if (!checkPlacementRestriction(getCell(newPosition), d)) {
+                this.schema.get(oldPosition).setAssociatedDie(d);
                 return false;
             }
         }
-        this.getCell(newPosition).setAssociatedDie(this.getCell(oldPosition).removeDie());
+        this.getCell(newPosition).setAssociatedDie(d);
         return true;
     }
 
     public boolean move2Dice(int oldPosition1, int newPosition1, int oldPosition2, int newPosition2, boolean colorRestriction, boolean valueRestriction,
                              boolean placementRestriction) throws EmptyCellException {
-        Die d = this.getCell(oldPosition1).getAssociatedDie();
+        Die d = this.removeDie(oldPosition1);
         if (this.getCell(newPosition1).hasDie()) {
+            this.schema.get(oldPosition1).setAssociatedDie(d);
             return false;
         }
         if (colorRestriction) {
             if (!checkColorRestriction(this.getCell(newPosition1), d)) {
+                this.schema.get(oldPosition1).setAssociatedDie(d);
                 return false;
             }
         }
         if (valueRestriction) {
             if (!checkValueRestriction(this.getCell(newPosition1), d)) {
+                this.schema.get(oldPosition1).setAssociatedDie(d);
                 return false;
             }
         }
         if (placementRestriction) {
             if (!checkPlacementRestriction(getCell(newPosition1), d)) {
+                this.schema.get(oldPosition1).setAssociatedDie(d);
                 return false;
             }
         }
 
-        Die d2 = this.getCell(oldPosition2).getAssociatedDie();
+        Die d2 = this.removeDie(oldPosition1);
         if (this.getCell(newPosition2).hasDie()) {
+            this.schema.get(oldPosition2).setAssociatedDie(d2);
+            this.schema.get(oldPosition1).setAssociatedDie(d);
             return false;
         }
         if (colorRestriction) {
             if (!checkColorRestriction(this.getCell(newPosition2), d2)) {
+                this.schema.get(oldPosition2).setAssociatedDie(d2);
+                this.schema.get(oldPosition1).setAssociatedDie(d);
                 return false;
             }
         }
         if (valueRestriction) {
             if (!checkValueRestriction(this.getCell(newPosition2), d2)) {
+                this.schema.get(oldPosition2).setAssociatedDie(d2);
+                this.schema.get(oldPosition1).setAssociatedDie(d);
                 return false;
             }
         }
         if (placementRestriction) {
             if (!checkPlacementRestriction(getCell(newPosition2), d2)) {
+                this.schema.get(oldPosition2).setAssociatedDie(d2);
+                this.schema.get(oldPosition1).setAssociatedDie(d);
                 return false;
             }
         }
 
-        this.getCell(newPosition1).setAssociatedDie(this.getCell(oldPosition1).removeDie());
-        this.getCell(newPosition2).setAssociatedDie(this.getCell(oldPosition2).removeDie());
+        this.getCell(newPosition1).setAssociatedDie(d);
+        this.getCell(newPosition2).setAssociatedDie(d2);
         return true;
     }
 
@@ -255,13 +275,16 @@ public class WindowPatternCard {
         return schema.get(row * 5 + column).removeDie();
     }
 
+    public Die removeDie(int index) throws EmptyCellException {
+        return schema.get(index).removeDie();
+    }
+
     public boolean checkPlacementRestriction(Cell c, Die d) {
         int column = c.getColumn();
         int row = c.getRow();
-        COLOR color = d.getColor();
-        int value = d.getValue();
-        if (this.isEmpty()){
-            if (row == 0 || row == 3 || column == 0 || column == 4){
+
+        if (this.isEmpty()) {
+            if (row == 0 || row == 3 || column == 0 || column == 4) {
                 return true;
             } else {
                 return false;
@@ -270,6 +293,7 @@ public class WindowPatternCard {
             return (checkAdjacents(c, d) && checkColorsAndValues(c, d));
         }
     }
+
 
     public boolean checkAdjacents(Cell c, Die d){
         int row = c.getRow();
@@ -290,7 +314,8 @@ public class WindowPatternCard {
         return false;
     }
 
-    public boolean checkColorsAndValues(Cell c, Die d){
+
+    public boolean checkColorsAndValues(Cell c, Die d) {
         int row = c.getRow();
         int column = c.getColumn();
         int value = d.getValue();
@@ -318,8 +343,6 @@ public class WindowPatternCard {
         }
         return true;
     }
-
-
 
     public boolean checkColorRestriction(Cell c, Die d) {
         if (c.getColorConstraint() == null) {

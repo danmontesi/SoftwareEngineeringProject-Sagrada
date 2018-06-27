@@ -19,11 +19,11 @@ import java.util.logging.Logger;
 public class Controller implements Observer, ControllerServerInterface { //Observer perchè osserva la View tramite le classi di mezzo (ClientConnection)
 
 
-    private final String WRONG_INDEX = "...";
-    private final String WRONG_PLACEMENT = "...";
-    private final String EMPTY_INDEX = "...";
+    private final String WRONG_INDEX = "The cell you selected is wrong or our of index, try again!";
+    private final String WRONG_PLACEMENT = "The placement is incorrect. Check the rules of Sagrada";
+    private final String EMPTY_INDEX = "The cell you selected is empty, try again!";
 
-    private final String EMPTY_DRAFTPOOL_INDEX = "...";
+    private final String EMPTY_DRAFTPOOL_INDEX = "The draftpool die you selected doesn't exits! Try again";
 
     public Model getModel() {
         return model;
