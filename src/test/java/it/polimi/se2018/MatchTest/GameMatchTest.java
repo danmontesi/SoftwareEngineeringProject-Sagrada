@@ -1,9 +1,7 @@
 package it.polimi.se2018.MatchTest;
 
-import it.polimi.se2018.commands.client_to_server_command.ChosenWindowPatternCard;
-import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
-import it.polimi.se2018.commands.client_to_server_command.MoveChoiceDicePlacement;
-import it.polimi.se2018.commands.client_to_server_command.MoveChoicePassTurn;
+import it.polimi.se2018.commands.client_to_server_command.*;
+import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.network.server.Controller;
 import org.junit.Test;
@@ -92,18 +90,110 @@ public class GameMatchTest {
         command.setUsername("Nives");
         controller.update(command);
         assertEquals(controller.getCurrentPlayer(), "Daniele");
-        assertEquals(controller.getCurrentRoundOrderedPlayers().size(), 5);
+        assertEquals(controller.getCurrentRoundOrderedPlayers().size(), 4);
+        command.setUsername("Daniele");
         controller.update(command);
-        assertNotEquals(controller.getCurrentPlayer(), "Daniele");
+        assertEquals(controller.getCurrentPlayer(), "Alessio");
+        assertEquals(controller.getCurrentRoundOrderedPlayers().size(), 3);
+        command.setUsername("Alessio");
+        controller.update(command);
+        command.setUsername("Alessio");
+        controller.update(command);
+        command.setUsername("Daniele");
+        controller.update(command);
+        command.setUsername("Nives");
+        controller.update(command);
+        command.setUsername("Nives");
+        controller.update(command);
         assertEquals(controller.getCurrentRoundOrderedPlayers().size(), 5);
+        assertEquals(controller.getOrderedRoundPlayers().size(), 8);
     }
 
+
+    @Test
+    public void testToolCards1() throws EmptyCellException {
+        setUpController();
+        setUpWpcChoice();
+        setKnownBoard();
+        skipRound();
+
+        System.out.println("Current è " + controller.getCurrentPlayer());
+        ClientToServerCommand command = new MoveChoiceToolCard(0);
+        command.setUsername("Nives");
+        controller.update(command);
+        assertEquals(false, controller.isHasUsedTool());
+
+        Die tempDraft = model.getDraftPool().getDie(0);
+        System.out.println("draft prima:" +tempDraft);
+        Die tempRound = model.getRoundTrack().getDie(0);
+        System.out.println("roundtr prima:" +tempRound);
+        command = new UseToolCircularCutter(0, 0);
+        command.setUsername("Daniele");
+        controller.update(command);
+        assertEquals(tempRound, model.getDraftPool().getDie(0));
+        assertEquals(tempDraft, model.getRoundTrack().getDie(0));
+        command = new MoveChoicePassTurn("Daniele");
+        controller.update(command);
+
+
+        System.out.println("Current è " + controller.getCurrentPlayer());
+        Die tempDie  = controller.getOrderedPlayers().get(2).getWindowPatternCard().getCell(0).getAssociatedDie();
+        System.out.println("Die to move" + tempDie);
+
+        command = new UseToolMoveDieNoRestriction("Copper Foil Reamer", 0, 2);
+        command.setUsername("Alessio");
+        controller.update(command);
+        assertEquals(tempDie, controller.getOrderedPlayers().get(2).getWindowPatternCard().getCell(2).getAssociatedDie());
+        command = new MoveChoicePassTurn("Alessio");
+        controller.update(command);
+
+
+
+        System.out.println("Current è " + controller.getCurrentPlayer());
+        Die tempDieCork  = model.getDraftPool().getDie(4);
+        System.out.println("Die to move" + tempDieCork);
+        command = new UseToolCorkLine(0, 4);
+        command.setUsername("Nives");
+        controller.update(command);
+        assertEquals(tempDieCork, controller.getOrderedPlayers().get(2).getWindowPatternCard().getCell(0).getAssociatedDie());
+        command = new MoveChoicePassTurn("Nives");
+        controller.update(command);
+    }
+
+
+
+
+    private void skipRound(){
+        ClientToServerCommand command;
+        command = new MoveChoicePassTurn("Nives");
+        command.setUsername("Nives");
+        controller.update(command);
+        command.setUsername("Daniele");
+        controller.update(command);
+        command.setUsername("Alessio");
+        controller.update(command);
+        command.setUsername("Alessio");
+        controller.update(command);
+        command.setUsername("Daniele");
+        controller.update(command);
+        command.setUsername("Nives");
+        controller.update(command);
+    }
+
+
+
     private void setKnownBoard(){
-        controller.getOrderedPlayers().get(0).setWindowPatternCard(new WindowPatternCard());
-        controller.getOrderedPlayers().get(0).setWindowPatternCard(new WindowPatternCard());
-        controller.getOrderedPlayers().get(0).setWindowPatternCard(new WindowPatternCard());
+        WindowPatternCard card = new WindowPatternCard((ArrayList<Cell>) fillWithColoredCells("rnnnnnnnnnnnnnnnnnnn", 1));
+        card.setName("Prova_card");
+        card.setDifficulty(5);
+        controller.getOrderedPlayers().get(0).setWindowPatternCard(card);
+        controller.getOrderedPlayers().get(1).setWindowPatternCard(card);
+        controller.getOrderedPlayers().get(2).setWindowPatternCard(card);
         controller.getModel().setDraftPool((ArrayList<Die>) fillWithColoredDice("rrrrrr",1));
 
+        controller.getModel().getExtractedToolCard().set(0, new ToolCard("Circular Cutter", ""));
+        controller.getModel().getExtractedToolCard().set(0, new ToolCard("Copper Foil Reamer", ""));
+        controller.getModel().getExtractedToolCard().set(0, new ToolCard("Cork Line", ""));
     }
 
     private List<Cell> fillWithColoredCells(String colors, int valueToSet){
@@ -134,6 +224,9 @@ public class GameMatchTest {
                     System.out.println("Something's wrong with the initialization of colored dice");
             }
             //values are always 1 and 2 to avoid conflicts with placement restriction
+            if (color == null){
+                continue;
+            }
             cells.get(i).setAssociatedDie(new Die(color, valueToSet));
         }
         return cells;
