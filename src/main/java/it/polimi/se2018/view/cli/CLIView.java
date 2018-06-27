@@ -26,6 +26,7 @@ public class CLIView extends View implements Runnable{
     private Scanner scan = new Scanner(System.in);
     private InputReader inputReader = new InputReader();
     private boolean active = true;
+    private static final String NOT_YOUR_TURN = "Invalid action: it's not your turn";
 
     public CLIView(Observer observer){
         register(observer);
@@ -87,8 +88,6 @@ public class CLIView extends View implements Runnable{
     @Override
     public void continueTurnMenu(boolean move, boolean tool){
         cliState.setYourTurn(true);
-        boolean performedAction = false;
-        int choice;
         System.out.println("What do you want to do?");
         System.out.println(move ? "1 - Place die" : "");
         System.out.println(tool ? "2 - Use Tool" : "");
@@ -181,6 +180,7 @@ public class CLIView extends View implements Runnable{
             }
         }
     }
+
     @Override
     public void twoDiceMoveMenu(String cardName){
         System.out.println("YOU Used - " + cardName);
@@ -248,7 +248,7 @@ public class CLIView extends View implements Runnable{
     }
 
     @Override
-    public synchronized void timeOut() {
+    public void timeOut() {
         inputReader.setTimeOut();
         cliState.setYourTurn(false);
     }
@@ -309,27 +309,13 @@ public class CLIView extends View implements Runnable{
     private void manageCommand(String command){
         switch (command) {
             case "1":
-                if (cliState.isYourTurn()) {
-                    System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliState.getDraftpool().size()));
-                    int draftPos = inputReader.readInt(1, cliState.getDraftpool().size());
-
-                    System.out.println("Select row (number between 1 and 4)");
-                    int schemaRow = inputReader.readInt(1, 4);
-
-                    System.out.println("Select column (number between 1 and 5)");
-                    int schemaCol = inputReader.readInt(1, 5);
-
-                    notify(new MoveChoiceDicePlacement(schemaRow - 1, schemaCol - 1, draftPos - 1));
-                } else {
-                    System.out.println("Non è il tuo turno, mossa non permessa");
-                }
+                placeDie();
                 break;
             case "2":
-                System.out.println("So che vuoi usare una toolcard, ma devo ancora implementarle");
+                useToolcard();
                 break;
             case "3":
-                System.out.println("Passed turn");
-                notify(new MoveChoicePassTurn(username));
+                passTurn();
                 break;
             case "print -c":
                 cliPrinter.printCompleteBoard(cliState);
@@ -377,5 +363,40 @@ public class CLIView extends View implements Runnable{
         inputReader = null;
     }
 
+    private void placeDie(){
+        if (cliState.isYourTurn()) {
+            System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliState.getDraftpool().size()));
+            int draftPos = inputReader.readInt(1, cliState.getDraftpool().size());
 
+            System.out.println("Select row (number between 1 and 4)");
+            int schemaRow = inputReader.readInt(1, 4);
+
+            System.out.println("Select column (number between 1 and 5)");
+            int schemaCol = inputReader.readInt(1, 5);
+
+            notify(new MoveChoiceDicePlacement(schemaRow - 1, schemaCol - 1, draftPos - 1));
+        } else {
+            System.out.println(NOT_YOUR_TURN);
+        }
+    }
+
+    private void passTurn(){
+        if(cliState.isYourTurn()){
+            System.out.println("Passed turn");
+            notify(new MoveChoicePassTurn(username));
+        } else {
+            System.out.println(NOT_YOUR_TURN);
+        }
+    }
+
+    private void useToolcard(){
+        if(cliState.isYourTurn()){
+            System.out.println("What toolcard do you want to use?\n");
+            cliPrinter.printToolcards(cliState);
+            int choice = inputReader.readInt(1, cliState.getToolcards().size());
+            notify(new MoveChoiceToolCard(choice-1));
+        } else {
+            System.out.println(NOT_YOUR_TURN);
+        }
+    }
 }
