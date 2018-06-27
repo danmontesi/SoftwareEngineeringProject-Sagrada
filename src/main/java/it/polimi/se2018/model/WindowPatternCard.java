@@ -35,6 +35,12 @@ public class WindowPatternCard {
         this.schema = cells;
     }
 
+    public WindowPatternCard(ArrayList<Cell> cells) {
+        this.difficulty = 0;
+        this.name = null;
+        this.schema = cells;
+    }
+
     public boolean isEmpty() {
         for (Cell cell : schema){
             if (cell.hasDie()){
