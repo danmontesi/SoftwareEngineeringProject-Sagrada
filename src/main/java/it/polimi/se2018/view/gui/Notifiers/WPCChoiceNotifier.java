@@ -15,9 +15,9 @@ public class WPCChoiceNotifier extends Observable {
         return WPCChoiceNotifierHolder.INSTANCE;
     }
 
-    public void updateGui(String wpCards) {
+    public void updateGui() {
         setChanged();
-        notifyObservers(wpCards);
+        notifyObservers();
     }
 
     public void updateGui(WPCChoiceAction guiReply) {

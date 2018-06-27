@@ -61,13 +61,18 @@ public class GameMatchTest {
         /*for (String user : players)
             controller.getUsernameTimerMap().get(user).cancel();
             */
-        assertEquals(controller.getOrderedPlayers().size(), 3);
+        assertEquals(controller.getUninitializedOrderedPlayers().size(), 3);
+        assertEquals(controller.getUninitializedOrderedPlayers().get(0).getWindowPatternCard()!=null, true);
+
+
     }
+   /*
    @Test
     public void updateAllWpc(){
        assertEquals(controller.getOrderedPlayers().get(0).getWindowPatternCard().getCardName(), "Virtus");
        assertEquals(controller.getOrderedPlayers().get(0).getWindowPatternCard().getCardName(), "Industria");
        assertEquals(controller.getOrderedPlayers().get(0).getWindowPatternCard().getCardName(), "Aurora Sagradis");
    }
+   */
 
 }

@@ -34,6 +34,18 @@ public class GUIView extends View {
     }
 
     @Override
+    public void timeOut() {
+        //TODO: speicficare che c'è stato un timeout
+        if(GameBoardNotifier.getInstance().isOpen()){
+            GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+            gameBoardNotifier.updateGui(new TurnStart(username));
+        } else {
+            WPCChoiceNotifier wpcChoiceNotifier = WPCChoiceNotifier.getInstance();
+            wpcChoiceNotifier.updateGui();
+        }
+    }
+
+    @Override
     public void startGame() {
         LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
         lobbyNotifier.updateGui();
@@ -176,13 +188,6 @@ public class GUIView extends View {
     @Override
     public void correctAuthenthication(String username) {
         //TODO. non contiene niente, mostra solo i messaggio
-    }
-
-    @Override
-    public void timeOut() {
-        //TODO: speicficare che c'è stato un timeout
-        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
-        gameBoardNotifier.updateGui(new TurnStart(username));
     }
 
     @Override
