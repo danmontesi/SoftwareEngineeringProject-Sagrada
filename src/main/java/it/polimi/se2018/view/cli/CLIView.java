@@ -15,15 +15,14 @@ import java.util.logging.Logger;
 
 public class CLIView extends View implements Runnable{
 
-    /**
-     * CliView receives a clone of current model each time it's Player's turn
-     */
     private CLIPrinter cliPrinter = new CLIPrinter();
     private CliState cliState;
+
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
     private InputReader inputReader = new InputReader();
     private boolean active = true;
-    private boolean usedToolCard = true;
+    private final Object toolcardMutex = new Object();
+
     private static final String NOT_YOUR_TURN = "Invalid action: it's not your turn";
 
     public CLIView(Observer observer){
@@ -91,27 +90,30 @@ public class CLIView extends View implements Runnable{
     }
 
     @Override
-    public void playerDisconnection(String username) {
+    public synchronized void playerDisconnection(String username) {
         System.out.println(username + "got disconnected");
     }
 
     @Override
-    public void firmPastryBrushMenu(int value){ // Changes a value of a die of draftpool with the one received (value)
+    public synchronized void firmPastryBrushMenu(int value){ // Changes a value of a die of draftpool with the one received (value)
+        System.out.println("Youchose: Firm Pastry brush");
         //Notify(new UseToolFirmPastr...(Integer chosenDieDraftpoolIndex, Integer schemaPosition (can be null), boolean placedDie (true if the player place the die)
         System.out.println("sorry, no can do");
-        usedToolCard = true;
+        notifyAll();
     }
 
     //TODO dan
-    public void firmPastryThinnerMenu(String color, int value){ // receives a new die from Servfer with Color = color, Value = value. The player has to send one of draftpool dice to swap them
+    public synchronized void firmPastryThinnerMenu(String color, int value){ // receives a new die from Servfer with Color = color, Value = value. The player has to send one of draftpool dice to swap them
+        System.out.println("You chose: Firm Pastry Thinner");
         //Notify(new UseToolFirmPastr...(Integer chosenDieDraftpoolIndex, Integer schemaPosition (where he wants to place the die, can be null), **String color, Integer value***, boolean placedDie (true if the player place the die)
         // ** il server deve ricevere il dado che ha mandato al view perchè non lo salva da nessuna parte
         System.out.println("sorry, no can do");
-        usedToolCard = true;
+        notifyAll();
     }
 
     @Override
-    public void moveDieNoRestrictionMenu(String cardName) {
+    public synchronized void moveDieNoRestrictionMenu(String cardName) {
+        System.out.println("You chose: " + cardName);
         if (cardName.equals("Eglomise Brush")) {
             System.out.println("TOOL USE - Eglomise Brush " +
                     "\n You can move a die ignoring color restriction");
@@ -124,11 +126,12 @@ public class CLIView extends View implements Runnable{
         System.out.println("SELECT THE THE CELL WHERE THE DIE WILL BE MOVED");
         int newSchemaPosition = selectRow() * 4 + selectColumn();
         notify(new UseToolMoveDieNoRestriction(cardName, oldSchemaPosition, newSchemaPosition));
-        usedToolCard = true;
+        notifyAll();
     }
 
     @Override
-    public void changeDieValueMenu(String cardName) {
+    public synchronized void changeDieValueMenu(String cardName) {
+        System.out.println("You chose: " + cardName);
         System.out.println("DRAFTPOOL DIE YOU WANT TO EDIT:");
         int draftpoolPos = selectFromDraftPool();
 
@@ -142,11 +145,14 @@ public class CLIView extends View implements Runnable{
         else {
             notify(new UseToolChangeDieValue(cardName, draftpoolPos));
         }
-        usedToolCard = true;
+        notifyAll();
     }
 
     @Override
-    public void twoDiceMoveMenu(String cardName){
+    public synchronized void twoDiceMoveMenu(String cardName){
+        System.out.println("You chose: " + cardName);
+
+
         System.out.println("YOU Used - " + cardName);
         if (cardName.equals("Manual Cutter")){
             System.out.println("With this tool you have to move 2 dice of same color of a die of the roundTrack. Check it out carefully!");
@@ -162,36 +168,39 @@ public class CLIView extends View implements Runnable{
         System.out.println("NEW DIE COORDINATES:");
         int newPos2 = (selectRow()*4+selectColumn());
         notify(new UseToolTwoDicePlacement(cardName, oldPos1, newPos1, oldPos2, newPos2));
-        usedToolCard = true;
+        notifyAll();
     }
 
     @Override
-    public void corkLineMenu() {
+    public synchronized void corkLineMenu() {
+        System.out.println("You chose: Cork Line");
         System.out.println("Place a die ignoring placement restriction");
         int draftpoolPosition = selectFromDraftPool();
         int row = selectRow();
         int column = selectColumn();
         notify(new UseToolCorkLine(draftpoolPosition, row*4+column));
-        usedToolCard = true;
+        notifyAll();
     }
 
     @Override
-    public void wheelsPincherMenu(){
+    public synchronized void wheelsPincherMenu(){
+        System.out.println("You chose: Wheels Pincher");
         System.out.println("Select another die, you will skip next turn");
         int draftpoolPosition = selectFromDraftPool();
         int row = selectRow();
         int column = selectColumn();
         notify(new UseToolWheelsPincher(draftpoolPosition, row*4+column));
-        usedToolCard = true;
+        notifyAll();
     }
 
     @Override
-    public void circularCutter(){
+    public synchronized void circularCutter(){
+        System.out.println("You chose: Circular Cutter");
         System.out.println("Swap a die from draftpool with a die from roundtrack");
         int draftpoolPosition = selectFromDraftPool();
         int roundTrackPosition = selectFromRoundTrack();
         notify(new UseToolCircularCutter(draftpoolPosition, roundTrackPosition));
-        usedToolCard = true;
+        notifyAll();
     }
 
     @Override
@@ -225,9 +234,9 @@ public class CLIView extends View implements Runnable{
     }
 
     @Override
-    public void timeOut() {
+    public synchronized void timeOut() {
         //this assignment is needed to restore flow control if a timeout occurs during a toolcard use
-        usedToolCard = true;
+        notifyAll();
         inputReader.setTimeOut();
         cliState.setYourTurn(false);
     }
@@ -293,14 +302,13 @@ public class CLIView extends View implements Runnable{
             case "2":
                 useToolcard();
                 //until card has been used, flow control is switched to toolcard menu
-                usedToolCard = false;
-                while(!usedToolCard){
+                synchronized (this){
                     try {
-                        Thread.sleep(200);
+                        this.wait();
                     } catch (InterruptedException e) {
                         //nothing
                     }
-                //flow control switches back to thread
+                    //flow control switches back to thread
                 }
                 break;
             case "3":
@@ -372,7 +380,7 @@ public class CLIView extends View implements Runnable{
             System.out.println("What toolcard do you want to use?\n");
             cliPrinter.printToolcards(cliState);
             int choice = inputReader.readInt(1, cliState.getToolcards().size());
-            notify(new MoveChoiceToolCard(choice-1));
+            notify(new MoveChoiceToolCard(choice - 1));
         } else {
             System.out.println(NOT_YOUR_TURN);
         }
