@@ -352,7 +352,7 @@ public class CLIView extends View implements Runnable{
             int draftPos = selectFromDraftPool();
             int schemaRow = selectRow();
             int schemaCol = selectColumn();
-            notify(new MoveChoiceDicePlacement(schemaRow - 1, schemaCol - 1, draftPos - 1));
+            notify(new MoveChoiceDicePlacement(schemaRow, schemaCol, draftPos));
         } else {
             System.out.println(NOT_YOUR_TURN);
         }
@@ -380,10 +380,10 @@ public class CLIView extends View implements Runnable{
 
     private int selectFromDraftPool(){
         System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliState.getDraftpool().size()));
-        return inputReader.readInt(1, cliState.getDraftpool().size());
+        return inputReader.readInt(1, cliState.getDraftpool().size()) - 1;
     }
 
-    public int selectFromRoundTrack(){
+    private int selectFromRoundTrack(){
         System.out.println(String.format("Select die position in Round Track (number between 1 and %d)", cliState.getRoundTrack().size()));
         return inputReader.readInt(1, cliState.getRoundTrack().size()) - 1;
     }

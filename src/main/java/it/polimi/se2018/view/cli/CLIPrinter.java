@@ -215,9 +215,9 @@ class CLIPrinter {
                 die[2] = "       ";
                 break;
             case 2:
-                die[0] = "       ";
-                die[1] = " o   o ";
-                die[2] = "       ";
+                die[0] = "     o ";
+                die[1] = "       ";
+                die[2] = " o     ";
                 break;
             case 3:
                 die[0] = "     o ";
