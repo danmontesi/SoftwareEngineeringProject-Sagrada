@@ -51,6 +51,7 @@ public class Model extends Observable implements Serializable { //Observable of 
 
     public void setDraftPool(ArrayList<Die> dice) {
         this.draftPool = new DraftPool(dice);
+        notifyRefreshDraftPool();
     }
 
     /**
@@ -114,6 +115,7 @@ public class Model extends Observable implements Serializable { //Observable of 
         Collections.shuffle(privateObjectiveCardDeck);
         for (Player p : gamePlayers)
             p.setPrivateObjectiveCard(privateObjectiveCardDeck.remove(0));
+
     }
 
     public ArrayList<Die> extractDraftPoolDice(int numPlayers) {
@@ -283,10 +285,15 @@ public class Model extends Observable implements Serializable { //Observable of 
      * Method for initial setting of the board
      */
     public void notifyRefreshBoard() {
+        ArrayList<String> draftpool = new ArrayList<>(); //Dice in the format: colorNumber/empty
 
-
-        ArrayList<String> draftpool; //Dice in the format: colorNumber/empty
-        draftpool = getDraftPool().draftpoolPathRepresentation();
+        if (this.draftPool == null) { //not istantiated yet
+            for (int i = 0; i < 9; i++) {
+                draftpool.add("empty");
+            }
+        } else {
+            draftpool = getDraftPool().draftpoolPathRepresentation();
+        }
         ArrayList<String> roundTrackString; //Dice in the format: colorNumber/empty
         roundTrackString = getRoundTrack().roundtrackPathRepresentation();
 
@@ -328,7 +335,6 @@ public class Model extends Observable implements Serializable { //Observable of 
             ArrayList<Integer> otherPlayersTokens = new ArrayList<>();
             ArrayList<String> otherPlayersUsernames = new ArrayList<>();
             Integer myTokens = null;
-            String playerUsr = username;
             for (Player p : gamePlayers) {
                 if (p.getUsername().equals(username))
                     myTokens = p.getTokens();
@@ -339,7 +345,7 @@ public class Model extends Observable implements Serializable { //Observable of 
             }
 
             observer.update(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
-                    draftpool, roundTrackString, personalWpc, myTokens, playerUsr, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
+                    draftpool, roundTrackString, personalWpc, myTokens, username, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
         }
     }
 
@@ -351,7 +357,6 @@ public class Model extends Observable implements Serializable { //Observable of 
     public Die getLastDie() throws EmptyCellException {
         Die toReturn;
         toReturn = draftPool.getLastDie();
-        notifyRefreshDraftPool();
         return toReturn;
     }
 

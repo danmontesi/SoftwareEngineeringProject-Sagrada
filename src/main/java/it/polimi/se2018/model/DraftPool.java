@@ -168,12 +168,6 @@ public class DraftPool {
      */
     public ArrayList<String> draftpoolPathRepresentation() {
         ArrayList<String> draftpoolString = new ArrayList<>();
-        if (this.cells==null){
-            for (int i = 0; i < 9; i++) {
-                draftpoolString.add("empty");
-            }
-            return draftpoolString;
-        }
         for (int i = 0; i < cells.size(); i++) {
             try {
                 if (cells.get(i).isEmpty()) {

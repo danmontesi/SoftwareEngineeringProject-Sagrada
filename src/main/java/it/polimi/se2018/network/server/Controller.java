@@ -87,7 +87,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         this.orderedPlayers = new ArrayList<>();
 
-        this.timerCostant = 600000;
+        this.timerCostant = 6000;
         // Now I will start each player's View
         for (String username : usernamePlayerMap.keySet())
             userViewMap.get(username).startGame(); //notifying game starting
@@ -361,7 +361,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             hasPerformedMove = false;
             hasUsedTool = false;
 
-
             for (Player p : orderedPlayers) {
                 if (!(p.getUsername().equals(currentPlayer))) {
                     userViewMap.get(p.getUsername()).otherPlayerTurn(currentPlayer);
@@ -373,6 +372,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     new TimerTask() {
                         @Override
                         public void run() {
+                            startNewTurn();
                             LOGGER.log(Level.INFO, "Sending timeout");
                             userViewMap.get(currentPlayer).timeOut();
                         }
@@ -413,6 +413,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     new TimerTask() {
                         @Override
                         public void run() {
+                            startNewTurn();
                             LOGGER.log(Level.INFO, "Sending timeout");
                             userViewMap.get(currentPlayer).timeOut();
                         }
@@ -546,6 +547,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             model.insertDieInDiceBag(extractedDieForFirmPastryThinner);
             extractedDieForFirmPastryThinner = null;
         }
+
         playerTimerMap.get(usernamePlayerMap.get(currentPlayer)).cancel();
         startNewTurn();
     }
