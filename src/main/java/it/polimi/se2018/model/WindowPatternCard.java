@@ -208,6 +208,12 @@ public class WindowPatternCard {
                 return false;
             }
         }
+        else{
+            if (!checkPlacementRestrictionNoAdjacents(getCell(newPosition), d)){
+                this.schema.get(oldPosition).setAssociatedDie(d);
+                return false;
+            }
+        }
         this.getCell(newPosition).setAssociatedDie(d);
         return true;
     }
@@ -291,6 +297,21 @@ public class WindowPatternCard {
             }
         } else {
             return (checkAdjacents(c, d) && checkColorsAndValues(c, d));
+        }
+    }
+
+    public boolean checkPlacementRestrictionNoAdjacents(Cell c, Die d) {
+        int column = c.getColumn();
+        int row = c.getRow();
+
+        if (this.isEmpty()) {
+            if (row == 0 || row == 3 || column == 0 || column == 4) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return (checkColorsAndValues(c, d));
         }
     }
 
