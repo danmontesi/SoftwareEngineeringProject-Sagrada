@@ -90,20 +90,24 @@ public class WPCChoiceController extends Observable implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        WPCChoiceAction guiReply = (WPCChoiceAction)arg;
-        WPCChoiceVisitor wpcChoiceVisitor = new WPCChoiceVisitor() {
-            @Override
-            public void visitWPCChoiceAction(WGUIViewSetting guiViewSetting) {
-                guiViewT = guiViewSetting.getGuiView();
-            }
+        if (arg == null) {
+            showGameBoard();
+        } else {
+            WPCChoiceAction guiReply = (WPCChoiceAction) arg;
+            WPCChoiceVisitor wpcChoiceVisitor = new WPCChoiceVisitor() {
+                @Override
+                public void visitWPCChoiceAction(WGUIViewSetting guiViewSetting) {
+                    guiViewT = guiViewSetting.getGuiView();
+                }
 
-            @Override
-            public void visitWPCChoiceAction(WPCChoice wpcChoice) {
-                setWPCards(wpcChoice.getWpcNames(), wpcChoice.getWpcDifficulties());
-            }
+                @Override
+                public void visitWPCChoiceAction(WPCChoice wpcChoice) {
+                    setWPCards(wpcChoice.getWpcNames(), wpcChoice.getWpcDifficulties());
+                }
 
-        };
-        guiReply.acceptWPCChoiceVisitor(wpcChoiceVisitor);
+            };
+            guiReply.acceptWPCChoiceVisitor(wpcChoiceVisitor);
+        }
     }
 
     private void setTGroup() {
@@ -209,31 +213,35 @@ public class WPCChoiceController extends Observable implements Observer {
         selectedWPC = wpc4n.getText();
     }
 
+    @FXML
+    public void start() {
+        if (!wpc1.isSelected() && !wpc2.isSelected() && !wpc3.isSelected() && !wpc4.isSelected()) {
+            inputError();
+        } else {
+            guiViewT.notify(new ChosenWindowPatternCard(selectedWPC));
+            showGameBoard();
+        }
+    }
+
     private void closeStage() {
         Stage stage = (Stage)start.getScene().getWindow();
         stage.close();
     }
 
-    @FXML
     public void showGameBoard(){
-        if (!wpc1.isSelected() && !wpc2.isSelected() && !wpc3.isSelected() && !wpc4.isSelected()) {
-            inputError();
-        } else {
-            guiViewT.notify(new ChosenWindowPatternCard(selectedWPC));
-            Platform.runLater(() -> {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/gameboard.fxml"));
-                    Parent root = fxmlLoader.load();
-                    Stage wpcChoiceStage = new Stage();
-                    wpcChoiceStage.setScene(new Scene(root));
-                    wpcChoiceStage.show();
-                    closeStage();
-                } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch game board", e);
-                }
-            });
-            GameBoardNotifier.getInstance().setOpen();
-        }
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/gameboard.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage wpcChoiceStage = new Stage();
+                wpcChoiceStage.setScene(new Scene(root));
+                wpcChoiceStage.show();
+                closeStage();
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch game board", e);
+            }
+        });
+        GameBoardNotifier.getInstance().setOpen();
     }
 
     private void inputError() {
