@@ -9,32 +9,29 @@ import it.polimi.se2018.network.server.ServerConnection;
 import java.util.Scanner;
 
 public class Client{
+    /*
+    Default choices: GUI and Socket
+    In case of incorrect input no exception is thrown: default choices are applied.
+     */
     public static void main(String[] args) {
         ServerConnection server;
-        Scanner scanner2 = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Select \n1) CLI\n2) GUI");
-        int choice2 = scanner2.nextInt();
-        if (choice2 == 1) {
-            Scanner scanner = new Scanner(System.in);
+        String viewType = scanner.nextLine();
+        if (viewType.equals("1")) {
             System.out.println("Select \n1) Socket\n2) RMI");
-            int choice = scanner.nextInt();
+            String connectionType = scanner.nextLine();
             System.out.println("Type the username you want to connect with:");
-            String username = scanner.next();
+            String username = scanner.nextLine();
 
-            switch (choice) {
-                case 1:
-                    server = new SocketClient(1);
-                    server.startConnection(username);
-                    break;
-                case 2:
-                    server = new RMIClient(1);
-                    server.startConnection(username);
-                    break;
+            if(connectionType.equals("2")){
+                server = new RMIClient(1);
+            } else {
+                server = new SocketClient(1);
             }
+            server.startConnection(username);
         } else {
             ClientStarterMain.main(args);
         }
     }
-
-
 }

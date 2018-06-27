@@ -2,6 +2,7 @@ package it.polimi.se2018.view.cli;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.server_to_client_command.*;
+import it.polimi.se2018.exceptions.TimeUpException;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
@@ -22,18 +23,14 @@ public class CLIView extends View implements Runnable{
     private CLIPrinter cliPrinter = new CLIPrinter();
     private CliState cliState;
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
-    private InputManager inputManager;
     private Scanner scan = new Scanner(System.in);
-    //non deve esserci, è solo nell'input manager
-    private InputReader inputReader;
+    private InputReader inputReader = new InputReader();
     private boolean active = true;
 
     public CLIView(Observer observer){
         register(observer);
         System.out.println("ATTESA DI GIOCATORI...");
         cliState = new CliState();
-        inputManager = new InputManager(cliState);
-        cliState.register(inputManager);
     }
 
     //OGNI METODO DEVE CHIAMARE LA notify() della view, passandole un EVENTO
@@ -47,11 +44,15 @@ public class CLIView extends View implements Runnable{
         for (int i = 0; i < cards.size(); i++){
             System.out.println(i+1 + ")" + cards.get(i).getCardName());
         }
-            int chosen = new InputReader().readInt(1, cards.size());
+        try {
+            int chosen = inputReader.readInt(1, cards.size(), true);
             notify(new ChosenWindowPatternCard(cards.get(chosen - 1).getCardName()));
-            System.out.println("Hai scelto: " + cards.get(chosen - 1).getCardName());
-            //avvia l'inputReader
-            new Thread(this).start();
+            System.out.println("You chose: " + cards.get(chosen - 1).getCardName());
+        } catch (TimeUpException e){
+            System.out.println("Window Pattern Card chosen automatically");
+        }
+        //avvia l'inputReader
+        new Thread(this).start();
     }
 
     @Override
@@ -92,37 +93,6 @@ public class CLIView extends View implements Runnable{
         System.out.println(move ? "1 - Place die" : "");
         System.out.println(tool ? "2 - Use Tool" : "");
         System.out.println("3 - Pass Turn");
-
-       /* while(!performedAction){
-            switch(choice){
-                case 1:
-                    System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliState.getDraftpool().size()));
-                    int draftPos = scan.nextInt();
-
-                    System.out.println("Select row (number between 1 and 4)");
-                    int schemaRow = scan.nextInt();
-
-                    System.out.println("Select column (number between 1 and 5)");
-                    int schemaCol = scan.nextInt();
-
-                    notify(new MoveChoiceDicePlacement(schemaRow - 1,schemaCol - 1,draftPos - 1));
-                    break;
-                case 2:
-                    System.out.println("Which tool want you to use?");
-                    int chosenToolNum = scan.nextInt();
-                    notify(new MoveChoiceToolCard(chosenToolNum));
-                    performedAction = true;
-                    break;
-                case 3:
-                    System.out.println("Passed turn");
-                    notify(new MoveChoicePassTurn(cliState.getPlayer(0).getUsername()));
-                    performedAction = true;
-                    break;
-                default:
-                    System.out.println("Incorrect action, please select a number among the valid ones in menu");
-
-            }
-        }*/
 
     }
 
@@ -279,8 +249,8 @@ public class CLIView extends View implements Runnable{
 
     @Override
     public synchronized void timeOut() {
+        inputReader.setTimeOut();
         cliState.setYourTurn(false);
-        inputManager.setTimeout();
     }
 
     @Override
@@ -329,17 +299,7 @@ public class CLIView extends View implements Runnable{
     }
 
     @Override
-    //update entire board
-    public void update(Object event) {
-        RefreshBoardCommand command = (RefreshBoardCommand) event;
-        cliState.parseRefreshBoard(command);
-        cliPrinter.printSyntheticBoard(cliState);
-    }
-
-
-    @Override
     public void run() {
-        inputReader = new InputReader();
         while(active){
             String command = inputReader.readLine();
             manageCommand(command);
@@ -411,5 +371,11 @@ public class CLIView extends View implements Runnable{
                         "print -pu : print Public Objective Cards\n" +
                         "print -t : print Toolcards\n");
     }
+
+    private void deleteInputReader(){
+        inputReader.close();
+        inputReader = null;
+    }
+
 
 }

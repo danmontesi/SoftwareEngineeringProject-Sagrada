@@ -1,6 +1,7 @@
 package it.polimi.se2018.network.server;
 
 
+import it.polimi.se2018.CONSTANTS;
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.NewConnectedPlayerNotification;
 import it.polimi.se2018.commands.server_to_client_command.PingConnectionTester;
@@ -238,7 +239,7 @@ public class Server {
                             startNewGame(); //DA TOGLIERE, l'ho utilizzato solo come prova. il metodo deve essere contorllato dalla variabile itsTimeToStart
                         }
                     },
-                    6000 //TODO import from file
+                    CONSTANTS.LOBBY_TIMER //TODO import from file
             );
         }
         if (waitingClients.size()==4){

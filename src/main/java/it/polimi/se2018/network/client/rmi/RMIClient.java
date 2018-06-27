@@ -99,6 +99,8 @@ public class RMIClient extends Thread implements Remote, ServerConnection{
         while (true) {
             synchronized (commandQueue) {
                 if (!commandQueue.isEmpty()) {
+                    System.out.println("Sono fuori");
+                    System.out.println("Sono vivo");
                     clientController.dispatchCommand(commandQueue.poll());
                 }
             }
