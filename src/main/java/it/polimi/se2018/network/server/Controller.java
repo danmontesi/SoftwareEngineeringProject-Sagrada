@@ -1,6 +1,7 @@
 package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.CONSTANTS;
+import it.polimi.se2018.commands.client_to_server_command.new_tool_commands.*;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.ControllerServerInterface;
@@ -570,6 +571,31 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
         usernameTimerMap.get(currentPlayer).cancel();
         startNewTurn();
+    }
+
+    @Override
+    public void applyCommand(String playerUsername, UseToolPlaceDie command) {
+
+    }
+
+    @Override
+    public void applyCommand(String playerUsername, UseToolDecideValue command) {
+
+    }
+
+    @Override
+    public void applyCommand(String playerUsername, UseToolDecideAnotherOne command) {
+
+    }
+
+    @Override
+    public void applyCommand(String playerUsername, UseToolSelectDie command) {
+
+    }
+
+    @Override
+    public void applyCommand(String playerUsername, UseToolDecideIncreaseDecrease command) {
+
     }
 
 
