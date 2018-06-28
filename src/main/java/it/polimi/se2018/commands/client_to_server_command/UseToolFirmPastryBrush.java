@@ -29,7 +29,7 @@ public class UseToolFirmPastryBrush extends ClientToServerCommand{
      * Integer dieValue
      *
      * I HAVE TO COMUNICATE TO THE SERVER
-     * - WHere i want to place the die
+     * - Where i want to place the die
      * - in which position
      */
     //nameClass DRAFTPOOL/SCHEMA dieColor
@@ -37,7 +37,7 @@ public class UseToolFirmPastryBrush extends ClientToServerCommand{
 
     private Integer dieValue;
 
-    private Integer dieSchemaPosition; // in  Schema ony ( can be null)
+    private Integer dieSchemaPosition; // in  Schema only ( can be null)
 
     private Integer dieDraftpoolPosition;
 

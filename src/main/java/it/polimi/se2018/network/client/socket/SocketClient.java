@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class SocketClient implements ServerConnection {
     private static final int port = 11111;
-    private static final String host = "127.0.0.1";
+    private static String host = "127.0.0.1";
     private Socket socket;
     private ObjectOutputStream output;
     private ObjectInputStream input;
@@ -26,8 +26,9 @@ public class SocketClient implements ServerConnection {
 
 
 
-    public SocketClient(int viewChoice){
+    public SocketClient(int viewChoice, String ipAddress){
         clientController = new ClientController(viewChoice, this);
+        host = ipAddress;
     }
 
     @Override
