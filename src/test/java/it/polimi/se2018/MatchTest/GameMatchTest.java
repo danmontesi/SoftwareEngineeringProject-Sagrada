@@ -68,7 +68,7 @@ public class GameMatchTest {
         setUpController();
         setUpWpcChoice();
         assertEquals(controller.getCurrentPlayer(), "Nives");
-        ClientToServerCommand command = new MoveChoiceDicePlacement(2, 2, 1);
+        ClientToServerCommand command = new MoveChoiceDicePlacement(11, 1);
         command.setUsername("Nives");
         controller.update(command);
         assertEquals(controller.getCurrentPlayer(), "Nives");
@@ -82,7 +82,7 @@ public class GameMatchTest {
         setUpController();
         setUpWpcChoice();
 
-        ClientToServerCommand command = new MoveChoiceDicePlacement(2, 2, 1);
+        ClientToServerCommand command = new MoveChoiceDicePlacement(11, 1);
         command.setUsername("Nives");
         controller.update(command);
         assertEquals(controller.getCurrentPlayer(), "Nives");

@@ -129,17 +129,16 @@ public class VirtualView extends View {
 
     @Override
     public void otherPlayerTurn(String username) {
-        if (Server.getConnectedClients().containsKey(this.username)) { //disconnected
+        if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
             disconnected=true;
             System.out.println("Disconnected-> No action");
-            return;
-        } else
-        if (disconnected){
-            Server.requestRefreshBoard(this.username);
-            disconnected=false;
-        }
+        } else {
+            if (disconnected) {
+                Server.requestRefreshBoard(this.username);
+                disconnected = false;
+            }
             Server.getConnectedClients().get(this.username).notifyClient(new OtherPlayerTurnCommand(username));
-
+        }
     }
 
     public void authenticatedCorrectlyMessage(String message) {
