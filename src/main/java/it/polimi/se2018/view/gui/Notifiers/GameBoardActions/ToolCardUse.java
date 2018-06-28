@@ -7,8 +7,16 @@ public class ToolCardUse implements GameBoardAction {
 
     public ToolCardUse(String cardName, String color, Integer value) {
         this.cardName = cardName;
-        this.color = color;
-        this.value = value;
+        if (color != null ) {
+            this.color = color;
+        }
+        if (value != null) {
+            this.value = value;
+        }
+    }
+
+    public ToolCardUse(String cardName) {
+        this.cardName=cardName;
     }
 
     @Override

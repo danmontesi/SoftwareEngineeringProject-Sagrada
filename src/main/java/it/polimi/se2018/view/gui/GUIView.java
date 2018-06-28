@@ -38,7 +38,7 @@ public class GUIView extends View {
         //TODO: speicficare che c'è stato un timeout
         if(GameBoardNotifier.getInstance().isOpen()){
             GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
-            gameBoardNotifier.updateGui(new TurnStart(username));
+            gameBoardNotifier.updateGui(new TimeUp());
         } else {
             WPCChoiceNotifier wpcChoiceNotifier = WPCChoiceNotifier.getInstance();
             wpcChoiceNotifier.updateGui();
