@@ -34,7 +34,7 @@ public class ParseWPCTest {
     @Test
     public void parseEveryCard(){
         ArrayList<WindowPatternCard> theCards;
-        theCards = pwpc.parseAllCards();
+        theCards = (ArrayList<WindowPatternCard>) pwpc.parseAllCards();
         assertEquals(24, theCards.size());
         assertEquals("Virtus", theCards.get(0).getCardName());
         assertEquals("Via Lux", theCards.get(1).getCardName());

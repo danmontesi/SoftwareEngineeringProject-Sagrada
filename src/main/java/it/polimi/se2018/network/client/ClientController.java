@@ -9,9 +9,9 @@ import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.utils.ControllerClientInterface;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
+import it.polimi.se2018.view.cli.CLIView;
 import it.polimi.se2018.view.gui.GUIView;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.view.cli.CLIView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -170,7 +170,7 @@ public class ClientController extends Observable implements Observer, Controller
 
     @Override
     public void applyCommand(MessageFromServerCommand command){
-        view.messageBox(command.message);
+        view.messageBox(command.getMessage());
     }
 
     /**

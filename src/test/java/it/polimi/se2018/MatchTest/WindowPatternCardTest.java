@@ -29,7 +29,7 @@ public class WindowPatternCardTest {
         try {
             pwpc = new ParserWindowPatternCard();
             //tests on WindowPatternCard: Via Lux
-            myCards = pwpc.parseAllCards();
+            myCards = (ArrayList<WindowPatternCard>) pwpc.parseAllCards();
             wpc = myCards.get(1);
         } catch (IOException e) {
             Assert.fail();
