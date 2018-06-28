@@ -98,9 +98,17 @@ public class CLIView extends View implements Runnable {
     public void firmPastryBrushMenu(int value) { // Changes a value of a die of draftpool with the one received (value)
         synchronized (toolcardLock) {
             try {
-                System.out.println("Youchose: Firm Pastry brush");
-                //Notify(new UseToolFirmPastr...(Integer chosenDieDraftpoolIndex, Integer schemaPosition (can be null), boolean placedDie (true if the player place the die)
-                System.out.println("sorry, no can do");
+                System.out.println("You chose: Firm Pastry brush");
+                System.out.println("DIE FROM DRAFTPOOL:");
+                int draftpoolIndex = selectFromDraftPool();
+                System.out.println("New die value: " + value);
+                System.out.println("What do you want to do?\n1) Place die\n2) Put die back in draftpool");
+                int choice = inputReader.readInt(1, 2, true);
+                if(choice == 1){
+                    notify(new UseToolFirmPastryBrush("MOVE", value, draftpoolIndex, selectRow()*4+selectColumn()));
+                } else {
+                    notify(new UseToolFirmPastryBrush("DRAFTPOOL", value, draftpoolIndex, null));
+                }
             } catch (TimeUpException e) {
                 //At the end of the method the lock is released
             } finally {
@@ -113,9 +121,20 @@ public class CLIView extends View implements Runnable {
         synchronized (toolcardLock) {
             try {
                 System.out.println("You chose: Firm Pastry Thinner");
+                System.out.println("DIE FROM DRAFTPOOL:");
+                int draftpoolIndex = selectFromDraftPool();
+                System.out.println("Die extracted from Dice Bag, it's color is: " + color);
+                System.out.println("Chose the value of this die");
+                value = inputReader.readInt(1, 6, true);
+                System.out.println("What do you want to do?\n1) Place die\n2) Put die back in draftpool");
+                int choice = inputReader.readInt(1, 2, true);
+                if(choice == 1){
+                    notify(new UseToolFirmPastryThinner("MOVE", value, draftpoolIndex, selectRow()*4+selectColumn()));
+                } else {
+                    notify(new UseToolFirmPastryThinner("DRAFTPOOL", value, draftpoolIndex, null));
+                }
                 //Notify(new UseToolFirmPastr...(Integer chosenDieDraftpoolIndex, Integer schemaPosition (where he wants to place the die, can be null), **String color, Integer value***, boolean placedDie (true if the player place the die)
                 // ** il server deve ricevere il dado che ha mandato al view perchè non lo salva da nessuna parte
-                System.out.println("sorry, no can do");
             } catch (TimeUpException e) {
                 //At the end of the method the lock is released
             } finally {
@@ -157,8 +176,7 @@ public class CLIView extends View implements Runnable {
 
                 if (cardName.equals("Roughing Forceps")) {
                     System.out.println("Want you to increase or decrease the value? \n 1- Increase" + "\n 2- Decrease");
-                    int toolChoice = inputReader.readInt(1, 2);
-                    //TODO: controllo per evitare che il dado scelto sia un 6 e aumenti o sia un 1 e diminuisca
+                    int toolChoice = inputReader.readInt(1, 2, true);
                     notify(new UseToolChangeDieValue(cardName, draftpoolPos, (toolChoice == 1 ? true : false)));
                 }
                 //Diamond Swab
