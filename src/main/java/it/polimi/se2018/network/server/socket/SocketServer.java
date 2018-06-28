@@ -17,6 +17,7 @@ public class SocketServer {
     public void socketStartListening(){
         try {
             serverSocket = new ServerSocket(port);
+            System.out.println("Listening socket, address: " + serverSocket.getInetAddress() + " port: " + serverSocket.getLocalPort());
 
             new Thread(){
                 public void run(){

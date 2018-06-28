@@ -28,9 +28,6 @@ public class RMIClient implements Remote, ServerConnection{
 
     private ClientController clientController;
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
-    private ServerToClientCommand command;
-    private boolean dispatched = false;
-    private static Object waiter = new Object();
 
     public RMIClient(int viewChoice){
         clientController = new ClientController(viewChoice, this);

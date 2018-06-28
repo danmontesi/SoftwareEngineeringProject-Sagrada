@@ -56,10 +56,8 @@ public class Server {
         boolean activeServer = true;
         //pubblica RMI impl server side
         new RMIServer().RMIStartListening();
-        System.out.println("Listening RMI");
         //listen socket connections
         new SocketServer().socketStartListening();
-        System.out.println("Listening Socket");
 
 
         new Thread(() -> {
