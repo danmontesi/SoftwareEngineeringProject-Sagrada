@@ -1,10 +1,10 @@
 package it.polimi.se2018.view.gui.Notifiers.GameBoardActions;
 
-public class TurnStart implements GameBoardAction {
-    private String username;
+public class Message implements GameBoardAction {
+    private String message;
 
-    public TurnStart(String username) {
-        this.username = username;
+    public Message(String message) {
+        this.message = message;
     }
 
     @Override
@@ -12,7 +12,7 @@ public class TurnStart implements GameBoardAction {
         gameBoardVisitor.visitGameBoardAction(this);
     }
 
-    public String getUsername() {
-        return username;
+    public String getMessage() {
+        return message;
     }
 }

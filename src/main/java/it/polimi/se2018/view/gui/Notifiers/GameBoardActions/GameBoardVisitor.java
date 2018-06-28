@@ -10,4 +10,6 @@ public interface GameBoardVisitor {
     void visitGameBoardAction(TokensUpdate tokensUpdate);
     void visitGameBoardAction(DraftPoolRoundTrackUpdate draftPoolUpdate);
     void visitGameBoardAction(ToolCardUse toolCardUse);
+    void visitGameBoardAction(TimeUp timeUp);
+    void visitGameBoardAction(Message message);
 }

@@ -14,7 +14,7 @@
             <ImageView fx:id="pubOC1" fitHeight="190.0" fitWidth="140.0" layoutX="15.0" layoutY="15.0" preserveRatio="true" />
             <ImageView fx:id="pubOC2" fitHeight="190.0" fitWidth="140.0" layoutX="15.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="pubOC3" fitHeight="190.0" fitWidth="140.0" layoutX="15.0" layoutY="425.0" preserveRatio="true" />
-            <ToggleButton fx:id="toolCard1" layoutX="160.0" layoutY="12.0" mnemonicParsing="false" onAction="#tcAction" prefHeight="190.0" prefWidth="140.0" styleClass="tcb" />
+            <ToggleButton fx:id="toolCard1" layoutX="160.0" layoutY="12.0" mnemonicParsing="false" onAction="#tc1Action" prefHeight="190.0" prefWidth="140.0" styleClass="tcb" />
             <Label fx:id="tc1tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="260.0" layoutY="22.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
             <Circle fx:id="tCircle1" layoutX="290.0" layoutY="35.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
                <fill>
@@ -27,7 +27,7 @@
                   </RadialGradient>
                </fill>
             </Circle>
-            <ToggleButton fx:id="toolCard2" layoutX="160.0" layoutY="217.0" mnemonicParsing="false" onAction="#tcAction" prefHeight="190.0" prefWidth="140.0" styleClass="tcb" />
+            <ToggleButton fx:id="toolCard2" layoutX="160.0" layoutY="217.0" mnemonicParsing="false" onAction="#tc2Action" prefHeight="190.0" prefWidth="140.0" styleClass="tcb" />
             <Label fx:id="tc2tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="260.0" layoutY="227.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
             <Circle fx:id="tCircle2" layoutX="290.0" layoutY="240.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
                <fill>
@@ -40,7 +40,7 @@
                   </RadialGradient>
                </fill>
             </Circle>
-            <ToggleButton fx:id="toolCard3" layoutX="160.0" layoutY="422.0" mnemonicParsing="false" onAction="#tcAction" prefHeight="190.0" prefWidth="140.0" styleClass="tcb" />
+            <ToggleButton fx:id="toolCard3" layoutX="160.0" layoutY="422.0" mnemonicParsing="false" onAction="#tc3Action" prefHeight="190.0" prefWidth="140.0" styleClass="tcb" />
             <Label fx:id="tc3tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="260.0" layoutY="424.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
             <Circle fx:id="tCircle3" layoutX="290.0" layoutY="437.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
                <fill>
