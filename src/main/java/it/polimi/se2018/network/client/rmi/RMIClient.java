@@ -14,8 +14,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Deque;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,32 +26,16 @@ public class RMIClient implements Remote, ServerConnection{
         return clientController;
     }
 
-    public static Deque<ServerToClientCommand> getCommandQueue() {
-        return commandQueue;
-    }
-
     private ClientController clientController;
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
     private ServerToClientCommand command;
     private boolean dispatched = false;
     private static Object waiter = new Object();
 
-    private static Deque<ServerToClientCommand> commandQueue;
-
     public RMIClient(int viewChoice){
         clientController = new ClientController(viewChoice, this);
-        commandQueue = new ConcurrentLinkedDeque<>();
         Thread commandHandlerRMI = new Thread(new CommandHandlerRMI());
         commandHandlerRMI.start();
-    }
-
-
-    public static Object getWaiter() {
-        return waiter;
-    }
-
-    public static void setWaiter(Object waiter) {
-        RMIClient.waiter = waiter;
     }
 
     @Override
@@ -74,60 +56,7 @@ public class RMIClient implements Remote, ServerConnection{
         new Thread(() -> {
             clientController.dispatchCommand(command);
         }).start();
-        /*
-        synchronized (waiter) {
-            commandQueue.add(command);
-            System.out.println("added "+command);
-            waiter.notifyAll();
-        }
-*/
-
     }
-        /*
-        synchronized (waiter) {
-            if (command.toString().contains("Ping")) {
-                LOGGER.log(Level.FINE, "RMI: arriva comando", command);
-                return;
-            }
-            commandQueue.add(command);
-            waiter.notifyAll();
-        }
-        System.out.println("Uscito da synchronized Sta finendo!" + command.toString());*/
-/*
-    @Override
-    public void run() {
-        while (true) {
-            synchronized (commandQueue) {
-                if (!commandQueue.isEmpty()) {
-                    System.out.println("Sono fuori");
-                    System.out.println("Sono vivo");
-                    clientController.dispatchCommand(commandQueue.poll());
-                }
-            }
-        }
-    }*/
-        /*
-        System.out.println(this);
-        while (true) {
-            System.out.println("0: " + commandQueue.toString());
-            synchronized (waiter) {
-                System.out.println("1: " + commandQueue.toString());
-                while (commandQueue.isEmpty()) {
-                    try {
-                        System.out.println("prima di wait");
-                        waiter.wait();
-                        System.out.println("non waita più");
-                        System.out.println("2: " + commandQueue.toString());
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
-                    System.out.println("prima di dispatch");
-                    ServerToClientCommand command = commandQueue.remove();
-                    clientController.dispatchCommand(command);
-                }
-                System.out.println("3: " + commandQueue.toString());
-            }
-        }*/
 
     @Override
     public void startConnection(String username) {

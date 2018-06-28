@@ -27,7 +27,12 @@ public class Client{
             if(connectionType.equals("2")){
                 server = new RMIClient(1);
             } else {
-                server = new SocketClient(1);
+                System.out.println("Insert IP Address: (press enter to connect to localhost)");
+                String ipAddress = scanner.nextLine();
+                if(ipAddress.equals("")){
+                    ipAddress = "127.0.0.1";
+                }
+                server = new SocketClient(1, ipAddress);
             }
             server.startConnection(username);
         } else {
