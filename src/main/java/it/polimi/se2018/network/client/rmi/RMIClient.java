@@ -21,6 +21,7 @@ public class RMIClient implements Remote, ServerConnection{
 
     private Registry registry;
     private RMIServerInterface server;
+    private String ipAddress;
 
     public ControllerClientInterface getClientController() {
         return clientController;
@@ -29,10 +30,11 @@ public class RMIClient implements Remote, ServerConnection{
     private ClientController clientController;
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
-    public RMIClient(int viewChoice){
+    public RMIClient(int viewChoice, String ipAddress){
         clientController = new ClientController(viewChoice, this);
         Thread commandHandlerRMI = new Thread(new CommandHandlerRMI());
         commandHandlerRMI.start();
+        this.ipAddress = ipAddress;
     }
 
     @Override
@@ -58,7 +60,7 @@ public class RMIClient implements Remote, ServerConnection{
     @Override
     public void startConnection(String username) {
         try {
-            registry = LocateRegistry.getRegistry(1099);
+            registry = LocateRegistry.getRegistry(ipAddress, 1099);
             server = (RMIServerInterface)registry.lookup("RMIImplementation");
             RMIClientImplementation client = new RMIClientImplementation(this);
             RMIClientInterface remoteRef = (RMIClientInterface) UnicastRemoteObject.exportObject(client, 0);

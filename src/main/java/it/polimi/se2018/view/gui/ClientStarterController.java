@@ -101,7 +101,7 @@ public class ClientStarterController implements Observer {
             usernameField.setEffect(null);
             ServerConnection server;
             if (getConnection().equals("RMI")) {
-                server = new RMIClient(2);
+                server = new RMIClient(2, ipAddressField.getText());
                 server.startConnection(getUsername());
             } else if (getConnection().equals("Socket")) {
                 server = new SocketClient(2, ipAddressField.getText());

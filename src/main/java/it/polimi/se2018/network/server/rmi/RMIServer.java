@@ -7,6 +7,8 @@ import java.rmi.registry.Registry;
 public class RMIServer {
     private static int port = 1099;
 
+
+
     public void RMIStartListening(){
 
         System.setProperty("java.rmi.server.hostname","127.0.0.1");
