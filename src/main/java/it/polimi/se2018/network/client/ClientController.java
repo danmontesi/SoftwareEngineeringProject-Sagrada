@@ -203,7 +203,6 @@ public class ClientController extends Observable implements Observer, Controller
      */
     @Override
     public void applyCommand(CorrectUseToolFirmPastryThinner1 command){
-        String[] words = command.getMessage().split(" ");
         view.firmPastryThinnerMenu(command.getColor(), command.getDieValue());
     }
 
