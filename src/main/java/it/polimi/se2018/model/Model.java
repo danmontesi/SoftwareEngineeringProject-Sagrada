@@ -68,17 +68,18 @@ public class Model extends Observable implements Serializable { //Observable of 
         roundTrack = new RoundTrack();
         ParserPrivateObjectiveCard parserPrivateObjectiveCard = new ParserPrivateObjectiveCard();
         ParserPublicObjectiveCard parserPublicObjectiveCard = new ParserPublicObjectiveCard();
-        ParserWindowPatternCard parserWindowPatternCard = null;
         ParserToolcard parserToolcard = new ParserToolcard();
+        ParserWindowPatternCard parserWindowPatternCard;
+
         try {
             parserWindowPatternCard = new ParserWindowPatternCard();
+            windowPatternCardDeck = (ArrayList<WindowPatternCard>) parserWindowPatternCard.parseAllCards();
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
+
         ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck = new ArrayList<>();
         ArrayList<PublicObjectiveCard> publicObjectiveCardDeck = new ArrayList<>();
-
-        windowPatternCardDeck = parserWindowPatternCard.parseAllCards();
 
         try {
             privateObjectiveCardDeck = parserPrivateObjectiveCard.parseCards();
@@ -369,7 +370,7 @@ public class Model extends Observable implements Serializable { //Observable of 
                     otherPlayersUsernames.add(p.getUsername());
                 }
             }
-
+            //TODO con 15 costruttori
             observer.update(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
                     draftpool, roundTrackString, personalWpc, myTokens, username, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
         }

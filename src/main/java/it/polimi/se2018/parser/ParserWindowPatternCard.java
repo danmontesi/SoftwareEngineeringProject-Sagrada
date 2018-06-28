@@ -10,6 +10,7 @@ import it.polimi.se2018.exceptions.NoSuchColorException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Alessio
@@ -33,7 +34,7 @@ public class ParserWindowPatternCard {
         cards = WPCCards.get("WindowPatternCards").getAsJsonArray();
     }
 
-    public ArrayList<WindowPatternCard> parseAllCards(){
+    public List<WindowPatternCard> parseAllCards(){
         //ArrayList which will contain every WindowPatternCard
         ArrayList<WindowPatternCard> windowPatternCards = new ArrayList<>();
 

@@ -8,7 +8,7 @@ public abstract class ServerToClientCommand implements Serializable {
     /**
      * This is the abstract class representing all possible command from Server to view
      */
-    public String message;
+    private String message;
 
     /**
      * The Constant serialVersionUID.
