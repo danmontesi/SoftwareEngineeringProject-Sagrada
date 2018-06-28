@@ -427,7 +427,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                             LOGGER.log(Level.INFO, "Sending timeout");
                             userViewMap.get(currentPlayer).timeOut();
                             startNewTurn();
-
                         }
                     },
                     timerCostant
@@ -915,6 +914,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
 
+
     /**
      * Getters
      */
@@ -956,7 +956,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     Map<String, View> getUserViewMap() {
         return userViewMap;
     }
-
 
 
     @Override
