@@ -21,6 +21,7 @@ public class SocketClient implements ServerConnection {
     private ObjectOutputStream output;
     private ObjectInputStream input;
     private ControllerClientInterface clientController;
+    private boolean isAlive = true;
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
 
@@ -55,7 +56,7 @@ public class SocketClient implements ServerConnection {
             output.flush();
 
             new Thread(() -> {
-                while (true){
+                while (isAlive){
                     try {
                         ServerToClientCommand command = (ServerToClientCommand) input.readObject();
                         if (!command.toString().contains("Ping")) {
@@ -67,6 +68,7 @@ public class SocketClient implements ServerConnection {
 
                     } catch (IOException e) {
                         LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                        isAlive = false;
                     } catch (ClassNotFoundException e) {
                         //nothing
                     }
