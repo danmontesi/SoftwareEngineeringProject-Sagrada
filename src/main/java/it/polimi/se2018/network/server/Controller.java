@@ -545,7 +545,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             Die toPlace = null;
             toPlace = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
             if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard()
-                    .placeDie(toPlace, command.getDieSchemaRowPosition(), command.getDieSchemaColPosition(),
+                    .placeDie(toPlace, command.getDieSchemaPosition(),
                             true, true, true)) {
                 handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_PLACEMENT);
             } else {
