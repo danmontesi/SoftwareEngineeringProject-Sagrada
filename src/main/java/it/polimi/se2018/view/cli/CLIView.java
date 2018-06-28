@@ -105,7 +105,7 @@ public class CLIView extends View implements Runnable {
                 System.out.println("What do you want to do?\n1) Place die\n2) Put die back in draftpool");
                 int choice = inputReader.readInt(1, 2, true);
                 if(choice == 1){
-                    notify(new UseToolFirmPastryBrush("MOVE", value, draftpoolIndex, selectRow()*4+selectColumn()));
+                    notify(new UseToolFirmPastryBrush("MOVE", value, draftpoolIndex, selectRow()*5+selectColumn()));
                 } else {
                     notify(new UseToolFirmPastryBrush("DRAFTPOOL", value, draftpoolIndex, null));
                 }
@@ -129,7 +129,7 @@ public class CLIView extends View implements Runnable {
                 System.out.println("What do you want to do?\n1) Place die\n2) Put die back in draftpool");
                 int choice = inputReader.readInt(1, 2, true);
                 if(choice == 1){
-                    notify(new UseToolFirmPastryThinner("MOVE", value, draftpoolIndex, selectRow()*4+selectColumn()));
+                    notify(new UseToolFirmPastryThinner("MOVE", value, draftpoolIndex, selectRow()*5+selectColumn()));
                 } else {
                     notify(new UseToolFirmPastryThinner("DRAFTPOOL", value, draftpoolIndex, null));
                 }
@@ -154,9 +154,9 @@ public class CLIView extends View implements Runnable {
                     System.out.println("You can move a die ignoring value restriction");
                 }
                 System.out.println("SELECT DIE TO BE MOVED:");
-                int oldSchemaPosition = selectRow() * 4 + selectColumn();
+                int oldSchemaPosition = selectRow() * 5 + selectColumn();
                 System.out.println("SELECT THE THE CELL WHERE THE DIE WILL BE MOVED");
-                int newSchemaPosition = selectRow() * 4 + selectColumn();
+                int newSchemaPosition = selectRow() * 5 + selectColumn();
                 notify(new UseToolMoveDieNoRestriction(cardName, oldSchemaPosition, newSchemaPosition));
             } catch (TimeUpException e) {
                 //At the end of the method the lock is released
@@ -203,13 +203,13 @@ public class CLIView extends View implements Runnable {
                     System.out.println("Move exactly two dice respecting placement restrictions");
                 }
                 System.out.println("FIRST DIE:");
-                int oldPos1 = (selectRow() * 4 + selectColumn());
+                int oldPos1 = (selectRow() * 5+ selectColumn());
                 System.out.println("NEW DIE COORDINATES:");
-                int newPos1 = (selectRow() * 4 + selectColumn());
+                int newPos1 = (selectRow() * 5+ selectColumn());
                 System.out.println("SECOND DIE:");
-                int oldPos2 = (selectRow() * 4 + selectColumn());
+                int oldPos2 = (selectRow() * 5+ selectColumn());
                 System.out.println("NEW DIE COORDINATES:");
-                int newPos2 = (selectRow() * 4 + selectColumn());
+                int newPos2 = (selectRow() * 5+ selectColumn());
                 notify(new UseToolTwoDicePlacement(cardName, oldPos1, newPos1, oldPos2, newPos2));
             } catch (TimeUpException e) {
                 //At the end of the method the lock is released
@@ -228,7 +228,7 @@ public class CLIView extends View implements Runnable {
                 int draftpoolPosition = selectFromDraftPool();
                 int row = selectRow();
                 int column = selectColumn();
-                notify(new UseToolCorkLine(draftpoolPosition, row * 4 + column));
+                notify(new UseToolCorkLine(draftpoolPosition, row * 5+ column));
             } catch (TimeUpException e) {
                 //At the end of the method the lock is released
             } finally {
@@ -246,7 +246,7 @@ public class CLIView extends View implements Runnable {
                 int draftpoolPosition = selectFromDraftPool();
                 int row = selectRow();
                 int column = selectColumn();
-                notify(new UseToolWheelsPincher(draftpoolPosition, row * 4 + column));
+                notify(new UseToolWheelsPincher(draftpoolPosition, row * 5+ column));
             } catch (TimeUpException e) {
                 //At the end of the method the lock is released
             } finally {
@@ -430,7 +430,7 @@ public class CLIView extends View implements Runnable {
                 int draftPos = selectFromDraftPool();
                 int schemaRow = selectRow();
                 int schemaCol = selectColumn();
-                notify(new MoveChoiceDicePlacement(schemaRow * 4 + schemaCol, draftPos));
+                notify(new MoveChoiceDicePlacement(schemaRow * 5 + schemaCol, draftPos));
             } else {
                 System.out.println(NOT_YOUR_TURN);
             }
