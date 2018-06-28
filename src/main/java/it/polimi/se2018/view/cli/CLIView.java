@@ -477,4 +477,25 @@ public class CLIView extends View implements Runnable {
         System.out.println("Select column (number between 1 and 5)");
         return inputReader.readInt(1, 5, true) - 1;
     }
+
+    @Override
+    public void askAnotherOne() {
+
+    }
+    @Override
+    public void askDecideIncreaseDecrease() {
+
+    }
+    @Override
+    public void askDecideValue() {
+
+    }
+    @Override
+    public void askPlaceDie() {
+
+    }
+    @Override
+    public void askSelectDie(String from) {
+
+    }
 }

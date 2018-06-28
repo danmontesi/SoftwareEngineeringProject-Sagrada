@@ -3,6 +3,7 @@ package it.polimi.se2018.network.client;
 import com.google.gson.stream.MalformedJsonException;
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
+import it.polimi.se2018.commands.server_to_client_command.new_tool_commands.*;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.network.server.ServerConnection;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
@@ -283,6 +284,31 @@ public class ClientController extends Observable implements Observer, Controller
     @Override
     public void applyCommand(EndGameCommand endGameCommand) {
         view.endGame();
+    }
+
+    @Override
+    public void applyCommand(AskToolDecideIncreaseDecrease askToolDecideIncreaseDecrease) {
+        view.askDecideIncreaseDecrease();
+    }
+
+    @Override
+    public void applyCommand(AskToolDecideAnotherOne askToolDecideAnotherOne) {
+        view.askAnotherOne();
+    }
+
+    @Override
+    public void applyCommand(AskToolDecideValue askToolDecideValue) {
+        view.askDecideValue();
+    }
+
+    @Override
+    public void applyCommand(AskToolPlaceDie askToolPlaceDie) {
+        view.askPlaceDie();
+    }
+
+    @Override
+    public void applyCommand(AskToolSelectDie askToolSelectDie) {
+        view.askSelectDie(askToolSelectDie.getFrom());
     }
 
     @Override

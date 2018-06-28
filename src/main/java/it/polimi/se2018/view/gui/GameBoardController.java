@@ -340,7 +340,6 @@ public class GameBoardController extends Observable implements Observer {
                     setDrafPool(modelRepresentation.getDraftpool());
                     setRoundTrack(modelRepresentation.getRoundTrack());
                     initBStyle();
-                    moveDice(personalWPCDice, draftPoolDice, "");
                 }
 
                 @Override
@@ -979,7 +978,7 @@ public class GameBoardController extends Observable implements Observer {
     @FXML
     public void passTurn() {
         disableAllButtons();
-        guiViewT.notify(new MoveChoicePassTurn(user0.getText()));
+        guiViewT.notify(new MoveChoicePassTurn(guiViewT.getUsername()));
     }
 
     @FXML

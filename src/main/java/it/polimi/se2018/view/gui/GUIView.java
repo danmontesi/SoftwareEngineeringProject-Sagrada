@@ -237,6 +237,27 @@ public class GUIView extends View {
     }
 
     @Override
+    public void askAnotherOne() {
+
+    }
+    @Override
+    public void askDecideIncreaseDecrease() {
+
+    }
+    @Override
+    public void askDecideValue() {
+
+    }
+    @Override
+    public void askPlaceDie() {
+
+    }
+    @Override
+    public void askSelectDie(String from) {
+
+    }
+
+    @Override
     public void messageBox(String message) {}
 
 }

@@ -1,5 +1,6 @@
 package it.polimi.se2018.network.server;
 
+import it.polimi.se2018.commands.server_to_client_command.new_tool_commands.*;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.commands.client_to_server_command.ChosenWindowPatternCard;
 import it.polimi.se2018.model.Model;
@@ -355,22 +356,13 @@ public class VirtualView extends View {
 
     @Override
     public void updateBoard(RefreshBoardCommand refreshCommand) {
-
-    }
-
-    public void update(Object model){ //TODO Change with all model representation
         //RefreshBoardCommand
-        //TODO TOGLI!! PERR ORA SOLO
-        if (model instanceof RefreshBoardCommand){
-            update((RefreshBoardCommand) model);
-            return;
-        }
         if (Server.getConnectedClients().get(username)==null){ //disconnected
             disconnected=true;
-                LOGGER.log(Level.INFO, "Disconnected -> No updating model");
+            LOGGER.log(Level.INFO, "Disconnected -> No updating model");
         }
         else
-            Server.getConnectedClients().get(username).notifyClient(new RefreshBoardCommand((String) model));
+            Server.getConnectedClients().get(username).notifyClient(refreshCommand);
     }
 
     public void update(RefreshBoardCommand command){ //TODO Change with all model representation
@@ -391,6 +383,53 @@ public class VirtualView extends View {
         }
         else
             Server.getConnectedClients().get(username).notifyClient(new MessageFromServerCommand(message));
+    }
+
+
+    @Override
+    public void askAnotherOne() {
+        if (Server.getConnectedClients().get(username)==null){ //disconnected
+            disconnected=true;
+            LOGGER.log(Level.INFO, "Disconnected-> No action");
+        }
+        else
+            Server.getConnectedClients().get(username).notifyClient(new AskToolDecideAnotherOne());
+    }
+    @Override
+    public void askDecideIncreaseDecrease() {
+        if (Server.getConnectedClients().get(username)==null){ //disconnected
+            disconnected=true;
+            LOGGER.log(Level.INFO, "Disconnected-> No action");
+        }
+        else
+            Server.getConnectedClients().get(username).notifyClient(new AskToolDecideIncreaseDecrease());
+    }
+    @Override
+    public void askDecideValue() {
+        if (Server.getConnectedClients().get(username)==null){ //disconnected
+            disconnected=true;
+            LOGGER.log(Level.INFO, "Disconnected-> No action");
+        }
+        else
+            Server.getConnectedClients().get(username).notifyClient(new AskToolDecideValue());
+    }
+    @Override
+    public void askPlaceDie() {
+        if (Server.getConnectedClients().get(username)==null){ //disconnected
+            disconnected=true;
+            LOGGER.log(Level.INFO, "Disconnected-> No action");
+        }
+        else
+            Server.getConnectedClients().get(username).notifyClient(new AskToolPlaceDie());
+    }
+    @Override
+    public void askSelectDie(String from) {
+        if (Server.getConnectedClients().get(username)==null){ //disconnected
+            disconnected=true;
+            LOGGER.log(Level.INFO, "Disconnected-> No action");
+        }
+        else
+            Server.getConnectedClients().get(username).notifyClient(new AskToolSelectDie(from));
     }
 
 }
