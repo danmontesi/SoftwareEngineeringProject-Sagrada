@@ -13,12 +13,12 @@
  
     <properties>
 
-        <!-- Class Exclusion on SonarQube ToBeRemoved -->
+       <!-- &lt;!&ndash; Class Exclusion on SonarQube ToBeRemoved &ndash;&gt;
         <sonar.coverage.exclusions>
             **/src/main/java/it/polimi/se2018/network/**/*,
             **/src/main/java/it/polimi/se2018/view/**/*,
             **/src/main/java/it/polimi/se2018/commands/**/*
-        </sonar.coverage.exclusions>
+        </sonar.coverage.exclusions>-->
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 

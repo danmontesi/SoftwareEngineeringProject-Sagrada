@@ -3,7 +3,11 @@ package it.polimi.se2018.network.client.rmi;
 import it.polimi.se2018.network.server.ServerConnection;
 
 public class CommandHandlerRMI implements Runnable {
+    @Override
+    public void run() {
 
+    }
+/*
     public CommandHandlerRMI() {
     }
 
@@ -25,4 +29,5 @@ public class CommandHandlerRMI implements Runnable {
 
         }
     }
+    */
 }

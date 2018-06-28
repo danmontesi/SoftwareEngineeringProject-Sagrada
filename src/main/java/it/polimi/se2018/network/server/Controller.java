@@ -19,19 +19,10 @@ import java.util.logging.Logger;
 public class Controller implements Observer, ControllerServerInterface { //Observer perchè osserva la View tramite le classi di mezzo (ClientConnection)
 
 
-    private final String WRONG_INDEX = "The cell you selected is wrong or our of index, try again!";
-    private final String WRONG_PLACEMENT = "The placement is incorrect. Check the rules of Sagrada";
-    private final String EMPTY_INDEX = "The cell you selected is empty, try again!";
-
-    private final String EMPTY_DRAFTPOOL_INDEX = "The draftpool die you selected doesn't exits! Try again";
-
-    public Model getModel() {
-        return model;
-    }
-
-    Map<String, View> getUserViewMap() {
-        return userViewMap;
-    }
+    private static final String WRONG_INDEX = "The cell you selected is wrong or our of index, try again!";
+    private static final String WRONG_PLACEMENT = "The placement is incorrect. Check the rules of Sagrada";
+    private static final String EMPTY_INDEX = "The cell you selected is empty, try again!";
+    private static final String EMPTY_DRAFTPOOL_INDEX = "The draftpool die you selected doesn't exits! Try again";
 
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
@@ -55,11 +46,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         return checkBlockingTimer;
     }
 
-    public ArrayList<Player> getOrderedPlayers() {
+    public List<Player> getOrderedPlayers() {
         return orderedPlayers;
     }
 
-    public ArrayList<Player> getUninitializedOrderedPlayers() {
+    public List<Player> getUninitializedOrderedPlayers() {
         return uninitializedOrderedPlayers;
     }
 
@@ -115,7 +106,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     public Controller(List<String> usernameList, boolean forTesting) {
         usernamePlayerMap = new HashMap<>();
-        usernameTimerMap = new HashMap<String, Timer>();
+        usernameTimerMap = new HashMap<>();
         uninitializedOrderedPlayers = new ArrayList<>();
         userViewMap = new HashMap<>();
         // I have to create the list that connects Usernames and Players and VirtualViews
@@ -496,9 +487,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             if (toolName.equals("Copper Foil Reamer"))
                 userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
             else if (toolName.equals("Cork Line"))
-                userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
+                userViewMap.get(playerUsername).corkLineMenu();
             else if (toolName.equals("Diamond Swab"))
-                userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
+                userViewMap.get(playerUsername).changeDieValueMenu(chosen.getName());
             else if (toolName.equals("Eglomise Brush"))
                 userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
             else if (toolName.equals("Firm Pastry Brush")) {
@@ -545,7 +536,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             Die toPlace = null;
             toPlace = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
             if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard()
-                    .placeDie(toPlace, command.getDieSchemaRowPosition(), command.getDieSchemaColPosition(),
+                    .placeDie(toPlace, command.getDieSchemaPosition(),
                             true, true, true)) {
                 handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_PLACEMENT);
             } else {
@@ -958,8 +949,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
 
+    public Model getModel() {
+        return model;
+    }
 
-
+    Map<String, View> getUserViewMap() {
+        return userViewMap;
+    }
 
 
 

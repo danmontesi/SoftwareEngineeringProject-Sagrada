@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class RMIClient extends Thread implements Remote, ServerConnection{
+public class RMIClient implements Remote, ServerConnection{
 
     private Registry registry;
     private RMIServerInterface server;

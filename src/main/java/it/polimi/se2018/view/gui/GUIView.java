@@ -10,8 +10,8 @@ import it.polimi.se2018.view.gui.Notifiers.LobbyNotifier;
 import it.polimi.se2018.view.gui.Notifiers.RankingPaneNotifier;
 import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WGUIViewSetting;
 import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WPCChoice;
-import it.polimi.se2018.view.gui.Notifiers.WPCChoiceNotifier;
 import it.polimi.se2018.view.View;
+import it.polimi.se2018.view.gui.Notifiers.WPCChoiceNotifier;
 
 import java.util.ArrayList;
 import java.util.List;
