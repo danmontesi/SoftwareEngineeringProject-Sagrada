@@ -25,8 +25,7 @@ public class ParseToolCardsTest {
         try {
             theCards = parserToolcard.parseCards();
 
-            //TODO: DA SCOMMENTARE QUANDO CI SARANNO DI NUOVO TUTTE LE CARTE NEL JSON
-            //assertEquals(12, theCards.size());
+            assertEquals(12, theCards.size());
             assertEquals("Roughing Forceps", theCards.get(0).getName());
             assertEquals("After drafting, increase or decrease the value of the drafted die by 1. 1 may not change to 6, or 6 to 1.",
                     theCards.get(0).getDescription());
