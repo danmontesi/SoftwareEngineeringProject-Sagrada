@@ -5,6 +5,9 @@ import it.polimi.se2018.utils.ControllerServerInterface;
 
 public class ReplyAnotherAction extends ClientToServerCommand{
 
+    public ReplyAnotherAction(boolean another) {
+        this.another = another;
+    }
 
     public boolean isAnother() {
         return another;

@@ -5,6 +5,10 @@ import it.polimi.se2018.utils.ControllerServerInterface;
 
 public class ReplyPlaceDie extends ClientToServerCommand {
 
+    public ReplyPlaceDie(Integer position) {
+        this.position = position;
+    }
+
     private Integer position;
 
     public Integer getPosition() {

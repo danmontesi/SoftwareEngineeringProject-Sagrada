@@ -5,6 +5,10 @@ import it.polimi.se2018.utils.ControllerServerInterface;
 
 public class ReplyIncreaseDecrease extends ClientToServerCommand {
 
+    public ReplyIncreaseDecrease(boolean increase) {
+        this.increase = increase;
+    }
+
     public boolean isIncrease() {
         return increase;
     }

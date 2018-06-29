@@ -1,6 +1,7 @@
 package it.polimi.se2018.view.cli;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
+import it.polimi.se2018.commands.client_to_server_command.new_tool_commands.*;
 import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.exceptions.TimeUpException;
 import it.polimi.se2018.model.WindowPatternCard;
@@ -104,8 +105,8 @@ public class CLIView extends View implements Runnable {
                 System.out.println("New die value: " + value);
                 System.out.println("What do you want to do?\n1) Place die\n2) Put die back in draftpool");
                 int choice = inputReader.readInt(1, 2, true);
-                if(choice == 1){
-                    notify(new UseToolFirmPastryBrush("MOVE", value, draftpoolIndex, selectRow()*5+selectColumn()));
+                if (choice == 1) {
+                    notify(new UseToolFirmPastryBrush("MOVE", value, draftpoolIndex, selectRow() * 5 + selectColumn()));
                 } else {
                     notify(new UseToolFirmPastryBrush("DRAFTPOOL", value, draftpoolIndex, null));
                 }
@@ -128,8 +129,8 @@ public class CLIView extends View implements Runnable {
                 value = inputReader.readInt(1, 6, true);
                 System.out.println("What do you want to do?\n1) Place die\n2) Put die back in draftpool");
                 int choice = inputReader.readInt(1, 2, true);
-                if(choice == 1){
-                    notify(new UseToolFirmPastryThinner("MOVE", value, draftpoolIndex, selectRow()*5+selectColumn()));
+                if (choice == 1) {
+                    notify(new UseToolFirmPastryThinner("MOVE", value, draftpoolIndex, selectRow() * 5 + selectColumn()));
                 } else {
                     notify(new UseToolFirmPastryThinner("DRAFTPOOL", value, draftpoolIndex, null));
                 }
@@ -203,13 +204,13 @@ public class CLIView extends View implements Runnable {
                     System.out.println("Move exactly two dice respecting placement restrictions");
                 }
                 System.out.println("FIRST DIE:");
-                int oldPos1 = (selectRow() * 5+ selectColumn());
+                int oldPos1 = (selectRow() * 5 + selectColumn());
                 System.out.println("NEW DIE COORDINATES:");
-                int newPos1 = (selectRow() * 5+ selectColumn());
+                int newPos1 = (selectRow() * 5 + selectColumn());
                 System.out.println("SECOND DIE:");
-                int oldPos2 = (selectRow() * 5+ selectColumn());
+                int oldPos2 = (selectRow() * 5 + selectColumn());
                 System.out.println("NEW DIE COORDINATES:");
-                int newPos2 = (selectRow() * 5+ selectColumn());
+                int newPos2 = (selectRow() * 5 + selectColumn());
                 notify(new UseToolTwoDicePlacement(cardName, oldPos1, newPos1, oldPos2, newPos2));
             } catch (TimeUpException e) {
                 //At the end of the method the lock is released
@@ -228,7 +229,7 @@ public class CLIView extends View implements Runnable {
                 int draftpoolPosition = selectFromDraftPool();
                 int row = selectRow();
                 int column = selectColumn();
-                notify(new UseToolCorkLine(draftpoolPosition, row * 5+ column));
+                notify(new UseToolCorkLine(draftpoolPosition, row * 5 + column));
             } catch (TimeUpException e) {
                 //At the end of the method the lock is released
             } finally {
@@ -246,7 +247,7 @@ public class CLIView extends View implements Runnable {
                 int draftpoolPosition = selectFromDraftPool();
                 int row = selectRow();
                 int column = selectColumn();
-                notify(new UseToolWheelsPincher(draftpoolPosition, row * 5+ column));
+                notify(new UseToolWheelsPincher(draftpoolPosition, row * 5 + column));
             } catch (TimeUpException e) {
                 //At the end of the method the lock is released
             } finally {
@@ -480,24 +481,48 @@ public class CLIView extends View implements Runnable {
 
     @Override
     public void askAnotherAction() {
-
+        System.out.println("Do you want to perform another action?\n1 - Yes\n2 - No");
+        int choice = inputReader.readInt(1, 2);
+        notify(new ReplyAnotherAction(choice == 1));
     }
 
     @Override
     public void askIncreaseDecrease() {
-
+        System.out.println("Do you want to increase or decrease the value of this die?\n1 - Increase\n2 - Decrease");
+        int choice = inputReader.readInt(1, 2);
+        notify(new ReplyIncreaseDecrease(choice == 1));
     }
 
     @Override
     public void askDieValue() {
-
+        System.out.println("What value do you choose for this die?");
+        int choice = inputReader.readInt(1, 6);
+        notify(new ReplyDieValue(choice));
     }
+
     @Override
     public void askPlaceDie() {
-
+        System.out.println("Where do you want to place this die?");
+        int row = selectRow();
+        int column = selectColumn();
+        notify(new ReplyPlaceDie(row * 5 + column));
     }
+
     @Override
     public void askPickDie(String from) {
-
+        System.out.println("Select the die you want to pick");
+        switch (from) {
+            case "WPC":
+                notify(new ReplyPickDie(selectRow() * 5 + selectColumn()));
+                break;
+            case "DP":
+                notify(new ReplyPickDie(selectFromDraftPool()));
+                break;
+            case "RT":
+                notify(new ReplyPickDie(selectFromRoundTrack()));
+                break;
+            default:
+                //TODO: In caso di source sbagliata?
+        }
     }
 }

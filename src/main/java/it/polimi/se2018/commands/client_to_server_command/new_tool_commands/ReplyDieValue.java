@@ -5,6 +5,10 @@ import it.polimi.se2018.utils.ControllerServerInterface;
 
 public class ReplyDieValue extends ClientToServerCommand {
 
+    public ReplyDieValue(Integer value) {
+        this.value = value;
+    }
+
     public Integer getValue() {
         return value;
     }
