@@ -2,14 +2,18 @@ package it.polimi.se2018.parser;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import it.polimi.se2018.model.ACTION_TYPE;
+import it.polimi.se2018.model.Action;
 import it.polimi.se2018.model.ToolCard;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ParserToolcard {
 
     private static final String TC_JSON = "tc.json";
+    private static final int MAX_NUMBER_OF_FIELDS_IN_ACTION = 3;
 
     private ParserSettings settings;
 
@@ -20,41 +24,23 @@ public class ParserToolcard {
 
         ArrayList<ToolCard> toolCards = new ArrayList<>();
 
-        for (int i = 0; i < cards.size(); i++){
-            JsonObject jcard =  cards.get(i).getAsJsonObject();
+        for (int i = 0; i < cards.size(); i++) {
+            JsonObject jcard = cards.get(i).getAsJsonObject();
             String name = jcard.get("name").getAsString();
             String description = jcard.get("description").getAsString();
-            toolCards.add(new ToolCard(name, description));
+            JsonArray jActions = jcard.get("actions").getAsJsonArray();
+            List<Action> actions = new ArrayList<>();
+            for (int j = 0; j < jActions.size(); j++) {
+                JsonArray jParameters = jActions.get(j).getAsJsonArray();
+                String[] parameters = new String[MAX_NUMBER_OF_FIELDS_IN_ACTION];
+                for (int k = 0; k < jParameters.size(); k++) {
+                    parameters[k] = jParameters.get(k).getAsString();
+                }
+                //  !!!  Notice that this could throw an IlligalArgumentException if the json does not mactch the enum
+                actions.add(new Action(ACTION_TYPE.valueOf(parameters[0]), parameters[1], parameters[2]));
+            }
+            toolCards.add(new ToolCard(name, description, actions));
         }
         return toolCards;
     }
-
-    /* //TODO RIAGGIUNGI AL JSON
-    MOMENTANEO REMOVE DELLE TOOLCARD:
-
-    {
-      "name": "Circular Cutter",
-      "description": "After drafting, swap the drafted die with a die from the Round Track."
-    },
-    {
-      "name": "Gavel",
-      "description": "Re-roll all dice in the Draft Pool. This may only be used on your second turn before drafting."
-    },
-    {
-      "name": "Wheels Pincher",
-      "description": "After your first turn, immediately draft a die. Skip your next turn this round."
-    },
-    {
-      "name": "Cork Line",
-      "description": "After drafting, place the die in a spot that is not adjacent to another die. You must obey all other placement restrictions."
-    },
-    {
-      "name": "Diamond Swab",
-      "description": "After drafting, flip the die to its opposite side. 6 flips to 1, 5 to 2, 4 to 3, etc."
-    },
-    {
-      "name": "Firm Pastry Thinner",
-      "description": "After drafting, return the die to the Dice Bag and pull 1 die from the bag. Choose a value and place the nwe die, obeying all placement restrictions, or return it to the Draft Pool."
-    },
-     */
 }

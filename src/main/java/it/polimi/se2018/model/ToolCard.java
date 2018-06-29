@@ -1,5 +1,7 @@
 package it.polimi.se2018.model;
 
+import java.util.List;
+
 /**
  * Describes ToolCards and their behavior.
  * @author Daniele Montesi
@@ -8,10 +10,12 @@ public class ToolCard {
     private String name;
     private String description;
     private int tokenCount;
+    private List<Action> actions;
 
-    public ToolCard(String name, String description) {
+    public ToolCard(String name, String description, List<Action> actions) {
         this.name = name;
         this.description = description;
+        this.actions = actions;
     }
 
     public int getTokenCount(){
@@ -28,5 +32,9 @@ public class ToolCard {
 
     public String getDescription() {
         return description;
+    }
+
+    public List<Action> getActions() {
+        return actions;
     }
 }

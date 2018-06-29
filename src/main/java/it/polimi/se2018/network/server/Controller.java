@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Controller implements Observer, ControllerServerInterface { //Observer perchè osserva la View tramite le classi di mezzo (ClientConnection)
+public class Controller implements Observer, ControllerServerInterface {
 
 
     private static final String WRONG_INDEX = "The cell you selected is wrong or our of index, try again!";
@@ -25,6 +25,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private static final String EMPTY_DRAFTPOOL_INDEX = "The draftpool die you selected doesn't exits! Try again";
 
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
+    public static final String NOT_YOUR_TURN = "It's not your turn, you cannot do actions";
 
     private Model model;
     private HashMap<String, Player> usernamePlayerMap;
@@ -469,7 +470,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public synchronized void applyCommand(String playerUsername, MoveChoiceToolCard command) {
         if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
         Player current = usernamePlayerMap.get(playerUsername);
@@ -527,7 +528,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, MoveChoiceDicePlacement command) {
         if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
         LOGGER.log(Level.INFO, "Entra in moveChoice");
@@ -557,7 +558,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
         if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
         if (extractedDieForFirmPastryThinner != null) { //Case in which a timeout forced the player turn skip -> the die hasn't to be lost
@@ -580,7 +581,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UseToolCorkLine command) {
         if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
         Die temp;
@@ -604,7 +605,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UseToolTwoDicePlacement command) {
         if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
         if (command.getCardName().equals("Manual Cutter")) {
@@ -672,7 +673,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UndoActionCommand command) {
         if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
@@ -684,7 +685,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UseToolMoveDieNoRestriction command) {
         if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
         Player current = usernamePlayerMap.get(playerUsername);
@@ -723,7 +724,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UseToolFirmPastryBrush command) {
         if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
         Die dpDie;
@@ -760,7 +761,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UseToolFirmPastryThinner command) {
         if (!isAllowed(playerUsername) || extractedDieForFirmPastryThinner == null) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
 
@@ -805,7 +806,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UseToolChangeDieValue command) {
         if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
         Die temp;
@@ -851,7 +852,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UseToolCircularCutter command) {
         if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
         Die tempFromDraftPool;
@@ -872,7 +873,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public void applyCommand(String playerUsername, UseToolWheelsPincher command) {
         if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
+            userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
 

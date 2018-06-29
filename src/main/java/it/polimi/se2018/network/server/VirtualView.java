@@ -268,7 +268,7 @@ public class VirtualView extends View {
             disconnected=true;
                 LOGGER.log(Level.INFO, "Disconnected-> No action");
         } else {
-                LOGGER.log(Level.INFO, "SENDING INVALID ACTION");
+                LOGGER.log(Level.INFO, "SENDING INVALID ACTION_TYPE");
             //Di qualsiasi tipo:
             // sia per il tool (seguita da una richiesta di uso del tool, di nuovo)
             // sia per il piazzamento di un dado scorretto
