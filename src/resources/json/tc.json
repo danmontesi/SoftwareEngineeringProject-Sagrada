@@ -18,7 +18,7 @@
     {
       "name": "Lathekin",
       "description": "Move exactly two dice, obeying all placement restrictions.",
-      "acrions": [["ASK_PICK_DIE", "WPC"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC"], ["ASK_PICK_DIE", "WPC"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC"]]
+      "actions": [["ASK_PICK_DIE", "WPC"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC"], ["ASK_PICK_DIE", "WPC"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC"]]
     },
     {
       "name": "Circular Cutter",
@@ -53,7 +53,7 @@
     {
       "name": "Firm Pastry Thinner",
       "description": "After drafting, return the die to the Dice Bag and pull 1 die from the bag. Choose a value and place the nwe die, obeying all placement restrictions, or return it to the Draft Pool.",
-      "actions": [["ASK_PICK_DIE", "DP"], ["DO_SWAP", "DP", "DB"], ["CHECK_POSSIBLE_PLACEMENT"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "DP"]]
+      "actions": [["ASK_PICK_DIE", "DP"], ["DO_SWAP", "DP", "DB"], ["ASK_DIE_VALUE"], ["DO_SET_VALUE"], ["CHECK_POSSIBLE_PLACEMENT"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "DP"]]
     },
     {
       "name": "Manual Cutter",
