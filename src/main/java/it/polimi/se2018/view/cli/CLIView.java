@@ -482,10 +482,12 @@ public class CLIView extends View implements Runnable {
     public void askAnotherOne() {
 
     }
+
     @Override
     public void askDecideIncreaseDecrease() {
 
     }
+
     @Override
     public void askDecideValue() {
 

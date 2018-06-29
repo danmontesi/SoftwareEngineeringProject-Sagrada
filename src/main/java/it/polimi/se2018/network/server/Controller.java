@@ -59,6 +59,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private final Object mutex = new Object();
 
+
     /**
      * ArrayList that contains the ordered players that has to play
      * is created by the model in its constructor
@@ -623,16 +624,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     public void applyCommand(String playerUsername, ClientToServerCommand command) {
         LOGGER.log(Level.INFO, "You shouldn't be here");
     }
-
-
-
-
-
-
-
-
-
-
 
 
     /**
