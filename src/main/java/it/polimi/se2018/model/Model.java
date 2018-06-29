@@ -381,6 +381,26 @@ public class Model extends Observable implements Serializable { //Observable of 
         notifyRefreshRoundTrack();
     }
 
+    public void flipDraftPoolDie(int index) throws EmptyCellException {
+        draftPool.getDie(index).flip();
+        notifyRefreshDraftPool();
+    }
+
+    public void rollDraftpoolDie(int index) throws EmptyCellException {
+        draftPool.getDie(index).roll();
+        notifyRefreshDraftPool();
+    }
+
+    public void increaseDraftpoolDieValue(int index, boolean increase) throws EmptyCellException {
+        if (increase)
+            draftPool.getDie(index).increaseByOne();
+        else
+            draftPool.getDie(index).decreaseByOne();
+
+        notifyRefreshDraftPool();
+    }
+
+
     public Die getLastDie() throws EmptyCellException {
         Die toReturn;
         toReturn = draftPool.getLastDie();
