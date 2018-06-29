@@ -1,6 +1,7 @@
 package it.polimi.se2018.utils;
 
 import it.polimi.se2018.commands.server_to_client_command.*;
+import it.polimi.se2018.commands.server_to_client_command.new_tool_commands.*;
 
 /**
  * The interface that let the view to don't necessarely have the Controller class in its module
@@ -127,4 +128,14 @@ public interface ControllerClientInterface{
     void applyCommand(StartGameCommand startGameCommand);
 
     void applyCommand(EndGameCommand endGameCommand);
+
+    void applyCommand(AskToolDecideIncreaseDecrease askToolDecideIncreaseDecrease);
+
+    void applyCommand(AskToolDecideAnotherOne askToolDecideAnotherOne);
+
+    void applyCommand(AskToolDecideValue askToolDecideValue);
+
+    void applyCommand(AskToolPlaceDie askToolPlaceDie);
+
+    void applyCommand(AskToolSelectDie askToolSelectDie);
 }

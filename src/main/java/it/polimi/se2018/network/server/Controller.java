@@ -1,6 +1,7 @@
 package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.CONSTANTS;
+import it.polimi.se2018.commands.client_to_server_command.new_tool_commands.*;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.ControllerServerInterface;
@@ -58,6 +59,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private final Object mutex = new Object();
 
+
     /**
      * ArrayList that contains the ordered players that has to play
      * is created by the model in its constructor
@@ -73,9 +75,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private boolean hasPerformedMove;
     private int timerCostant;
 
-    //TODO:
-    //TODO OGNI MODIFICA DEI GIOCATORI orderedPlayers, DEVO RIASSEGNARLI AL MODEL
-    //TODO: Costanti per i messaggi da inviare agli utenti
+    //List of Actions
 
     public Controller(List<String> usernameList) {
         usernamePlayerMap = new HashMap<>();
@@ -427,7 +427,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                             LOGGER.log(Level.INFO, "Sending timeout");
                             userViewMap.get(currentPlayer).timeOut();
                             startNewTurn();
-
                         }
                     },
                     timerCostant
@@ -525,6 +524,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
 
+    private void startUsingTool(int toolNum){
+        model.getExtractedToolCard().get(toolNum);
+    }
+
     @Override
     public void applyCommand(String playerUsername, MoveChoiceDicePlacement command) {
         if (!isAllowed(playerUsername)) {
@@ -551,6 +554,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
     }
 
+
     @Override
     public void applyCommand(String playerUsername, MoveChoicePassTurn command) {
         if (!orderedPlayers.contains(usernamePlayerMap.get(playerUsername))) {
@@ -570,328 +574,35 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         startNewTurn();
     }
 
-    //Those methods represents the view that uses correctly a tool.
-    // The server has to validate the move and edit the model, if the move is correct
-    // else, has to call a new Request of re-use of that tool, re-sending a event of AllowedUseToolCommand(usedToolNumber)
-
-    /**
-     * Applies commands coming from the view, answering with correct/incorrect command responses
-     */
-    //MOSSA SENZA RESTRIZIONE POSIZIONE E DEVONO ESSERE NON ADIACENTI
     @Override
-    public void applyCommand(String playerUsername, UseToolCorkLine command) {
-        if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
-            return;
-        }
-        Die temp;
-        try {
-            temp = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
-        } catch (EmptyCellException e) {
-            handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_INDEX);
-            return;
-        }
-        Player current = usernamePlayerMap.get(currentPlayer);
-        if (!current.getWindowPatternCard().placeDie(temp, command.getSchemaPosition(), true, true, false)) {
-            handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_PLACEMENT);
-            return;
-        }
-        handlePlayerAfterCorrectToolUse(playerUsername, requiredTokensForLastToolUse, hasPerformedMove);
+    public void applyCommand(String playerUsername, UseToolPlaceDie command) {
+
     }
 
-    /**
-     * Applies commands coming from the view, answering with correct/incorrect command responses
-     */
     @Override
-    public void applyCommand(String playerUsername, UseToolTwoDicePlacement command) {
-        if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
-            return;
-        }
-        if (command.getCardName().equals("Manual Cutter")) {
-            Player current = usernamePlayerMap.get(playerUsername);
-            if (!current.getWindowPatternCard().getCell(command.getSchemaOldPosition1()).hasDie() || !current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).hasDie()) {
-                handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_INDEX);
-                return;
-            }
-            Die die1;
-            Die die2;
-            try {
-                die1 = current.getWindowPatternCard().getCell(command.getSchemaOldPosition1()).getAssociatedDie();
-                die2 = current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).getAssociatedDie();
-            } catch (EmptyCellException e) {
-                handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_INDEX);
-                return;
-            }
-            if (die1.getColor() == die2.getColor()) {
-                handlePlayerAfterIncorrectToolUse(playerUsername, "Your dice have to be of the same colour");
-                return;
-            } else try {
-                if (!model.getRoundTrack().isPresent(die1.getColor())) {
-                    handlePlayerAfterIncorrectToolUse(playerUsername, "RoundTrack have to contain at least a die with the chosen color of your dice. Try later");
-                    return;
-                }
-            } catch (EmptyCellException e) {
-                handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_INDEX);
-                return;
-            }
+    public void applyCommand(String playerUsername, UseToolDecideValue command) {
 
-            if (command.getSchemaOldPosition2()==null) { //The player decided to move just one die
-                try {
-                    if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().switchDie(command.getSchemaOldPosition1(),
-                            command.getSchemaNewPosition1(), true, true, true)) {
-                        handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_PLACEMENT);
-                        return;
-                    }
-                } catch (EmptyCellException e) {
-                    handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_INDEX);
-                    return;
-                }
-                handlePlayerAfterCorrectToolUse(playerUsername, requiredTokensForLastToolUse, hasPerformedMove);
-            }
-        }
-        Player current = usernamePlayerMap.get(playerUsername);
-        if (!current.getWindowPatternCard().getCell(command.getSchemaOldPosition1()).hasDie() || !current.getWindowPatternCard().getCell(command.getSchemaOldPosition2()).hasDie()) {
-            handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_INDEX);
-            return;
-        }
-
-        try {
-            if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().move2Dice(command.getSchemaOldPosition1(),
-                    command.getSchemaNewPosition1(), command.getSchemaOldPosition2(), command.getSchemaNewPosition2(), true, true, true)) {
-                handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_PLACEMENT);
-                return;
-            }
-        } catch (EmptyCellException e) {
-            handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_INDEX);
-            return;
-        }
-
-        handlePlayerAfterCorrectToolUse(playerUsername, requiredTokensForLastToolUse, hasPerformedMove);
     }
+
+    @Override
+    public void applyCommand(String playerUsername, UseToolDecideAnotherOne command) {
+
+    }
+
+    @Override
+    public void applyCommand(String playerUsername, UseToolSelectDie command) {
+
+    }
+
+    @Override
+    public void applyCommand(String playerUsername, UseToolDecideIncreaseDecrease command) {
+
+    }
+
 
     @Override
     public void applyCommand(String playerUsername, UndoActionCommand command) {
-        if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
-            return;
-        }
-        userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
-    }
 
-    /**
-     * Applies commands coming from the view, answering with correct/incorrect command responses
-     */
-    @Override
-    public void applyCommand(String playerUsername, UseToolMoveDieNoRestriction command) {
-        if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
-            return;
-        }
-        Player current = usernamePlayerMap.get(playerUsername);
-        if (!current.getWindowPatternCard().getCell(command.getSchemaOldPosition()).hasDie()) {
-            handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_INDEX);
-            return;
-        }
-        try {
-            if (command.getCardName().equalsIgnoreCase("Eglomise Brush")) {
-                if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().switchDie(command.getSchemaOldPosition(),
-                        command.getSchemaNewPosition(), false, true, true)) {
-                    handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_PLACEMENT);
-                    return;
-                }
-            } else if (command.getCardName().equalsIgnoreCase("Copper Foil Reamer")) {
-                if (usernamePlayerMap.get(playerUsername).getWindowPatternCard().switchDie(command.getSchemaOldPosition(),
-                        command.getSchemaNewPosition(), true, false, true)) {
-                } else {
-                    handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_PLACEMENT);
-                    return;
-                }
-            }
-        } catch (EmptyCellException e) {
-            userViewMap.get(playerUsername).invalidActionMessage("Invalid index, try again");
-            userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
-            return;
-        }
-
-        handlePlayerAfterCorrectToolUse(playerUsername, requiredTokensForLastToolUse, hasPerformedMove);
-    }
-
-    /**
-     * Applies commands coming from the view, answering with correct/incorrect command responses
-     * BRUSH: decide the new value
-     */
-    @Override
-    public void applyCommand(String playerUsername, UseToolFirmPastryBrush command) {
-        if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
-            return;
-        }
-        Die dpDie;
-        try {
-            dpDie = model.getDraftPool().getDie(command.getDieDraftpoolPosition());
-        } catch (EmptyCellException e) {
-            handlePlayerAfterIncorrectToolUse(playerUsername, EMPTY_DRAFTPOOL_INDEX);
-            return;
-        }
-        dpDie.setValue(command.getDieValue());
-        String[] words = command.getMessage().split(" ");
-        if (words[0].equals("MOVE")) {
-            if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().placeDie(dpDie
-                    , command.getDieSchemaPosition(), true, true, true)) {
-                userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! Retry");
-                userViewMap.get(currentPlayer).firmPastryBrushMenu(randomValueForFirmPastryBrush);
-                return;
-            } else {
-                model.removeDieFromDraftPool(command.getDieDraftpoolPosition());
-                hasPerformedMove = true;
-            }
-        } else {
-            model.changeDieValueOnDraftPool(command.getDieDraftpoolPosition(), command.getDieValue());
-        }
-
-        randomValueForFirmPastryBrush = null;
-        handlePlayerAfterCorrectToolUse(playerUsername, requiredTokensForLastToolUse, hasPerformedMove);
-    }
-
-    /**
-     * Applies commands coming from the view, answering with correct/incorrect command responses
-     * THINNER: die from DiceBag
-     */
-    @Override
-    public void applyCommand(String playerUsername, UseToolFirmPastryThinner command) {
-        if (!isAllowed(playerUsername) || extractedDieForFirmPastryThinner == null) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
-            return;
-        }
-
-        Die oldFromDraft;
-        try {
-            oldFromDraft = model.getDraftPool().getDie(command.getDieOldPosition());
-        } catch (EmptyCellException e) {
-            handlePlayerAfterIncorrectToolUse(playerUsername, EMPTY_DRAFTPOOL_INDEX);
-            return;
-        }
-
-        extractedDieForFirmPastryThinner.setValue(command.getDieNewValue());
-        String[] words = command.getMessage().split(" ");
-        if (words[0].equals("MOVE")) {
-            if (usernamePlayerMap.get(playerUsername).getWindowPatternCard()
-                    .placeDie(extractedDieForFirmPastryThinner,
-                            command.getDiePosition(), true, true, true)) {
-                usernamePlayerMap.get(currentPlayer).decreaseTokens(requiredTokensForLastToolUse);
-                model.increaseToolCardTokens(lastUsedToolCardNum, requiredTokensForLastToolUse);
-                hasUsedTool = true;
-                hasPerformedMove = true;
-                userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
-                extractedDieForFirmPastryThinner = null;
-                model.removeDieFromDraftPool(command.getDieOldPosition());
-                model.insertDieInDiceBag(oldFromDraft);
-                return;
-            } else {
-                userViewMap.get(playerUsername).invalidActionMessage("You can't place the die here! retry:");
-                userViewMap.get(currentPlayer).firmPastryThinnerMenu(extractedDieForFirmPastryThinner.getColor().toString(), extractedDieForFirmPastryThinner.getValue());
-                return;
-            }
-        }
-        model.setDieOnDraftPool(extractedDieForFirmPastryThinner, command.getDieOldPosition());
-        extractedDieForFirmPastryThinner = null;
-
-        handlePlayerAfterCorrectToolUse(playerUsername, requiredTokensForLastToolUse, hasPerformedMove);
-    }
-
-    /**
-     * Applies commands coming from the view, answering with correct/incorrect command responses
-     */
-    @Override
-    public void applyCommand(String playerUsername, UseToolChangeDieValue command) {
-        if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
-            return;
-        }
-        Die temp;
-        try {
-            temp = model.getDraftPool().getDie(command.getDraftPoolPosition());
-        } catch (EmptyCellException e) {
-            handlePlayerAfterIncorrectToolUse(playerUsername, EMPTY_DRAFTPOOL_INDEX);
-            return;
-        }
-        if (command.getCardName().equals("Roughing Forceps")) {
-            if (command.isIncrease()) {
-                try {
-                    if ((usernamePlayerMap.get(playerUsername).getWindowPatternCard()
-                            .getCell(command.getDraftPoolPosition()).getAssociatedDie().getValue() >= 6)) {
-                        handlePlayerAfterIncorrectToolUse(playerUsername, "The die you selected has value 6, can't be increased. Retry");
-                        return;
-                    }
-                } catch (EmptyCellException e) {
-                    handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_INDEX);
-                    return;
-                }
-                model.changeDieValueOnDraftPool(command.getDraftPoolPosition(), temp.getValue() + 1);
-            } else {
-                try {
-                    if (usernamePlayerMap.get(playerUsername).getWindowPatternCard()
-                            .getCell(command.getDraftPoolPosition()).getAssociatedDie().getValue() == 1) {
-                        handlePlayerAfterIncorrectToolUse(playerUsername, "The die has value 1, can't be decreased, retry");
-                        return;
-                    }
-                } catch (EmptyCellException e) {
-                    handlePlayerAfterIncorrectToolUse(playerUsername, EMPTY_INDEX);
-                    return;
-                }
-                model.changeDieValueOnDraftPool(command.getDraftPoolPosition(), temp.getValue() - 1);
-            }
-        } else {
-            temp.flip();
-            model.changeDieValueOnDraftPool(command.getDraftPoolPosition(), temp.getValue());
-        }
-        handlePlayerAfterCorrectToolUse(playerUsername, requiredTokensForLastToolUse, hasPerformedMove);
-    }
-
-    @Override
-    public void applyCommand(String playerUsername, UseToolCircularCutter command) {
-        if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
-            return;
-        }
-        Die tempFromDraftPool;
-        Die tempFromRoundTrack;
-        try {
-            tempFromDraftPool = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
-            tempFromRoundTrack = model.getRoundTrack().getDie(command.getDieRoundTrackPosition());
-        } catch (EmptyCellException e) {
-            handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_INDEX);
-            return;
-        }
-        model.swapDieOnRoundTrack(tempFromDraftPool, command.getDieRoundTrackPosition());
-        model.setDieOnDraftPool(tempFromRoundTrack, command.getDieDraftPoolPosition());
-        handlePlayerAfterCorrectToolUse(playerUsername, requiredTokensForLastToolUse, hasPerformedMove);
-    }
-
-
-    @Override
-    public void applyCommand(String playerUsername, UseToolWheelsPincher command) {
-        if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
-            return;
-        }
-
-        Die toPlace;
-        try {
-            toPlace = model.getDraftPool().getDie(command.getDieDraftPoolPosition());
-        } catch (EmptyCellException e) {
-            handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_INDEX);
-            return;
-        }
-
-        if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().placeDie(toPlace,
-                command.getDieSchemaPosition(),true, true, true)) {
-            handlePlayerAfterIncorrectToolUse(playerUsername, WRONG_PLACEMENT);
-            return;
-        }
-        model.removeDieFromDraftPool(command.getDieDraftPoolPosition());
-        handlePlayerAfterCorrectToolUse(currentPlayer, requiredTokensForLastToolUse, true);
     }
 
     private void handlePlayerAfterCorrectToolUse(String playerUsername, int tokenToDecrease, boolean hasPerformedMove){
@@ -956,7 +667,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     Map<String, View> getUserViewMap() {
         return userViewMap;
     }
-
 
 
     @Override

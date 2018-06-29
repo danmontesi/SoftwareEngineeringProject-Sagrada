@@ -28,6 +28,7 @@ public class RMIClient implements Remote, ServerConnection{
     }
 
     private ClientController clientController;
+
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
     public RMIClient(int viewChoice, String ipAddress){
