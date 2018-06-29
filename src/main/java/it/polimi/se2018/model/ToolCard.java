@@ -18,6 +18,12 @@ public class ToolCard {
         this.actions = actions;
     }
 
+    //lo tengo solo perchè per ora per far compilare GameMatchTest
+    public ToolCard(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public int getTokenCount(){
         return tokenCount;
     }
