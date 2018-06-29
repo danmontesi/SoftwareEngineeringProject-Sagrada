@@ -28,6 +28,7 @@ public class ParserToolcard {
             JsonObject jcard = cards.get(i).getAsJsonObject();
             String name = jcard.get("name").getAsString();
             String description = jcard.get("description").getAsString();
+            boolean reversible = jcard.get("reversible").getAsBoolean();
             JsonArray jActions = jcard.get("actions").getAsJsonArray();
             List<Action> actions = new ArrayList<>();
             for (int j = 0; j < jActions.size(); j++) {
@@ -39,7 +40,7 @@ public class ParserToolcard {
                 //  !!!  Notice that this could throw an IlligalArgumentException if the json does not mactch the enum
                 actions.add(new Action(ACTION_TYPE.valueOf(parameters[0]), parameters[1], parameters[2]));
             }
-            toolCards.add(new ToolCard(name, description, actions));
+            toolCards.add(new ToolCard(name, description, actions, reversible));
         }
         return toolCards;
     }
