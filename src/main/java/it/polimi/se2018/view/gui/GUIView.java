@@ -42,7 +42,7 @@ public class GUIView extends View {
         if(GameBoardNotifier.getInstance().isOpen()){
             gameBoardNotifier.updateGui(new TimeUp());
         } else {
-            wpcChoiceNotifier.updateGui();
+            wpcChoiceNotifier.updateGui(); //TODO che succede?
         }
     }
 
@@ -125,6 +125,7 @@ public class GUIView extends View {
     public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
         while(!GameBoardNotifier.getInstance().isOpen()){
             try {
+                System.out.println("update Draft: not open, waiting");
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -137,11 +138,13 @@ public class GUIView extends View {
     public void updateBoard(RefreshBoardCommand refreshCommand) {
         while(!GameBoardNotifier.getInstance().isOpen()){
             try {
-                Thread.sleep(100);
+                System.out.println("Not open: waiting");
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
+        System.out.println("Opening");
         gameBoardNotifier.updateGui(new GUIViewSetting(this));
         gameBoardNotifier.updateGui(new RefreshBoard(refreshCommand));
     }

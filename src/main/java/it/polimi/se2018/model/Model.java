@@ -371,7 +371,7 @@ public class Model extends Observable implements Serializable { //Observable of 
                 }
             }
             //TODO con 15 costruttori
-            observer.update(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
+            ((View) observer).updateBoard(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
                     draftpool, roundTrackString, personalWpc, myTokens, username, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
         }
     }

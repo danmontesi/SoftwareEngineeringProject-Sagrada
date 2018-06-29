@@ -393,6 +393,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                             if (toolcardData!=null)
                                 handlePlayerAfterIncorrectToolUse(currentPlayer, "You haven't finished to use the tool, the changes are restored", false);
                             //TODO se l'utente sta usando un tool, resetto il model
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             startNewTurn();
                         }
                     },
@@ -434,6 +439,14 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                         public void run() {
                             LOGGER.log(Level.INFO, "Sending timeout");
                             userViewMap.get(currentPlayer).timeOut();
+                            if (toolcardData!=null)
+                                handlePlayerAfterIncorrectToolUse(currentPlayer, "You haven't finished to use the tool, the changes are restored", false);
+                            //TODO se l'utente sta usando un tool, resetto il model
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             startNewTurn();
                         }
                     },
@@ -829,15 +842,16 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     private void handlePlayerAfterIncorrectToolUse(String playerUsername, String messageToSend, boolean sendContinue) {
-        if (toolcardData.getToolcardName().equals("Firm Pastry Brush") || toolcardData.getToolcardName().equals("Firm Pastry Thinner")){
-            if (!toolcardData.getToolcardActions().get(0).getType().equals(ASK_PICK_DIE)){
-                restoreTCGlobalVariables();
-                this.hasUsedTool = true;
-                if (sendContinue)
-                    userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, true);
-                return;
+        if (toolcardData != null)
+            if (toolcardData.getToolcardName().equals("Firm Pastry Brush") || toolcardData.getToolcardName().equals("Firm Pastry Thinner")){
+                if (!toolcardData.getToolcardActions().get(0).getType().equals(ASK_PICK_DIE)){
+                    restoreTCGlobalVariables();
+                    this.hasUsedTool = true;
+                    if (sendContinue)
+                        userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, true);
+                    return;
+                }
             }
-        }
 
         LOGGER.log(Level.INFO, messageToSend);
         restoreTCGlobalVariables();
