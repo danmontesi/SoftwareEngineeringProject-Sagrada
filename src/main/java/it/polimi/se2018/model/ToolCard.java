@@ -10,7 +10,7 @@ public class ToolCard {
     private String name;
     private String description;
     private int tokenCount;
-    private List<Action> actions;
+    private final List<Action> actions;
 
     public ToolCard(String name, String description, List<Action> actions) {
         this.name = name;
@@ -18,11 +18,6 @@ public class ToolCard {
         this.actions = actions;
     }
 
-    //lo tengo solo perchè per ora per far compilare GameMatchTest
-    public ToolCard(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
 
     public int getTokenCount(){
         return tokenCount;

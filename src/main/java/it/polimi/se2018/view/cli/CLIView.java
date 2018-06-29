@@ -479,17 +479,17 @@ public class CLIView extends View implements Runnable {
     }
 
     @Override
-    public void askAnotherOne() {
+    public void askAnotherAction() {
 
     }
 
     @Override
-    public void askDecideIncreaseDecrease() {
+    public void askIncreaseDecrease() {
 
     }
 
     @Override
-    public void askDecideValue() {
+    public void askDieValue() {
 
     }
     @Override
@@ -497,7 +497,7 @@ public class CLIView extends View implements Runnable {
 
     }
     @Override
-    public void askSelectDie(String from) {
+    public void askPickDie(String from) {
 
     }
 }

@@ -2,7 +2,6 @@ package it.polimi.se2018.utils;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.client_to_server_command.new_tool_commands.*;
-import it.polimi.se2018.exceptions.EmptyCellException;
 
 public interface ControllerServerInterface {
 
@@ -32,15 +31,15 @@ public interface ControllerServerInterface {
     // The server has to validate the move and edit the model, if the move is correct
     // else, has to call a new Request of re-use of that tool, re-sending a event of AllowedUseToolCommand(usedToolNumber)
 
-    void applyCommand(String playerUsername, UseToolPlaceDie command);
+    void applyCommand(String playerUsername, ReplyPlaceDie command);
 
-    void applyCommand(String playerUsername, UseToolDecideValue command);
+    void applyCommand(String playerUsername, ReplyDieValue command);
 
-    void applyCommand(String playerUsername, UseToolDecideAnotherOne command);
+    void applyCommand(String playerUsername, ReplyAnotherAction command);
 
-    void applyCommand(String playerUsername, UseToolSelectDie command);
+    void applyCommand(String playerUsername, ReplyPickDie command);
 
-    void applyCommand(String playerUsername, UseToolDecideIncreaseDecrease command);
+    void applyCommand(String playerUsername, ReplyIncreaseDecrease command);
 
     void applyCommand(String playerUsername, UndoActionCommand command);
 

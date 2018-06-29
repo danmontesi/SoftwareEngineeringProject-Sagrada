@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 public class GameMatchTest {
 
@@ -191,10 +190,7 @@ public class GameMatchTest {
         controller.getOrderedPlayers().get(2).setWindowPatternCard(card);
         controller.getModel().setDraftPool((ArrayList<Die>) fillWithColoredDice("rrrrrr",1));
 
-        controller.getModel().getExtractedToolCard().set(0, new ToolCard("Circular Cutter", ""));
-        controller.getModel().getExtractedToolCard().set(0, new ToolCard("Copper Foil Reamer", ""));
-        controller.getModel().getExtractedToolCard().set(0, new ToolCard("Cork Line", ""));
-    }
+         }
 
     private List<Cell> fillWithColoredCells(String colors, int valueToSet){
         ArrayList<Cell> cells = new ArrayList<>();

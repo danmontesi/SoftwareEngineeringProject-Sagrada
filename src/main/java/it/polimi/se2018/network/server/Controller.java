@@ -1,19 +1,18 @@
 package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.CONSTANTS;
+import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.client_to_server_command.new_tool_commands.*;
-import it.polimi.se2018.view.View;
+import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.model.*;
+import it.polimi.se2018.model.public_obj_cards.PublicObjectiveCard;
+import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.utils.ControllerServerInterface;
 import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.commands.client_to_server_command.*;
-import it.polimi.se2018.exceptions.EmptyCellException;
-import it.polimi.se2018.parser.ParserWindowPatternCard;
-import it.polimi.se2018.model.public_obj_cards.PublicObjectiveCard;
+import it.polimi.se2018.view.View;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,6 +32,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private ArrayList<Player> orderedPlayers;
     private ArrayList<Player> uninitializedOrderedPlayers;
     private HashMap<String, Timer> usernameTimerMap;
+    private ToolcardData toolcardData;
+
     private int requiredTokensForLastToolUse;
     private int lastUsedToolCardNum;
 
@@ -45,6 +46,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     public Timer getCheckBlockingTimer() { //just for testing
         return checkBlockingTimer;
+
     }
 
     public List<Player> getOrderedPlayers() {
@@ -468,63 +470,95 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     @Override
     public synchronized void applyCommand(String playerUsername, MoveChoiceToolCard command) {
+        Player current = usernamePlayerMap.get(playerUsername);
+
+        //check turno giusto del giocatore
         if (!isAllowed(playerUsername)) {
-            userViewMap.get(playerUsername).invalidActionMessage("It's not your turn, you cannot do actions");
+            handlePlayerAfterIncorrectToolUse(playerUsername, "It's not your turn, you cannot do actions");
             return;
         }
-        Player current = usernamePlayerMap.get(playerUsername);
+
+        //check abbastanza tokens
         Integer usedToolNumber = command.getNumberChosen(); //Referes to the toolcard used
         ToolCard chosen = model.getExtractedToolCard().get(usedToolNumber);
         int requiredTokens = 1;
         if (chosen.getTokenCount() > 0) {
             requiredTokens = 2;
         }
-        if (current.getTokens() > requiredTokens) {
-            lastUsedToolCardNum = usedToolNumber;
-            requiredTokensForLastToolUse = requiredTokens;
-            String toolName = chosen.getName();
-            if (toolName.equals("Copper Foil Reamer"))
-                userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
-            else if (toolName.equals("Cork Line"))
-                userViewMap.get(playerUsername).corkLineMenu();
-            else if (toolName.equals("Diamond Swab"))
-                userViewMap.get(playerUsername).changeDieValueMenu(chosen.getName());
-            else if (toolName.equals("Eglomise Brush"))
-                userViewMap.get(playerUsername).moveDieNoRestrictionMenu(chosen.getName());
-            else if (toolName.equals("Firm Pastry Brush")) {
-                randomValueForFirmPastryBrush = ThreadLocalRandom.current().nextInt(1, 7);
-                userViewMap.get(currentPlayer).firmPastryBrushMenu(randomValueForFirmPastryBrush);
-            } else if (toolName.equals("Firm Pastry Thinner")) {
-                extractedDieForFirmPastryThinner = model.extractDieFromDiceBag();
-                userViewMap.get(currentPlayer).firmPastryThinnerMenu(extractedDieForFirmPastryThinner.getColor().toString(), extractedDieForFirmPastryThinner.getValue());
-            } else if (toolName.equals("Gavel")) {
-                if (currentRoundOrderedPlayers.contains(playerUsername)) { //Can't use the tool, has to be in second turn
-                    handlePlayerAfterIncorrectToolUse(playerUsername, "You have to be in your second turn to use this turn. Use it later.");
-                } else {
-                    model.rollDraftpoolDice();
-                    handlePlayerAfterCorrectToolUse(playerUsername, requiredTokensForLastToolUse, false);
-                }
-            } else if (toolName.equals("Lathekin"))
-                userViewMap.get(playerUsername).twoDiceMoveMenu(chosen.getName());
-            else if (toolName.equals("Manual Cutter"))
-                userViewMap.get(playerUsername).twoDiceMoveMenu(chosen.getName());
-            else if (toolName.equals("Roughing Forceps"))
-                userViewMap.get(playerUsername).changeDieValueMenu(chosen.getName());
-            else if (toolName.equals("Wheels Pincher")) {
-                if (!currentRoundOrderedPlayers.contains(playerUsername)) { //Can't use the tool, has to be in first turn
-                    handlePlayerAfterIncorrectToolUse(playerUsername, "You have to be in your first turn to use this tool");
-                } else {
-                    userViewMap.get(playerUsername).wheelsPincherMenu();
-                }
-            } else
-                LOGGER.log(Level.INFO, "Error in toolNames");
-        } else { //Not enough tokens
-            handlePlayerAfterIncorrectToolUse(playerUsername, "You haven't enough tokens to use this tool! :(");
+        if (current.getTokens() < requiredTokens) {
+            handlePlayerAfterIncorrectToolUse(playerUsername, "You don't have enough tokens");
+            return;
         }
+
+        //check turno giusto per la toolcard
+        if (chosen.getName().equals("Gavel")) {
+            if (currentRoundOrderedPlayers.contains(playerUsername)) { //Can't use the tool, has to be in second turn
+                handlePlayerAfterIncorrectToolUse(playerUsername, "You have to be in your second turn to use this turn. Use it later.");
+            }
+        } else if (chosen.getName().equals("Wheels Pincher")) {
+            if (!currentRoundOrderedPlayers.contains(playerUsername)) { //Can't use the tool, has to be in first turn
+                handlePlayerAfterIncorrectToolUse(playerUsername, "You have to be in your first turn to use this tool");
+            }
+        }
+
+        //inizializza toolcardData
+        toolcardData = new ToolcardData(chosen.getName(), chosen.getActions());
+
+        //fai cose:
+        executeAction(toolcardData);
+
+        userViewMap.get(playerUsername).twoDiceMoveMenu(chosen.getName());
+
+
+    }
+
+    private void executeAction(ToolcardData toolcardData) {
+        Action action = toolcardData.getToolcardActions().get(0);
+        switch (action.getType()) {
+            case ASK_PICK_DIE:
+                userViewMap.get(currentPlayer).askPickDie(action.getParameter());
+                break;
+            case ASK_PLACE_DIE:
+                userViewMap.get(currentPlayer).askPlaceDie();
+                break;
+            case ASK_INCREASE_DECREASE:
+                userViewMap.get(currentPlayer).askIncreaseDecrease();
+                break;
+            case ASK_DIE_VALUE:
+                userViewMap.get(currentPlayer).askDieValue();
+                break;
+            case ASK_ANOTHER_ACTION:
+                userViewMap.get(currentPlayer).askAnotherAction();
+                break;
+            case DO_PLACE_DIE:
+                break;
+            case DO_INCREASE_DECREASE:
+                break;
+            case DO_SWAP:
+                break;
+            case DO_SHUFFLE:
+                break;
+            case DO_SHUFFLE_ALL:
+                break;
+            case DO_FLIP:
+                break;
+            case DO_SAVE_COLOR:
+                break;
+            case CHECK_EXISTS_COLOR_RT:
+                break;
+            case CHECK_SAME_COLOR:
+                break;
+            case CHECK_POSSIBLE_PLACEMENT:
+                break;
+            case CHECK_ANOTHER_ACTION:
+                break;
+
+        }
+
     }
 
 
-    private void startUsingTool(int toolNum){
+    private void startUsingTool(int toolNum) {
         model.getExtractedToolCard().get(toolNum);
     }
 
@@ -575,28 +609,39 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     @Override
-    public void applyCommand(String playerUsername, UseToolPlaceDie command) {
+    public void applyCommand(String playerUsername, ReplyPlaceDie command) {
+        toolcardData.setIndexToWPC(command.getPosition());
+    }
+
+    @Override
+    public void applyCommand(String playerUsername, ReplyDieValue command) {
+        toolcardData.setDieValue(command.getValue());
 
     }
 
     @Override
-    public void applyCommand(String playerUsername, UseToolDecideValue command) {
-
+    public void applyCommand(String playerUsername, ReplyAnotherAction command) {
+        toolcardData.setAnotherAction(command.isAnother());
     }
 
     @Override
-    public void applyCommand(String playerUsername, UseToolDecideAnotherOne command) {
-
+    public void applyCommand(String playerUsername, ReplyPickDie command) {
+        switch (toolcardData.getToolcardActions().get(0).getParameter()){
+            case "WPC":
+                toolcardData.setIndexFromWPC(command.getIndex());
+                break;
+            case "DP":
+                toolcardData.setIndexFromDraftpool(command.getIndex());
+                break;
+            case "RT":
+                toolcardData.setIndexFromRoundTrack(command.getIndex());
+                break;
+        }
     }
 
     @Override
-    public void applyCommand(String playerUsername, UseToolSelectDie command) {
-
-    }
-
-    @Override
-    public void applyCommand(String playerUsername, UseToolDecideIncreaseDecrease command) {
-
+    public void applyCommand(String playerUsername, ReplyIncreaseDecrease command) {
+        toolcardData.setIncreaseValue(command.isIncrease());
     }
 
 
@@ -605,7 +650,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     }
 
-    private void handlePlayerAfterCorrectToolUse(String playerUsername, int tokenToDecrease, boolean hasPerformedMove){
+    private void handlePlayerAfterCorrectToolUse(String playerUsername, int tokenToDecrease, boolean hasPerformedMove) {
         usernamePlayerMap.get(playerUsername).decreaseTokens(tokenToDecrease);
         model.increaseToolCardTokens(lastUsedToolCardNum, tokenToDecrease);
         this.hasUsedTool = true;
@@ -614,7 +659,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, true);
     }
 
-    private void handlePlayerAfterIncorrectToolUse(String playerUsername, String messageToSend){
+    private void handlePlayerAfterIncorrectToolUse(String playerUsername, String messageToSend) {
         LOGGER.log(Level.INFO, messageToSend);
         userViewMap.get(playerUsername).invalidActionMessage(messageToSend);
         userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);

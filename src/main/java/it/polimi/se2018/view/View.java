@@ -114,15 +114,15 @@ public class View extends Observable implements ObserverView { //VIEW: Osserva M
 
     }
 
-    public void askAnotherOne() {
+    public void askAnotherAction() {
 
     }
 
-    public void askDecideIncreaseDecrease() {
+    public void askIncreaseDecrease() {
 
     }
 
-    public void askDecideValue() {
+    public void askDieValue() {
 
     }
 
@@ -130,7 +130,7 @@ public class View extends Observable implements ObserverView { //VIEW: Osserva M
 
     }
 
-    public void askSelectDie(String from) {
+    public void askPickDie(String from) {
 
     }
 
