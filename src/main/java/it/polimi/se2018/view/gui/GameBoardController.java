@@ -176,7 +176,8 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     public void initialize() {
-        GameBoardNotifier.getInstance().addObserver(this);
+        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
+        gameBoardNotifier.addObserver(this);
         initCards();
         initLabels();
         initCircles();
@@ -184,8 +185,9 @@ public class GameBoardController extends Observable implements Observer {
         initRoundTrack();
         initParents();
         initChoiceBox();
-        disableAllButtons();
+        //disableAllButtons();
         msgBox.appendText("waiting for other players to choose their Window Pattern Card...\n");
+        gameBoardNotifier.setOpen();
     }
 
     private void initCards(){
@@ -257,11 +259,13 @@ public class GameBoardController extends Observable implements Observer {
             if (h==0) k++;
             ToggleButton tb = new ToggleButton();
             ImageView iv = new ImageView();
+            //TODO ctrl init buttons wpc
             iv.setFitWidth(43);
             iv.setFitHeight(43);
             tb.setGraphic(iv);
             personalWPCDice.add(tb, h, k);
         }
+        initBStyle();
     }
 
     private void initChoiceBox() {
@@ -278,16 +282,16 @@ public class GameBoardController extends Observable implements Observer {
     private void initBStyle() {
         for (Button b : buttons) {
             b.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
-            pass.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> pass.setEffect(shadow));
-            pass.addEventHandler(MouseEvent.MOUSE_EXITED, e -> pass.setEffect(null));
+            //b.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> b.setEffect(shadow));
+            //b.addEventHandler(MouseEvent.MOUSE_EXITED, e -> b.setEffect(null));
         }
 
         for (ToggleButton tb : tcButtons) {
             tb.setStyle("-fx-base: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent");
-            tb.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tb.setEffect(shadow));
-            tb.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
-                if (!tb.isSelected()) tb.setEffect(null);
-            });
+            //tb.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tb.setEffect(shadow));
+            //tb.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+            //    if (!tb.isSelected()) tb.setEffect(null);
+            //});
         }
 
         for (int j=0; j<parents.size(); j++) {
@@ -295,11 +299,11 @@ public class GameBoardController extends Observable implements Observer {
                 int h = i;
                 int k=j;
                 parents.get(j).getChildren().get(i).setStyle("-fx-base: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent");
-                parents.get(j).getChildren().get(i).addEventHandler(MouseEvent.MOUSE_ENTERED, e -> parents.get(k).getChildren().get(h).setEffect(shadow));
-                parents.get(j).getChildren().get(i).addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
-                    if (!((ToggleButton) parents.get(k).getChildren().get(h)).isSelected())
-                        parents.get(k).getChildren().get(h).setEffect(null);
-                });
+                //parents.get(j).getChildren().get(i).addEventHandler(MouseEvent.MOUSE_ENTERED, e -> parents.get(k).getChildren().get(h).setEffect(shadow));
+                //parents.get(j).getChildren().get(i).addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                //    if (!((ToggleButton) parents.get(k).getChildren().get(h)).isSelected())
+                //        parents.get(k).getChildren().get(h).setEffect(null);
+                //});
             }
         }
     }
@@ -330,26 +334,24 @@ public class GameBoardController extends Observable implements Observer {
                 }
 
                 @Override
-                public void visitGameBoardAction(RefreshBoard refreshBoard) {
+                public synchronized void visitGameBoardAction(RefreshBoard refreshBoard) {
                     modelRepresentation = refreshBoard.getModelRepresentation();
                     initPubOCards();
                     initTCards();
                     initWPCards();
                     initPersonalWPC();
                     initPersonalPriOC();
-                    setDrafPool(modelRepresentation.getDraftpool());
                     setRoundTrack(modelRepresentation.getRoundTrack());
-                    initBStyle();
+                    //initBStyle();
                     moveDice(personalWPCDice, draftPoolDice, "");
                 }
 
                 @Override
-                public void visitGameBoardAction(TurnStart turnStart) {
+                public synchronized void visitGameBoardAction(TurnStart turnStart) {
                     if (turnStart.getUsername() == null) {
                         disableTCB(false);
                         disableTB(draftPoolDice, false);
                         disableTB(personalWPCDice, false);
-                        System.out.println("update enable");
                         pass.setDisable(false);
                         moveDice(personalWPCDice, draftPoolDice, "");
                         msgBox.setText("It's your turn!\n");
@@ -360,7 +362,7 @@ public class GameBoardController extends Observable implements Observer {
                 }
 
                 @Override
-                public void visitGameBoardAction(TurnUpdate turnUpdate) {
+                public synchronized void visitGameBoardAction(TurnUpdate turnUpdate) {
                     if (turnUpdate.getMove()) {
                         disableTB(personalWPCDice, false);
                         disableTB(draftPoolDice, false);
@@ -373,24 +375,24 @@ public class GameBoardController extends Observable implements Observer {
                 }
 
                 @Override
-                public void visitGameBoardAction(InvalidAction invalidAction) {
+                public synchronized void visitGameBoardAction(InvalidAction invalidAction) {
                     msgBox.appendText(invalidAction.getMessage() + "\n");
                     inputError(true);
                 }
 
                 @Override
-                public void visitGameBoardAction(WPCUpdate wpcUpdate) {
+                public synchronized void visitGameBoardAction(WPCUpdate wpcUpdate) {
                     setWPCards(wpcUpdate.getOtherWpcs());
                     setPersonalWPC(wpcUpdate.getMyWpc());
                 }
 
                 @Override
-                public void visitGameBoardAction(TokensUpdate tokensUpdate) {
+                public synchronized void visitGameBoardAction(TokensUpdate tokensUpdate) {
                     setTokens(tokensUpdate.getTcTokens(), tokensUpdate.getPlayersTokens(), tokensUpdate.getPersonalTokens());
                 }
 
                 @Override
-                public void visitGameBoardAction(DraftPoolRoundTrackUpdate draftPoolRoundTrackUpdate) {
+                public synchronized void visitGameBoardAction(DraftPoolRoundTrackUpdate draftPoolRoundTrackUpdate) {
                     if (draftPoolRoundTrackUpdate.getType().equals("DP")) {
                         setDrafPool(draftPoolRoundTrackUpdate.getDice());
                     } else if (draftPoolRoundTrackUpdate.getType().equals("RT")) {
@@ -422,7 +424,7 @@ public class GameBoardController extends Observable implements Observer {
                 }
 
                 @Override
-                public void visitGameBoardAction(Message message) {
+                public synchronized void visitGameBoardAction(Message message) {
                     msgBox.appendText(message.getMessage()+"\n");
                 }
             };
@@ -522,16 +524,16 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void moveDice(Parent p1, Parent p2, String cardName) {
+    private void moveDice(Pane p1, Pane p2, String cardName) {
         boolean b = p1.equals(p2);
         Platform.runLater(() -> {
-            for (int i = 0; i < p1.getChildrenUnmodifiable().size(); i++) {
+            for (int i = 0; i < p1.getChildren().size(); i++) {
                 int h = i;
-                ((ToggleButton) p1.getChildrenUnmodifiable().get(i)).setOnAction(event -> {
-                    for (int j = 0; j < p2.getChildrenUnmodifiable().size(); j++) {
-                        if (((ToggleButton) p2.getChildrenUnmodifiable().get(j)).isSelected() && (!b || h != j)) {
-                            ((ToggleButton) p2.getChildrenUnmodifiable().get(j)).setSelected(false);
-                            ((ToggleButton) p1.getChildrenUnmodifiable().get(h)).setSelected(false);
+                ((ToggleButton) p1.getChildren().get(i)).setOnAction(event -> {
+                    for (int j = 0; j < p2.getChildren().size(); j++) {
+                        if (((ToggleButton) p2.getChildren().get(j)).isSelected() && (!b || h != j)) {
+                            ((ToggleButton) p2.getChildren().get(j)).setSelected(false);
+                            ((ToggleButton) p1.getChildren().get(h)).setSelected(false);
                             System.out.println("move");
                             switch (cardName) {
                                 case CIRCULAR_CUTTER:
@@ -606,13 +608,18 @@ public class GameBoardController extends Observable implements Observer {
                     draftPoolDice.getChildren().get(i).setDisable(false);
                 } else {
                     ((ToggleButton)draftPoolDice.getChildren().get(i)).setGraphic(iv);
-                    System.out.println("Disabilito draft index. " +i);
                     draftPoolDice.getChildren().get(i).setDisable(true);
                 }
             }
             for (int i=dice.size(); i<9; i++) {
                 draftPoolDice.getChildren().get(i).setDisable(true);
-                System.out.println("Disabilito draft index. " +i);
+            }
+            for (int i=0; i<dice.size(); i++) {
+                int h=i;
+                draftPoolDice.getChildren().get(i).addEventHandler(MouseEvent.MOUSE_ENTERED, e -> draftPoolDice.getChildren().get(h).setEffect(shadow));
+                draftPoolDice.getChildren().get(i).addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                    if (!((ToggleButton)draftPoolDice.getChildren().get(h)).isSelected()) draftPoolDice.getChildren().get(h).setEffect(null);
+                });
             }
         });
     }
@@ -832,7 +839,7 @@ public class GameBoardController extends Observable implements Observer {
             no.setVisible(true);
             msgBox.appendText("Do you want to place the die on your Window Pattern Card?\n");
             yes.setOnAction(event -> {
-                //disableTB(personalWPCDice, false);
+                disableTB(personalWPCDice, false);
                 msgBox.appendText("Select destination cell.\n");
                 for (int i = 0; i < personalWPCDice.getChildren().size(); i++) {
                     int h = i;
@@ -919,7 +926,6 @@ public class GameBoardController extends Observable implements Observer {
                 LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch ranking pane", e);
             }
         });
-        RankingPaneNotifier.getInstance().setOpen();
     }
 
     private void showClientStarter() {
@@ -1036,7 +1042,7 @@ public class GameBoardController extends Observable implements Observer {
         redShadow.setColor(new Color(0.7, 0,0,1));
         if (b) {
             msgBox.setEffect(redShadow);
-            //msgBox.getScene().addEventFilter(MouseEvent.MOUSE_PRESSED, mouseEvent -> msgBox.setEffect(null));
+            msgBox.getScene().addEventFilter(MouseEvent.MOUSE_PRESSED, mouseEvent -> msgBox.setEffect(null));
         } else {
             msgBox.setEffect(null);
         }

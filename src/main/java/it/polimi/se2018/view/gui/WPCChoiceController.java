@@ -228,7 +228,7 @@ public class WPCChoiceController extends Observable implements Observer {
         stage.close();
     }
 
-    public void showGameBoard(){
+    private void showGameBoard(){
         Platform.runLater(() -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/gameboard.fxml"));
@@ -241,7 +241,6 @@ public class WPCChoiceController extends Observable implements Observer {
                 LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch game board", e);
             }
         });
-        GameBoardNotifier.getInstance().setOpen();
     }
 
     private void inputError() {

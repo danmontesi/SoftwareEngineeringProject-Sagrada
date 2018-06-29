@@ -44,7 +44,9 @@ public class RankingPaneController extends Observable implements Observer {
     }
 
     public void initialize() {
-        RankingPaneNotifier.getInstance().addObserver(this);
+        RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
+        rankingPaneNotifier.addObserver(this);
+        rankingPaneNotifier.setOpen();
         initButtons();
     }
 

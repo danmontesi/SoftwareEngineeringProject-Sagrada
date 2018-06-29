@@ -114,6 +114,25 @@ public class View extends Observable implements ObserverView { //VIEW: Osserva M
 
     }
 
+    public void askAnotherOne() {
+
+    }
+
+    public void askDecideIncreaseDecrease() {
+
+    }
+
+    public void askDecideValue() {
+
+    }
+
+    public void askPlaceDie() {
+
+    }
+
+    public void askSelectDie(String from) {
+
+    }
 
     public void timeOut(){
 

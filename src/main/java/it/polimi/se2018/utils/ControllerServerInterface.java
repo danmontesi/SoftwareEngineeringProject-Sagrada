@@ -1,6 +1,7 @@
 package it.polimi.se2018.utils;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
+import it.polimi.se2018.commands.client_to_server_command.new_tool_commands.*;
 import it.polimi.se2018.exceptions.EmptyCellException;
 
 public interface ControllerServerInterface {
@@ -31,40 +32,16 @@ public interface ControllerServerInterface {
     // The server has to validate the move and edit the model, if the move is correct
     // else, has to call a new Request of re-use of that tool, re-sending a event of AllowedUseToolCommand(usedToolNumber)
 
-    /**
-     * Applies commands coming from the view, answering with correct/incorrect command responses
-     */
-    //MOSSA SENZA RESTRIZIONE POSIZIONE E DEVONO ESSERE NON ADIACENTI
-    public void applyCommand(String playerUsername, UseToolCorkLine command);
+    void applyCommand(String playerUsername, UseToolPlaceDie command);
 
-    /**
-     * Applies commands coming from the view, answering with correct/incorrect command responses
-     * BRUSH: decide the new value
-     */
-    public void applyCommand(String playerUsername, UseToolFirmPastryBrush command);
+    void applyCommand(String playerUsername, UseToolDecideValue command);
 
-    /**
-     * Applies commands coming from the view, answering with correct/incorrect command responses
-     * THINNER: die from DiceBag
-     */
-    public void applyCommand(String playerUsername, UseToolFirmPastryThinner command);
+    void applyCommand(String playerUsername, UseToolDecideAnotherOne command);
 
-    /**
-     * Applies commands coming from the view, answering with correct/incorrect command responses
-     */
-    public void applyCommand(String playerUsername, UseToolCircularCutter command);
+    void applyCommand(String playerUsername, UseToolSelectDie command);
 
-    /**
-     * Applies commands coming from the view, answering with correct/incorrect command responses
-     */
-    public void applyCommand(String playerUsername, UseToolWheelsPincher command);
+    void applyCommand(String playerUsername, UseToolDecideIncreaseDecrease command);
 
-    public void applyCommand(String playerUsername, UseToolChangeDieValue command);
-
-    public void applyCommand(String playerUsername, UseToolMoveDieNoRestriction command);
-
-    public void applyCommand(String playerUsername, UseToolTwoDicePlacement command);
-
-    public void applyCommand(String playerUsername, UndoActionCommand command);
+    void applyCommand(String playerUsername, UndoActionCommand command);
 
 }
