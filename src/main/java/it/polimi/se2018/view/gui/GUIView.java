@@ -94,10 +94,6 @@ public class GUIView extends View {
         this.username = message;
     }
 
-    public void AllowedUseToolMessage(String message) {
-        //TODO Questo metodo non invia niente, mostra solo il messaggio
-    }
-
     public void continueTurnMenu(boolean move, boolean tool) {
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.updateGui(new TurnUpdate(move, tool));
@@ -210,6 +206,13 @@ public class GUIView extends View {
 
     @Override
     public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
+        while(!GameBoardNotifier.getInstance().isOpen()){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.updateGui(new DraftPoolRoundTrackUpdate("DP", refreshCommand.getDraftpool()));
     }

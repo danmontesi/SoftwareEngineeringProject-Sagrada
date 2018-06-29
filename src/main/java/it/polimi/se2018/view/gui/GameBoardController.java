@@ -265,6 +265,7 @@ public class GameBoardController extends Observable implements Observer {
             tb.setGraphic(iv);
             personalWPCDice.add(tb, h, k);
         }
+        initBStyle();
     }
 
     private void initChoiceBox() {
@@ -281,21 +282,16 @@ public class GameBoardController extends Observable implements Observer {
     private void initBStyle() {
         for (Button b : buttons) {
             b.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
-            b.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> b.setEffect(shadow));
-            b.addEventHandler(MouseEvent.MOUSE_EXITED, e -> b.setEffect(null));
+            //b.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> b.setEffect(shadow));
+            //b.addEventHandler(MouseEvent.MOUSE_EXITED, e -> b.setEffect(null));
         }
 
         for (ToggleButton tb : tcButtons) {
             tb.setStyle("-fx-base: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent");
-            /*tb.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tb.setEffect(shadow));
-            tb.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
-                if (!tb.isSelected()) tb.setEffect(null);
-            });*/
-            if (tb.isSelected()) {
-                tb.setEffect(shadow);
-            } else {
-                tb.setEffect(null);
-            }
+            //tb.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tb.setEffect(shadow));
+            //tb.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+            //    if (!tb.isSelected()) tb.setEffect(null);
+            //});
         }
 
         for (int j=0; j<parents.size(); j++) {
@@ -303,11 +299,11 @@ public class GameBoardController extends Observable implements Observer {
                 int h = i;
                 int k=j;
                 parents.get(j).getChildren().get(i).setStyle("-fx-base: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent");
-                parents.get(j).getChildren().get(i).addEventHandler(MouseEvent.MOUSE_ENTERED, e -> parents.get(k).getChildren().get(h).setEffect(shadow));
-                parents.get(j).getChildren().get(i).addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
-                    if (!((ToggleButton) parents.get(k).getChildren().get(h)).isSelected())
-                        parents.get(k).getChildren().get(h).setEffect(null);
-                });
+                //parents.get(j).getChildren().get(i).addEventHandler(MouseEvent.MOUSE_ENTERED, e -> parents.get(k).getChildren().get(h).setEffect(shadow));
+                //parents.get(j).getChildren().get(i).addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                //    if (!((ToggleButton) parents.get(k).getChildren().get(h)).isSelected())
+                //        parents.get(k).getChildren().get(h).setEffect(null);
+                //});
             }
         }
     }
@@ -345,9 +341,8 @@ public class GameBoardController extends Observable implements Observer {
                     initWPCards();
                     initPersonalWPC();
                     initPersonalPriOC();
-                    setDrafPool(modelRepresentation.getDraftpool());
                     setRoundTrack(modelRepresentation.getRoundTrack());
-                    initBStyle();
+                    //initBStyle();
                     moveDice(personalWPCDice, draftPoolDice, "");
                 }
 
@@ -618,6 +613,13 @@ public class GameBoardController extends Observable implements Observer {
             }
             for (int i=dice.size(); i<9; i++) {
                 draftPoolDice.getChildren().get(i).setDisable(true);
+            }
+            for (int i=0; i<dice.size(); i++) {
+                int h=i;
+                draftPoolDice.getChildren().get(i).addEventHandler(MouseEvent.MOUSE_ENTERED, e -> draftPoolDice.getChildren().get(h).setEffect(shadow));
+                draftPoolDice.getChildren().get(i).addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                    if (!((ToggleButton)draftPoolDice.getChildren().get(h)).isSelected()) draftPoolDice.getChildren().get(h).setEffect(null);
+                });
             }
         });
     }
