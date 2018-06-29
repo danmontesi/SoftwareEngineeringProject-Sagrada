@@ -186,9 +186,9 @@
             </GridPane>
             <ImageView fx:id="priOC" fitHeight="267.0" fitWidth="188.0" layoutX="335.0" layoutY="15.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.topAnchor="15.0" />
             <TextArea fx:id="msgBox" editable="false" layoutX="556.0" layoutY="23.0" prefHeight="198.0" prefWidth="190.0" style="-fx-font-size: 14px" wrapText="true" />
-            <Button fx:id="yes" layoutX="570.0" layoutY="233.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="40.0" style="-fx-font-size: 18px" />
-            <Button fx:id="no" layoutX="693.0" layoutY="233.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="40.0" style="-fx-font-size: 18px" />
-            <ChoiceBox fx:id="valueChoice" layoutX="627.0" layoutY="233.0" prefHeight="35.0" prefWidth="40.0" />
+            <Button fx:id="yes" layoutX="556.0" layoutY="233.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="55.0" style="-fx-font-size: 18px" />
+            <Button fx:id="no" layoutX="691.0" layoutY="233.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="55.0" style="-fx-font-size: 18px" />
+            <ChoiceBox fx:id="valueChoice" layoutX="624.0" layoutY="233.0" prefHeight="35.0" prefWidth="55.0" />
          </children>
       </AnchorPane>
        <AnchorPane fx:id="rtbox" layoutX="1100.0" prefHeight="630.0" prefWidth="158.0">
