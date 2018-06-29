@@ -287,28 +287,28 @@ public class ClientController extends Observable implements Observer, Controller
     }
 
     @Override
-    public void applyCommand(AskToolDecideIncreaseDecrease askToolDecideIncreaseDecrease) {
+    public void applyCommand(AskIncreaseDecrease askIncreaseDecrease) {
         view.askIncreaseDecrease();
     }
 
     @Override
-    public void applyCommand(AskToolDecideAnotherOne askToolDecideAnotherOne) {
+    public void applyCommand(AskAnotherAction askAnotherAction) {
         view.askAnotherAction();
     }
 
     @Override
-    public void applyCommand(AskToolDecideValue askToolDecideValue) {
+    public void applyCommand(AskDieValue askDieValue) {
         view.askDieValue();
     }
 
     @Override
-    public void applyCommand(AskToolPlaceDie askToolPlaceDie) {
+    public void applyCommand(AskPlaceDie askPlaceDie) {
         view.askPlaceDie();
     }
 
     @Override
-    public void applyCommand(AskToolSelectDie askToolSelectDie) {
-        view.askPickDie(askToolSelectDie.getFrom());
+    public void applyCommand(AskPickDie askPickDie) {
+        view.askPickDie(askPickDie.getFrom());
     }
 
     @Override

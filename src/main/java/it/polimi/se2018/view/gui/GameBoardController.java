@@ -342,7 +342,6 @@ public class GameBoardController extends Observable implements Observer {
                     initPersonalWPC();
                     initPersonalPriOC();
                     setRoundTrack(modelRepresentation.getRoundTrack());
-                    //initBStyle();
                     moveDice(personalWPCDice, draftPoolDice, "");
                 }
 

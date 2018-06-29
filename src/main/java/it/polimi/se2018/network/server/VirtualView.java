@@ -393,7 +393,7 @@ public class VirtualView extends View {
             LOGGER.log(Level.INFO, "Disconnected-> No action");
         }
         else
-            Server.getConnectedClients().get(username).notifyClient(new AskToolDecideAnotherOne());
+            Server.getConnectedClients().get(username).notifyClient(new AskAnotherAction());
     }
     @Override
     public void askIncreaseDecrease() {
@@ -402,7 +402,7 @@ public class VirtualView extends View {
             LOGGER.log(Level.INFO, "Disconnected-> No action");
         }
         else
-            Server.getConnectedClients().get(username).notifyClient(new AskToolDecideIncreaseDecrease());
+            Server.getConnectedClients().get(username).notifyClient(new AskIncreaseDecrease());
     }
     @Override
     public void askDieValue() {
@@ -411,7 +411,7 @@ public class VirtualView extends View {
             LOGGER.log(Level.INFO, "Disconnected-> No action");
         }
         else
-            Server.getConnectedClients().get(username).notifyClient(new AskToolDecideValue());
+            Server.getConnectedClients().get(username).notifyClient(new AskDieValue());
     }
     @Override
     public void askPlaceDie() {
@@ -420,7 +420,7 @@ public class VirtualView extends View {
             LOGGER.log(Level.INFO, "Disconnected-> No action");
         }
         else
-            Server.getConnectedClients().get(username).notifyClient(new AskToolPlaceDie());
+            Server.getConnectedClients().get(username).notifyClient(new AskPlaceDie());
     }
     @Override
     public void askPickDie(String from) {
@@ -429,7 +429,7 @@ public class VirtualView extends View {
             LOGGER.log(Level.INFO, "Disconnected-> No action");
         }
         else
-            Server.getConnectedClients().get(username).notifyClient(new AskToolSelectDie(from));
+            Server.getConnectedClients().get(username).notifyClient(new AskPickDie(from));
     }
 
 }

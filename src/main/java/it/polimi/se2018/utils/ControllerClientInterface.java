@@ -129,13 +129,13 @@ public interface ControllerClientInterface{
 
     void applyCommand(EndGameCommand endGameCommand);
 
-    void applyCommand(AskToolDecideIncreaseDecrease askToolDecideIncreaseDecrease);
+    void applyCommand(AskIncreaseDecrease askIncreaseDecrease);
 
-    void applyCommand(AskToolDecideAnotherOne askToolDecideAnotherOne);
+    void applyCommand(AskAnotherAction askAnotherAction);
 
-    void applyCommand(AskToolDecideValue askToolDecideValue);
+    void applyCommand(AskDieValue askDieValue);
 
-    void applyCommand(AskToolPlaceDie askToolPlaceDie);
+    void applyCommand(AskPlaceDie askPlaceDie);
 
-    void applyCommand(AskToolSelectDie askToolSelectDie);
+    void applyCommand(AskPickDie askPickDie);
 }
