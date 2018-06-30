@@ -136,9 +136,7 @@ public class ClientController extends Observable implements Observer, Controller
      */
     @Override
     public void applyCommand(RefreshBoardCommand command) {
-        //setPlayerModel(command.getMessage());
         view.updateBoard(command);
-        //TODO Decidere con alle e nives
     }
     @Override
     public void setPlayerModel(String modelString){

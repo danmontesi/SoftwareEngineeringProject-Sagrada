@@ -371,7 +371,7 @@ public class Model extends Observable implements Serializable { //Observable of 
                 }
             }
             //TODO con 15 costruttori
-            observer.update(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
+            ((View) observer).updateBoard(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
                     draftpool, roundTrackString, personalWpc, myTokens, username, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
         }
     }
@@ -380,6 +380,26 @@ public class Model extends Observable implements Serializable { //Observable of 
         roundTrack.placeDie(die);
         notifyRefreshRoundTrack();
     }
+
+    public void flipDraftPoolDie(int index) throws EmptyCellException {
+        draftPool.getDie(index).flip();
+        notifyRefreshDraftPool();
+    }
+
+    public void rollDraftpoolDie(int index) throws EmptyCellException {
+        draftPool.getDie(index).roll();
+        notifyRefreshDraftPool();
+    }
+
+    public void increaseDraftpoolDieValue(int index, boolean increase) throws EmptyCellException {
+        if (increase)
+            draftPool.getDie(index).increaseByOne();
+        else
+            draftPool.getDie(index).decreaseByOne();
+
+        notifyRefreshDraftPool();
+    }
+
 
     public Die getLastDie() throws EmptyCellException {
         Die toReturn;

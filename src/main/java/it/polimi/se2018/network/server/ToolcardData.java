@@ -1,6 +1,7 @@
 package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.model.Action;
+import it.polimi.se2018.model.COLOR;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public class ToolcardData {
     private int indexFromWPC;
     private int indexToWPC;
     private int dieValue;
+
+    private COLOR savedColor;
 
     private boolean increaseValue;
     private boolean anotherAction;
@@ -96,5 +99,13 @@ public class ToolcardData {
 
     public void setToolcardName(String toolcardName) {
         this.toolcardName = toolcardName;
+    }
+
+    public COLOR getSavedColor() {
+        return savedColor;
+    }
+
+    public void setSavedColor(COLOR savedColor) {
+        this.savedColor = savedColor;
     }
 }

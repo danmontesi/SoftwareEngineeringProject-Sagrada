@@ -14,6 +14,7 @@ public class ReplyAnotherAction extends ClientToServerCommand{
     }
 
     private boolean another;
+
     public void visit(ControllerServerInterface observer){
         observer.applyCommand(getUsername(),this);
     }

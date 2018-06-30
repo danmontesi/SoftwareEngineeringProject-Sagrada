@@ -1,10 +1,10 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
+import it.polimi.se2018.commands.client_to_server_command.new_tool_commands.*;
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
 import it.polimi.se2018.view.gui.Notifiers.GameBoardNotifier;
 import it.polimi.se2018.view.gui.Notifiers.GameBoardActions.*;
-import it.polimi.se2018.view.gui.Notifiers.RankingPaneNotifier;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -24,6 +25,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import org.omg.CORBA.PERSIST_STORE;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,20 +37,7 @@ import java.util.logging.Logger;
 
 public class GameBoardController extends Observable implements Observer {
 
-    private static final Logger LOGGER = Logger.getLogger(GameBoardController.class.getName());
-    private static final String CIRCULAR_CUTTER = "Circular Cutter";
-    private static final String COPPER_FOIL_REAMER = "Copper Foil Reamer";
-    private static final String CORK_LINE = "Cork Line";
-    private static final String DIAMOND_SWAB = "Diamond Swab";
-    private static final String EGLOMISE_BRUSH = "Eglomise Brush";
-    private static final String FIRM_PASTRY_BRUSH = "Firm Pastry Brush";
-    private static final String FIRM_PASTRY_THINNER = "Firm Pastry Thinner";
-    private static final String GAVEL = "Gavel";
-    private static final String LATHEKIN = "Lathekin";
-    private static final String MANUAL_CUTTER = "Manual Cutter";
-    private static final String ROUGHING_FORCEPS = "Roughing Forceps";
-    private static final String WHEELS_PINCHER = "Wheels Pincher";
-    private static final String BACK = "Click on the tool card again if you don't want to use it anymore.\n";
+    private static final Logger LOGGER = Logger.getLogger(WPCChoiceController.class.getName());
 
     private GUIView guiViewT;
     private RefreshBoardCommand modelRepresentation;
@@ -159,6 +148,7 @@ public class GameBoardController extends Observable implements Observer {
 
     private DropShadow shadow = new DropShadow();
     private DropShadow redShadow = new DropShadow();
+    private Glow bright = new Glow(0.8);
 
     public GameBoardController() {
         pubOCards = new ArrayList<>();
@@ -186,7 +176,7 @@ public class GameBoardController extends Observable implements Observer {
         initParents();
         initChoiceBox();
         //disableAllButtons();
-        msgBox.appendText("waiting for other players to choose their Window Pattern Card...\n");
+        msgBox.appendText("Waiting for other players to choose their Window Pattern Card...\n");
         gameBoardNotifier.setOpen();
     }
 
@@ -334,7 +324,7 @@ public class GameBoardController extends Observable implements Observer {
                 }
 
                 @Override
-                public synchronized void visitGameBoardAction(RefreshBoard refreshBoard) {
+                public void visitGameBoardAction(RefreshBoard refreshBoard) {
                     modelRepresentation = refreshBoard.getModelRepresentation();
                     initPubOCards();
                     initTCards();
@@ -342,17 +332,17 @@ public class GameBoardController extends Observable implements Observer {
                     initPersonalWPC();
                     initPersonalPriOC();
                     setRoundTrack(modelRepresentation.getRoundTrack());
-                    moveDice(personalWPCDice, draftPoolDice, "");
+                    moveDice();
                 }
 
                 @Override
-                public synchronized void visitGameBoardAction(TurnStart turnStart) {
+                public void visitGameBoardAction(TurnStart turnStart) {
                     if (turnStart.getUsername() == null) {
                         disableTCB(false);
                         disableTB(draftPoolDice, false);
                         disableTB(personalWPCDice, false);
                         pass.setDisable(false);
-                        moveDice(personalWPCDice, draftPoolDice, "");
+                        moveDice();
                         msgBox.setText("It's your turn!\n");
                     } else {
                         disableAllButtons();
@@ -361,11 +351,11 @@ public class GameBoardController extends Observable implements Observer {
                 }
 
                 @Override
-                public synchronized void visitGameBoardAction(TurnUpdate turnUpdate) {
+                public void visitGameBoardAction(TurnUpdate turnUpdate) {
                     if (turnUpdate.getMove()) {
                         disableTB(personalWPCDice, false);
                         disableTB(draftPoolDice, false);
-                        moveDice(personalWPCDice, draftPoolDice, "");
+                        moveDice();
                     }
                     if (turnUpdate.getTool()) {
                         disableTCB(false);
@@ -374,24 +364,24 @@ public class GameBoardController extends Observable implements Observer {
                 }
 
                 @Override
-                public synchronized void visitGameBoardAction(InvalidAction invalidAction) {
+                public void visitGameBoardAction(InvalidAction invalidAction) {
                     msgBox.appendText(invalidAction.getMessage() + "\n");
                     inputError(true);
                 }
 
                 @Override
-                public synchronized void visitGameBoardAction(WPCUpdate wpcUpdate) {
+                public void visitGameBoardAction(WPCUpdate wpcUpdate) {
                     setWPCards(wpcUpdate.getOtherWpcs());
                     setPersonalWPC(wpcUpdate.getMyWpc());
                 }
 
                 @Override
-                public synchronized void visitGameBoardAction(TokensUpdate tokensUpdate) {
+                public void visitGameBoardAction(TokensUpdate tokensUpdate) {
                     setTokens(tokensUpdate.getTcTokens(), tokensUpdate.getPlayersTokens(), tokensUpdate.getPersonalTokens());
                 }
 
                 @Override
-                public synchronized void visitGameBoardAction(DraftPoolRoundTrackUpdate draftPoolRoundTrackUpdate) {
+                public void visitGameBoardAction(DraftPoolRoundTrackUpdate draftPoolRoundTrackUpdate) {
                     if (draftPoolRoundTrackUpdate.getType().equals("DP")) {
                         setDrafPool(draftPoolRoundTrackUpdate.getDice());
                     } else if (draftPoolRoundTrackUpdate.getType().equals("RT")) {
@@ -400,16 +390,36 @@ public class GameBoardController extends Observable implements Observer {
                 }
 
                 @Override
-                public void visitGameBoardAction(ToolCardUse toolCardUse) {
-                    manageToolCardUse(toolCardUse);
+                public void visitGameBoardAction(PickDie pickDie) {
+                    pickDie(pickDie.getFrom());
+                }
+
+                @Override
+                public void visitGameBoardAction(PlaceDie placeDie) {
+                    selectDie(personalWPCDice, "place");
+                }
+
+                @Override
+                public void visitGameBoardAction(IncreaseDecrease increaseDecrease) {
+                    increaseValue();
+                }
+
+                @Override
+                public void visitGameBoardAction(DieValue dieValue) {
+                    chooseValue();
+                }
+
+                @Override
+                public void visitGameBoardAction(AnotherAction anotherAction) {
+                    chooseAnotherAction();
                 }
 
                 @Override
                 public void visitGameBoardAction(TimeUp timeUp) {
+                    //TODO check put shadow disable
                     for (ToggleButton t: tcButtons) {
                         if (t.isSelected()) {
                             t.setSelected(false);
-                            //TODO check shadow
                         }
                     }
                     for (int i=0; i<draftPoolDice.getChildren().size(); i++) {
@@ -423,7 +433,7 @@ public class GameBoardController extends Observable implements Observer {
                 }
 
                 @Override
-                public synchronized void visitGameBoardAction(Message message) {
+                public void visitGameBoardAction(Message message) {
                     msgBox.appendText(message.getMessage()+"\n");
                 }
             };
@@ -473,7 +483,7 @@ public class GameBoardController extends Observable implements Observer {
             }
             for (ToggleButton tc : tcButtons) {
                 tc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tc.setEffect(shadow));
-                tc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                tc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {tc.setEffect(null);
                     if (!tc.isSelected()) tc.setEffect(null);
                 });
             }
@@ -523,66 +533,18 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void moveDice(Pane p1, Pane p2, String cardName) {
-        boolean b = p1.equals(p2);
+    private void moveDice() {
         Platform.runLater(() -> {
-            for (int i = 0; i < p1.getChildren().size(); i++) {
+            for (int i = 0; i < personalWPCDice.getChildren().size(); i++) {
                 int h = i;
-                ((ToggleButton) p1.getChildren().get(i)).setOnAction(event -> {
-                    for (int j = 0; j < p2.getChildren().size(); j++) {
-                        if (((ToggleButton) p2.getChildren().get(j)).isSelected() && (!b || h != j)) {
-                            ((ToggleButton) p2.getChildren().get(j)).setSelected(false);
-                            ((ToggleButton) p1.getChildren().get(h)).setSelected(false);
+                ((ToggleButton) personalWPCDice.getChildren().get(i)).setOnAction(event -> {
+                    for (int j = 0; j < draftPoolDice.getChildren().size(); j++) {
+                        if (((ToggleButton) draftPoolDice.getChildren().get(j)).isSelected()) {
+                            ((ToggleButton) draftPoolDice.getChildren().get(j)).setSelected(false);
+                            ((ToggleButton) personalWPCDice.getChildren().get(h)).setSelected(false);
                             System.out.println("move");
-                            switch (cardName) {
-                                case CIRCULAR_CUTTER:
-                                    guiViewT.notify(new UseToolCircularCutter(j, h));
-                                    break;
-                                case COPPER_FOIL_REAMER:
-                                case EGLOMISE_BRUSH:
-                                    guiViewT.notify(new UseToolMoveDieNoRestriction(cardName, j, h));
-                                    break;
-                                case CORK_LINE:
-                                    guiViewT.notify(new UseToolCorkLine(h, j));
-                                    break;
-                                case WHEELS_PINCHER:
-                                    guiViewT.notify(new UseToolWheelsPincher(j, h));
-                                    break;
-                                case MANUAL_CUTTER:
-                                    guiViewT.notify(new UseToolTwoDicePlacement(cardName, j, h, null, null));
-                                    break;
-                                default:
-                                    guiViewT.notify(new MoveChoiceDicePlacement(h, j));
-                                    System.out.println("move notify");
-                            }
+                            guiViewT.notify(new MoveChoiceDicePlacement(h, j));
                             resetPostMove();
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-    private void moveTwoDice(Parent p1, Parent p2, String cardName) {
-        Platform.runLater(() -> {
-            ArrayList<Integer> oldPos = new ArrayList<>();
-            ArrayList<Integer> newPos = new ArrayList<>();
-            for (int i=0; i<p1.getChildrenUnmodifiable().size(); i++) {
-                int h = i;
-                ((ToggleButton)p1.getChildrenUnmodifiable().get(i)).setOnAction(event -> {
-                    for (int j=0; j<p2.getChildrenUnmodifiable().size(); j++) {
-                        Node iv = ((ToggleButton)p1.getChildrenUnmodifiable().get(h)).getGraphic();
-                        if (((ToggleButton)p2.getChildrenUnmodifiable().get(j)).isSelected()) {
-                            ((ToggleButton)p1.getChildrenUnmodifiable().get(h)).setGraphic(((ToggleButton)p1.getChildrenUnmodifiable().get(j)).getGraphic());
-                            ((ToggleButton)p2.getChildrenUnmodifiable().get(j)).setGraphic(iv);
-                            ((ToggleButton)p2.getChildrenUnmodifiable().get(j)).setSelected(false);
-                            ((ToggleButton)p1.getChildrenUnmodifiable().get(h)).setSelected(false);
-                            oldPos.add(j);
-                            newPos.add(h);
-                            if (oldPos.size()==2) {
-                                guiViewT.notify(new UseToolTwoDicePlacement(cardName, oldPos.get(0), newPos.get(0), oldPos.get(1), newPos.get(1)));
-                                resetPostMove();
-                            }
                         }
                     }
                 });
@@ -616,7 +578,7 @@ public class GameBoardController extends Observable implements Observer {
             for (int i=0; i<dice.size(); i++) {
                 int h=i;
                 draftPoolDice.getChildren().get(i).addEventHandler(MouseEvent.MOUSE_ENTERED, e -> draftPoolDice.getChildren().get(h).setEffect(shadow));
-                draftPoolDice.getChildren().get(i).addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                draftPoolDice.getChildren().get(i).addEventHandler(MouseEvent.MOUSE_EXITED, e -> {draftPoolDice.getChildren().get(h).setEffect(null);
                     if (!((ToggleButton)draftPoolDice.getChildren().get(h)).isSelected()) draftPoolDice.getChildren().get(h).setEffect(null);
                 });
             }
@@ -693,199 +655,56 @@ public class GameBoardController extends Observable implements Observer {
                     ((ToggleButton)personalWPCDice.getChildren().get(i)).setGraphic(iv);
                 }
             }
-        });
-    }
-
-    private void manageToolCardUse(ToolCardUse toolCardUse) {
-        pass.setDisable(true);
-        for (ToggleButton t : tcButtons) {
-            if (!t.isSelected()) {
-                t.setDisable(true);
-            }
-        }
-        String cardName = toolCardUse.getCardName();
-        Platform.runLater(() -> {
-            switch (cardName) {
-                case CIRCULAR_CUTTER:
-                    disableTB(draftPoolDice, false);
-                    disableTB(roundTrackDice, false);
-                    msgBox.appendText("Click on a die on the Draft Pool, then on the die on the Round Track you want to swap it with.\n" + BACK);
-                    moveDice(roundTrackDice, draftPoolDice, CIRCULAR_CUTTER);
-                    break;
-                case COPPER_FOIL_REAMER:
-                    disableTB(personalWPCDice, false);
-                    msgBox.appendText("Click on a die on your Window Pattern Card, then on the cell you want to move it to.\n" + BACK);
-                    moveDice(personalWPCDice, personalWPCDice, COPPER_FOIL_REAMER);
-                    break;
-                case EGLOMISE_BRUSH:
-                    disableTB(personalWPCDice, false);
-                    msgBox.appendText("Click on a die on your Window Pattern Card, then on the cell you want to move it to.\n" + BACK);
-                    moveDice(personalWPCDice, personalWPCDice, EGLOMISE_BRUSH);
-                    break;
-                case CORK_LINE:
-                    disableTB(personalWPCDice, false);
-                    disableTB(draftPoolDice, false);
-                    msgBox.appendText(BACK);
-                    moveDice(personalWPCDice, draftPoolDice, CORK_LINE);
-                    break;
-                case DIAMOND_SWAB:
-                    disableTB(draftPoolDice, false);
-                    msgBox.appendText("Click on the die you want to flip.\n"+BACK);
-                    selectDie("", 0, DIAMOND_SWAB);
-                    break;
-                case FIRM_PASTRY_BRUSH:
-                    disableTB(draftPoolDice, false);
-                    msgBox.appendText("Click on the die you want to re-roll.\n");
-                    selectDie("", toolCardUse.getValue(), FIRM_PASTRY_BRUSH);
-                    break;
-                case FIRM_PASTRY_THINNER:
-                    disableTB(draftPoolDice, false);
-                    msgBox.appendText("Click on the die you want to swap.\n");
-                    selectDie(toolCardUse.getColor(), 0, FIRM_PASTRY_THINNER);
-                    break;
-                case GAVEL:
-                    break;
-                case LATHEKIN:
-                    disableTB(personalWPCDice, false);
-                    msgBox.appendText("For each die, click on it, then on the cell you want to move it to.\n" + BACK);
-                    moveTwoDice(personalWPCDice, personalWPCDice, LATHEKIN);
-                    break;
-                case MANUAL_CUTTER:
-                    chooseMovesNumber();
-                    break;
-                case ROUGHING_FORCEPS:
-                    msgBox.appendText(BACK + "Click on the die you want to flip.\n");
-                    selectDie("", 0, ROUGHING_FORCEPS);
-                    break;
-                case WHEELS_PINCHER:
-                    disableTB(draftPoolDice, false);
-                    disableTB(personalWPCDice, false);
-                    msgBox.appendText(BACK);
-                    moveDice(personalWPCDice, draftPoolDice, WHEELS_PINCHER);
-                    break;
-                default:
-                    break;
-            }
-        });
-    }
-
-    private void selectDie(String color, Integer value, String cardName) {
-        Platform.runLater(() -> {
-            for (int i=0; i<draftPoolDice.getChildren().size(); i++) {
-                int h = i;
-                ((ToggleButton)draftPoolDice.getChildren().get(i)).setOnAction(event -> {
-                    ((ToggleButton)draftPoolDice.getChildren().get(h)).setSelected(false);
-                    if (cardName.equals(ROUGHING_FORCEPS)) {
-                        setIncrease(h);
-                    } else {
-                        changeDie(h, color, value, cardName);
-                    }
+            for (int i=0; i<20; i++) {
+                int h=i;
+                personalWPCDice.getChildren().get(i).addEventHandler(MouseEvent.MOUSE_ENTERED, e -> personalWPCDice.getChildren().get(h).setEffect(shadow));
+                personalWPCDice.getChildren().get(i).addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                    if (!((ToggleButton)personalWPCDice.getChildren().get(h)).isSelected()) personalWPCDice.getChildren().get(h).setEffect(null);
                 });
             }
         });
     }
 
-    private void changeDie(int position, String color, Integer value, String cardName) {
-        String c = color.toLowerCase();
-        String v = value.toString();
-        String[] tok = ((ToggleButton)draftPoolDice.getChildren().get(position)).getText().split("_", 2);
-        if (color.equals("")) {
-            c=tok[0];
-        }
-        if (value==0){
-            Integer tmp = 7-Integer.parseInt(tok[1]);
-            v = tmp.toString();
-        }
-        Image image = new Image("/client/dice/"+c.toLowerCase()+"_"+v+".jpg");
-        ImageView iv = new ImageView(image);
-        iv.setFitWidth(43);
-        iv.setFitHeight(43);
-        ((ToggleButton)draftPoolDice.getChildren().get(position)).setGraphic(iv);
-        switch (cardName) {
-            case FIRM_PASTRY_THINNER:
-                chooseValue(position, c);
+    private void pickDie(String from) {
+        Pane parent;
+        switch (from) {
+            case "WPC":
+                parent = personalWPCDice;
                 break;
-            case FIRM_PASTRY_BRUSH:
-                chooseMove(position, FIRM_PASTRY_BRUSH, null);
+            case "RT":
+                parent = roundTrackDice;
                 break;
             default:
-                guiViewT.notify(new UseToolChangeDieValue(DIAMOND_SWAB, position));
-                resetPostMove();
+                parent = draftPoolDice;
                 break;
         }
+        selectDie(parent, "pick");
     }
 
-    private void chooseValue(int position, String color) {
+    private void selectDie(Pane parent, String action) {
         Platform.runLater(() -> {
-            valueChoice.setVisible(true);
-            valueChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-                int v = (int)newValue+1;
-                Image image = new Image("/client/dice/"+color.toLowerCase()+"_"+v+".jpg");
-                ImageView iv = new ImageView(image);
-                iv.setFitWidth(43);
-                iv.setFitHeight(43);
-                ((ToggleButton) draftPoolDice.getChildren().get(position)).setGraphic(iv);
-                chooseMove(position, FIRM_PASTRY_THINNER, v);
-            });
+            disableTB(parent, false);
+            if (action.equals("pick")) {
+                msgBox.appendText("Select the die.\n");
+            } else {
+                msgBox.appendText("Select the cell.\n");
+            }
+            for (int i=0; i<parent.getChildren().size(); i++) {
+                int h = i;
+                ((ToggleButton)parent.getChildren().get(i)).setOnAction(event -> {
+                    ((ToggleButton)parent.getChildren().get(h)).setSelected(false);
+                    if (action.equals("pick")) {
+                        guiViewT.notify(new ReplyPickDie(h));
+                    } else {
+                        guiViewT.notify(new ReplyPlaceDie(h));
+                    }
+                    resetPostMove();
+                });
+            }
         });
     }
 
-    private void chooseMove(int position, String cardName, Integer value) {
-        Platform.runLater(() -> {
-            yes.setText("Yes");
-            no.setText("No");
-            yes.setVisible(true);
-            no.setVisible(true);
-            msgBox.appendText("Do you want to place the die on your Window Pattern Card?\n");
-            yes.setOnAction(event -> {
-                disableTB(personalWPCDice, false);
-                msgBox.appendText("Select destination cell.\n");
-                for (int i = 0; i < personalWPCDice.getChildren().size(); i++) {
-                    int h = i;
-                    ((ToggleButton) personalWPCDice.getChildren().get(i)).setOnAction(event1 -> {
-                        ((ToggleButton) draftPoolDice.getChildren().get(position)).setSelected(false);
-                        ((ToggleButton) personalWPCDice.getChildren().get(h)).setSelected(false);
-                        if (cardName.equals(FIRM_PASTRY_THINNER)) {
-                            guiViewT.notify(new UseToolFirmPastryThinner("MOVE", value, position, h));
-                        } else {
-                            guiViewT.notify(new UseToolFirmPastryBrush("MOVE", null, position, h));
-                        }
-                        resetPostMove();
-                    });
-                }
-            });
-            no.setOnAction(event -> {
-                if (cardName.equals(FIRM_PASTRY_THINNER)) {
-                    guiViewT.notify(new UseToolFirmPastryThinner("DRAFTPOOL", value, position, null));
-                } else {
-                    guiViewT.notify(new UseToolFirmPastryBrush("DRAFTPOOL", null, position, null));
-                }
-                resetPostMove();
-            });
-        });
-    }
-
-    private void chooseMovesNumber() {
-        Platform.runLater(() -> {
-            yes.setText("1");
-            no.setText("2");
-            yes.setVisible(true);
-            no.setVisible(true);
-            msgBox.appendText("How many dice do you want to move?\n");
-            yes.setOnAction(event -> {
-                msgBox.appendText("Click on the die, then on the cell you want to move it to.\n" + BACK);
-                disableTB(personalWPCDice, false);
-                moveDice(personalWPCDice, personalWPCDice, MANUAL_CUTTER);
-            });
-            no.setOnAction(event -> {
-                msgBox.appendText("For each die, click on it, then on the cell you want to move it to.\n"+BACK);
-                disableTB(personalWPCDice, false);
-                moveTwoDice(personalWPCDice, personalWPCDice, MANUAL_CUTTER);
-            });
-        });
-    }
-
-    private void setIncrease(int position) {
+    private void increaseValue() {
         Platform.runLater(() -> {
             msgBox.appendText("Do you want to increase or decrease the die value?\n");
             yes.setText("+");
@@ -894,16 +713,38 @@ public class GameBoardController extends Observable implements Observer {
             no.setVisible(true);
             yes.setOnAction(event -> {
                 msgBox.appendText("The value will be increased by 1.\n");
-                disableTB(draftPoolDice, false);
-                guiViewT.notify(new UseToolChangeDieValue(ROUGHING_FORCEPS, position, true));
-                resetPostMove();
+                guiViewT.notify(new ReplyIncreaseDecrease(true));
             });
             no.setOnAction(event -> {
                 msgBox.appendText("The value will be decreased by 1.\n");
-                disableTB(draftPoolDice, false);
-                guiViewT.notify(new UseToolChangeDieValue(ROUGHING_FORCEPS, position, false));
+                guiViewT.notify(new ReplyIncreaseDecrease(false));
+            });
+            resetPostMove();
+        });
+    }
+
+    private void chooseValue() {
+        Platform.runLater(() -> {
+            msgBox.appendText("Choose the value.\n");
+            valueChoice.setVisible(true);
+            valueChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+                int v = (int)newValue+1;
+                guiViewT.notify(new ReplyDieValue(v));
                 resetPostMove();
             });
+        });
+    }
+
+    private void chooseAnotherAction() {
+        Platform.runLater(() -> {
+            msgBox.appendText("Do you want to move another die?\n");
+            yes.setText("Yes");
+            no.setText("No");
+            yes.setVisible(true);
+            no.setVisible(true);
+            yes.setOnAction(event -> guiViewT.notify(new ReplyAnotherAction(true)));
+            no.setOnAction(event -> guiViewT.notify(new ReplyAnotherAction(false)));
+            resetPostMove();
         });
     }
 
@@ -1026,14 +867,17 @@ public class GameBoardController extends Observable implements Observer {
 
     private void resetPostMove() {
         inputError(false);
-        disableTCB(false);
+        disableTCB(true);
         disableAllButtons();
         Platform.runLater(() -> {
             for (int i=0; i<parents.size(); i++) {
                 for (int j=0; j<parents.get(i).getChildrenUnmodifiable().size(); j++) {
-                    ((ToggleButton) parents.get(i).getChildrenUnmodifiable().get(i)).setOnAction(null);
+                    ((ToggleButton) parents.get(i).getChildrenUnmodifiable().get(j)).setOnAction(null);
+                    ((ToggleButton) parents.get(i).getChildrenUnmodifiable().get(j)).setSelected(false);
                 }
             }
+            yes.setVisible(false);
+            no.setVisible(false);
         });
     }
 
@@ -1041,7 +885,16 @@ public class GameBoardController extends Observable implements Observer {
         redShadow.setColor(new Color(0.7, 0,0,1));
         if (b) {
             msgBox.setEffect(redShadow);
-            msgBox.getScene().addEventFilter(MouseEvent.MOUSE_PRESSED, mouseEvent -> msgBox.setEffect(null));
+            try {
+                Thread.sleep(500);
+                msgBox.setEffect(null);
+                Thread.sleep(500);
+                msgBox.setEffect(redShadow);
+                Thread.sleep(500);
+                msgBox.setEffect(null);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
             msgBox.setEffect(null);
         }
