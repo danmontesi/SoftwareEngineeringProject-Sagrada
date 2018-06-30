@@ -3,7 +3,7 @@
     -fx-font-family: 'Goudy Bookletter 1911', serif;
 }
 
-#dpbox {
+#draftpoolbox {
     -fx-border-color: gray;
     -fx-border-width: 3px;
 }
@@ -19,16 +19,16 @@
     -fx-border-width: 0 3px 3px 3px;
 }
 
-.tcb {
-    -fx-background-color: transparent;
-}
-
-#db1 {
-    -fx-background-color: transparent;
-}
-
 .button {
     -fx-font-size: 14px;
+}
+
+.toggle-button {
+    -fx-background-color: transparent;
+}
+
+.toolcardbutton {
+    -fx-background-color: transparent;
 }
 
 .text-area {
@@ -37,8 +37,4 @@
 
 .text-area .content {
     -fx-background-color: #f0f0f0;
-}
-
-.toggle-button {
-    -fx-background-color: transparent;
 }

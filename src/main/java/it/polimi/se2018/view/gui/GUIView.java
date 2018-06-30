@@ -34,6 +34,7 @@ public class GUIView extends View {
 
     @Override
     public void playerDisconnection(String username) {
+        //TODO in gameboard
         lobbyNotifier.updateGui(username);
     }
 
@@ -137,7 +138,7 @@ public class GUIView extends View {
     public void updateBoard(RefreshBoardCommand refreshCommand) {
         while(!GameBoardNotifier.getInstance().isOpen()){
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -209,5 +210,4 @@ public class GUIView extends View {
         for (Observer observer : observers)
             observer.update(command);
     }
-
 }

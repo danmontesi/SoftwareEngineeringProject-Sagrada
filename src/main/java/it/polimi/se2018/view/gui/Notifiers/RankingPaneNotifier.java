@@ -23,8 +23,12 @@ public class RankingPaneNotifier extends Observable {
         notifyObservers(scores);
     }
 
-    public void setOpen() {
-        this.open=true;
+    public void setOpen(boolean b) {
+        if (b) {
+            this.open = true;
+        } else {
+            this.open = false;
+        }
     }
 
     public boolean isOpen() {

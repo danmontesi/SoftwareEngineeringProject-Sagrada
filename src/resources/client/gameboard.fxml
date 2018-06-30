@@ -14,7 +14,7 @@
             <ImageView fx:id="pubOC1" fitHeight="190.0" fitWidth="140.0" layoutX="15.0" layoutY="15.0" preserveRatio="true" />
             <ImageView fx:id="pubOC2" fitHeight="190.0" fitWidth="140.0" layoutX="15.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="pubOC3" fitHeight="190.0" fitWidth="140.0" layoutX="15.0" layoutY="425.0" preserveRatio="true" />
-            <ToggleButton fx:id="toolCard1" layoutX="160.0" layoutY="12.0" mnemonicParsing="false" onAction="#tc1Action" prefHeight="190.0" prefWidth="140.0" styleClass="tcb" />
+            <Button styleClass="toolcardbutton" fx:id="toolCard1" layoutX="160.0" layoutY="12.0" mnemonicParsing="false" onAction="#tc1Action" prefHeight="190.0" prefWidth="140.0" />
             <Label fx:id="tc1tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="260.0" layoutY="22.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
             <Circle fx:id="tCircle1" layoutX="290.0" layoutY="35.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
                <fill>
@@ -27,7 +27,7 @@
                   </RadialGradient>
                </fill>
             </Circle>
-            <ToggleButton fx:id="toolCard2" layoutX="160.0" layoutY="217.0" mnemonicParsing="false" onAction="#tc2Action" prefHeight="190.0" prefWidth="140.0" styleClass="tcb" />
+            <Button styleClass="toolcardbutton" fx:id="toolCard2" layoutX="160.0" layoutY="217.0" mnemonicParsing="false" onAction="#tc2Action" prefHeight="190.0" prefWidth="140.0" />
             <Label fx:id="tc2tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="260.0" layoutY="227.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
             <Circle fx:id="tCircle2" layoutX="290.0" layoutY="240.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
                <fill>
@@ -40,7 +40,7 @@
                   </RadialGradient>
                </fill>
             </Circle>
-            <ToggleButton fx:id="toolCard3" layoutX="160.0" layoutY="422.0" mnemonicParsing="false" onAction="#tc3Action" prefHeight="190.0" prefWidth="140.0" styleClass="tcb" />
+            <Button styleClass="toolcardbutton" fx:id="toolCard3" layoutX="160.0" layoutY="422.0" mnemonicParsing="false" onAction="#tc3Action" prefHeight="190.0" prefWidth="140.0" />
             <Label fx:id="tc3tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="260.0" layoutY="424.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
             <Circle fx:id="tCircle3" layoutX="290.0" layoutY="437.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
                <fill>
@@ -146,11 +146,11 @@
             </GridPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="dpbox" layoutX="332.0" layoutY="222.0" prefHeight="100.0" prefWidth="760.0">
+      <AnchorPane fx:id="draftpoolbox" layoutX="332.0" layoutY="222.0" prefHeight="100.0" prefWidth="760.0">
          <children>
             <HBox fx:id="draftPoolDice" layoutX="14.0" layoutY="30.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="43.0" prefWidth="611.0" spacing="20.0" styleClass="db" AnchorPane.leftAnchor="30.0" />
             <Button fx:id="pass" layoutX="680.0" layoutY="15.0" mnemonicParsing="false" onAction="#passTurn" pickOnBounds="false" prefHeight="25.0" prefWidth="65.0" styleClass="button" text="Pass" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
-            <Button fx:id="quit" layoutX="954.0" layoutY="91.0" mnemonicParsing="false" onAction="#quit" pickOnBounds="false" prefHeight="25.0" prefWidth="65.0" styleClass="button" text="Quit" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+            <Button fx:id="undo" layoutX="954.0" layoutY="91.0" mnemonicParsing="false" onAction="#undo" pickOnBounds="false" prefHeight="25.0" prefWidth="65.0" styleClass="button" text="Undo" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="personalbox" layoutX="332.0" layoutY="333.0" prefHeight="293.0" prefWidth="760.0">

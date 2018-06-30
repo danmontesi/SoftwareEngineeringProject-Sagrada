@@ -1,7 +1,6 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.commands.client_to_server_command.ChosenWindowPatternCard;
-import it.polimi.se2018.view.gui.Notifiers.GameBoardNotifier;
 import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WGUIViewSetting;
 import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WPCChoice;
 import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WPCChoiceAction;
@@ -24,7 +23,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,9 +36,9 @@ public class WPCChoiceController extends Observable implements Observer {
 
     private GUIView guiViewT;
 
-    private List<ToggleButton> wpcards;
-    private List<Label> wpcnames;
-    private List<Label> wpcdifficulties;
+    private List<ToggleButton> wpCards;
+    private List<Label> wpcNames;
+    private List<Label> wpcDifficulties;
 
     @FXML
     private Label choose;
@@ -69,7 +71,7 @@ public class WPCChoiceController extends Observable implements Observer {
     @FXML
     private Button start;
 
-    private ToggleGroup wpcs;
+    private ToggleGroup wpcGroup;
 
     private DropShadow shadow = new DropShadow();
     private DropShadow redShadow = new DropShadow();
@@ -77,10 +79,10 @@ public class WPCChoiceController extends Observable implements Observer {
     private String selectedWPC;
 
     public WPCChoiceController() {
-        wpcards = new ArrayList<>();
-        wpcnames = new ArrayList<>();
-        wpcdifficulties = new ArrayList<>();
-        wpcs = new ToggleGroup();
+        wpCards = new ArrayList<>();
+        wpcNames = new ArrayList<>();
+        wpcDifficulties = new ArrayList<>();
+        wpcGroup = new ToggleGroup();
     }
 
     public void initialize() {
@@ -104,31 +106,30 @@ public class WPCChoiceController extends Observable implements Observer {
                 public void visitWPCChoiceAction(WPCChoice wpcChoice) {
                     setWPCards(wpcChoice.getWpcNames(), wpcChoice.getWpcDifficulties());
                 }
-
             };
             guiReply.acceptWPCChoiceVisitor(wpcChoiceVisitor);
         }
     }
 
     private void setTGroup() {
-        wpcs.getToggles().addAll(wpc1, wpc2, wpc3, wpc4);
+        wpcGroup.getToggles().addAll(wpc1, wpc2, wpc3, wpc4);
     }
 
     private void initWPCards() {
-        wpcards.add(wpc1);
-        wpcards.add(wpc2);
-        wpcards.add(wpc3);
-        wpcards.add(wpc4);
+        wpCards.add(wpc1);
+        wpCards.add(wpc2);
+        wpCards.add(wpc3);
+        wpCards.add(wpc4);
 
-        wpcnames.add(wpc1n);
-        wpcnames.add(wpc2n);
-        wpcnames.add(wpc3n);
-        wpcnames.add(wpc4n);
+        wpcNames.add(wpc1n);
+        wpcNames.add(wpc2n);
+        wpcNames.add(wpc3n);
+        wpcNames.add(wpc4n);
 
-        wpcdifficulties.add(wpc1d);
-        wpcdifficulties.add(wpc2d);
-        wpcdifficulties.add(wpc3d);
-        wpcdifficulties.add(wpc4d);
+        wpcDifficulties.add(wpc1d);
+        wpcDifficulties.add(wpc2d);
+        wpcDifficulties.add(wpc3d);
+        wpcDifficulties.add(wpc4d);
     }
 
     private void setWPCards(ArrayList<String> names, ArrayList<Integer> difficulties) {
@@ -140,11 +141,11 @@ public class WPCChoiceController extends Observable implements Observer {
                 ImageView iv = new ImageView(image);
                 iv.setFitHeight(184);
                 iv.setFitWidth(230);
-                wpcards.get(i).setGraphic(iv);
-                wpcnames.get(i).setText(img);
-                wpcdifficulties.get(i).setText(difficulties.get(i).toString());
+                wpCards.get(i).setGraphic(iv);
+                wpcNames.get(i).setText(img);
+                wpcDifficulties.get(i).setText(difficulties.get(i).toString());
             }
-            for (ToggleButton wpc : wpcards) {
+            for (ToggleButton wpc : wpCards) {
                 wpc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> wpc.setEffect(shadow));
                 wpc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
                     if (!wpc.isSelected()) wpc.setEffect(null);

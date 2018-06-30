@@ -46,7 +46,7 @@ public class RankingPaneController extends Observable implements Observer {
     public void initialize() {
         RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
         rankingPaneNotifier.addObserver(this);
-        rankingPaneNotifier.setOpen();
+        rankingPaneNotifier.setOpen(true);
         initButtons();
     }
 
@@ -102,6 +102,8 @@ public class RankingPaneController extends Observable implements Observer {
     }
 
     private void closeStage() {
+        RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
+        rankingPaneNotifier.setOpen(false);
         Stage stage = (Stage)outcome.getScene().getWindow();
         stage.close();
     }

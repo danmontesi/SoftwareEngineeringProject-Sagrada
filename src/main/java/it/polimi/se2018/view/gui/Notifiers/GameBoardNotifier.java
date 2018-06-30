@@ -29,8 +29,12 @@ public class GameBoardNotifier extends Observable {
         notifyObservers(gameBoardAction);
     }
 
-    public void setOpen() {
-        this.open=true;
+    public void setOpen(boolean b) {
+        if (b) {
+            this.open = true;
+        } else {
+            this.open = false;
+        }
     }
 
     public boolean isOpen() {
