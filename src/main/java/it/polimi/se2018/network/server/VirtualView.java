@@ -150,14 +150,14 @@ public class VirtualView extends View {
     }
 
     @Override
-    public void continueTurnMenu(boolean move, boolean tool) {
+    public void continueTurnMenu(boolean hasAlreadyMovedDie, boolean hasAlreadyUsedTool) {
         if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
             disconnected=true;
                 LOGGER.log(Level.INFO, "Disconnected-> Passing automatically turn");
             notify(new MoveChoicePassTurn(username));
         } else {
                 LOGGER.log(Level.INFO, "SENDING CONTINUETURNMENU");
-            Server.getConnectedClients().get(username).notifyClient(new ContinueTurnCommand(move, tool));
+            Server.getConnectedClients().get(username).notifyClient(new ContinueTurnCommand(hasAlreadyMovedDie, hasAlreadyUsedTool));
         }
     }
 

@@ -18,12 +18,12 @@ public class ContinueTurnCommand extends ServerToClientCommand {
         this.tool = tool;
     }
 
-    public boolean canShowMove() {
-        return !move;
+    public boolean hasPerformedMove() {
+        return move;
     }
 
-    public boolean canShowTool() {
-        return !tool;
+    public boolean hasPerformedTool() {
+        return tool;
     }
     /**
      * Visitor methods, it calls the clientController to perform a move using dynamic binding

@@ -19,7 +19,7 @@ public enum INPUT_STATE {
 
         //undo action
         if (input.equals("u")){
-            System.out.println("Action Interrupted");
+            //edit @dan(prima c'era Action interrupted, ma verrà scritto dopo automaticamente. Quindi l'ho tolto altrimenti viene scritto 2 volte
             if(currentState.equals(NOT_YOUR_TURN)){
                 nextState = NOT_YOUR_TURN;
             } else {

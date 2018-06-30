@@ -15,6 +15,7 @@ public abstract class ServerToClientCommand implements Serializable {
      */
     private static final long serialVersionUID = -6460847901998831472L;
 
+    public boolean hasMessage() { return message!=null; }
 
     public String getMessage() {
         return message;
