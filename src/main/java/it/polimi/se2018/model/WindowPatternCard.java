@@ -88,6 +88,7 @@ public class WindowPatternCard {
         this.getCell(row, column).setAssociatedDie(d);
         return true;
     }
+    //TODO FORSE RINUOVI
 
 
     /**
@@ -121,43 +122,6 @@ public class WindowPatternCard {
             }
         }
         this.getCell(index).setAssociatedDie(d);
-        return true;
-    }
-
-    /**
-     * Same of place die, but has index for 2 dice
-     *
-     * @param d1
-     * @param d2
-     * @param index1
-     * @param index2
-     * @param colorRestriction
-     * @param valueRestriction
-     * @param placementRestriction
-     * @return
-     */
-    public boolean place2Die(Die d1, Die d2, int index1, int index2, boolean colorRestriction, boolean valueRestriction,
-                             boolean placementRestriction) {
-        if (this.getCell(index1).hasDie() || this.getCell(index2).hasDie()) {
-            return false;
-        }
-        if (colorRestriction) {
-            if (!checkColorRestriction(this.getCell(index1), d1) || !checkColorRestriction(this.getCell(index2), d2)) {
-                return false;
-            }
-        }
-        if (valueRestriction) {
-            if (!checkValueRestriction(this.getCell(index1), d1) || !checkValueRestriction(this.getCell(index2), d2)) {
-                return false;
-            }
-        }
-        if (placementRestriction) {
-            if (!checkPlacementRestriction(getCell(index1), d1) || !checkPlacementRestriction(getCell(index2), d2)) {
-                return false;
-            }
-        }
-        this.getCell(index1).setAssociatedDie(d1);
-        this.getCell(index2).setAssociatedDie(d2);
         return true;
     }
 
@@ -218,68 +182,6 @@ public class WindowPatternCard {
         return true;
     }
 
-    public boolean move2Dice(int oldPosition1, int newPosition1, int oldPosition2, int newPosition2, boolean colorRestriction, boolean valueRestriction,
-                             boolean placementRestriction) throws EmptyCellException {
-        Die d = this.removeDie(oldPosition1);
-        if (this.getCell(newPosition1).hasDie()) {
-            this.schema.get(oldPosition1).setAssociatedDie(d);
-            return false;
-        }
-        if (colorRestriction) {
-            if (!checkColorRestriction(this.getCell(newPosition1), d)) {
-                this.schema.get(oldPosition1).setAssociatedDie(d);
-                return false;
-            }
-        }
-        if (valueRestriction) {
-            if (!checkValueRestriction(this.getCell(newPosition1), d)) {
-                this.schema.get(oldPosition1).setAssociatedDie(d);
-                return false;
-            }
-        }
-        if (placementRestriction) {
-            if (!checkPlacementRestriction(getCell(newPosition1), d)) {
-                this.schema.get(oldPosition1).setAssociatedDie(d);
-                return false;
-            }
-        }
-
-        Die d2 = this.removeDie(oldPosition1);
-        if (this.getCell(newPosition2).hasDie()) {
-            this.schema.get(oldPosition2).setAssociatedDie(d2);
-            this.schema.get(oldPosition1).setAssociatedDie(d);
-            return false;
-        }
-        if (colorRestriction) {
-            if (!checkColorRestriction(this.getCell(newPosition2), d2)) {
-                this.schema.get(oldPosition2).setAssociatedDie(d2);
-                this.schema.get(oldPosition1).setAssociatedDie(d);
-                return false;
-            }
-        }
-        if (valueRestriction) {
-            if (!checkValueRestriction(this.getCell(newPosition2), d2)) {
-                this.schema.get(oldPosition2).setAssociatedDie(d2);
-                this.schema.get(oldPosition1).setAssociatedDie(d);
-                return false;
-            }
-        }
-        if (placementRestriction) {
-            if (!checkPlacementRestriction(getCell(newPosition2), d2)) {
-                this.schema.get(oldPosition2).setAssociatedDie(d2);
-                this.schema.get(oldPosition1).setAssociatedDie(d);
-                return false;
-            }
-        }
-
-        this.getCell(newPosition1).setAssociatedDie(d);
-        this.getCell(newPosition2).setAssociatedDie(d2);
-        return true;
-    }
-
-    public Die removeDie(int row, int column) throws EmptyCellException {
-        return schema.get(row * 5 + column).removeDie();
-    }
 
     public Die removeDie(int index) throws EmptyCellException {
         return schema.get(index).removeDie();
@@ -503,4 +405,34 @@ public class WindowPatternCard {
             return wpcString;
         }
 
+    public boolean isPossibleToPlace(Die tempDieToCheckPlacement) {
+        for (int i = 0; i < schema.size(); i++) {
+            if (placeDieWithoutPlacement(tempDieToCheckPlacement, i, true, true, true)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean placeDieWithoutPlacement(Die d, int index, boolean colorRestriction, boolean valueRestriction, boolean placementRestriction) {
+        if (this.getCell(index).hasDie()) {
+            return false;
+        }
+        if (colorRestriction) {
+            if (!checkColorRestriction(this.getCell(index), d)) {
+                return false;
+            }
+        }
+        if (valueRestriction) {
+            if (!checkValueRestriction(this.getCell(index), d)) {
+                return false;
+            }
+        }
+        if (placementRestriction) {
+            if (!checkPlacementRestriction(getCell(index), d)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

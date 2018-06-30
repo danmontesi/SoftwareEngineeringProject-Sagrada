@@ -3,6 +3,7 @@ package it.polimi.se2018.view.cli.cliState;
 public enum INPUT_STATE {
     YOUR_TURN,
     NOT_YOUR_TURN,
+    CHOOSE_WPC,
     PLACE_DIE_INDEX,
     PLACE_DIE_ROW_COLUMN,
     TOOLCARD_CHOICE,

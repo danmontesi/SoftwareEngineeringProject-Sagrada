@@ -3,7 +3,6 @@ package it.polimi.se2018.view.cli;
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.client_to_server_command.new_tool_commands.*;
 import it.polimi.se2018.commands.server_to_client_command.*;
-import it.polimi.se2018.exceptions.TimeUpException;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
@@ -24,6 +23,7 @@ public class CLIView extends View implements Runnable {
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
     private InputReader inputReader = new InputReader();
     private INPUT_STATE currentState = INPUT_STATE.NOT_YOUR_TURN;
+    private List<WindowPatternCard> wpcsForInitialChoice;
 
     private boolean placeDieAllowed;
     private boolean toolcardAllowed;
@@ -34,30 +34,26 @@ public class CLIView extends View implements Runnable {
         super(observer);
         System.out.println("ATTESA DI GIOCATORI...");
         cliState = new CliState();
+        //avvia l'input reader
+        new Thread(this).start();
     }
 
     @Override
     public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards) {
+        wpcsForInitialChoice = cards;
+        currentState = INPUT_STATE.CHOOSE_WPC;
         for (WindowPatternCard card : cards) {
             cliPrinter.printWPC(card);
         }
         System.out.println("\n Which one do you chose?");
         for (int i = 0; i < cards.size(); i++) {
-            System.out.println(i + 1 + ")" + cards.get(i).getCardName());
+            System.out.println(i + 1 + ") " + cards.get(i).getCardName());
         }
-        try {
-            int chosen = inputReader.readInt(1, cards.size(), true);
-            notify(new ChosenWindowPatternCard(cards.get(chosen - 1).getCardName()));
-            System.out.println("You chose: " + cards.get(chosen - 1).getCardName());
-        } catch (TimeUpException e) {
-            System.out.println("Window Pattern Card chosen automatically");
-        }
-        //avvia l'inputReader
-        new Thread(this).start();
     }
 
     @Override
     public synchronized void startTurnMenu() {
+        System.out.println("Now it's your turn!");
         placeDieAllowed = true;
         toolcardAllowed = true;
         continueTurnMenu(true, true);
@@ -86,7 +82,6 @@ public class CLIView extends View implements Runnable {
         placeDieAllowed = move;
         toolcardAllowed = tool;
         currentState = INPUT_STATE.YOUR_TURN;
-        cliPrinter.printYourTurn(currentState, placeDieAllowed, toolcardAllowed);
     }
 
     @Override
@@ -217,6 +212,15 @@ public class CLIView extends View implements Runnable {
                     checkPrintBoard(input);
                 }
                 break;
+            case CHOOSE_WPC:
+                if(checkCorrectInput(input, 1, 4)){
+                    int chosen = Integer.parseInt(input);
+                    notify(new ChosenWindowPatternCard(wpcsForInitialChoice.get(chosen - 1).getCardName()));
+                    System.out.println("You chose: " + wpcsForInitialChoice.get(chosen - 1).getCardName());
+                    //free memory
+                    wpcsForInitialChoice = null;
+                }
+                break;
             case PLACE_DIE_INDEX:
                 if(!checkCorrectDraftPool(input)){
                     this.currentState = INPUT_STATE.YOUR_TURN;
@@ -272,7 +276,7 @@ public class CLIView extends View implements Runnable {
                 }
         }
         this.currentState = INPUT_STATE.nextState(currentState, input);
-
+        //TODO: Send undoActionCommand
     }
 
     private boolean actionIsNotAllowedForThisTurn(String input){
@@ -385,8 +389,8 @@ public class CLIView extends View implements Runnable {
                         "If it is your turn you can choose between:\n" +
                         "d : Place a die\n" +
                         "t : Use a toolcard\n" +
-                        "p : Pass your turn\n\n" +
-                        "u : undo action" +
+                        "p : Pass your turn\n" +
+                        "u : undo action\n\n" +
                         "Furthermore, in any moment you can type:\n" +
                         "-c : print complete board\n" +
                         "-pr : print your Private Objective Card\n" +
