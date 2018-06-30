@@ -652,7 +652,7 @@ public class GameBoardController extends Observable implements Observer {
 
     private void setPersonalWPC(ArrayList<String> wpc) {
         Platform.runLater(() -> {
-            for (int i=0; i<wpc.size(); i++) {
+            for (int i=0; i<wpc.size()-1; i++) {
                 String img = wpc.get(i+1);
                 if (img.contains("_")) {
                     String path = "/client/dice/" + img + ".jpg";
