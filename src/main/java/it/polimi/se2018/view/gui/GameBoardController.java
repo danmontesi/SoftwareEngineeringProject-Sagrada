@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -45,8 +46,8 @@ public class GameBoardController extends Observable implements Observer {
     private GUIView guiViewT;
     private RefreshBoardCommand modelRepresentation;
 
-    private ToggleGroup draftPOOLgroup;
-    private ToggleGroup roundTrackGroup;
+    private ToggleGroup draftPOOLgroup = new ToggleGroup();
+    private ToggleGroup roundTrackGroup = new ToggleGroup();
 
     private List<Circle> tcCircles;
     private List<Circle> wpcCircles;
@@ -242,11 +243,15 @@ public class GameBoardController extends Observable implements Observer {
 
         for (int i=0; i<10; i++){
             ToggleButton tb = new ToggleButton();
+            tb.setPrefSize(43, 43);
+            tb.setPadding(Insets.EMPTY);
             roundTrackDice.getChildren().add(tb);
             roundTrackGroup.getToggles().add(tb);
         }
         for (int i=0; i<9; i++){
             ToggleButton tb = new ToggleButton();
+            tb.setPrefSize(43, 43);
+            tb.setPadding(Insets.EMPTY);
             draftPoolDice.getChildren().add(tb);
             draftPOOLgroup.getToggles().add(tb);
         }
@@ -255,6 +260,8 @@ public class GameBoardController extends Observable implements Observer {
             int h=i%5;
             if (h==0) k++;
             ToggleButton tb = new ToggleButton();
+            tb.setPrefSize(43, 43);
+            tb.setPadding(Insets.EMPTY);
             ImageView iv = new ImageView();
             iv.setFitWidth(43);
             iv.setFitHeight(43);
