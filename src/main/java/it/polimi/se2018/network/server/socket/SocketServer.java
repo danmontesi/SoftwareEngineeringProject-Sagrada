@@ -6,6 +6,7 @@ import it.polimi.se2018.network.server.Server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -17,7 +18,7 @@ public class SocketServer {
     public void socketStartListening(){
         try {
             serverSocket = new ServerSocket(port);
-            System.out.println("Listening socket, address: " + serverSocket.getInetAddress() + " port: " + serverSocket.getLocalPort());
+            System.out.println("Listening socket, address: " + InetAddress.getLocalHost() + " port: " + serverSocket.getLocalPort());
 
             new Thread(){
                 public void run(){

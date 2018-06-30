@@ -91,7 +91,6 @@ class CLIPrinter {
 
     /**
      * Used only to print DraftPool and RoundTrack
-     * @param list
      */
     void printInlineList(List<String> list){
         String[][] table = new String[4][list.size()];
@@ -111,7 +110,7 @@ class CLIPrinter {
             int row = j/5;
             int column = j%5;
             //ma siamo sicuri che non ci vada table =...??
-            insertStringInTable(table, row, column, stringWpc.get(i));
+            table = insertStringInTable(table, row, column, stringWpc.get(i));
         }
         printTable(table);
         System.out.println("\n");

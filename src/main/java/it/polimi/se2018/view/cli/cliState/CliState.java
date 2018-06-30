@@ -3,13 +3,12 @@ package it.polimi.se2018.view.cli.cliState;
 import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
-import it.polimi.se2018.utils.Observable;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CliState extends Observable {
+public class CliState {
 
     private String privateObjectiveCard;
     private String privateObjectiveCardDescription;
@@ -39,33 +38,28 @@ public class CliState extends Observable {
         parsePublicObjectiveCards(command);
         parseToolcards(command);
         parsePlayers(command);
-        notify(this);
     }
 
     public void parseRefreshDraftPool(RefreshDraftPoolCommand command){
         draftpool = command.getDraftpool();
-        notify(this);
     }
 
     public void parseRefreshRoundTrack(RefreshRoundTrackCommand command){
         roundTrack = command.getRoundTrack();
-        notify(this);
     }
 
     public void parseRefreshWPC(RefreshWpcCommand command){
         players.get(0).setWpc(command.getPersonalWpc());
-        for(int i = 1; i < command.getOtherPlayersWpcs().size(); i++){
-            players.get(i).setWpc(command.getOtherPlayersWpcs().get(i-1));
+        for(int i = 0; i < command.getOtherPlayersWpcs().size(); i++){
+            players.get(i+1).setWpc(command.getOtherPlayersWpcs().get(i));
         }
-        notify(this);
     }
 
     public void parseRefreshTokens(RefreshTokensCommand command){
         players.get(0).setTokens(command.getPersonalTokens());
-        for(int i = 1; i < command.getOtherPlayersTokens().size(); i++){
-            players.get(i).setTokens(command.getOtherPlayersTokens().get(i-1));
+        for(int i = 0; i < command.getOtherPlayersTokens().size(); i++){
+            players.get(i+1).setTokens(command.getOtherPlayersTokens().get(i));
         }
-        notify(this);
     }
 
     private void initPlayers(RefreshBoardCommand command){
@@ -83,7 +77,7 @@ public class CliState extends Observable {
         players.get(0).setWpc(command.getPersonalWpc());
 
         //set other players data
-        for (int i = 0; i < command.getOtherPlayersUsernames().size(); i++){
+        for (int i = 0; i < command.getOtherPlayersWpcs().size(); i++){
             int j = i + 1;
             players.get(j).setUsername(command.getOtherPlayersUsernames().get(i));
             players.get(j).setTokens(command.getOtherPlayersTokens().get(i));
