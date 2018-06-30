@@ -1,20 +1,23 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.commands.client_to_server_command.*;
+import it.polimi.se2018.commands.client_to_server_command.MoveChoiceDicePlacement;
+import it.polimi.se2018.commands.client_to_server_command.MoveChoicePassTurn;
+import it.polimi.se2018.commands.client_to_server_command.MoveChoiceToolCard;
+import it.polimi.se2018.commands.client_to_server_command.UndoActionCommand;
 import it.polimi.se2018.commands.client_to_server_command.new_tool_commands.*;
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
-import it.polimi.se2018.view.gui.Notifiers.GameBoardNotifier;
 import it.polimi.se2018.view.gui.Notifiers.GameBoardActions.*;
+import it.polimi.se2018.view.gui.Notifiers.GameBoardNotifier;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -25,7 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import org.omg.CORBA.PERSIST_STORE;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,6 +44,9 @@ public class GameBoardController extends Observable implements Observer {
 
     private GUIView guiViewT;
     private RefreshBoardCommand modelRepresentation;
+
+    private ToggleGroup draftPOOLgroup;
+    private ToggleGroup roundTrackGroup;
 
     private List<Circle> tcCircles;
     private List<Circle> wpcCircles;
@@ -148,7 +154,6 @@ public class GameBoardController extends Observable implements Observer {
 
     private DropShadow shadow = new DropShadow();
     private DropShadow redShadow = new DropShadow();
-    private Glow bright = new Glow(0.8);
 
     public GameBoardController() {
         pubOCards = new ArrayList<>();
@@ -238,10 +243,12 @@ public class GameBoardController extends Observable implements Observer {
         for (int i=0; i<10; i++){
             ToggleButton tb = new ToggleButton();
             roundTrackDice.getChildren().add(tb);
+            roundTrackGroup.getToggles().add(tb);
         }
         for (int i=0; i<9; i++){
             ToggleButton tb = new ToggleButton();
             draftPoolDice.getChildren().add(tb);
+            draftPOOLgroup.getToggles().add(tb);
         }
         int k=-1;
         for (int i=0; i<20; i++) {
@@ -249,7 +256,6 @@ public class GameBoardController extends Observable implements Observer {
             if (h==0) k++;
             ToggleButton tb = new ToggleButton();
             ImageView iv = new ImageView();
-            //TODO ctrl init buttons wpc
             iv.setFitWidth(43);
             iv.setFitHeight(43);
             tb.setGraphic(iv);
@@ -366,7 +372,7 @@ public class GameBoardController extends Observable implements Observer {
                 @Override
                 public void visitGameBoardAction(InvalidAction invalidAction) {
                     msgBox.appendText(invalidAction.getMessage() + "\n");
-                    inputError(true);
+                    inputError();
                 }
 
                 @Override
@@ -383,7 +389,7 @@ public class GameBoardController extends Observable implements Observer {
                 @Override
                 public void visitGameBoardAction(DraftPoolRoundTrackUpdate draftPoolRoundTrackUpdate) {
                     if (draftPoolRoundTrackUpdate.getType().equals("DP")) {
-                        setDrafPool(draftPoolRoundTrackUpdate.getDice());
+                        setDraftPool(draftPoolRoundTrackUpdate.getDice());
                     } else if (draftPoolRoundTrackUpdate.getType().equals("RT")) {
                         setRoundTrack(draftPoolRoundTrackUpdate.getDice());
                     }
@@ -416,7 +422,7 @@ public class GameBoardController extends Observable implements Observer {
 
                 @Override
                 public void visitGameBoardAction(TimeUp timeUp) {
-                    //TODO check put shadow disable
+                    //TODO check
                     for (ToggleButton t: tcButtons) {
                         if (t.isSelected()) {
                             t.setSelected(false);
@@ -483,7 +489,7 @@ public class GameBoardController extends Observable implements Observer {
             }
             for (ToggleButton tc : tcButtons) {
                 tc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tc.setEffect(shadow));
-                tc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {tc.setEffect(null);
+                tc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
                     if (!tc.isSelected()) tc.setEffect(null);
                 });
             }
@@ -542,7 +548,6 @@ public class GameBoardController extends Observable implements Observer {
                         if (((ToggleButton) draftPoolDice.getChildren().get(j)).isSelected()) {
                             ((ToggleButton) draftPoolDice.getChildren().get(j)).setSelected(false);
                             ((ToggleButton) personalWPCDice.getChildren().get(h)).setSelected(false);
-                            System.out.println("move");
                             guiViewT.notify(new MoveChoiceDicePlacement(h, j));
                             resetPostMove();
                         }
@@ -552,7 +557,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setDrafPool(ArrayList<String> dice) {
+    private void setDraftPool(ArrayList<String> dice) {
         Platform.runLater(() -> {
             for (int i=0; i<dice.size(); i++) {
                 String img = dice.get(i);
@@ -578,7 +583,7 @@ public class GameBoardController extends Observable implements Observer {
             for (int i=0; i<dice.size(); i++) {
                 int h=i;
                 draftPoolDice.getChildren().get(i).addEventHandler(MouseEvent.MOUSE_ENTERED, e -> draftPoolDice.getChildren().get(h).setEffect(shadow));
-                draftPoolDice.getChildren().get(i).addEventHandler(MouseEvent.MOUSE_EXITED, e -> {draftPoolDice.getChildren().get(h).setEffect(null);
+                draftPoolDice.getChildren().get(i).addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
                     if (!((ToggleButton)draftPoolDice.getChildren().get(h)).isSelected()) draftPoolDice.getChildren().get(h).setEffect(null);
                 });
             }
@@ -640,7 +645,7 @@ public class GameBoardController extends Observable implements Observer {
 
     private void setPersonalWPC(ArrayList<String> wpc) {
         Platform.runLater(() -> {
-            for (int i=0; i<20; i++) {
+            for (int i=0; i<wpc.size(); i++) {
                 String img = wpc.get(i+1);
                 if (img.contains("_")) {
                     String path = "/client/dice/" + img + ".jpg";
@@ -866,14 +871,13 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void resetPostMove() {
-        inputError(false);
         disableTCB(true);
         disableAllButtons();
         Platform.runLater(() -> {
-            for (int i=0; i<parents.size(); i++) {
-                for (int j=0; j<parents.get(i).getChildrenUnmodifiable().size(); j++) {
-                    ((ToggleButton) parents.get(i).getChildrenUnmodifiable().get(j)).setOnAction(null);
-                    ((ToggleButton) parents.get(i).getChildrenUnmodifiable().get(j)).setSelected(false);
+            for (Pane parent : parents) {
+                for (int j = 0; j < parent.getChildren().size(); j++) {
+                    ((ToggleButton) parent.getChildren().get(j)).setOnAction(null);
+                    ((ToggleButton) parent.getChildren().get(j)).setSelected(false);
                 }
             }
             yes.setVisible(false);
@@ -881,22 +885,11 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void inputError(boolean b) {
+    private void inputError() {
         redShadow.setColor(new Color(0.7, 0,0,1));
-        if (b) {
-            msgBox.setEffect(redShadow);
-            try {
-                Thread.sleep(500);
-                msgBox.setEffect(null);
-                Thread.sleep(500);
-                msgBox.setEffect(redShadow);
-                Thread.sleep(500);
-                msgBox.setEffect(null);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-            msgBox.setEffect(null);
-        }
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.6), evt -> msgBox.setEffect(null)),
+                                         new KeyFrame(Duration.seconds( 0.2), evt -> msgBox.setEffect(redShadow)));
+        timeline.setCycleCount(3);
+        timeline.play();
     }
 }
