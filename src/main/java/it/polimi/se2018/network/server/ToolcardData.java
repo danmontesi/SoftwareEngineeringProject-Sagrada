@@ -2,6 +2,7 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.model.Action;
 import it.polimi.se2018.model.COLOR;
+import it.polimi.se2018.model.Model;
 
 import java.util.List;
 
@@ -20,6 +21,17 @@ public class ToolcardData {
     private boolean increaseValue;
     private boolean anotherAction;
 
+    public Model removeOldModel(){
+        Model temp = oldModel;
+        oldModel = null;
+        return temp;
+    }
+
+    public void setOldModel(Model oldModel) {
+        this.oldModel = oldModel;
+    }
+
+    private Model oldModel;
 
     public ToolcardData() {
     }
