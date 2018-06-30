@@ -18,6 +18,7 @@ public enum INPUT_STATE {
 
         //undo action
         if (input.equals("u")){
+            System.out.println("Action Interrupted");
             if(currentState.equals(NOT_YOUR_TURN)){
                 nextState = NOT_YOUR_TURN;
             } else {

@@ -6,10 +6,7 @@ import it.polimi.se2018.model.COLOR;
 import it.polimi.se2018.model.Cell;
 import it.polimi.se2018.model.Die;
 import it.polimi.se2018.model.WindowPatternCard;
-import it.polimi.se2018.view.cli.cliState.CliState;
-import it.polimi.se2018.view.cli.cliState.PlayerLight;
-import it.polimi.se2018.view.cli.cliState.PublicObjectiveLight;
-import it.polimi.se2018.view.cli.cliState.ToolcardLight;
+import it.polimi.se2018.view.cli.cliState.*;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -28,6 +25,16 @@ class CLIPrinter {
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
     CLIPrinter() {
+    }
+
+    public synchronized void printYourTurn(INPUT_STATE state, boolean placeDieAllowed, boolean toolcardAllowed){
+        if (state.equals(INPUT_STATE.YOUR_TURN)){
+            System.out.println("\nIt's your turn!");
+            System.out.println("What do you want to do?");
+            System.out.println(placeDieAllowed ? "d - Place die" : "");
+            System.out.println(toolcardAllowed ? "t - Use Tool" : "");
+            System.out.println("p - Pass Turn");
+        }
     }
 
     private static void clearScreen() {

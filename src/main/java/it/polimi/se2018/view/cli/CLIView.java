@@ -23,7 +23,10 @@ public class CLIView extends View implements Runnable {
 
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
     private InputReader inputReader = new InputReader();
-    private INPUT_STATE currentState;
+    private INPUT_STATE currentState = INPUT_STATE.NOT_YOUR_TURN;
+
+    private boolean placeDieAllowed;
+    private boolean toolcardAllowed;
 
     private static final String NOT_YOUR_TURN = "Invalid action: it's not your turn";
 
@@ -55,7 +58,8 @@ public class CLIView extends View implements Runnable {
 
     @Override
     public synchronized void startTurnMenu() {
-        System.out.println("IT'S YOUR TURN!\n");
+        placeDieAllowed = true;
+        toolcardAllowed = true;
         continueTurnMenu(true, true);
     }
 
@@ -79,11 +83,10 @@ public class CLIView extends View implements Runnable {
 
     @Override
     public synchronized void continueTurnMenu(boolean move, boolean tool) {
+        placeDieAllowed = move;
+        toolcardAllowed = tool;
         currentState = INPUT_STATE.YOUR_TURN;
-        System.out.println("What do you want to do?");
-        System.out.println(move ? "d - Place die" : "");
-        System.out.println(tool ? "t - Use Tool" : "");
-        System.out.println("p - Pass Turn");
+        cliPrinter.printYourTurn(currentState, placeDieAllowed, toolcardAllowed);
     }
 
     @Override
@@ -180,16 +183,17 @@ public class CLIView extends View implements Runnable {
     @Override
     public void run() {
         while (!currentState.equals(INPUT_STATE.END_GAME)) {
+            cliPrinter.printYourTurn(currentState, placeDieAllowed, toolcardAllowed);
             String input = inputReader.readLine();
             manageCommand(currentState, input);
         }
     }
 
-    int draftPoolChoice;
-    int roundTrackChoice;
-    int rowChoice;
-    int columnChoice;
-    String pickDieSource;
+    private int draftPoolChoice;
+    private int roundTrackChoice;
+    private int rowChoice;
+    private int columnChoice;
+    private String pickDieSource;
 
     //output Function
     private void manageCommand(INPUT_STATE currentState, String input) {
@@ -206,18 +210,21 @@ public class CLIView extends View implements Runnable {
                     cliPrinter.printToolcards(cliState);
                 } else if (input.equals("u")){
                     System.out.println("Action interrupted");
-                } else{
+                } else if (input.equals("d")){
+                    System.out.println("Select draft pool index");
+                }
+                else{
                     checkPrintBoard(input);
                 }
                 break;
             case PLACE_DIE_INDEX:
-                System.out.println("Select draft pool index");
                 if(!checkCorrectDraftPool(input)){
                     this.currentState = INPUT_STATE.YOUR_TURN;
+                } else{
+                    System.out.println("Select row and column separated by a space");
                 }
                 break;
             case PLACE_DIE_ROW_COLUMN:
-                System.out.println("Select row and column separated by a space");
                 if (checkRowAndColumn(input)){
                     notify(new MoveChoiceDicePlacement(rowChoice * 5 + columnChoice, draftPoolChoice));
                 } else {
@@ -278,7 +285,6 @@ public class CLIView extends View implements Runnable {
 
     private void checkPrintBoard(String input){
         switch (input) {
-
             case "-c":
                 cliPrinter.printCompleteBoard(cliState);
                 break;
@@ -307,6 +313,9 @@ public class CLIView extends View implements Runnable {
     }
 
     private boolean checkCorrectInput(String inputString, int validInferior, int validSuperior) {
+        if (inputString.equals("u")){
+            return false;
+        }
         try {
             int input = Integer.parseInt(inputString);
             if ((input < validInferior) || (input > validSuperior)) {
@@ -358,6 +367,9 @@ public class CLIView extends View implements Runnable {
 
     private boolean checkRowAndColumn(String inputString){
         String[] rowAndColumn = inputString.split(" ");
+        if(inputString.equals("u")){
+            return false;
+        }
         if (rowAndColumn.length!=2){
             System.out.println("Please insert both row and column");
             return false;
