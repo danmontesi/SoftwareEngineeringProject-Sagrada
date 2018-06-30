@@ -528,7 +528,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         currentAction = toolcardData.getToolcardActions().get(0);
         //fai cose:
         executeAction();
-
     }
 
     private void executeAction() {
