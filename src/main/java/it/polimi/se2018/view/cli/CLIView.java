@@ -8,10 +8,12 @@ import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.cli.cliState.CliState;
+import it.polimi.se2018.view.cli.cliState.INPUT_STATE;
 import it.polimi.se2018.view.cli.cliState.PublicObjectiveLight;
 import it.polimi.se2018.view.cli.cliState.ToolcardLight;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CLIView extends View implements Runnable {
@@ -21,8 +23,7 @@ public class CLIView extends View implements Runnable {
 
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
     private InputReader inputReader = new InputReader();
-    private boolean active = true;
-    private final Object toolcardLock = new Object();
+    private INPUT_STATE currentState;
 
     private static final String NOT_YOUR_TURN = "Invalid action: it's not your turn";
 
@@ -65,7 +66,7 @@ public class CLIView extends View implements Runnable {
 
     @Override
     public synchronized void otherPlayerTurn(String username) {
-        cliState.setYourTurn(false);
+        currentState = INPUT_STATE.NOT_YOUR_TURN;
         System.out.println("It's " + username + "'s turn");
     }
 
@@ -78,7 +79,7 @@ public class CLIView extends View implements Runnable {
 
     @Override
     public synchronized void continueTurnMenu(boolean move, boolean tool) {
-        cliState.setYourTurn(true);
+        currentState = INPUT_STATE.YOUR_TURN;
         System.out.println("What do you want to do?");
         System.out.println(move ? "d - Place die" : "");
         System.out.println(tool ? "t - Use Tool" : "");
@@ -128,7 +129,7 @@ public class CLIView extends View implements Runnable {
     @Override
     public void timeOut() {
         inputReader.setTimeOut();
-        cliState.setYourTurn(false);
+        currentState = INPUT_STATE.NOT_YOUR_TURN;
     }
 
     @Override
@@ -178,34 +179,106 @@ public class CLIView extends View implements Runnable {
 
     @Override
     public void run() {
-        while (active) {
-            String command = inputReader.readLine();
-            manageCommand(command);
+        while (!currentState.equals(INPUT_STATE.END_GAME)) {
+            String input = inputReader.readLine();
+            manageCommand(currentState, input);
         }
     }
 
-    private void manageCommand(String command) {
-        command = command.toLowerCase();
-        switch (command) {
-            case "d":
-                placeDie();
-                break;
-            case "t":
-                //until card has been used, flow control is switched to toolcard menu
-                synchronized (toolcardLock) {
-                    try {
-                        useToolcard();
-                        toolcardLock.wait();
-                    } catch (InterruptedException | TimeUpException e) {
-                        //nothing
-                    }
-                    System.out.println("[INFO] LOCK LIBERO!");
-                    //flow control switches back to thread
+    int draftPoolChoice;
+    int roundTrackChoice;
+    int rowChoice;
+    int columnChoice;
+    String pickDieSource;
+
+    //output Function
+    private void manageCommand(INPUT_STATE currentState, String input) {
+        input = input.toLowerCase();
+
+        switch (currentState){
+            case YOUR_TURN:
+                if(input.equals("p")){
+                    //TODO: tecnicamente non dovrei settarlo io questo username ma il ClientController
+                    notify(new MoveChoicePassTurn(username));
+                    System.out.println("Passing turn");
+                } else if (input.equals("t")){
+                    System.out.println("What toolcard do you want to use?\n");
+                    cliPrinter.printToolcards(cliState);
+                } else if (input.equals("u")){
+                    System.out.println("Action interrupted");
+                } else{
+                    checkPrintBoard(input);
                 }
                 break;
-            case "p":
-                passTurn();
+            case PLACE_DIE_INDEX:
+                System.out.println("Select draft pool index");
+                if(!checkCorrectDraftPool(input)){
+                    this.currentState = INPUT_STATE.YOUR_TURN;
+                }
                 break;
+            case PLACE_DIE_ROW_COLUMN:
+                System.out.println("Select row and column separated by a space");
+                if (checkRowAndColumn(input)){
+                    notify(new MoveChoiceDicePlacement(rowChoice * 5 + columnChoice, draftPoolChoice));
+                } else {
+                    this.currentState = INPUT_STATE.YOUR_TURN;
+                }
+                break;
+            case NOT_YOUR_TURN:
+                if(actionIsNotAllowedForThisTurn(input)){
+                    System.out.println("It's not your turn: action not allowed");
+                } else {
+                    checkPrintBoard(input);
+                }
+                break;
+            case TOOLCARD_CHOICE:
+                if(checkCorrectInput(input, 1, 3)){
+                    int toolcardChoice = Integer.parseInt(input) - 1;
+                    notify(new MoveChoiceToolCard(toolcardChoice));
+                } else {
+                    this.currentState = INPUT_STATE.YOUR_TURN;
+                }
+                break;
+            case REPLY_ANOTHER_ACTION:
+                if(checkCorrectInput(input, 1, 2)){
+                    boolean anotherAction = (input.equals("1"));
+                    notify(new ReplyAnotherAction(anotherAction));
+                }
+                break;
+            case REPLY_DIE_VALUE:
+                if(checkCorrectInput(input, 1, 6)){
+                    int choice = Integer.parseInt(input);
+                    notify(new ReplyDieValue(choice));
+                }
+                break;
+            case REPLY_PICK_DIE:
+                replyPickDie(input);
+                break;
+            case REPLY_PLACE_DIE:
+                if (checkRowAndColumn(input)){
+                    notify(new ReplyPlaceDie(rowChoice * 5 + columnChoice));
+                }
+                break;
+            case REPLY_INCREASE_DECREASE:
+                if (checkCorrectInput(input, 1, 2)){
+                    notify(new ReplyIncreaseDecrease(input.equals("1")));
+                }
+        }
+        this.currentState = INPUT_STATE.nextState(currentState, input);
+
+    }
+
+    private boolean actionIsNotAllowedForThisTurn(String input){
+        if (input.equals("d") || input.equals("t") || input.equals("p") || input.equals("u")){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    private void checkPrintBoard(String input){
+        switch (input) {
+
             case "-c":
                 cliPrinter.printCompleteBoard(cliState);
                 break;
@@ -233,6 +306,67 @@ public class CLIView extends View implements Runnable {
         }
     }
 
+    private boolean checkCorrectInput(String inputString, int validInferior, int validSuperior) {
+        try {
+            int input = Integer.parseInt(inputString);
+            if ((input < validInferior) || (input > validSuperior)) {
+                System.out.println("Input not compliant to rules");
+            } else {
+                return true;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Input is not a number, retry");
+        }
+        return false;
+    }
+
+    private boolean checkCorrectDraftPool(String inputString){
+        if (checkCorrectInput(inputString, 1, cliState.getDraftpool().size())){
+            draftPoolChoice = Integer.parseInt(inputString) - 1;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean checkCorrectRoundTrack(String inputString){
+        if (checkCorrectInput(inputString, 1, cliState.getRoundTrack().size())){
+            roundTrackChoice = Integer.parseInt(inputString) - 1;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean checkCorrectRow(String inputString){
+        if (checkCorrectInput(inputString, 1, 4)){
+            rowChoice = Integer.parseInt(inputString) - 1;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean checkCorrectColumn(String inputString){
+        if (checkCorrectInput(inputString, 1, 5)){
+            columnChoice = Integer.parseInt(inputString) - 1;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean checkRowAndColumn(String inputString){
+        String[] rowAndColumn = inputString.split(" ");
+        if (rowAndColumn.length!=2){
+            System.out.println("Please insert both row and column");
+            return false;
+        } else if (checkCorrectRow(rowAndColumn[0]) && (checkCorrectColumn(rowAndColumn[1]))) {
+            return true;
+        }
+        return false;
+    }
+
     private synchronized void printHelp() {
         System.out.println(
                 "Here's what you can do:\n" +
@@ -240,6 +374,7 @@ public class CLIView extends View implements Runnable {
                         "d : Place a die\n" +
                         "t : Use a toolcard\n" +
                         "p : Pass your turn\n\n" +
+                        "u : undo action" +
                         "Furthermore, in any moment you can type:\n" +
                         "-c : print complete board\n" +
                         "-pr : print your Private Objective Card\n" +
@@ -247,104 +382,69 @@ public class CLIView extends View implements Runnable {
                         "-t : print Toolcards\n");
     }
 
-    private void placeDie() {
-        try {
-            if (cliState.isYourTurn()) {
-                int draftPos = selectFromDraftPool();
-                int schemaRow = selectRow();
-                int schemaCol = selectColumn();
-                notify(new MoveChoiceDicePlacement(schemaRow * 5 + schemaCol, draftPos));
-            } else {
-                System.out.println(NOT_YOUR_TURN);
-            }
-        } catch (TimeUpException e) {
-        }
-    }
-
-    private void passTurn() {
-        if (cliState.isYourTurn()) {
-            System.out.println("Passed turn");
-            notify(new MoveChoicePassTurn(username));
-        } else {
-            System.out.println(NOT_YOUR_TURN);
-        }
-    }
-
-    private void useToolcard() throws TimeUpException {
-        if (cliState.isYourTurn()) {
-            System.out.println("What toolcard do you want to use?\n");
-            cliPrinter.printToolcards(cliState);
-            int choice = inputReader.readInt(1, cliState.getToolcards().size(), true);
-            notify(new MoveChoiceToolCard(choice - 1));
-        } else {
-            System.out.println(NOT_YOUR_TURN);
-        }
-    }
-
-    private synchronized int selectFromDraftPool() {
-        System.out.println(String.format("Select die position in Draft Pool (number between 1 and %d)", cliState.getDraftpool().size()));
-        return inputReader.readInt(1, cliState.getDraftpool().size(), true) - 1;
-    }
-
-    private synchronized int selectFromRoundTrack() {
-        System.out.println(String.format("Select die position in Round Track (number between 1 and %d)", cliState.getRoundTrack().size()));
-        return inputReader.readInt(1, cliState.getRoundTrack().size(), true) - 1;
-    }
-
-    private synchronized int selectRow() {
-        System.out.println("Select row (number between 1 and 4)");
-        return inputReader.readInt(1, 4, true) - 1;
-    }
-
-    private synchronized int selectColumn() {
-        System.out.println("Select column (number between 1 and 5)");
-        return inputReader.readInt(1, 5, true) - 1;
-    }
-
     @Override
     public void askAnotherAction() {
         System.out.println("Do you want to perform another action?\n1 - Yes\n2 - No");
-        int choice = inputReader.readInt(1, 2);
-        notify(new ReplyAnotherAction(choice == 1));
+        currentState = INPUT_STATE.REPLY_ANOTHER_ACTION;
     }
 
     @Override
     public void askIncreaseDecrease() {
         System.out.println("Do you want to increase or decrease the value of this die?\n1 - Increase\n2 - Decrease");
-        int choice = inputReader.readInt(1, 2);
-        notify(new ReplyIncreaseDecrease(choice == 1));
+        currentState = INPUT_STATE.REPLY_INCREASE_DECREASE;
     }
 
     @Override
     public void askDieValue() {
         System.out.println("What value do you choose for this die?");
-        int choice = inputReader.readInt(1, 6);
-        notify(new ReplyDieValue(choice));
+        currentState = INPUT_STATE.REPLY_DIE_VALUE;
     }
 
     @Override
     public void askPlaceDie() {
         System.out.println("Where do you want to place this die?");
-        int row = selectRow();
-        int column = selectColumn();
-        notify(new ReplyPlaceDie(row * 5 + column));
+        System.out.println("Insert row and column separated by a space");
+        currentState = INPUT_STATE.REPLY_PLACE_DIE;
     }
 
     @Override
     public void askPickDie(String from) {
+        pickDieSource = from;
         System.out.println("Select the die you want to pick");
+        currentState = INPUT_STATE.REPLY_PICK_DIE;
         switch (from) {
             case "WPC":
-                notify(new ReplyPickDie(selectRow() * 5 + selectColumn()));
+                System.out.println("(From Window Pattern Card:)");
                 break;
             case "DP":
-                notify(new ReplyPickDie(selectFromDraftPool()));
+                System.out.println("(From Draft Pool:)");
                 break;
             case "RT":
-                notify(new ReplyPickDie(selectFromRoundTrack()));
+                System.out.println("(From Round Track:)");
                 break;
             default:
-                //TODO: In caso di source sbagliata?
+        }
+    }
+
+    private void replyPickDie(String input){
+        switch (pickDieSource) {
+            case "WPC":
+                if (checkRowAndColumn(input)){
+                    notify(new ReplyPickDie(rowChoice*5 + columnChoice));
+                }
+                break;
+            case "DP":
+                if(checkCorrectDraftPool(input)){
+                    notify(new ReplyPickDie(draftPoolChoice));
+                }
+                break;
+            case "RT":
+                if(checkCorrectRoundTrack(input)){
+                    notify(new ReplyPickDie(roundTrackChoice));
+                }
+                break;
+            default:
+                LOGGER.log(Level.INFO, "Incorrect preference from server: neither  WPC, nor DP, nor RT");
         }
     }
 }

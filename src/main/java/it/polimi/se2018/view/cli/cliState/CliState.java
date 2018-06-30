@@ -11,8 +11,6 @@ import java.util.List;
 
 public class CliState extends Observable {
 
-    private boolean yourTurn;
-    
     private String privateObjectiveCard;
     private String privateObjectiveCardDescription;
 
@@ -178,13 +176,5 @@ public class CliState extends Observable {
 
     public PlayerLight getPlayer(int playerNumber){
         return players.get(playerNumber);
-    }
-
-    public boolean isYourTurn() {
-        return yourTurn;
-    }
-
-    public void setYourTurn(boolean yourTurn) {
-        this.yourTurn = yourTurn;
     }
 }
