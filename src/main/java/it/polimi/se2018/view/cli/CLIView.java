@@ -3,7 +3,6 @@ package it.polimi.se2018.view.cli;
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.client_to_server_command.new_tool_commands.*;
 import it.polimi.se2018.commands.server_to_client_command.*;
-import it.polimi.se2018.exceptions.TimeUpException;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
@@ -24,6 +23,7 @@ public class CLIView extends View implements Runnable {
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
     private InputReader inputReader = new InputReader();
     private INPUT_STATE currentState = INPUT_STATE.NOT_YOUR_TURN;
+    private List<WindowPatternCard> wpcsForInitialChoice;
 
     private boolean placeDieAllowed;
     private boolean toolcardAllowed;
@@ -34,26 +34,21 @@ public class CLIView extends View implements Runnable {
         super(observer);
         System.out.println("ATTESA DI GIOCATORI...");
         cliState = new CliState();
+        //avvia l'input reader
+        new Thread(this).start();
     }
 
     @Override
     public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards) {
+        wpcsForInitialChoice = cards;
+        currentState = INPUT_STATE.CHOOSE_WPC;
         for (WindowPatternCard card : cards) {
             cliPrinter.printWPC(card);
         }
         System.out.println("\n Which one do you chose?");
         for (int i = 0; i < cards.size(); i++) {
-            System.out.println(i + 1 + ")" + cards.get(i).getCardName());
+            System.out.println(i + 1 + ") " + cards.get(i).getCardName());
         }
-        try {
-            int chosen = inputReader.readInt(1, cards.size(), true);
-            notify(new ChosenWindowPatternCard(cards.get(chosen - 1).getCardName()));
-            System.out.println("You chose: " + cards.get(chosen - 1).getCardName());
-        } catch (TimeUpException e) {
-            System.out.println("Window Pattern Card chosen automatically");
-        }
-        //avvia l'inputReader
-        new Thread(this).start();
     }
 
     @Override
@@ -215,6 +210,15 @@ public class CLIView extends View implements Runnable {
                 }
                 else{
                     checkPrintBoard(input);
+                }
+                break;
+            case CHOOSE_WPC:
+                if(checkCorrectInput(input, 1, 4)){
+                    int chosen = Integer.parseInt(input);
+                    notify(new ChosenWindowPatternCard(wpcsForInitialChoice.get(chosen - 1).getCardName()));
+                    System.out.println("You chose: " + wpcsForInitialChoice.get(chosen - 1).getCardName());
+                    //free memory
+                    wpcsForInitialChoice = null;
                 }
                 break;
             case PLACE_DIE_INDEX:

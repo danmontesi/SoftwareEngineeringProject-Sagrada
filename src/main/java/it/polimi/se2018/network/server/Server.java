@@ -3,51 +3,46 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.CONSTANTS;
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
-import it.polimi.se2018.commands.server_to_client_command.NewConnectedPlayerNotification;
-import it.polimi.se2018.commands.server_to_client_command.PingConnectionTester;
+import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.network.client.ClientConnection;
 import it.polimi.se2018.network.client.rmi.RMIClientInterface;
 import it.polimi.se2018.network.server.rmi.RMIServer;
 import it.polimi.se2018.network.server.rmi.RMIVirtualClient;
 import it.polimi.se2018.network.server.socket.SocketServer;
 import it.polimi.se2018.network.server.socket.SocketVirtualClient;
-import it.polimi.se2018.commands.server_to_client_command.AuthenticatedCorrectlyCommand;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class Server {
 
     /**
      * Clients that are waiting for a game to start and saved by username
      */
-    private static ArrayList<String> waitingClients = new ArrayList<>();
+    private static List<String> waitingClients = new ArrayList<>();
     /**
      * Clients connected with their own username and ClientConnection:
      * ClientConnection is the reference that the server has to contact them
      * These clients could both be in a game or be waiting for a game to start
      */
-    private static HashMap<String, ClientConnection> connectedClients = new HashMap<>();
+    private static Map<String, ClientConnection> connectedClients = new HashMap<>();
 
     /**
      * Clients that were in a game andd then got disconnected
      * These clients could be reinserted in a paused game when they reconnect to the server
      * Clients are saved by their unique username
      */
-    private static ArrayList<String> disconnectedClients = new ArrayList<>();
+    private static List<String> disconnectedClients = new ArrayList<>();
     /**
      * List of active games (one Thread for each game)
      */
-    private static ArrayList<Controller> activeGames = new ArrayList<>();
+    private static List<Controller> activeGames = new ArrayList<>();
     /**
      * Map used to pass a command coming from the network to the right controller (the right game) to manage it
      */
-    private static HashMap<String, VirtualView> userMap = new HashMap<>();
+    private static Map<String, VirtualView> userMap = new HashMap<>();
 
     private static Timer timer;
 
@@ -103,7 +98,8 @@ public class Server {
         if (disconnectedClients.contains(username)){
             disconnectedClients.remove(username);
             connectedClients.put(username, vc);
-            vc.notifyClient(new AuthenticatedCorrectlyCommand(username));
+            vc.notifyClient(new MessageFromServerCommand("You reconnected!"));
+            requestRefreshBoard(username);
         } else if(!connectedClients.containsKey(username)){
             connectedClients.put(username, vc);
             addToWaitingClients(username);
@@ -150,7 +146,8 @@ public class Server {
             disconnectedClients.remove(username);
             connectedClients.put(username, vc);
             vc.start();
-            vc.notifyClient(new AuthenticatedCorrectlyCommand(username));
+            vc.notifyClient(new MessageFromServerCommand("You reconnected!"));
+            requestRefreshBoard(username);
         }  else if (!connectedClients.containsKey(username)){
             connectedClients.put(username, vc);
             System.out.println("prima di inviare AuthCommand");
@@ -290,23 +287,23 @@ public class Server {
         }
     }
 
-    public static ArrayList<String> getWaitingClients(){
+    public static List<String> getWaitingClients(){
         return waitingClients;
     }
 
-    public static HashMap<String, ClientConnection> getConnectedClients() {
+    public static Map<String, ClientConnection> getConnectedClients() {
         return connectedClients;
     }
 
-    public static ArrayList<String> getDisconnectedClients() {
+    public static List<String> getDisconnectedClients() {
         return disconnectedClients;
     }
 
-    public static ArrayList<Controller> getActiveGames() {
+    public static List<Controller> getActiveGames() {
         return activeGames;
     }
 
-    public static HashMap<String, VirtualView> getUserMap() {
+    public static Map<String, VirtualView> getUserMap() {
         return userMap;
     }
 
