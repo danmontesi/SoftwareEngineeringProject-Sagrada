@@ -276,7 +276,7 @@ public class CLIView extends View implements Runnable {
                 }
         }
         this.currentState = INPUT_STATE.nextState(currentState, input);
-
+        //TODO: Send undoActionCommand
     }
 
     private boolean actionIsNotAllowedForThisTurn(String input){
@@ -389,8 +389,8 @@ public class CLIView extends View implements Runnable {
                         "If it is your turn you can choose between:\n" +
                         "d : Place a die\n" +
                         "t : Use a toolcard\n" +
-                        "p : Pass your turn\n\n" +
-                        "u : undo action" +
+                        "p : Pass your turn\n" +
+                        "u : undo action\n\n" +
                         "Furthermore, in any moment you can type:\n" +
                         "-c : print complete board\n" +
                         "-pr : print your Private Objective Card\n" +

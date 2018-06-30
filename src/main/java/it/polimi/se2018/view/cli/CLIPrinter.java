@@ -93,7 +93,8 @@ class CLIPrinter {
      * Used only to print DraftPool and RoundTrack
      */
     void printInlineList(List<String> list){
-        String[][] table = new String[4][list.size()];
+        String[][] table = new String[5][list.size()+1];
+        addWPCBorders(table);
         for (int i = 0; i < list.size(); i++){
             insertStringInTable(table, 0, i, list.get(i));
         }
@@ -102,7 +103,8 @@ class CLIPrinter {
     }
 
     void printWPC(List<String> stringWpc){
-        String[][] table = new String[16][5];
+        String[][] table = new String[17][6];
+        addWPCBorders(table);
         System.out.println(stringWpc.get(0) + "\n");
 
         for (int i = 1; i < stringWpc.size(); i++){
@@ -110,14 +112,28 @@ class CLIPrinter {
             int row = j/5;
             int column = j%5;
             //ma siamo sicuri che non ci vada table =...??
-            table = insertStringInTable(table, row, column, stringWpc.get(i));
+            insertStringInTable(table, row, column, stringWpc.get(i));
         }
         printTable(table);
         System.out.println("\n");
     }
 
+    private void addWPCBorders(String[][] table){
+        for(int i = 0; i < table.length; i++){
+            if(i%4 != 0){
+                table[i][0] = "|";
+            } else {
+                table[i][0] = "-";
+            }
+        }
+        for(int i = 1; i < table[0].length; i++){
+            table[0][i] = "--------";
+        }
+    }
+
     void printWPC(WindowPatternCard wpc){
-        String[][] table = new String[16][5];
+        String[][] table = new String[17][6];
+        addWPCBorders(table);
         System.out.println(wpc.getCardName() + " - " + wpc.getDifficulty() + "\n");
 
         for(int i = 0; i < wpc.getSchema().size(); i++){
@@ -255,6 +271,8 @@ class CLIPrinter {
     //sinceramente dovrebbe stampare i pallini neri sui dadi colorati: in realtà sono bianchi ma hanno abbastanza constrasto
     private void addStringToMatrix(String[][] table, int row, int column, String background, String[] die, boolean printBlack){
         int i = row*4;
+        i++;
+        column++;
         for(int j = 0; j < 3; j++){
             table[i+j][column]= background;
             if(printBlack){
