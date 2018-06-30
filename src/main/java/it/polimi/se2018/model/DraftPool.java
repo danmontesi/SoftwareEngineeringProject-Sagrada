@@ -144,6 +144,10 @@ public class DraftPool {
         return cells.get(index).getAssociatedDie();
     }
 
+    public Cell getCell(int index){
+        return cells.get(index);
+    }
+
     public String toString(){
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < cells.size(); i++) {

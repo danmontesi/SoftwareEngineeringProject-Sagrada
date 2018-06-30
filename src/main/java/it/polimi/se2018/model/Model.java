@@ -220,7 +220,9 @@ public class Model extends Observable implements Serializable { //Observable of 
 
     public void forceRefreshEntireBoard(String reconnectedPlayer, ArrayList<Player> players) { //TODO rivedi
         this.gamePlayers = players;
-        notifyRefreshBoard();
+        if (true){
+            notifyRefreshBoard();
+        }
     }
 
     public void increaseToolCardTokens(int toolCardNumber, int tokens) {
