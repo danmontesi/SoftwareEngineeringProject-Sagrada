@@ -29,8 +29,7 @@ class CLIPrinter {
 
     public synchronized void printYourTurn(INPUT_STATE state, boolean placeDieAllowed, boolean toolcardAllowed){
         if (state.equals(INPUT_STATE.YOUR_TURN)){
-            System.out.println("\nIt's your turn!");
-            System.out.println("What do you want to do?");
+            System.out.println("\nWhat do you want to do?");
             System.out.println(placeDieAllowed ? "d - Place die" : "");
             System.out.println(toolcardAllowed ? "t - Use Tool" : "");
             System.out.println("p - Pass Turn");

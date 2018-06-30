@@ -58,6 +58,7 @@ public class CLIView extends View implements Runnable {
 
     @Override
     public synchronized void startTurnMenu() {
+        System.out.println("Now it's your turn!");
         placeDieAllowed = true;
         toolcardAllowed = true;
         continueTurnMenu(true, true);
@@ -86,7 +87,6 @@ public class CLIView extends View implements Runnable {
         placeDieAllowed = move;
         toolcardAllowed = tool;
         currentState = INPUT_STATE.YOUR_TURN;
-        cliPrinter.printYourTurn(currentState, placeDieAllowed, toolcardAllowed);
     }
 
     @Override
