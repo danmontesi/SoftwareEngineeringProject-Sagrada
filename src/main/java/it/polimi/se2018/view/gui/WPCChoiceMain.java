@@ -12,7 +12,7 @@ public class WPCChoiceMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/client/wpcchoice.fxml"));
         primaryStage.setTitle("WindowPatternCard Choice");
-        primaryStage.setScene(new Scene(root, 610, 570));
+        primaryStage.setScene(new Scene(root, 610, 610));
         Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 20);
         primaryStage.show();
     }

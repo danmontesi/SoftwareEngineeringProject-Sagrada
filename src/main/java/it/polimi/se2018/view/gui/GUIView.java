@@ -39,8 +39,11 @@ public class GUIView extends View {
 
     @Override
     public void playerDisconnection(String username) {
-        //TODO in gameboard
-        lobbyNotifier.updateGui(username);
+        if(GameBoardNotifier.getInstance().isOpen()){
+            gameBoardNotifier.updateGui(new Message(username + " just disconnected."));
+        } else {
+            lobbyNotifier.updateGui(username);
+        }
     }
 
     @Override

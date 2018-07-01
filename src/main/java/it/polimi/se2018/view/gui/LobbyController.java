@@ -19,6 +19,8 @@ public class LobbyController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(LobbyController.class.getName());
 
+    private ArrayList<String> playerNames = new ArrayList<>();
+
     private ArrayList<Label> players;
 
     @FXML
@@ -55,7 +57,6 @@ public class LobbyController extends Observable implements Observer {
 
     private void updatePlayers(String player) {
         Platform.runLater(() -> {
-            ArrayList<String> playerNames = new ArrayList<>();
             if (!playerNames.contains(player)) {
                 playerNames.add(player);
             } else {

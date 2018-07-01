@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RankingPaneController extends Observable implements Observer {
@@ -46,8 +47,8 @@ public class RankingPaneController extends Observable implements Observer {
     public void initialize() {
         RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
         rankingPaneNotifier.addObserver(this);
-        rankingPaneNotifier.setOpen(true);
         initButtons();
+        rankingPaneNotifier.setOpen(true);
     }
 
     public void update(Observable o, Object arg) {
@@ -118,7 +119,7 @@ public class RankingPaneController extends Observable implements Observer {
                 wpcChoiceStage.show();
                 closeStage();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch game board", e);
             }
         });
     }
