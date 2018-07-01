@@ -61,39 +61,6 @@ public class View extends Observable implements ObserverView { //VIEW: Osserva M
 
     }
 
-    public void firmPastryBrushMenu(int value){
-
-
-    }
-
-    public void firmPastryThinnerMenu(String color, int value){
-
-    }
-
-    public void moveDieNoRestrictionMenu(String cardName){
-
-    }
-
-    public void changeDieValueMenu(String cardName){
-
-    }
-
-    public void twoDiceMoveMenu(String cardName){
-
-    }
-
-    public void corkLineMenu(){
-
-    }
-
-    public void wheelsPincherMenu(){
-
-    }
-
-    public void circularCutter(){
-
-    }
-
     public void invalidActionMessage(String message){
         //Di qualsiasi tipo:
         // sia per il tool (seguita da una richiesta di uso del tool, di nuovo)

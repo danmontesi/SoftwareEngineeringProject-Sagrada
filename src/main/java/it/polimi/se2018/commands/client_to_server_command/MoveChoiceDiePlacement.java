@@ -2,7 +2,7 @@ package it.polimi.se2018.commands.client_to_server_command;
 
 import it.polimi.se2018.utils.ControllerServerInterface;
 
-public class MoveChoiceDicePlacement extends ClientToServerCommand{
+public class MoveChoiceDiePlacement extends ClientToServerCommand{
 
     /**
      * Move performed that specifies in a String attribute ordered, the Die type the user want to move (he chose it from the draftPool by clicking it
@@ -30,13 +30,13 @@ public class MoveChoiceDicePlacement extends ClientToServerCommand{
 
     private Integer dieSchemaPosition;
 
-    public MoveChoiceDicePlacement(Integer dieSchemaRowPosition, Integer dieSchemaColPosition, Integer dieDraftPoolPosition) {
+    public MoveChoiceDiePlacement(Integer dieSchemaRowPosition, Integer dieSchemaColPosition, Integer dieDraftPoolPosition) {
         this.dieSchemaRowPosition = dieSchemaRowPosition;
         this.dieDraftPoolPosition = dieDraftPoolPosition;
         this.dieSchemaColPosition = dieSchemaColPosition;
     }
 
-    public MoveChoiceDicePlacement(Integer dieSchemaPosition, Integer dieDraftPoolPosition) {
+    public MoveChoiceDiePlacement(Integer dieSchemaPosition, Integer dieDraftPoolPosition) {
         this.dieSchemaPosition = dieSchemaPosition ;
         this.dieDraftPoolPosition = dieDraftPoolPosition;
     }

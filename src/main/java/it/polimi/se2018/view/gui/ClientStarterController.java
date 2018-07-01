@@ -25,9 +25,6 @@ public class ClientStarterController implements Observer {
     private static final Logger LOGGER = Logger.getLogger(ClientStarterController.class.getName());
 
     @FXML
-    private Label ipAddress;
-
-    @FXML
     private TextField usernameField;
     @FXML
     private TextField ipAddressField;
@@ -69,19 +66,7 @@ public class ClientStarterController implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-
-    }
-
-    @FXML
-    public void showIP() {
-        ipAddress.setDisable(false);
-        ipAddressField.setDisable(false);
-    }
-
-    @FXML
-    public void hideIP() {
-        ipAddress.setDisable(true);
-        ipAddressField.setDisable(true);
+        /*never used*/
     }
 
     private String getUsername() {
@@ -111,7 +96,7 @@ public class ClientStarterController implements Observer {
         }
     }
 
-    public void showLobby() {
+    private void showLobby() {
         Platform.runLater(() ->  {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/lobby.fxml"));
@@ -126,8 +111,7 @@ public class ClientStarterController implements Observer {
         });
     }
 
-
-    public void closeScene() {
+    private void closeScene() {
         Stage stage = (Stage)connect.getScene().getWindow();
         stage.close();
     }

@@ -1,12 +1,12 @@
 package it.polimi.se2018.view.gui.Notifiers.GameBoardActions;
 
 public class TurnUpdate implements GameBoardAction {
-    private boolean move;
-    private boolean tool;
+    private boolean DieMoved;
+    private boolean ToolUsed;
 
-    public TurnUpdate(boolean move, boolean tool) {
-        this.move = move;
-        this.tool = tool;
+    public TurnUpdate(boolean DieMoved, boolean ToolUsed) {
+        this.DieMoved = DieMoved;
+        this.ToolUsed = ToolUsed;
     }
 
     @Override
@@ -14,11 +14,11 @@ public class TurnUpdate implements GameBoardAction {
         gameBoardVisitor.visitGameBoardAction(this);
     }
 
-    public boolean getMove() {
-        return move;
+    public boolean isDieMoved() {
+        return DieMoved;
     }
 
-    public boolean getTool() {
-        return tool;
+    public boolean isToolUsed() {
+        return ToolUsed;
     }
 }

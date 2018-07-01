@@ -16,7 +16,7 @@ public class Client{
     public static void main(String[] args) {
         ServerConnection server;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Select \n1) CLI\n2) gui");
+        System.out.println("Select \n1) CLI\n2) GUI");
         String viewType = scanner.nextLine();
         if (viewType.equals("1")) {
             System.out.println("Select \n1) Socket\n2) RMI");

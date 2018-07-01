@@ -67,7 +67,7 @@ public class GameMatchTest {
         setUpController();
         setUpWpcChoice();
         assertEquals(controller.getCurrentPlayer(), "Nives");
-        ClientToServerCommand command = new MoveChoiceDicePlacement(11, 1);
+        ClientToServerCommand command = new MoveChoiceDiePlacement(11, 1);
         command.setUsername("Nives");
         controller.update(command);
         assertEquals(controller.getCurrentPlayer(), "Nives");
@@ -81,7 +81,7 @@ public class GameMatchTest {
         setUpController();
         setUpWpcChoice();
 
-        ClientToServerCommand command = new MoveChoiceDicePlacement(11, 1);
+        ClientToServerCommand command = new MoveChoiceDiePlacement(11, 1);
         command.setUsername("Nives");
         controller.update(command);
         assertEquals(controller.getCurrentPlayer(), "Nives");
@@ -121,42 +121,6 @@ public class GameMatchTest {
         command.setUsername("Nives");
         controller.update(command);
         assertEquals(false, controller.isHasUsedTool());
-
-        Die tempDraft = model.getDraftPool().getDie(0);
-        System.out.println("draft prima:" +tempDraft);
-        Die tempRound = model.getRoundTrack().getDie(0);
-        System.out.println("roundtr prima:" +tempRound);
-        command = new UseToolCircularCutter(0, 0);
-        command.setUsername("Daniele");
-        controller.update(command);
-        assertEquals(tempRound, model.getDraftPool().getDie(0));
-        assertEquals(tempDraft, model.getRoundTrack().getDie(0));
-        command = new MoveChoicePassTurn("Daniele");
-        controller.update(command);
-
-
-        System.out.println("Current è " + controller.getCurrentPlayer());
-        Die tempDie  = controller.getOrderedPlayers().get(2).getWindowPatternCard().getCell(0).getAssociatedDie();
-        System.out.println("Die to move" + tempDie);
-
-        command = new UseToolMoveDieNoRestriction("Copper Foil Reamer", 0, 2);
-        command.setUsername("Alessio");
-        controller.update(command);
-        assertEquals(tempDie, controller.getOrderedPlayers().get(2).getWindowPatternCard().getCell(2).getAssociatedDie());
-        command = new MoveChoicePassTurn("Alessio");
-        controller.update(command);
-
-
-
-        System.out.println("Current è " + controller.getCurrentPlayer());
-        Die tempDieCork  = model.getDraftPool().getDie(4);
-        System.out.println("Die to move" + tempDieCork);
-        command = new UseToolCorkLine(0, 4);
-        command.setUsername("Nives");
-        controller.update(command);
-        assertEquals(tempDieCork, controller.getOrderedPlayers().get(2).getWindowPatternCard().getCell(0).getAssociatedDie());
-        command = new MoveChoicePassTurn("Nives");
-        controller.update(command);
     }
 
 

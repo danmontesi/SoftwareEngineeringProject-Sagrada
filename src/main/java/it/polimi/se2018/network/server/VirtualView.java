@@ -145,10 +145,6 @@ public class VirtualView extends View {
         }
     }
 
-    public void authenticatedCorrectlyMessage(String message) {
-        //TODO elimina
-    }
-
     @Override
     public void continueTurnMenu(boolean hasAlreadyMovedDie, boolean hasAlreadyUsedTool) {
         if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
@@ -181,86 +177,6 @@ public class VirtualView extends View {
                 LOGGER.log(Level.INFO, "SENDING CONTINUETURNMENU");
             Server.getConnectedClients().get(username).notifyClient(new NewConnectedPlayerNotification(username));
         }
-    }
-
-    @Override
-    public void firmPastryBrushMenu(int value) {
-        if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
-            disconnected=true;
-                LOGGER.log(Level.INFO, "Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(username));
-        } else
-            Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolFirmPastryBrush1(value));
-    }
-
-    @Override
-    public void firmPastryThinnerMenu(String color, int value) {
-        if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
-            disconnected=true;
-                LOGGER.log(Level.INFO, "Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(username));
-        } else
-            Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolFirmPastryThinner1(color, value));
-    }
-
-    @Override
-    public void moveDieNoRestrictionMenu(String cardName) {
-        if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
-            disconnected=true;
-                LOGGER.log(Level.INFO, "Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(username));
-        } else
-            Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolMoveDieNoRestriction(cardName));
-    }
-
-    @Override
-    public void changeDieValueMenu(String cardName) {
-        if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
-            disconnected=true;
-                LOGGER.log(Level.INFO, "Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(username));
-        } else
-            Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolChangeDieValue(cardName));
-    }
-
-    @Override
-    public void twoDiceMoveMenu(String cardName) {
-        if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
-            disconnected=true;
-                LOGGER.log(Level.INFO, "Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(username));
-        } else
-            Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolTwoDiceMove(cardName));
-    }
-
-    @Override
-    public void corkLineMenu() {
-        if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
-            disconnected=true;
-                LOGGER.log(Level.INFO, "Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(username));
-        } else
-            Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolCorkLine());
-    }
-
-    @Override
-    public void wheelsPincherMenu() {
-        if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
-            disconnected=true;
-                LOGGER.log(Level.INFO, "Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(username));
-        } else
-            Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolWheelsPincher());
-    }
-
-    @Override
-    public void circularCutter() {
-        if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
-            disconnected=true;
-                LOGGER.log(Level.INFO, "Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(username));
-        } else
-            Server.getConnectedClients().get(username).notifyClient(new CorrectUseToolCircularCutter());
     }
 
     @Override

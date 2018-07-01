@@ -28,14 +28,22 @@ public class GUIView extends View {
     }
 
     @Override
+    public void authenticatedCorrectlyMessage(String message) {
+        this.username = message;
+    }
+
+    @Override
     public void newConnectedPlayer(String username) {
         lobbyNotifier.updateGui(username);
     }
 
     @Override
     public void playerDisconnection(String username) {
-        //TODO in gameboard
-        lobbyNotifier.updateGui(username);
+        if(GameBoardNotifier.getInstance().isOpen()){
+            gameBoardNotifier.updateGui(new Message(username + " just disconnected."));
+        } else {
+            lobbyNotifier.updateGui(username);
+        }
     }
 
     @Override
@@ -85,11 +93,6 @@ public class GUIView extends View {
             }
         }
         gameBoardNotifier.updateGui(new TurnStart(username));
-    }
-
-    @Override
-    public void authenticatedCorrectlyMessage(String message) {
-        this.username = message;
     }
 
     @Override

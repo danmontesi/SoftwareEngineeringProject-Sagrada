@@ -21,7 +21,7 @@ public interface ControllerServerInterface {
     public void applyCommand(String playerUsername, MoveChoiceToolCard command);
 
     //TODO: già controllato se è allowed  il player deve essere il current )
-    public void applyCommand(String playerUsername, MoveChoiceDicePlacement command);
+    public void applyCommand(String playerUsername, MoveChoiceDiePlacement command);
 
 
     //TODO: già controllato se è allowed (il player deve essere il current )

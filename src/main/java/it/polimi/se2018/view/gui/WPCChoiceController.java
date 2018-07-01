@@ -88,6 +88,7 @@ public class WPCChoiceController extends Observable implements Observer {
     public void initialize() {
         WPCChoiceNotifier.getInstance().addObserver(this);
         initWPCards();
+        initButton();
         setTGroup();
     }
 
@@ -130,6 +131,12 @@ public class WPCChoiceController extends Observable implements Observer {
         wpcDifficulties.add(wpc2d);
         wpcDifficulties.add(wpc3d);
         wpcDifficulties.add(wpc4d);
+    }
+
+    private void initButton() {
+        start.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
+        start.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> start.setEffect(shadow));
+        start.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> start.setEffect(null));
     }
 
     private void setWPCards(ArrayList<String> names, ArrayList<Integer> difficulties) {
