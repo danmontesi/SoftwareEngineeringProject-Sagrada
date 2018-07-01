@@ -11,6 +11,7 @@ import it.polimi.se2018.view.cli.cliState.INPUT_STATE;
 import it.polimi.se2018.view.cli.cliState.PublicObjectiveLight;
 import it.polimi.se2018.view.cli.cliState.ToolcardLight;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,9 +55,7 @@ public class CLIView extends View implements Runnable {
     @Override
     public synchronized void startTurnMenu() {
         System.out.println("Now it's your turn!");
-        placeDieAllowed = true;
-        toolcardAllowed = true;
-        continueTurnMenu(true, true);
+        continueTurnMenu(false, false);
     }
 
     @Override
@@ -78,10 +77,11 @@ public class CLIView extends View implements Runnable {
     }
 
     @Override
-    public synchronized void continueTurnMenu(boolean move, boolean tool) {
-        placeDieAllowed = move;
-        toolcardAllowed = tool;
+    public synchronized void continueTurnMenu(boolean hasAlreadyMovedDie, boolean hasAlreadyUsedTool) {
+        placeDieAllowed = !hasAlreadyMovedDie;
+        toolcardAllowed = !hasAlreadyUsedTool;
         currentState = INPUT_STATE.YOUR_TURN;
+        cliPrinter.printYourTurn(currentState, placeDieAllowed, toolcardAllowed);
     }
 
     @Override
@@ -127,7 +127,6 @@ public class CLIView extends View implements Runnable {
     @Override
     public void timeOut() {
         inputReader.setTimeOut();
-        currentState = INPUT_STATE.NOT_YOUR_TURN;
     }
 
     @Override
@@ -193,27 +192,27 @@ public class CLIView extends View implements Runnable {
     //output Function
     private void manageCommand(INPUT_STATE currentState, String input) {
         input = input.toLowerCase();
-
-        switch (currentState){
+        INPUT_STATE tempCurrentState = currentState;
+        this.currentState = INPUT_STATE.nextState(currentState, input); //MODIFICA: questo l'ho messo qui invece che alla fine
+        switch (tempCurrentState) {
             case YOUR_TURN:
-                if(input.equals("p")){
+                if (input.equals("p")) {
                     //TODO: tecnicamente non dovrei settarlo io questo username ma il ClientController
                     notify(new MoveChoicePassTurn(username));
                     System.out.println("Passing turn");
-                } else if (input.equals("t")){
+                } else if (input.equals("t")) {
                     System.out.println("What toolcard do you want to use?\n");
                     cliPrinter.printToolcards(cliState);
-                } else if (input.equals("u")){
+                } else if (input.equals("u")) {
                     System.out.println("Action interrupted");
-                } else if (input.equals("d")){
+                } else if (input.equals("d")) {
                     System.out.println("Select draft pool index");
-                }
-                else{
+                } else {
                     checkPrintBoard(input);
                 }
                 break;
             case CHOOSE_WPC:
-                if(checkCorrectInput(input, 1, 4)){
+                if (checkCorrectInput(input, 1, 4)) {
                     int chosen = Integer.parseInt(input);
                     notify(new ChosenWindowPatternCard(wpcsForInitialChoice.get(chosen - 1).getCardName()));
                     System.out.println("You chose: " + wpcsForInitialChoice.get(chosen - 1).getCardName());
@@ -222,28 +221,28 @@ public class CLIView extends View implements Runnable {
                 }
                 break;
             case PLACE_DIE_INDEX:
-                if(!checkCorrectDraftPool(input)){
+                if (!checkCorrectDraftPool(input)) {
                     this.currentState = INPUT_STATE.YOUR_TURN;
-                } else{
+                } else {
                     System.out.println("Select row and column separated by a space");
                 }
                 break;
             case PLACE_DIE_ROW_COLUMN:
-                if (checkRowAndColumn(input)){
+                if (checkRowAndColumn(input)) {
                     notify(new MoveChoiceDicePlacement(rowChoice * 5 + columnChoice, draftPoolChoice));
                 } else {
                     this.currentState = INPUT_STATE.YOUR_TURN;
                 }
                 break;
             case NOT_YOUR_TURN:
-                if(actionIsNotAllowedForThisTurn(input)){
+                if (actionIsNotAllowedForThisTurn(input)) {
                     System.out.println("It's not your turn: action not allowed");
                 } else {
                     checkPrintBoard(input);
                 }
                 break;
             case TOOLCARD_CHOICE:
-                if(checkCorrectInput(input, 1, 3)){
+                if (checkCorrectInput(input, 1, 3)) {
                     int toolcardChoice = Integer.parseInt(input) - 1;
                     notify(new MoveChoiceToolCard(toolcardChoice));
                 } else {
@@ -251,13 +250,13 @@ public class CLIView extends View implements Runnable {
                 }
                 break;
             case REPLY_ANOTHER_ACTION:
-                if(checkCorrectInput(input, 1, 2)){
+                if (checkCorrectInput(input, 1, 2)) {
                     boolean anotherAction = (input.equals("1"));
                     notify(new ReplyAnotherAction(anotherAction));
                 }
                 break;
             case REPLY_DIE_VALUE:
-                if(checkCorrectInput(input, 1, 6)){
+                if (checkCorrectInput(input, 1, 6)) {
                     int choice = Integer.parseInt(input);
                     notify(new ReplyDieValue(choice));
                 }
@@ -266,18 +265,19 @@ public class CLIView extends View implements Runnable {
                 replyPickDie(input);
                 break;
             case REPLY_PLACE_DIE:
-                if (checkRowAndColumn(input)){
+                if (checkRowAndColumn(input)) {
                     notify(new ReplyPlaceDie(rowChoice * 5 + columnChoice));
                 }
                 break;
             case REPLY_INCREASE_DECREASE:
-                if (checkCorrectInput(input, 1, 2)){
+                if (checkCorrectInput(input, 1, 2)) {
                     notify(new ReplyIncreaseDecrease(input.equals("1")));
                 }
         }
         this.currentState = INPUT_STATE.nextState(currentState, input);
-        //TODO: Send undoActionCommand
+        //TODO: Send undoActionCommand durante uso di toolcard
     }
+
 
     private boolean actionIsNotAllowedForThisTurn(String input){
         if (input.equals("d") || input.equals("t") || input.equals("p") || input.equals("u")){

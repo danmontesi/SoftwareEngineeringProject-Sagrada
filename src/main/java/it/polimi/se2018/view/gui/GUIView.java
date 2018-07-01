@@ -93,8 +93,8 @@ public class GUIView extends View {
     }
 
     @Override
-    public void continueTurnMenu(boolean move, boolean tool) {
-        gameBoardNotifier.updateGui(new TurnUpdate(move, tool));
+    public void continueTurnMenu(boolean hasAlreadyMovedDie, boolean hasAlreadyUsedTool) {
+        gameBoardNotifier.updateGui(new TurnUpdate(hasAlreadyMovedDie, hasAlreadyUsedTool));
     }
 
     @Override

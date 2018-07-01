@@ -159,7 +159,7 @@ public class ClientController extends Observable implements Observer, Controller
     @Override
     public void applyCommand(ContinueTurnCommand command){
         LOGGER.log(Level.FINE, "Arrivo a continueturn sul clientController");
-        view.continueTurnMenu(command.canShowMove(),command.canShowTool());
+        view.continueTurnMenu(command.hasPerformedMove(),command.hasPerformedTool());
     }
 
     //Correct use-> performs the move

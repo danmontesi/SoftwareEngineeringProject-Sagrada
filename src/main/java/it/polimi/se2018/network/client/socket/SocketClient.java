@@ -60,13 +60,14 @@ public class SocketClient implements ServerConnection {
                 while (isAlive){
                     try {
                         ServerToClientCommand command = (ServerToClientCommand) input.readObject();
-                        if (!command.toString().contains("Ping")) {
-                            LOGGER.log(Level.FINE,"SOCKET: arriva comando ", command);
+                        if (command.hasMessage() && command.getMessage().contains("Ping")) {
+                            LOGGER.log(Level.FINE," SOCKET: arriva comando ", command.getMessage());
                         }
-                        new Thread(() -> {
+                        else {
+                            new Thread(() -> { //TODO HO DAVVERO BISOGNO DI TUTTI QUESTI THREAD??
                                 clientController.dispatchCommand(command);
                             }).start();
-
+                        }
                     } catch (IOException e) {
                         LOGGER.log(Level.SEVERE, e.getMessage(), e);
                         isAlive = false;

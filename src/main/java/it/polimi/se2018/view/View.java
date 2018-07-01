@@ -49,7 +49,7 @@ public class View extends Observable implements ObserverView { //VIEW: Osserva M
 
     }
 
-    public void continueTurnMenu(boolean move, boolean tool){
+    public void continueTurnMenu(boolean hasAlreadyMovedDie, boolean hasAlreadyUsedTool){
 
     }
 
