@@ -190,6 +190,7 @@ public class CLIView extends View implements Runnable {
 
     //output Function
     private void manageCommand(INPUT_STATE currentState, String input) {
+        System.out.println("[INFO] - Stato appena passato : " + currentState.toString());
         input = input.toLowerCase();
         INPUT_STATE tempCurrentState = currentState;
         this.currentState = INPUT_STATE.nextState(currentState, input);
@@ -201,6 +202,7 @@ public class CLIView extends View implements Runnable {
                 System.out.println("Action interrupted");
             } else {
                 System.out.println("You cannot interrupt the action right now");
+                this.currentState = currentState;
             }
             return;
         }
@@ -227,6 +229,8 @@ public class CLIView extends View implements Runnable {
                     System.out.println("You chose: " + wpcsForInitialChoice.get(chosen - 1).getCardName());
                     //free memory
                     wpcsForInitialChoice = null;
+                } else {
+                    this.currentState = INPUT_STATE.CHOOSE_WPC;
                 }
                 break;
             case PLACE_DIE_INDEX:
