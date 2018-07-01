@@ -335,14 +335,12 @@ public class GameBoardController extends Observable implements Observer {
                 public void visitGameBoardAction(TurnStart turnStart) {
                     if (turnStart.getUsername() == null) {
                         enableTCB(true);
-                        System.out.println("my turn - enabling DP");
                         enableDraftPool(true);
                         enablePersonalWPC(true, "partial");
                         pass.setDisable(false);
                         moveDice();
                         msgBox.setText("It's your turn!\n");
                     } else {
-                        System.out.println("not my turn - disabling all buttons");
                         disableAllButtons();
                         msgBox.setText("It's " + turnStart.getUsername() + "'s turn!\n");
                     }
@@ -381,7 +379,6 @@ public class GameBoardController extends Observable implements Observer {
                 @Override
                 public void visitGameBoardAction(DraftPoolRoundTrackUpdate draftPoolRoundTrackUpdate) {
                     if (draftPoolRoundTrackUpdate.getType().equals("DP")) {
-                        System.out.println("DP update - setting DP");
                         setDraftPool(draftPoolRoundTrackUpdate.getDice());
                     } else if (draftPoolRoundTrackUpdate.getType().equals("RT")) {
                         setRoundTrack(draftPoolRoundTrackUpdate.getDice());
@@ -528,8 +525,6 @@ public class GameBoardController extends Observable implements Observer {
                         iv.setFitWidth(43);
                         iv.setFitHeight(43);
                         ((ToggleButton) draftPoolDice.getChildren().get(i)).setGraphic(iv);
-                        System.out.println(((ToggleButton) draftPoolDice.getChildren().get(i)).getGraphic().toString());
-                        //draftPoolDice.getChildren().get(i).setDisable(false);
                     } else {
                         ((ToggleButton) draftPoolDice.getChildren().get(i)).setGraphic(null);
                         draftPoolDice.getChildren().get(i).setDisable(true);
@@ -784,22 +779,15 @@ public class GameBoardController extends Observable implements Observer {
     private void enableDraftPool(boolean b) {
         Platform.runLater(() -> {
             synchronized (available) {
-                System.out.println("in DP enable");
                 if (b) {
-                    System.out.println("DP enable - first if");
                     for (int i = 0; i < roundDice; i++) {
-                        System.out.println("DP enable" + ((ToggleButton) draftPoolDice.getChildren().get(i)).getGraphic().toString());
                         if (((ToggleButton) draftPoolDice.getChildren().get(i)).getGraphic() != null) {
-                            System.out.println("DP enable - second if");
                             draftPoolDice.getChildren().get(i).setDisable(false);
-                            System.out.println("false - " + draftPoolDice.getChildren().get(i).disabledProperty());
                         }
                     }
                 } else {
-                    System.out.println("DP enable - else");
                     for (int i = 0; i < roundDice; i++) {
                         draftPoolDice.getChildren().get(i).setDisable(true);
-                        System.out.println("true - " + draftPoolDice.getChildren().get(i).disabledProperty());
                     }
                 }
             }
