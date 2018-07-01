@@ -188,13 +188,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
     }
 
-    private void startGame() {
+    public void startGame() {
         assignRoundPlayers(orderedPlayers);
         model.notifyRefreshBoard(null, orderedPlayers);
         startNewRound();
     }
 
-    private void endGame() {
+    void endGame() {
         for (Player p : orderedPlayers) {
             getUserViewMap().get(p.getUsername()).endGame();
         }

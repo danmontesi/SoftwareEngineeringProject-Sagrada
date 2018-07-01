@@ -11,7 +11,6 @@ public class PlayerDisconnectionNotification extends ServerToClientCommand {
     }
 
     public PlayerDisconnectionNotification(String username) {
-
         this.username = username;
     }
 
