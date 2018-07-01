@@ -1,10 +1,6 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.commands.client_to_server_command.MoveChoiceDiePlacement;
-import it.polimi.se2018.commands.client_to_server_command.MoveChoicePassTurn;
-import it.polimi.se2018.commands.client_to_server_command.MoveChoiceToolCard;
-import it.polimi.se2018.commands.client_to_server_command.UndoActionCommand;
-import it.polimi.se2018.commands.client_to_server_command.new_tool_commands.*;
+import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
 import it.polimi.se2018.view.gui.Notifiers.GameBoardActions.*;
 import it.polimi.se2018.view.gui.Notifiers.GameBoardNotifier;

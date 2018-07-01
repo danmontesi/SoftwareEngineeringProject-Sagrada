@@ -1,7 +1,6 @@
 package it.polimi.se2018.utils;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
-import it.polimi.se2018.commands.client_to_server_command.new_tool_commands.*;
 
 public interface ControllerServerInterface {
 

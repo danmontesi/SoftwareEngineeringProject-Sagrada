@@ -2,7 +2,6 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.CONSTANTS;
 import it.polimi.se2018.commands.client_to_server_command.*;
-import it.polimi.se2018.commands.client_to_server_command.new_tool_commands.*;
 import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.model.public_obj_cards.PublicObjectiveCard;
@@ -18,7 +17,6 @@ import java.util.logging.Logger;
 
 import static it.polimi.se2018.model.ACTION_TYPE.ASK_PICK_DIE;
 import static it.polimi.se2018.model.ACTION_TYPE.ASK_PLACE_DIE;
-import static it.polimi.se2018.model.ACTION_TYPE.DO_PLACE_DIE;
 
 public class Controller implements Observer, ControllerServerInterface { //Observer perchè osserva la View tramite le classi di mezzo (ClientConnection)
 
