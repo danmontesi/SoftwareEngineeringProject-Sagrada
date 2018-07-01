@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -24,9 +23,9 @@ public class PrivateObjectiveCardsTest {
 
     @Before
     public void setUp() {
-        List<Cell> schema = new ArrayList<>();
+        List<Cell> schema;
 
-        List<WindowPatternCard> mycards = new ArrayList<>();
+        List<WindowPatternCard> mycards;
 
         ParserWindowPatternCard pwpc = null;
         try {
@@ -90,7 +89,7 @@ public class PrivateObjectiveCardsTest {
             try {
                 schema.get(i).getAssociatedDie().setValue(1);
             } catch (EmptyCellException e) {
-                continue;
+                //nothing
             }
         }
 

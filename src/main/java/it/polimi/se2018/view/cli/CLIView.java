@@ -72,7 +72,6 @@ public class CLIView extends View implements Runnable {
         placeDieAllowed = !hasAlreadyMovedDie;
         toolcardAllowed = !hasAlreadyUsedTool;
         currentState = INPUT_STATE.YOUR_TURN;
-        cliPrinter.printYourTurn(currentState, placeDieAllowed, toolcardAllowed);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class CLIView extends View implements Runnable {
     @Override
     public synchronized void invalidActionMessage(String message) {
         System.out.println("Invalid action: " + message);
-        cliPrinter.printSyntheticBoard(cliState);
+        cliPrinter.printBasicInformation(cliState, currentState, placeDieAllowed, toolcardAllowed);
     }
 
     @Override
@@ -96,6 +95,7 @@ public class CLIView extends View implements Runnable {
         System.out.println("You lost! Your rank is " + position + "\n");
         System.out.println("Here other players ordered scores:");
         for (String score : scores) {
+            score = score.replace("_", " ");
             System.out.println(score);
         }
     }
@@ -105,6 +105,7 @@ public class CLIView extends View implements Runnable {
         System.out.println("Congratulation! You won!");
         System.out.println("Here other players ordered scores:");
         for (String score : scores) {
+            score = score.replace("_", " ");
             System.out.println(score);
         }
     }
@@ -123,32 +124,32 @@ public class CLIView extends View implements Runnable {
     @Override
     public synchronized void updateWpc(RefreshWpcCommand refreshCommand) {
         cliState.parseRefreshWPC(refreshCommand);
-        cliPrinter.printSyntheticBoard(cliState);
+        cliPrinter.printBasicInformation(cliState, currentState, placeDieAllowed, toolcardAllowed);
     }
 
     @Override
     public synchronized void updateTokens(RefreshTokensCommand refreshCommand) {
         cliState.parseRefreshTokens(refreshCommand);
-        cliPrinter.printSyntheticBoard(cliState);
+        cliPrinter.printBasicInformation(cliState, currentState, placeDieAllowed, toolcardAllowed);
     }
 
     @Override
     public synchronized void updateRoundTrack(RefreshRoundTrackCommand refreshCommand) {
         cliState.parseRefreshRoundTrack(refreshCommand);
-        cliPrinter.printSyntheticBoard(cliState);
+        cliPrinter.printBasicInformation(cliState, currentState, placeDieAllowed, toolcardAllowed);
     }
 
     @Override
     public synchronized void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
         cliState.parseRefreshDraftPool(refreshCommand);
-        cliPrinter.printSyntheticBoard(cliState);
+        cliPrinter.printBasicInformation(cliState, currentState, placeDieAllowed, toolcardAllowed);
     }
 
     @Override
     public synchronized void updateBoard(RefreshBoardCommand refreshCommand) {
         RefreshBoardCommand command = refreshCommand;
         cliState.parseRefreshBoard(command);
-        cliPrinter.printSyntheticBoard(cliState);
+        cliPrinter.printBasicInformation(cliState, currentState, placeDieAllowed, toolcardAllowed);
     }
 
     @Override
@@ -168,7 +169,6 @@ public class CLIView extends View implements Runnable {
     @Override
     public void run() {
         while (!currentState.equals(INPUT_STATE.END_GAME)) {
-            cliPrinter.printYourTurn(currentState, placeDieAllowed, toolcardAllowed);
             String input = inputReader.readLine();
             manageCommand(currentState, input);
         }
@@ -182,7 +182,6 @@ public class CLIView extends View implements Runnable {
 
     //output Function
     private void manageCommand(INPUT_STATE currentState, String input) {
-        System.out.println("[INFO] - Stato appena passato : " + currentState.toString());
         input = input.toLowerCase();
         INPUT_STATE tempCurrentState = currentState;
         this.currentState = INPUT_STATE.nextState(currentState, input);
@@ -287,11 +286,7 @@ public class CLIView extends View implements Runnable {
 
 
     private boolean actionIsNotAllowedForThisTurn(String input) {
-        if (input.equals("d") || input.equals("t") || input.equals("p") || input.equals("u")) {
-            return true;
-        } else {
-            return false;
-        }
+        return input.equals("d") || input.equals("t") || input.equals("p") || input.equals("u");
     }
 
     private void checkPrintBoard(String input) {
@@ -321,6 +316,7 @@ public class CLIView extends View implements Runnable {
             default:
                 System.out.println("Invalid command, print help for further information");
         }
+        cliPrinter.printYourTurn(currentState, placeDieAllowed, toolcardAllowed);
     }
 
     private boolean checkCorrectInput(String inputString, int validInferior, int validSuperior) {
