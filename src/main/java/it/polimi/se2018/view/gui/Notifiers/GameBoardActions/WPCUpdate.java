@@ -1,12 +1,12 @@
 package it.polimi.se2018.view.gui.Notifiers.GameBoardActions;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class WPCUpdate implements GameBoardAction {
-    private ArrayList<String> myWpc;
-    private ArrayList<ArrayList<String>> otherWpcs;
+    private List<String> myWpc;
+    private List<List<String>> otherWpcs;
 
-    public WPCUpdate(ArrayList<String> myWpc, ArrayList<ArrayList<String>> otherWpcs) {
+    public WPCUpdate(List<String> myWpc, List<List<String>> otherWpcs) {
         this.myWpc = myWpc;
         this.otherWpcs = otherWpcs;
     }
@@ -16,11 +16,11 @@ public class WPCUpdate implements GameBoardAction {
         gameBoardVisitor.visitGameBoardAction(this);
     }
 
-    public ArrayList<String> getMyWpc() {
+    public List<String> getMyWpc() {
         return myWpc;
     }
 
-    public ArrayList<ArrayList<String>> getOtherWpcs() {
+    public List<List<String>> getOtherWpcs() {
         return otherWpcs;
     }
 }

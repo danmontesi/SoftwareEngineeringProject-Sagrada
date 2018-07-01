@@ -421,8 +421,8 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void initPubOCards() {
-        ArrayList<String> publicOC = modelRepresentation.getPublicObjectiveCards();
-        ArrayList<String> publicOCDesc = modelRepresentation.getPublicObjectiveDescription();
+        List<String> publicOC = modelRepresentation.getPublicObjectiveCards();
+        List<String> publicOCDesc = modelRepresentation.getPublicObjectiveDescription();
         Platform.runLater(() -> {
             for (int i = 0; i < publicOC.size(); i++) {
                 String img = publicOC.get(i);
@@ -439,8 +439,8 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void initTCards() {
-        ArrayList<String> tCards = modelRepresentation.getToolCards();
-        ArrayList<String> tCardsDesc = modelRepresentation.getToolCardDescription();
+        List<String> tCards = modelRepresentation.getToolCards();
+        List<String> tCardsDesc = modelRepresentation.getToolCardDescription();
         Platform.runLater(() -> {
             for (int i = 0; i < tCards.size(); i++) {
                 String img = tCards.get(i);
@@ -508,7 +508,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setDraftPool(ArrayList<String> dice) {
+    private void setDraftPool(List<String> dice) {
         Platform.runLater(() -> {
             synchronized (available) {
                 roundDice = dice.size();
@@ -534,7 +534,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setRoundTrack(ArrayList<String> dice) {
+    private void setRoundTrack(List<String> dice) {
         Platform.runLater(() -> {
             for (int i = 0; i < 10; i++) {
                 String img = dice.get(i);
@@ -553,7 +553,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setTokens(ArrayList<Integer> tcTok, ArrayList<Integer> playersTok, Integer personalTok) {
+    private void setTokens(List<Integer> tcTok, List<Integer> playersTok, Integer personalTok) {
         Platform.runLater(() -> {
             for (int i = 0; i < tcTok.size(); i++) {
                 tcTokens.get(i).setText(tcTok.get(i).toString());
@@ -565,7 +565,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setWPCards(ArrayList<ArrayList<String>> wpcards) {
+    private void setWPCards(List<List<String>> wpcards) {
         Platform.runLater(() -> {
             for (int i = 0; i < wpcards.size(); i++) {
                 int k = -1;
@@ -587,7 +587,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setPersonalWPC(ArrayList<String> wpc) {
+    private void setPersonalWPC(List<String> wpc) {
         Platform.runLater(() -> {
             for (int i = 0; i < wpc.size() - 1; i++) {
                 String img = wpc.get(i + 1);
@@ -729,7 +729,7 @@ public class GameBoardController extends Observable implements Observer {
     @FXML
     public void passTurn() {
         disableAllButtons();
-        guiViewT.notify(new MoveChoicePassTurn(user0.getText()));
+        guiViewT.notify(new MoveChoicePassTurn());
     }
 
     @FXML

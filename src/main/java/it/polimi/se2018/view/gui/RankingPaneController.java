@@ -52,7 +52,7 @@ public class RankingPaneController extends Observable implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        setContent((ArrayList<String>)arg);
+        setContent((List<String>)arg);
     }
 
     private void initButtons() {
@@ -65,7 +65,7 @@ public class RankingPaneController extends Observable implements Observer {
         }
     }
 
-    private void setContent(ArrayList<String> scores) {
+    private void setContent(List<String> scores) {
         Platform.runLater(() -> {
         if (scores.get(0).equals("1")) {
             outcome.setText("You Won!");
@@ -82,10 +82,10 @@ public class RankingPaneController extends Observable implements Observer {
         });
     }
 
-    private void setRanking(ArrayList<String> scores) {
+    private void setRanking(List<String> scores) {
         Platform.runLater(() -> {
-            ArrayList<String> tmp;
-            ArrayList<String> singleScores = new ArrayList<>();
+            List<String> tmp;
+            List<String> singleScores = new ArrayList<>();
             for (String value : scores) {
                 tmp = new ArrayList<>(Arrays.asList(value.split("_")));
                 singleScores.addAll(tmp);

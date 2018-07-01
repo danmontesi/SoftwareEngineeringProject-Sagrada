@@ -35,13 +35,13 @@ public class Model extends Observable implements Serializable { //Observable of 
 
     private DiceBag diceBag;
 
-    private ArrayList<PublicObjectiveCard> extractedPublicObjectiveCard;
+    private List<PublicObjectiveCard> extractedPublicObjectiveCard;
 
-    private ArrayList<ToolCard> extractedToolCard;
+    private List<ToolCard> extractedToolCard;
 
-    private ArrayList<WindowPatternCard> windowPatternCardDeck;
+    private List<WindowPatternCard> windowPatternCardDeck;
 
-    private ArrayList<Player> gamePlayers;
+    private List<Player> gamePlayers;
 
     private RoundTrack roundTrack;
 
@@ -49,7 +49,7 @@ public class Model extends Observable implements Serializable { //Observable of 
 
     //private ArrayList<Observer> observers; Already in the class thanks to Observable ->le virtual view!
 
-    public void setDraftPool(ArrayList<Die> dice) {
+    public void setDraftPool(List<Die> dice) {
         this.draftPool = new DraftPool(dice);
         notifyRefreshDraftPool();
     }
@@ -62,7 +62,7 @@ public class Model extends Observable implements Serializable { //Observable of 
      *
      * @param players list of game players
      */
-    public Model(ArrayList<Player> players) {
+    public Model(List<Player> players) {
         gamePlayers = players;
         diceBag = new DiceBag();
         roundTrack = new RoundTrack();
@@ -73,13 +73,13 @@ public class Model extends Observable implements Serializable { //Observable of 
 
         try {
             parserWindowPatternCard = new ParserWindowPatternCard();
-            windowPatternCardDeck = (ArrayList<WindowPatternCard>) parserWindowPatternCard.parseAllCards();
+            windowPatternCardDeck = parserWindowPatternCard.parseAllCards();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        ArrayList<PrivateObjectiveCard> privateObjectiveCardDeck = new ArrayList<>();
-        ArrayList<PublicObjectiveCard> publicObjectiveCardDeck = new ArrayList<>();
+        List<PrivateObjectiveCard> privateObjectiveCardDeck = new ArrayList<>();
+        List<PublicObjectiveCard> publicObjectiveCardDeck = new ArrayList<>();
 
         try {
             privateObjectiveCardDeck = parserPrivateObjectiveCard.parseCards();
@@ -101,7 +101,7 @@ public class Model extends Observable implements Serializable { //Observable of 
             extractedPublicObjectiveCard.add(publicObjectiveCardDeck.remove(0));
         }
 
-        ArrayList<ToolCard> toolCardDeck = new ArrayList<>();
+        List<ToolCard> toolCardDeck = new ArrayList<>();
         try {
             toolCardDeck = parserToolcard.parseCards();
         } catch (IOException e) {
@@ -119,7 +119,7 @@ public class Model extends Observable implements Serializable { //Observable of 
 
     }
 
-    public ArrayList<Die> extractDraftPoolDice(int numPlayers) {
+    public List<Die> extractDraftPoolDice(int numPlayers) {
         ArrayList<Die> temp = new ArrayList<>();
         for (int i = 0; i < 2 * numPlayers + 1; i++) {
             temp.add(diceBag.extractDie());
@@ -127,7 +127,7 @@ public class Model extends Observable implements Serializable { //Observable of 
         return temp;
     }
 
-    public ArrayList<PublicObjectiveCard> getExtractedPublicObjectiveCard() {
+    public List<PublicObjectiveCard> getExtractedPublicObjectiveCard() {
         return extractedPublicObjectiveCard;
     }
 
@@ -136,7 +136,7 @@ public class Model extends Observable implements Serializable { //Observable of 
      *
      * @return list of extracted cards
      */
-    public ArrayList<WindowPatternCard> extractWindowPatternCard() {
+    public List<WindowPatternCard> extractWindowPatternCard() {
         ArrayList<WindowPatternCard> toReturn = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             int index = ThreadLocalRandom.current().nextInt(0, windowPatternCardDeck.size());
@@ -170,7 +170,7 @@ public class Model extends Observable implements Serializable { //Observable of 
         return getDiceBag().extractDie();
     }
 
-    public void setGamePlayers(ArrayList<Player> gamePlayers) {
+    public void setGamePlayers(List<Player> gamePlayers) {
         this.gamePlayers = gamePlayers;
         notifyRefreshWpcs();
     }
@@ -218,7 +218,7 @@ public class Model extends Observable implements Serializable { //Observable of 
         return toReturn;
     }
 
-    public void forceRefreshEntireBoard(String reconnectedPlayer, ArrayList<Player> players) { //TODO rivedi
+    public void forceRefreshEntireBoard(String reconnectedPlayer, List<Player> players) { //TODO rivedi
         this.gamePlayers = players;
         if (true){
             notifyRefreshBoard();
@@ -231,7 +231,7 @@ public class Model extends Observable implements Serializable { //Observable of 
     }
 
     private void notifyRefreshDraftPool() {
-        ArrayList<String> draftpool;
+        List<String> draftpool;
         draftpool = getDraftPool().draftpoolPathRepresentation();
 
         for (Observer observer : observers) {
@@ -243,8 +243,8 @@ public class Model extends Observable implements Serializable { //Observable of 
     private void notifyRefreshWpcs() {
 
         for (Observer observer : observers) {
-            ArrayList<String> personalWpc = new ArrayList<>(); //Dice in the format: colorNumber/empty
-            ArrayList<ArrayList<String>> otherPlayersWpcs = new ArrayList<>();
+            List<String> personalWpc = new ArrayList<>(); //Dice in the format: colorNumber/empty
+            List<List<String>> otherPlayersWpcs = new ArrayList<>();
             View currentView = (View) observer;
 
             for (Player p : gamePlayers) {
@@ -264,7 +264,7 @@ public class Model extends Observable implements Serializable { //Observable of 
     private void notifyRefreshRoundTrack() {
 
         for (Observer observer : observers) {
-            ArrayList<String> roundTrackString = new ArrayList<>(); //Dice in the format: colorNumber/empty
+            List<String> roundTrackString = new ArrayList<>(); //Dice in the format: colorNumber/empty
             roundTrackString = getRoundTrack().roundtrackPathRepresentation();
             LOGGER.log(Level.INFO, "Notificando una V.V. della new board");
             ((View) observer).updateRoundTrack(new RefreshRoundTrackCommand(roundTrackString));
@@ -274,7 +274,7 @@ public class Model extends Observable implements Serializable { //Observable of 
 
     private void notifyRefreshTokens() {
         LOGGER.log(Level.INFO, "Notificando una V.V. della new board");
-        ArrayList<Integer> tokensToolCards = new ArrayList<>(); //Ordered
+        List<Integer> tokensToolCards = new ArrayList<>(); //Ordered
 
 
         for (ToolCard toolCard : extractedToolCard) {
@@ -284,7 +284,7 @@ public class Model extends Observable implements Serializable { //Observable of 
 
         for (Observer observer : observers) {
             View temp = (View) observer;
-            ArrayList<Integer> otherPlayersTokens = new ArrayList<>();
+            List<Integer> otherPlayersTokens = new ArrayList<>();
             Integer myTokens = null;
             for (Player p : gamePlayers) {
                 if (p.getUsername().equals(temp.getUsername()))
@@ -304,7 +304,7 @@ public class Model extends Observable implements Serializable { //Observable of 
      */
     public void notifyRefreshBoard() {
 
-        ArrayList<String> draftpool = new ArrayList<>(); //Dice in the format: colorNumber/empty
+        List<String> draftpool = new ArrayList<>(); //Dice in the format: colorNumber/empty
 
         if (this.draftPool == null) { //not istantiated yet
             for (int i = 0; i < 9; i++) {
@@ -315,11 +315,11 @@ public class Model extends Observable implements Serializable { //Observable of 
         }
 
 
-        ArrayList<String> roundTrackString; //Dice in the format: colorNumber/empty
+        List<String> roundTrackString; //Dice in the format: colorNumber/empty
         roundTrackString = getRoundTrack().roundtrackPathRepresentation();
 
-        ArrayList<String> publicObjectiveCards = new ArrayList<>();
-        ArrayList<String> publicObjectiveDescription = new ArrayList<>();
+        List<String> publicObjectiveCards = new ArrayList<>();
+        List<String> publicObjectiveDescription = new ArrayList<>();
 
 
         for (PublicObjectiveCard card : extractedPublicObjectiveCard) {
@@ -327,9 +327,9 @@ public class Model extends Observable implements Serializable { //Observable of 
             publicObjectiveDescription.add(card.getDescription());
         }
 
-        ArrayList<String> toolCards = new ArrayList<>();
-        ArrayList<String> toolCardDescription = new ArrayList<>();
-        ArrayList<Integer> tokensToolCards = new ArrayList<>(); //Ordered
+        List<String> toolCards = new ArrayList<>();
+        List<String> toolCardDescription = new ArrayList<>();
+        List<Integer> tokensToolCards = new ArrayList<>(); //Ordered
 
 
         for (ToolCard toolCard : extractedToolCard) {
@@ -344,8 +344,8 @@ public class Model extends Observable implements Serializable { //Observable of 
             String username = currentView.getUsername();
             String privateObjectiveCard = null;
             String privateObjectiveCardDescription = null;
-            ArrayList<String> personalWpc = new ArrayList<>(); //Dice in the format: colorNumber/empty
-            ArrayList<ArrayList<String>> otherPlayersWpcs = new ArrayList<>();
+            List<String> personalWpc = new ArrayList<>(); //Dice in the format: colorNumber/empty
+            List<List<String>> otherPlayersWpcs = new ArrayList<>();
 
 
             for (Player p : gamePlayers) {
@@ -359,8 +359,8 @@ public class Model extends Observable implements Serializable { //Observable of 
             }
 
 
-            ArrayList<Integer> otherPlayersTokens = new ArrayList<>();
-            ArrayList<String> otherPlayersUsernames = new ArrayList<>();
+            List<Integer> otherPlayersTokens = new ArrayList<>();
+            List<String> otherPlayersUsernames = new ArrayList<>();
             Integer myTokens = null;
 
 

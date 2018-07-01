@@ -1,6 +1,7 @@
 package it.polimi.se2018.model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -9,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Alessio Molinari, Nives Migotto
  */
 public class DiceBag {
-    private ArrayList<Die> dice;
+    private List<Die> dice;
 
     /**
      * Constructor: generates a diceBag with 90 dice, 18 for each of the 5 colors
@@ -36,11 +37,10 @@ public class DiceBag {
 
     /**
      * Return the exact number of dice needed to start a turn, given the number of players
-     * @param numberOfPlayers
      * @return dice needed to start a turn
      */
-    public ArrayList<Die> extractDice(int numberOfPlayers){
-        ArrayList<Die> result = new ArrayList<>();
+    public List<Die> extractDice(int numberOfPlayers){
+        List<Die> result = new ArrayList<>();
         for (int i = 0; i < numberOfPlayers*2 +1; i++){
             int index = ThreadLocalRandom.current().nextInt(0,  dice.size());
             result.add(dice.remove(index));
@@ -68,7 +68,7 @@ public class DiceBag {
         return temp;
     }
 
-    public ArrayList<Die> getDice() {
+    public List<Die> getDice() {
         return dice;
     }
 

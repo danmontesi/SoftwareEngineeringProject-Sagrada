@@ -33,8 +33,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private Model model;
     private HashMap<String, Player> usernamePlayerMap;
     private HashMap<String, View> userViewMap;
-    private ArrayList<Player> orderedPlayers;
-    private ArrayList<Player> uninitializedOrderedPlayers;
+    private List<Player> orderedPlayers;
+    private List<Player> uninitializedOrderedPlayers;
     private HashMap<String, Timer> usernameTimerMap;
     private ToolcardData toolcardData;
 
@@ -67,8 +67,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * ArrayList that contains the ordered players that has to play
      * is created by the model in its constructor
      */
-    private ArrayList<ArrayList<String>> orderedRoundPlayers;
-    private ArrayList<String> currentRoundOrderedPlayers;
+    private List<List<String>> orderedRoundPlayers;
+    private List<String> currentRoundOrderedPlayers;
 
     /**
      * Represent current player. That is necessary to know which is the player i'm expecting an answer
@@ -136,7 +136,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     public void initializeGame() {
         //Let people chose their Wpc, and call a method that waits until all chose theirs.
         //Once i receive all -> move to orderedPlayers List
-        ArrayList<WindowPatternCard> localWpc;
+        List<WindowPatternCard> localWpc;
 
         //Gives to each a player 4 WindowPatternCard to choose from
         for (Player p : uninitializedOrderedPlayers) {
@@ -173,119 +173,18 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     /**
      * Initializes all Lists of players for each round, ordered.
      */
-    private void assignRoundPlayers(ArrayList<Player> orderedPlayers) {
+    private void assignRoundPlayers(List<Player> orderedPlayers) {
         orderedRoundPlayers = new ArrayList<>();
-        if (orderedPlayers.size() == 4) {
-            String c0 = orderedPlayers.get(0).getUsername();
-            String c1 = orderedPlayers.get(1).getUsername();
-            String c2 = orderedPlayers.get(2).getUsername();
-            String c3 = orderedPlayers.get(3).getUsername();
-            ArrayList<String> temp0 = new ArrayList<>();
-            ArrayList<String> temp1 = new ArrayList<>();
-            ArrayList<String> temp2 = new ArrayList<>();
-            ArrayList<String> temp3 = new ArrayList<>();
-            temp0.add(c0);
-            temp0.add(c1);
-            temp0.add(c2);
-            temp0.add(c3);
-            temp0.add(c3);
-            temp0.add(c2);
-            temp0.add(c1);
-            temp0.add(c0);
-            temp1.add(c1);
-            temp1.add(c2);
-            temp1.add(c3);
-            temp1.add(c0);
-            temp1.add(c0);
-            temp1.add(c3);
-            temp1.add(c2);
-            temp1.add(c1);
-            temp2.add(c2);
-            temp2.add(c3);
-            temp2.add(c0);
-            temp2.add(c1);
-            temp2.add(c1);
-            temp2.add(c0);
-            temp2.add(c3);
-            temp2.add(c2);
-            temp3.add(c3);
-            temp3.add(c0);
-            temp3.add(c1);
-            temp3.add(c2);
-            temp3.add(c2);
-            temp3.add(c1);
-            temp3.add(c0);
-            temp3.add(c3);
-            orderedRoundPlayers.add((ArrayList<String>) temp0.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp1.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp2.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp3.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp0.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp1.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp2.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp3.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp0.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp1.clone());
-        } else if (orderedPlayers.size() == 3) {
-            String c0 = orderedPlayers.get(0).getUsername();
-            String c1 = orderedPlayers.get(1).getUsername();
-            String c2 = orderedPlayers.get(2).getUsername();
-            ArrayList<String> temp0 = new ArrayList<>();
-            ArrayList<String> temp1 = new ArrayList<>();
-            ArrayList<String> temp2 = new ArrayList<>();
-            temp0.add(c0);
-            temp0.add(c1);
-            temp0.add(c2);
-            temp0.add(c2);
-            temp0.add(c1);
-            temp0.add(c0);
-            temp1.add(c1);
-            temp1.add(c2);
-            temp1.add(c0);
-            temp1.add(c0);
-            temp1.add(c1);
-            temp1.add(c2);
-            temp2.add(c2);
-            temp2.add(c0);
-            temp2.add(c1);
-            temp2.add(c1);
-            temp2.add(c0);
-            temp2.add(c2);
-            orderedRoundPlayers.add((ArrayList<String>) temp0.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp1.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp2.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp0.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp1.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp2.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp0.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp1.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp2.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp0.clone());
-        } else if (orderedPlayers.size() == 2) {
-            String c0 = orderedPlayers.get(0).getUsername();
-            String c1 = orderedPlayers.get(1).getUsername();
-            ArrayList<String> temp0 = new ArrayList<>();
-            ArrayList<String> temp1 = new ArrayList<>();
-            temp0.add(c0);
-            temp0.add(c1);
-            temp0.add(c1);
-            temp0.add(c0);
-            temp1.add(c1);
-            temp1.add(c0);
-            temp1.add(c0);
-            temp1.add(c1);
-            orderedRoundPlayers.add((ArrayList<String>) temp0.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp1.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp0.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp1.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp0.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp1.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp0.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp1.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp0.clone());
-            orderedRoundPlayers.add((ArrayList<String>) temp1.clone());
-        } else {
-            LOGGER.log(Level.INFO, "Problem in assigning rounds");
+        int numberOfPlayers = orderedPlayers.size();
+        for (int i = 0; i < 10; i++){
+            List<String> playersInRound = new ArrayList<>();
+            for(int j = 0; j < numberOfPlayers; j++){
+                playersInRound.add(orderedPlayers.get((i+j) % numberOfPlayers).getUsername());
+            }
+            for(int j = numberOfPlayers - 1; j >= 0; j--){
+                playersInRound.add(playersInRound.get(j));
+            }
+            orderedRoundPlayers.add(playersInRound);
         }
     }
 
@@ -328,7 +227,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private void sendResultToPlayers(LinkedHashMap<String, Integer> orderedPlayerScores) {
         Set set1 = orderedPlayerScores.entrySet();
         Set set2 = orderedPlayerScores.entrySet();
-        ArrayList<String> scoresList = new ArrayList<>();
+        List<String> scoresList = new ArrayList<>();
         Iterator i0 = set1.iterator(); //Through iteration, we can better manage the scores of all players
         Iterator i1 = set2.iterator();
         int tempRank = 1;
@@ -1072,11 +971,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
 
 
-    public ArrayList<ArrayList<String>> getOrderedRoundPlayers() {
+    public List<List<String>> getOrderedRoundPlayers() {
         return orderedRoundPlayers;
     }
 
-    public ArrayList<String> getCurrentRoundOrderedPlayers() {
+    public List<String> getCurrentRoundOrderedPlayers() {
         return currentRoundOrderedPlayers;
     }
 

@@ -99,8 +99,8 @@ public class CliState {
 
     private void parsePublicObjectiveCards(RefreshBoardCommand command){
         initPublicObjectiveLight(command);
-        ArrayList<String> cards =  command.getPublicObjectiveCards();
-        ArrayList<String> description = command.getPublicObjectiveDescription();
+        List<String> cards =  command.getPublicObjectiveCards();
+        List<String> description = command.getPublicObjectiveDescription();
         for (int i = 0; i < cards.size(); i++){
             publicObjectiveCards.get(i).setName(cards.get(i));
             publicObjectiveCards.get(i).setDescription(description.get(i));
@@ -117,9 +117,9 @@ public class CliState {
 
     private void parseToolcards(RefreshBoardCommand command){
         initToolcards(command);
-        ArrayList<String> cards = command.getToolCards();
-        ArrayList<String> toolcardsDescription = command.getToolCardDescription();
-        ArrayList<Integer> toolcardsTokens = command.getTokensToolCards();
+        List<String> cards = command.getToolCards();
+        List<String> toolcardsDescription = command.getToolCardDescription();
+        List<Integer> toolcardsTokens = command.getTokensToolCards();
 
         for(int i = 0; i < cards.size(); i++){
             toolcards.get(i).setToolcardName(cards.get(i));

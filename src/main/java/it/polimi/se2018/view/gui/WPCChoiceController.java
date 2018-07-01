@@ -139,7 +139,7 @@ public class WPCChoiceController extends Observable implements Observer {
         start.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> start.setEffect(null));
     }
 
-    private void setWPCards(ArrayList<String> names, ArrayList<Integer> difficulties) {
+    private void setWPCards(List<String> names, List<Integer> difficulties) {
         Platform.runLater(() -> {
             for (int i=0; i<names.size(); i++) {
                 String img = names.get(i);

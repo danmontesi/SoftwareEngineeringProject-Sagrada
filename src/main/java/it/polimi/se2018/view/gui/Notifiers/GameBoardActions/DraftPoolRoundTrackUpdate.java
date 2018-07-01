@@ -1,12 +1,12 @@
 package it.polimi.se2018.view.gui.Notifiers.GameBoardActions;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class DraftPoolRoundTrackUpdate implements GameBoardAction {
     private String type;
-    private ArrayList<String> dice;
+    private List<String> dice;
 
-    public DraftPoolRoundTrackUpdate(String type, ArrayList<String> dice) {
+    public DraftPoolRoundTrackUpdate(String type, List<String> dice) {
         this.type = type;
         this.dice = dice;
     }
@@ -20,7 +20,7 @@ public class DraftPoolRoundTrackUpdate implements GameBoardAction {
         return type;
     }
 
-    public ArrayList<String> getDice() {
+    public List<String> getDice() {
         return dice;
     }
 }

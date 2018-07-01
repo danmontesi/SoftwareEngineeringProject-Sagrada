@@ -8,8 +8,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -19,9 +21,9 @@ public class LobbyController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(LobbyController.class.getName());
 
-    private ArrayList<String> playerNames = new ArrayList<>();
+    private List<String> playerNames = new ArrayList<>();
 
-    private ArrayList<Label> players;
+    private List<Label> players;
 
     @FXML
     private Label text;

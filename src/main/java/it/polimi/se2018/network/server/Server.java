@@ -246,7 +246,7 @@ public class Server {
     public static synchronized void startNewGame(){
         //when a game starts, timer is cancelled
         timer.cancel();
-        ArrayList<String> players = new ArrayList<>();
+        List<String> players = new ArrayList<>();
 
         for(int i = 0; i < waitingClients.size() || i < 4; i ++){
             try {

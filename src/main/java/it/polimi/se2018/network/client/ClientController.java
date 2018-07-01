@@ -9,12 +9,13 @@ import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.utils.ControllerClientInterface;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
+import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.cli.CLIView;
 import it.polimi.se2018.view.gui.GUIView;
-import it.polimi.se2018.view.View;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,7 +71,7 @@ public class ClientController extends Observable implements Observer, Controller
     public void applyCommand(ChooseWindowPatternCardCommand command){
         //Splitting the string obtaining the correct Wpc
         String[] words = command.getMessage().split(",");
-        ArrayList<WindowPatternCard> wpc = new ArrayList<>();
+        List<WindowPatternCard> wpc = new ArrayList<>();
 
         //Parse the entire list of wpc, remove all the non occurences
         try{
