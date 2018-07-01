@@ -1,11 +1,11 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.commands.client_to_server_command.ChosenWindowPatternCard;
-import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WGUIViewSetting;
-import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WPCChoice;
-import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WPCChoiceAction;
-import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WPCChoiceVisitor;
-import it.polimi.se2018.view.gui.Notifiers.WPCChoiceNotifier;
+import it.polimi.se2018.view.gui.notifiers.wpcchoiceactions.WGUIViewSetting;
+import it.polimi.se2018.view.gui.notifiers.wpcchoiceactions.WPCChoice;
+import it.polimi.se2018.view.gui.notifiers.wpcchoiceactions.WPCChoiceAction;
+import it.polimi.se2018.view.gui.notifiers.wpcchoiceactions.WPCChoiceVisitor;
+import it.polimi.se2018.view.gui.notifiers.WPCChoiceNotifier;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -142,7 +142,7 @@ public class WPCChoiceController extends Observable implements Observer {
         start.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> start.setEffect(null));
     }
 
-    private void setCards(ArrayList<String> names, ArrayList<Integer> difficulties, String priOC) {
+    private void setCards(List<String> names, List<Integer> difficulties, String priOC) {
         Platform.runLater(() -> {
             Image image1 = new Image("/client/OC/" + priOC + ".jpg");
             prioc.setImage(image1);

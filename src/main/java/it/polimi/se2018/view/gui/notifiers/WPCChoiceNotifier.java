@@ -1,6 +1,6 @@
-package it.polimi.se2018.view.gui.Notifiers;
+package it.polimi.se2018.view.gui.notifiers;
 
-import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WPCChoiceAction;
+import it.polimi.se2018.view.gui.notifiers.wpcchoiceactions.WPCChoiceAction;
 
 import java.util.Observable;
 

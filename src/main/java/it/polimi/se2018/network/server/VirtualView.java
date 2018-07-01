@@ -96,7 +96,7 @@ public class VirtualView extends View {
             Server.updateDisconnectedUser(this.username); //Every turn a message saying the player is disconnected and will pass its turn//TODO magari cambia
             disconnected=true;
             Server.updateDisconnectedUser(this.username);
-            notify(new MoveChoicePassTurn(username));
+            notify(new MoveChoicePassTurn());
         } else {
             if (disconnected){
                 Server.requestRefreshBoard(this.username);
@@ -149,7 +149,7 @@ public class VirtualView extends View {
         if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
             disconnected=true;
                 LOGGER.log(Level.INFO, "Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(username));
+            notify(new MoveChoicePassTurn());
         } else {
                 LOGGER.log(Level.INFO, "SENDING CONTINUETURNMENU");
             Server.getConnectedClients().get(username).notifyClient(new ContinueTurnCommand(hasAlreadyMovedDie, hasAlreadyUsedTool));
@@ -219,7 +219,7 @@ public class VirtualView extends View {
         if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
             disconnected=true;
                 LOGGER.log(Level.INFO, "Disconnected-> Passing automatically turn");
-            notify(new MoveChoicePassTurn(username));
+            notify(new MoveChoicePassTurn());
         } else {
             Server.getConnectedClients().get(username).notifyClient(new TimeOutCommand());
         }

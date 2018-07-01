@@ -202,9 +202,8 @@ public class CLIView extends View implements Runnable {
         switch (tempCurrentState) {
             case YOUR_TURN:
                 if (input.equals("p")) {
-                    //TODO: tecnicamente non dovrei settarlo io questo username ma il ClientController
                     System.out.println("Passing turn");
-                    notify(new MoveChoicePassTurn(username));
+                    notify(new MoveChoicePassTurn());
                 } else if (input.equals("t")) {
                     cliPrinter.printToolcards(cliState);
                     System.out.println("What toolcard do you want to use?\n");

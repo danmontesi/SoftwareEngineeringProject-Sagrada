@@ -1,6 +1,7 @@
 package it.polimi.se2018.MatchTest;
 
 import it.polimi.se2018.model.COLOR;
+import it.polimi.se2018.model.Cell;
 import it.polimi.se2018.model.Die;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.parser.ParserWindowPatternCard;
@@ -10,7 +11,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
@@ -23,17 +26,25 @@ public class WindowPatternCardTest {
 
     @Before
     public void setUp(){
-        ArrayList<WindowPatternCard> myCards = new ArrayList<>();
+        List<WindowPatternCard> myCards;
 
-        ParserWindowPatternCard pwpc = null;
+        ParserWindowPatternCard pwpc;
         try {
             pwpc = new ParserWindowPatternCard();
             //tests on WindowPatternCard: Via Lux
-            myCards = (ArrayList<WindowPatternCard>) pwpc.parseAllCards();
+            myCards = pwpc.parseAllCards();
             wpc = myCards.get(1);
         } catch (IOException e) {
             Assert.fail();
         }
+    }
+
+    @Test
+    public void wpcConstructorWith(){
+        List<Cell> cellSchema = new ArrayList<>();
+        cellSchema.add(new Cell(0));
+        wpc = new WindowPatternCard(cellSchema, 4, "WPC di Prova");
+        assertEquals(1, wpc.getSchema().size());
     }
 
     @Test

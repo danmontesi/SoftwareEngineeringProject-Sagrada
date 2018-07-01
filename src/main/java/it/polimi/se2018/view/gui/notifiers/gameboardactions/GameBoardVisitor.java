@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.gui.Notifiers.GameBoardActions;
+package it.polimi.se2018.view.gui.notifiers.gameboardactions;
 
 public interface GameBoardVisitor {
     void visitGameBoardAction(GUIViewSetting guiViewSetting);

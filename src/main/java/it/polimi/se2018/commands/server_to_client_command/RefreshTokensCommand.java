@@ -2,15 +2,15 @@ package it.polimi.se2018.commands.server_to_client_command;
 
 import it.polimi.se2018.utils.ControllerClientInterface;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RefreshTokensCommand extends ServerToClientCommand {
 
-    private ArrayList<Integer> otherPlayersTokens;
-    private ArrayList<Integer> toolCardsTokens;
+    private List<Integer> otherPlayersTokens;
+    private List<Integer> toolCardsTokens;
     private Integer personalTokens;
 
-    public ArrayList<Integer> getOtherPlayersTokens() {
+    public List<Integer> getOtherPlayersTokens() {
         return otherPlayersTokens;
     }
 
@@ -18,11 +18,11 @@ public class RefreshTokensCommand extends ServerToClientCommand {
         return personalTokens;
     }
 
-    public ArrayList<Integer> getToolCardsTokens() {
+    public List<Integer> getToolCardsTokens() {
         return toolCardsTokens;
     }
 
-    public RefreshTokensCommand(ArrayList<Integer> otherPlayersTokens, ArrayList<Integer> toolCardsTokens, Integer personalTokens) {
+    public RefreshTokensCommand(List<Integer> otherPlayersTokens, List<Integer> toolCardsTokens, Integer personalTokens) {
 
         this.otherPlayersTokens = otherPlayersTokens;
         this.toolCardsTokens = toolCardsTokens;

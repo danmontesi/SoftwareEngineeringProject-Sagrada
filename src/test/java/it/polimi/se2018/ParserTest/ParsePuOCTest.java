@@ -1,11 +1,11 @@
 package it.polimi.se2018.ParserTest;
 
-import it.polimi.se2018.parser.ParserPublicObjectiveCard;
 import it.polimi.se2018.model.public_obj_cards.PublicObjectiveCard;
+import it.polimi.se2018.parser.ParserPublicObjectiveCard;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class ParsePuOCTest {
     ParserPublicObjectiveCard ppoc = new ParserPublicObjectiveCard();
-    ArrayList<PublicObjectiveCard> testCards;
+    List<PublicObjectiveCard> testCards;
 
     @Test
     public void setCardsTest() {

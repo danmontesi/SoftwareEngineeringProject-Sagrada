@@ -2,8 +2,8 @@ package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
-import it.polimi.se2018.view.gui.Notifiers.GameBoardActions.*;
-import it.polimi.se2018.view.gui.Notifiers.GameBoardNotifier;
+import it.polimi.se2018.view.gui.notifiers.gameboardactions.*;
+import it.polimi.se2018.view.gui.notifiers.GameBoardNotifier;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -342,8 +342,8 @@ public class GameBoardController extends Observable implements Observer {
                     modelRepresentation = refreshBoard.getModelRepresentation();
                     setPubOCards();
                     setTCards();
-                    setWPCards();
-                    setPersonalWPC();
+                    setWPCardsDice();
+                    setPersonalWPCDice();
                     setPersonalPriOC();
                     setRoundTrack(modelRepresentation.getRoundTrack());
                     moveDice();
@@ -444,8 +444,8 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void setPubOCards() {
-        ArrayList<String> publicOC = modelRepresentation.getPublicObjectiveCards();
-        ArrayList<String> publicOCDesc = modelRepresentation.getPublicObjectiveDescription();
+        List<String> publicOC = modelRepresentation.getPublicObjectiveCards();
+        List<String> publicOCDesc = modelRepresentation.getPublicObjectiveDescription();
         Platform.runLater(() -> {
             for (int i = 0; i < publicOC.size(); i++) {
                 String img = publicOC.get(i);
@@ -462,8 +462,8 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void setTCards() {
-        ArrayList<String> toolCards = modelRepresentation.getToolCards();
-        ArrayList<String> toolCardsDesc = modelRepresentation.getToolCardDescription();
+        List<String> toolCards = modelRepresentation.getToolCards();
+        List<String> toolCardsDesc = modelRepresentation.getToolCardDescription();
         Platform.runLater(() -> {
             for (int i = 0; i < toolCards.size(); i++) {
                 String img = toolCards.get(i);
@@ -472,23 +472,23 @@ public class GameBoardController extends Observable implements Observer {
                 ImageView iv = new ImageView(image);
                 iv.setFitHeight(190);
                 iv.setFitWidth(140);
-                this.tCards.get(i).setGraphic(iv);
-                this.tCards.get(i).setPadding(Insets.EMPTY);
+                tCards.get(i).setGraphic(iv);
+                tCards.get(i).setPadding(Insets.EMPTY);
                 Tooltip t = new Tooltip(toolCardsDesc.get(i));
                 t.setStyle("-fx-font-size: 15px");
                 t.setPrefWidth(200);
                 t.setWrapText(true);
-                Tooltip.install(this.tCards.get(i), t);
+                Tooltip.install(tCards.get(i), t);
                 tcCircles.get(i).setVisible(true);
             }
-            for (Button tc : this.tCards) {
+            for (Button tc : tCards) {
                 tc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tc.setEffect(shadow));
                 tc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> tc.setEffect(null));
             }
         });
     }
 
-    private void setWPCards() {
+    private void setWPCardsDice() {
         Platform.runLater(() -> {
             for (int i = 0; i < modelRepresentation.getOtherPlayersWpcs().size(); i++) {
                 String img = modelRepresentation.getOtherPlayersWpcs().get(i).get(0).replace("_", " ");
@@ -507,7 +507,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setPersonalWPC() {
+    private void setPersonalWPCDice() {
         Platform.runLater(() -> {
             String img = modelRepresentation.getPersonalWpc().get(0).replace("_", " ");
             String path = "/client/WPC/" + img + ".jpg";
@@ -531,7 +531,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setDraftPool(ArrayList<String> dice) {
+    private void setDraftPool(List<String> dice) {
         Platform.runLater(() -> {
             synchronized (available) {
                 roundDice = dice.size();
@@ -557,7 +557,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setRoundTrack(ArrayList<String> dice) {
+    private void setRoundTrack(List<String> dice) {
         Platform.runLater(() -> {
             for (int i = 0; i < 10; i++) {
                 String img = dice.get(i);
@@ -576,7 +576,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setTokens(ArrayList<Integer> tcTok, ArrayList<Integer> playersTok, Integer personalTok) {
+    private void setTokens(List<Integer> tcTok, List<Integer> playersTok, Integer personalTok) {
         Platform.runLater(() -> {
             for (int i = 0; i < tcTok.size(); i++) {
                 tcTokens.get(i).setText(tcTok.get(i).toString());
@@ -588,7 +588,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setWPCardsDice(ArrayList<ArrayList<String>> wpcards) {
+    private void setWPCardsDice(List<List<String>> wpcards) {
         Platform.runLater(() -> {
             for (int i = 0; i < wpcards.size(); i++) {
                 int k = -1;
@@ -610,7 +610,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setPersonalWPCDice(ArrayList<String> wpc) {
+    private void setPersonalWPCDice(List<String> wpc) {
         Platform.runLater(() -> {
             for (int i = 0; i < wpc.size() - 1; i++) {
                 String img = wpc.get(i + 1);
@@ -752,7 +752,7 @@ public class GameBoardController extends Observable implements Observer {
     @FXML
     public void passTurn() {
         disableAllButtons();
-        guiViewT.notify(new MoveChoicePassTurn(user0.getText()));
+        guiViewT.notify(new MoveChoicePassTurn());
     }
 
     @FXML

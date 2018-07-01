@@ -4,14 +4,14 @@ import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.view.gui.Notifiers.GameBoardActions.*;
-import it.polimi.se2018.view.gui.Notifiers.GameBoardNotifier;
-import it.polimi.se2018.view.gui.Notifiers.LobbyNotifier;
-import it.polimi.se2018.view.gui.Notifiers.RankingPaneNotifier;
-import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WGUIViewSetting;
-import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WPCChoice;
+import it.polimi.se2018.view.gui.notifiers.gameboardactions.*;
+import it.polimi.se2018.view.gui.notifiers.GameBoardNotifier;
+import it.polimi.se2018.view.gui.notifiers.LobbyNotifier;
+import it.polimi.se2018.view.gui.notifiers.RankingPaneNotifier;
+import it.polimi.se2018.view.gui.notifiers.wpcchoiceactions.WGUIViewSetting;
+import it.polimi.se2018.view.gui.notifiers.wpcchoiceactions.WPCChoice;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.view.gui.Notifiers.WPCChoiceNotifier;
+import it.polimi.se2018.view.gui.notifiers.WPCChoiceNotifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +67,8 @@ public class GUIView extends View {
 
     @Override
     public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards, String privateObjectiveCard) {
-        ArrayList<String> cardNames = new ArrayList<>();
-        ArrayList<Integer> cardDifficulties = new ArrayList<>();
+        List<String> cardNames = new ArrayList<>();
+        List<Integer> cardDifficulties = new ArrayList<>();
         for (WindowPatternCard card : cards) {
             cardNames.add(card.getCardName());
             cardDifficulties.add(card.getDifficulty());

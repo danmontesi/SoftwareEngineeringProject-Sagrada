@@ -8,15 +8,16 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ParserPublicObjectiveCard {
     private static final String PATH_NAME = "publicoc.json";
 
-    public ArrayList<PublicObjectiveCard> parseCards() throws IOException {
+    public List<PublicObjectiveCard> parseCards() throws IOException {
         ParserSettings settings = new ParserSettings();
         JsonObject json = settings.extractJsonObject(PATH_NAME);
         JsonArray jcards = json.get("PublicObjectiveCards").getAsJsonArray();
-        ArrayList<PublicObjectiveCard> cards = new ArrayList<>();
+        List<PublicObjectiveCard> cards = new ArrayList<>();
         for(int i = 0; i < jcards.size(); i++){
             JsonObject jcard = jcards.get(i).getAsJsonObject();
             String cardName = jcard.get("name").getAsString();

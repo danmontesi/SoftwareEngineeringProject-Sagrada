@@ -2,7 +2,7 @@ package it.polimi.se2018.commands.server_to_client_command;
 
 import it.polimi.se2018.utils.ControllerClientInterface;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RefreshBoardCommand extends ServerToClientCommand{
     /**
@@ -16,29 +16,29 @@ public class RefreshBoardCommand extends ServerToClientCommand{
     }
 
     private String privateObjectiveCardDescription;
-    private ArrayList<String> publicObjectiveCards;
-    private ArrayList<String> publicObjectiveDescription;
+    private List<String> publicObjectiveCards;
+    private List<String> publicObjectiveDescription;
 
-    private ArrayList<String> toolCards;
-    private ArrayList<String> toolCardDescription;
-    private ArrayList<Integer> tokensToolCards; //Ordered
+    private List<String> toolCards;
+    private List<String> toolCardDescription;
+    private List<Integer> tokensToolCards; //Ordered
 
-    private ArrayList<String> draftpool; //Dice in the format: colorNumber/empty
-    private ArrayList<String> roundTrack; //Dice in the format: colorNumber/empty
+    private List<String> draftpool; //Dice in the format: colorNumber/empty
+    private List<String> roundTrack; //Dice in the format: colorNumber/empty
 
-    private ArrayList<String> personalWpc; //the first cell is the name of the card, then /Dice in the format colorNumber/empty or restrictionColor or restrictionValue
+    private List<String> personalWpc; //the first cell is the name of the card, then /Dice in the format colorNumber/empty or restrictionColor or restrictionValue
     private Integer personalTokens;
     private String username;
 
-    private ArrayList<ArrayList<String>> otherPlayersWpcs; //Dice in the format colorNumber/empty or restrictionColor or restrictionValue
-    private ArrayList<Integer> otherPlayersTokens;
-    private ArrayList<String> otherPlayersUsernames;
+    private List<List<String>> otherPlayersWpcs; //Dice in the format colorNumber/empty or restrictionColor or restrictionValue
+    private List<Integer> otherPlayersTokens;
+    private List<String> otherPlayersUsernames;
 
     public RefreshBoardCommand(String model){
         this.message = model;
     }
 
-    public RefreshBoardCommand(String privateObjectiveCard, String privateObjectiveCardDescription, ArrayList<String> publicObjectiveCards, ArrayList<String> publicObjectiveDescription, ArrayList<String> toolCards, ArrayList<String> toolCardDescription, ArrayList<Integer> tokensToolCards, ArrayList<String> draftpool, ArrayList<String> roundTrack, ArrayList<String> personalWpc, Integer personalTokens, String username, ArrayList<ArrayList<String>> otherPlayersWpcs, ArrayList<Integer> otherPlayersTokens, ArrayList<String> otherPlayersUsernames) {
+    public RefreshBoardCommand(String privateObjectiveCard, String privateObjectiveCardDescription, List<String> publicObjectiveCards, List<String> publicObjectiveDescription, List<String> toolCards, List<String> toolCardDescription, List<Integer> tokensToolCards, List<String> draftpool, List<String> roundTrack, List<String> personalWpc, Integer personalTokens, String username, List<List<String>> otherPlayersWpcs, List<Integer> otherPlayersTokens, List<String> otherPlayersUsernames) {
         this.privateObjectiveCard = privateObjectiveCard;
         this.publicObjectiveCards = publicObjectiveCards;
         this.publicObjectiveDescription = publicObjectiveDescription;
@@ -69,35 +69,35 @@ public class RefreshBoardCommand extends ServerToClientCommand{
         return privateObjectiveCard;
     }
 
-    public ArrayList<String> getPublicObjectiveCards() {
+    public List<String> getPublicObjectiveCards() {
         return publicObjectiveCards;
     }
 
-    public ArrayList<String> getPublicObjectiveDescription() {
+    public List<String> getPublicObjectiveDescription() {
         return publicObjectiveDescription;
     }
 
-    public ArrayList<String> getToolCards() {
+    public List<String> getToolCards() {
         return toolCards;
     }
 
-    public ArrayList<String> getToolCardDescription() {
+    public List<String> getToolCardDescription() {
         return toolCardDescription;
     }
 
-    public ArrayList<Integer> getTokensToolCards() {
+    public List<Integer> getTokensToolCards() {
         return tokensToolCards;
     }
 
-    public ArrayList<String> getDraftpool() {
+    public List<String> getDraftpool() {
         return draftpool;
     }
 
-    public ArrayList<String> getRoundTrack() {
+    public List<String> getRoundTrack() {
         return roundTrack;
     }
 
-    public ArrayList<String> getPersonalWpc() {
+    public List<String> getPersonalWpc() {
         return personalWpc;
     }
 
@@ -109,15 +109,15 @@ public class RefreshBoardCommand extends ServerToClientCommand{
         return username;
     }
 
-    public ArrayList<ArrayList<String>> getOtherPlayersWpcs() {
+    public List<List<String>> getOtherPlayersWpcs() {
         return otherPlayersWpcs;
     }
 
-    public ArrayList<Integer> getOtherPlayersTokens() {
+    public List<Integer> getOtherPlayersTokens() {
         return otherPlayersTokens;
     }
 
-    public ArrayList<String> getOtherPlayersUsernames() {
+    public List<String> getOtherPlayersUsernames() {
         return otherPlayersUsernames;
     }
 }

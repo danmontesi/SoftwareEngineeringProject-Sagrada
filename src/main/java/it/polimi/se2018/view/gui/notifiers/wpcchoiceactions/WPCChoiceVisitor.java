@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions;
+package it.polimi.se2018.view.gui.notifiers.wpcchoiceactions;
 
 public interface WPCChoiceVisitor {
     void visitWPCChoiceAction(WGUIViewSetting guiViewSetting);

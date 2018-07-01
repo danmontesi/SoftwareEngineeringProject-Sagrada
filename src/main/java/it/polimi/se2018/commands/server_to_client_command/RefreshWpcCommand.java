@@ -2,24 +2,24 @@ package it.polimi.se2018.commands.server_to_client_command;
 
 import it.polimi.se2018.utils.ControllerClientInterface;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RefreshWpcCommand extends ServerToClientCommand {
 
 
-    private ArrayList<String> personalWpc; //Dice in the format: colorNumber/empty
+    private List<String> personalWpc; //Dice in the format: colorNumber/empty
 
-    private ArrayList<ArrayList<String>> otherPlayersWpcs; //Dice in the format colorNumber/empty or restrictionColor or restrictionValue
+    private List<List<String>> otherPlayersWpcs; //Dice in the format colorNumber/empty or restrictionColor or restrictionValue
 
-    public ArrayList<String> getPersonalWpc() {
+    public List<String> getPersonalWpc() {
         return personalWpc;
     }
 
-    public ArrayList<ArrayList<String>> getOtherPlayersWpcs() {
+    public List<List<String>> getOtherPlayersWpcs() {
         return otherPlayersWpcs;
     }
 
-    public RefreshWpcCommand(ArrayList<String> personalWpc, ArrayList<ArrayList<String>> otherPlayersWpcs) {
+    public RefreshWpcCommand(List<String> personalWpc, List<List<String>> otherPlayersWpcs) {
 
         this.personalWpc = personalWpc;
         this.otherPlayersWpcs = otherPlayersWpcs;

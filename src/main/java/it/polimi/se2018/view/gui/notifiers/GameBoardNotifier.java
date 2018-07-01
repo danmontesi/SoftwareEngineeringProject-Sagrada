@@ -1,6 +1,6 @@
-package it.polimi.se2018.view.gui.Notifiers;
+package it.polimi.se2018.view.gui.notifiers;
 
-import it.polimi.se2018.view.gui.Notifiers.GameBoardActions.GameBoardAction;
+import it.polimi.se2018.view.gui.notifiers.gameboardactions.GameBoardAction;
 
 import java.util.Observable;
 

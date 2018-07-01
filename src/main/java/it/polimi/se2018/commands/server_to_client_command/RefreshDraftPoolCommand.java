@@ -2,17 +2,17 @@ package it.polimi.se2018.commands.server_to_client_command;
 
 import it.polimi.se2018.utils.ControllerClientInterface;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RefreshDraftPoolCommand extends ServerToClientCommand {
 
-    public ArrayList<String> getDraftpool() {
+    public List<String> getDraftpool() {
         return draftpool;
     }
 
-    private ArrayList<String> draftpool; //Dice in the format: colorNumber/empty
+    private List<String> draftpool; //Dice in the format: colorNumber/empty
 
-    public RefreshDraftPoolCommand(ArrayList<String> draftpool) {
+    public RefreshDraftPoolCommand(List<String> draftpool) {
         this.draftpool = draftpool;
     }
 

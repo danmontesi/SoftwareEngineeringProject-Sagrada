@@ -2,7 +2,6 @@ package it.polimi.se2018.commands.server_to_client_command;
 
 import it.polimi.se2018.utils.ControllerClientInterface;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LoseCommand extends ServerToClientCommand{

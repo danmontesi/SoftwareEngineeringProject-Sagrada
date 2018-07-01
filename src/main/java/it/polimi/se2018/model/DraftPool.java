@@ -3,6 +3,7 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.exceptions.EmptyCellException;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -25,13 +26,13 @@ public class DraftPool {
      * The arraylist is a List of Die.
      * If a Die is picked, the value has to remain NULL in order to let the Graphic to remain the same when a die is removed
      */
-    private ArrayList<Cell> cells;
+    private List<Cell> cells;
 
     /**
      * Constructor: generates a draftPool by taking from the dicebag 2 dice for each player + 1
      * @param dice dice to assign
      */
-    public DraftPool(ArrayList<Die> dice) {
+    public DraftPool(List<Die> dice) {
         this.cells = new ArrayList<>();
         for (int i = 0; i < dice.size(); i++) {
             cells.add(new Cell(dice.get(i), i));
@@ -170,8 +171,8 @@ public class DraftPool {
      * Representation of the patch of the whole draftpool. Useful for gui
      * @return List of path last name
      */
-    public ArrayList<String> draftpoolPathRepresentation() {
-        ArrayList<String> draftpoolString = new ArrayList<>();
+    public List<String> draftpoolPathRepresentation() {
+        List<String> draftpoolString = new ArrayList<>();
         for (int i = 0; i < cells.size(); i++) {
             try {
                 if (cells.get(i).isEmpty()) {

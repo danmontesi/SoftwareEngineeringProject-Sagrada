@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.gui.Notifiers.GameBoardActions;
+package it.polimi.se2018.view.gui.notifiers.gameboardactions;
 
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
 

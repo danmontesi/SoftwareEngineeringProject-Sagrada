@@ -36,7 +36,7 @@ public class ParserWindowPatternCard {
 
     public List<WindowPatternCard> parseAllCards(){
         //ArrayList which will contain every WindowPatternCard
-        ArrayList<WindowPatternCard> windowPatternCards = new ArrayList<>();
+        List<WindowPatternCard> windowPatternCards = new ArrayList<>();
 
         for (int i = 0; i < cards.size(); i++) {
             //create an empty WindowPatternCard with 20 numbered plain cells

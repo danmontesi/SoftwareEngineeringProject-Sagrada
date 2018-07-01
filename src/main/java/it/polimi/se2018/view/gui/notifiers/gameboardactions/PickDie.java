@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.gui.Notifiers.GameBoardActions;
+package it.polimi.se2018.view.gui.notifiers.gameboardactions;
 
 public class PickDie implements GameBoardAction {
     private String from;

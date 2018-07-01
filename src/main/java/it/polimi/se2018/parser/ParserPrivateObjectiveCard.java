@@ -2,12 +2,13 @@ package it.polimi.se2018.parser;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import it.polimi.se2018.exceptions.NoSuchColorException;
 import it.polimi.se2018.model.COLOR;
 import it.polimi.se2018.model.PrivateObjectiveCard;
-import it.polimi.se2018.exceptions.NoSuchColorException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Alessio
@@ -24,11 +25,11 @@ public class ParserPrivateObjectiveCard {
      * @return ArrayList of all PrivateObjectiveCards in json file
      * @throws IOException
      */
-    public ArrayList<PrivateObjectiveCard> parseCards() throws IOException {
+    public List<PrivateObjectiveCard> parseCards() throws IOException {
         settings = new ParserSettings();
         JsonObject json = settings.extractJsonObject(PATH_NAME);
         JsonArray jcards = json.get("PrivateObjectiveCards").getAsJsonArray();
-        ArrayList<PrivateObjectiveCard> cards = new ArrayList<>();
+        List<PrivateObjectiveCard> cards = new ArrayList<>();
 
         for (int i = 0; i < jcards.size(); i++){
             JsonObject jcard = jcards.get(i).getAsJsonObject();

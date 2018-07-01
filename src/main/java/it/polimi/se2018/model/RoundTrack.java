@@ -3,6 +3,7 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.exceptions.EmptyCellException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Describes RoundTrack behavior. A die can be placed in the roundTrack, removed from it or switched with another one
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  */
 public class RoundTrack {
 
-    private ArrayList<Cell> roundCells;
+    private List<Cell> roundCells;
 
     /**
      * Constructor: generates a roundTrack by creating a list of 10 cells
@@ -87,7 +88,7 @@ public class RoundTrack {
         return roundCells.get(cellNumber);
     }
 
-    public ArrayList<Cell> getRoundCells() {
+    public List<Cell> getRoundCells() {
         return roundCells;
     }
 
@@ -95,8 +96,8 @@ public class RoundTrack {
      * Representation of the patch of the whole roundtrack. Useful for gui and cli
      * @return List of path last name
      */
-    public ArrayList<String> roundtrackPathRepresentation() {
-        ArrayList<String> roundtrackString = new ArrayList<>();
+    public List<String> roundtrackPathRepresentation() {
+        List<String> roundtrackString = new ArrayList<>();
         for (int i = 0; i < roundCells.size(); i++) {
             try {
                 if (roundCells.get(i).isEmpty()) {

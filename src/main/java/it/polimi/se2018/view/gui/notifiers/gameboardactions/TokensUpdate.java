@@ -1,13 +1,13 @@
-package it.polimi.se2018.view.gui.Notifiers.GameBoardActions;
+package it.polimi.se2018.view.gui.notifiers.gameboardactions;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class TokensUpdate implements GameBoardAction {
-    private ArrayList<Integer> tcTokens;
-    private ArrayList<Integer> playersTokens;
+    private List<Integer> tcTokens;
+    private List<Integer> playersTokens;
     private Integer personalTokens;
 
-    public TokensUpdate(ArrayList<Integer> tcTokens, ArrayList<Integer> playersTokens, Integer personalTokens) {
+    public TokensUpdate(List<Integer> tcTokens, List<Integer> playersTokens, Integer personalTokens) {
         this.tcTokens = tcTokens;
         this.playersTokens = playersTokens;
         this.personalTokens = personalTokens;
@@ -18,11 +18,11 @@ public class TokensUpdate implements GameBoardAction {
         gameBoardVisitor.visitGameBoardAction(this);
     }
 
-    public ArrayList<Integer> getTcTokens() {
+    public List<Integer> getTcTokens() {
         return tcTokens;
     }
 
-    public ArrayList<Integer> getPlayersTokens() {
+    public List<Integer> getPlayersTokens() {
         return playersTokens;
     }
 

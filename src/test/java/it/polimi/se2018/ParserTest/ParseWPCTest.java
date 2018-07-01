@@ -38,7 +38,6 @@ public class ParseWPCTest {
         assertEquals(24, theCards.size());
         assertEquals("Virtus", theCards.get(0).getCardName());
         assertEquals("Via Lux", theCards.get(1).getCardName());
-
     }
 
     @Test
