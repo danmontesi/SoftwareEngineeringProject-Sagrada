@@ -82,6 +82,7 @@ public class CLIView extends View implements Runnable {
         placeDieAllowed = move;
         toolcardAllowed = tool;
         currentState = INPUT_STATE.YOUR_TURN;
+        cliPrinter.printYourTurn(currentState, placeDieAllowed, toolcardAllowed);
     }
 
     @Override
@@ -96,6 +97,7 @@ public class CLIView extends View implements Runnable {
 
     @Override
     public synchronized void invalidActionMessage(String message) {
+
         System.out.println("Invalid action: " + message);
         cliPrinter.printSyntheticBoard(cliState);
     }
@@ -276,7 +278,7 @@ public class CLIView extends View implements Runnable {
                 }
         }
         this.currentState = INPUT_STATE.nextState(currentState, input);
-        //TODO: Send undoActionCommand
+        //TODO: Send undoActionCommand durante uso di toolcard
     }
 
     private boolean actionIsNotAllowedForThisTurn(String input){
