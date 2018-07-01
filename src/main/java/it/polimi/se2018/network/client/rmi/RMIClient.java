@@ -52,10 +52,7 @@ public class RMIClient implements Remote, ServerConnection{
     }
 
     public void notifyRMI(ServerToClientCommand command) {
-
-        new Thread(() -> {
             clientController.dispatchCommand(command);
-        }).start();
     }
 
     @Override
