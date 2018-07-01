@@ -60,6 +60,9 @@ public class WPCChoiceController extends Observable implements Observer {
     private Label wpc4d;
 
     @FXML
+    private ImageView prioc;
+
+    @FXML
     private ToggleButton wpc1;
     @FXML
     private ToggleButton wpc2;
@@ -105,7 +108,7 @@ public class WPCChoiceController extends Observable implements Observer {
 
                 @Override
                 public void visitWPCChoiceAction(WPCChoice wpcChoice) {
-                    setWPCards(wpcChoice.getWpcNames(), wpcChoice.getWpcDifficulties());
+                    setCards(wpcChoice.getWpcNames(), wpcChoice.getWpcDifficulties(), wpcChoice.getPrivateOC());
                 }
             };
             guiReply.acceptWPCChoiceVisitor(wpcChoiceVisitor);
@@ -139,8 +142,10 @@ public class WPCChoiceController extends Observable implements Observer {
         start.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> start.setEffect(null));
     }
 
-    private void setWPCards(ArrayList<String> names, ArrayList<Integer> difficulties) {
+    private void setCards(ArrayList<String> names, ArrayList<Integer> difficulties, String priOC) {
         Platform.runLater(() -> {
+            Image image1 = new Image("/client/OC/" + priOC + ".jpg");
+            prioc.setImage(image1);
             for (int i=0; i<names.size(); i++) {
                 String img = names.get(i);
                 String path = "/client/WPC/" + img + ".jpg";

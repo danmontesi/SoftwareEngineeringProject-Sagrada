@@ -1,5 +1,6 @@
 package it.polimi.se2018.view.gui.Notifiers;
 
+import java.util.ArrayList;
 import java.util.Observable;
 
 public class LobbyNotifier extends Observable {
@@ -13,9 +14,12 @@ public class LobbyNotifier extends Observable {
         return LobbyNotifierHolder.INSTANCE;
     }
 
-    public void updateGui(String player) {
+    public void updateGui(String msg, Integer type) {
         setChanged();
-        notifyObservers(player);
+        ArrayList<String> message = new ArrayList<>();
+        message.add(msg);
+        message.add(type.toString());
+        notifyObservers(message);
     }
 
     public void updateGui() {

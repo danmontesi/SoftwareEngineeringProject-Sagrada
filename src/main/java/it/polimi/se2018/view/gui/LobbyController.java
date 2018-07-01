@@ -45,7 +45,12 @@ public class LobbyController extends Observable implements Observer {
         if (arg == null) {
             showWPCChoice();
         } else {
-            updatePlayers((String)arg);
+            ArrayList<String> message = (ArrayList<String>)arg;
+            if (message.get(1).equals("1")) {
+                updatePlayers(message.get(0));
+            } else {
+                showGameBoard();
+            }
         }
     }
 
@@ -77,6 +82,21 @@ public class LobbyController extends Observable implements Observer {
         Platform.runLater(() ->  {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/wpcchoice.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage wpcChoiceStage = new Stage();
+                wpcChoiceStage.setScene(new Scene(root));
+                wpcChoiceStage.show();
+                closeStage();
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch window pattern card choice", e);
+            }
+        });
+    }
+
+    private void showGameBoard(){
+        Platform.runLater(() ->  {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/gameboard.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage wpcChoiceStage = new Stage();
                 wpcChoiceStage.setScene(new Scene(root));

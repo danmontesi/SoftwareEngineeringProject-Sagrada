@@ -346,6 +346,7 @@ public class GameBoardController extends Observable implements Observer {
                 public void visitGameBoardAction(TurnUpdate turnUpdate) {
                     if (turnUpdate.isDieMoved()) {
                         enableTCB(true);
+                        undo.setDisable(false);
                     }
                     if (turnUpdate.isToolUsed()) {
                         enablePersonalWPC(true, "partial");
@@ -824,6 +825,7 @@ public class GameBoardController extends Observable implements Observer {
         enableRoundTrack(false);
         enablePersonalWPC(false, "partial");
         pass.setDisable(true);
+        undo.setDisable(true);
     }
 
     private void resetPostMove() {

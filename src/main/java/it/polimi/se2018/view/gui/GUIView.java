@@ -34,7 +34,7 @@ public class GUIView extends View {
 
     @Override
     public void newConnectedPlayer(String username) {
-        lobbyNotifier.updateGui(username);
+        lobbyNotifier.updateGui(username, 1);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class GUIView extends View {
         if(GameBoardNotifier.getInstance().isOpen()){
             gameBoardNotifier.updateGui(new Message(username + " just disconnected."));
         } else {
-            lobbyNotifier.updateGui(username);
+            lobbyNotifier.updateGui(username, 1);
         }
     }
 
@@ -74,7 +74,7 @@ public class GUIView extends View {
             cardDifficulties.add(card.getDifficulty());
         }
         wpcChoiceNotifier.updateGui(new WGUIViewSetting(this));
-        wpcChoiceNotifier.updateGui(new WPCChoice(cardNames, cardDifficulties));
+        wpcChoiceNotifier.updateGui(new WPCChoice(cardNames, cardDifficulties, privateObjectiveCard));
     }
 
     @Override
@@ -176,7 +176,11 @@ public class GUIView extends View {
 
     @Override
     public void messageBox(String message) {
-        gameBoardNotifier.updateGui(new Message(message));
+        if(GameBoardNotifier.getInstance().isOpen()){
+            gameBoardNotifier.updateGui(new Message(message));
+        } else {
+            lobbyNotifier.updateGui(message, 0);
+        }
     }
 
     @Override
