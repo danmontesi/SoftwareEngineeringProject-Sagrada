@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 public class PrivateObjectiveCardsTest {
 
     private ParserPrivateObjectiveCard proc = new ParserPrivateObjectiveCard();
-    private ArrayList<PrivateObjectiveCard> testCards;
+    private List<PrivateObjectiveCard> testCards;
 
     private WindowPatternCard myWPCard;
 

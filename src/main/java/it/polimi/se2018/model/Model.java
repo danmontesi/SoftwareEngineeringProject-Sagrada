@@ -13,7 +13,6 @@ import it.polimi.se2018.view.View;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -299,7 +298,7 @@ public class Model extends Observable implements Serializable { //Observable of 
     /**
      * Method for initial setting of the board
      */
-    public void notifyRefreshBoard(String playerUsername, ArrayList<Player> orderedPlayers) {
+    public void notifyRefreshBoard(String playerUsername, List<Player> orderedPlayers) {
         if (orderedPlayers!=null){
             this.gamePlayers=orderedPlayers;
         }

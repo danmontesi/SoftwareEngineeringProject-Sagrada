@@ -1,13 +1,13 @@
 package it.polimi.se2018.ParserTest;
 
-import it.polimi.se2018.parser.ParserToolcard;
 import it.polimi.se2018.model.ToolCard;
+import it.polimi.se2018.parser.ParserToolcard;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -21,7 +21,7 @@ public class ParseToolCardsTest {
 
     @Test
     public void parseEveryToolCard(){
-        ArrayList<ToolCard> theCards;
+        List<ToolCard> theCards;
         try {
             theCards = parserToolcard.parseCards();
 
