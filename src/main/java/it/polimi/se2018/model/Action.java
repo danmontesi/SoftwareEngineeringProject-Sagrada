@@ -22,4 +22,8 @@ public class Action {
     public String getParameter2() {
         return parameter2;
     }
+
+    public boolean hasParameter() {
+        return parameter!=null;
+    }
 }

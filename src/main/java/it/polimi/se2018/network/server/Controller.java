@@ -1017,7 +1017,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private void editCurrentPlayerVariables() {
         for (Action action : model.getExtractedToolCard().get(toolcardData.getLastUsedToolCardNum()).getActions())
-            if (action.getType().equals(ASK_PLACE_DIE) && action.getParameter().equals("DP") && toolcardData.getToolcardActions().isEmpty())
+            if (action.getType().equals(ASK_PLACE_DIE) && action.hasParameter() && action.getParameter().equals("DP") && toolcardData.getToolcardActions().isEmpty())
                 hasPerformedMove=true;
         hasUsedTool = true;
     }
