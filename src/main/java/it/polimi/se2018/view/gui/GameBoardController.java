@@ -790,7 +790,6 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-
     private void enableRoundTrack(boolean b) {
         if (b) {
             for (int i = 0; i < roundTrackDice.getChildren().size(); i++) {
