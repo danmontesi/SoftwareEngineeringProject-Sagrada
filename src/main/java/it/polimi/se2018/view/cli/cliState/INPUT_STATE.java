@@ -18,14 +18,8 @@ public enum INPUT_STATE {
         INPUT_STATE nextState;
 
         //undo action
-        if (input.equals("u")){
-            //edit @dan(prima c'era Action interrupted, ma verrà scritto dopo automaticamente. Quindi l'ho tolto altrimenti viene scritto 2 volte
-            if(currentState.equals(NOT_YOUR_TURN)){
-                nextState = NOT_YOUR_TURN;
-            } else {
-                nextState = YOUR_TURN;
-            }
-
+        if (input.equals("u") && isLocallyReversible(currentState)){
+            nextState = YOUR_TURN;
         } else if((input.equals("d")) && currentState.equals(YOUR_TURN)){
             nextState = PLACE_DIE_INDEX;
             //use toolcard
@@ -37,10 +31,22 @@ public enum INPUT_STATE {
             nextState = TOOLCARD_CHOICE;
         } else if ((input.equals("p")) && currentState.equals(YOUR_TURN)){
             nextState = NOT_YOUR_TURN;
+        } else if (currentState.equals(CHOOSE_WPC)){
+            nextState = NOT_YOUR_TURN;
         }
         else {
             nextState = currentState;
         }
         return nextState;
+    }
+
+   public static boolean isLocallyReversible(INPUT_STATE currentState){
+        if ((currentState.equals(PLACE_DIE_ROW_COLUMN))
+                || currentState.equals(PLACE_DIE_INDEX)
+                || currentState.equals(TOOLCARD_CHOICE)){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
