@@ -63,7 +63,7 @@ public class VirtualView extends View {
     }
 
     @Override
-    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards) {
+    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards, String privateObjectiveCard) {
         if (!Server.getConnectedClients().containsKey(username)) { //disconnected
             disconnected=true;
                 LOGGER.log(Level.INFO, "Disconnected-> choosing a random Wpc");
@@ -80,7 +80,7 @@ public class VirtualView extends View {
                 StringBuilder cardNames = new StringBuilder();
                 for (WindowPatternCard card : cards)
                     cardNames.append(card.getCardName() + ",");
-                Server.getConnectedClients().get(username).notifyClient(new ChooseWindowPatternCardCommand(cardNames.toString()));
+                Server.getConnectedClients().get(username).notifyClient(new ChooseWindowPatternCardCommand(cardNames.toString(), privateObjectiveCard));
                 //DATE NEL FORMATO nomeCarta nomeCarta nomeCarta
             }
         }

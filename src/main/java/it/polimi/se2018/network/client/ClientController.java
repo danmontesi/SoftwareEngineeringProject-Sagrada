@@ -69,7 +69,7 @@ public class ClientController extends Observable implements Observer, Controller
     @Override
     public void applyCommand(ChooseWindowPatternCardCommand command){
         //Splitting the string obtaining the correct Wpc
-        String[] words = command.getMessage().split(",");
+        String[] words = command.getWpcsInStrings().split(",");
         ArrayList<WindowPatternCard> wpc = new ArrayList<>();
 
         //Parse the entire list of wpc, remove all the non occurences
@@ -84,7 +84,7 @@ public class ClientController extends Observable implements Observer, Controller
         } catch (IOException e){
 
         }
-        view.chooseWindowPatternCardMenu(wpc);
+        view.chooseWindowPatternCardMenu(wpc, command.getPrivateObjectiveCard());
     }
 
     /**
