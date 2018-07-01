@@ -462,11 +462,11 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void setTCards() {
-        ArrayList<String> tCards = modelRepresentation.getToolCards();
-        ArrayList<String> tCardsDesc = modelRepresentation.getToolCardDescription();
+        ArrayList<String> toolCards = modelRepresentation.getToolCards();
+        ArrayList<String> toolCardsDesc = modelRepresentation.getToolCardDescription();
         Platform.runLater(() -> {
-            for (int i = 0; i < tCards.size(); i++) {
-                String img = tCards.get(i);
+            for (int i = 0; i < toolCards.size(); i++) {
+                String img = toolCards.get(i);
                 String path = "/client/TC/" + img + ".jpg";
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);
@@ -474,7 +474,7 @@ public class GameBoardController extends Observable implements Observer {
                 iv.setFitWidth(140);
                 this.tCards.get(i).setGraphic(iv);
                 this.tCards.get(i).setPadding(Insets.EMPTY);
-                Tooltip t = new Tooltip(tCardsDesc.get(i));
+                Tooltip t = new Tooltip(toolCardsDesc.get(i));
                 t.setStyle("-fx-font-size: 15px");
                 t.setPrefWidth(200);
                 t.setWrapText(true);
