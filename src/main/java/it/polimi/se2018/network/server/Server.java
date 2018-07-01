@@ -191,10 +191,10 @@ public class Server {
      * Disconnect a player from the server: his username is saved in disconnectedClients in case he will reconnect
      * @param username
      */
-    public static void disconnectClient(String username){
+    public synchronized static void disconnectClient(String username){
         if (waitingClients.contains(username)) { //Covers the case in which a player is connected but isn't in a started game
             removeClient(username);
-            if (waitingClients.size() <= 1) {
+            if (waitingClients.size() == 1) {
                 timer.cancel();
             }
             return;

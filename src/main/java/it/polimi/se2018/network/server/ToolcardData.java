@@ -21,6 +21,11 @@ public class ToolcardData {
     private boolean increaseValue;
     private boolean anotherAction;
 
+    private Model oldModel;
+    private int requiredTokensForLastToolUse;
+    private int lastUsedToolCardNum;
+
+
     public Model removeOldModel(){
         Model temp = oldModel;
         oldModel = null;
@@ -31,8 +36,22 @@ public class ToolcardData {
         this.oldModel = oldModel;
     }
 
-    private Model oldModel;
+    public void setRequiredTokensForLastToolUse(int requiredTokensForLastToolUse) {
+        this.requiredTokensForLastToolUse = requiredTokensForLastToolUse;
+    }
 
+    public void setLastUsedToolCardNum(int lastUsedToolCardNum) {
+        this.lastUsedToolCardNum = lastUsedToolCardNum;
+    }
+
+    public int getRequiredTokensForLastToolUse() {
+
+        return requiredTokensForLastToolUse;
+    }
+
+    public int getLastUsedToolCardNum() {
+        return lastUsedToolCardNum;
+    }
     public ToolcardData() {
     }
 
