@@ -40,7 +40,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private HashMap<String, Timer> usernameTimerMap;
     private ToolcardData toolcardData;
 
-    private Die extractedDieForFirmPastryThinner;
     private Integer randomValueForFirmPastryBrush;
     private Action currentAction;
 
@@ -1074,10 +1073,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      * Getters
      */
 
-
-    public Die getExtractedDieForFirmPastryThinner() {
-        return extractedDieForFirmPastryThinner;
-    }
 
     public ArrayList<ArrayList<String>> getOrderedRoundPlayers() {
         return orderedRoundPlayers;
