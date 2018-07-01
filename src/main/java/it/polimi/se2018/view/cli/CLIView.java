@@ -11,7 +11,6 @@ import it.polimi.se2018.view.cli.cliState.INPUT_STATE;
 import it.polimi.se2018.view.cli.cliState.PublicObjectiveLight;
 import it.polimi.se2018.view.cli.cliState.ToolcardLight;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -193,18 +192,28 @@ public class CLIView extends View implements Runnable {
     private void manageCommand(INPUT_STATE currentState, String input) {
         input = input.toLowerCase();
         INPUT_STATE tempCurrentState = currentState;
-        this.currentState = INPUT_STATE.nextState(currentState, input); //MODIFICA: questo l'ho messo qui invece che alla fine
+        this.currentState = INPUT_STATE.nextState(currentState, input);
+
+        if (input.equals("u")) {
+            if (currentState.toString().contains("REPLY")) {
+                notify(new UndoActionCommand());
+            } else if (INPUT_STATE.isLocallyReversible(currentState)){
+                System.out.println("Action interrupted");
+            } else {
+                System.out.println("You cannot interrupt the action right now");
+            }
+            return;
+        }
+
         switch (tempCurrentState) {
             case YOUR_TURN:
                 if (input.equals("p")) {
                     //TODO: tecnicamente non dovrei settarlo io questo username ma il ClientController
-                    notify(new MoveChoicePassTurn(username));
                     System.out.println("Passing turn");
+                    notify(new MoveChoicePassTurn(username));
                 } else if (input.equals("t")) {
-                    System.out.println("What toolcard do you want to use?\n");
                     cliPrinter.printToolcards(cliState);
-                } else if (input.equals("u")) {
-                    System.out.println("Action interrupted");
+                    System.out.println("What toolcard do you want to use?\n");
                 } else if (input.equals("d")) {
                     System.out.println("Select draft pool index");
                 } else {
@@ -273,21 +282,24 @@ public class CLIView extends View implements Runnable {
                 if (checkCorrectInput(input, 1, 2)) {
                     notify(new ReplyIncreaseDecrease(input.equals("1")));
                 }
+                break;
+            case END_GAME:
+                if (checkCorrectInput(input, 1, 2)) {
+                    //TODO: cosa succede con end game?
+                }
         }
-        this.currentState = INPUT_STATE.nextState(currentState, input);
-        //TODO: Send undoActionCommand durante uso di toolcard
     }
 
 
-    private boolean actionIsNotAllowedForThisTurn(String input){
-        if (input.equals("d") || input.equals("t") || input.equals("p") || input.equals("u")){
+    private boolean actionIsNotAllowedForThisTurn(String input) {
+        if (input.equals("d") || input.equals("t") || input.equals("p") || input.equals("u")) {
             return true;
-        } else{
+        } else {
             return false;
         }
     }
 
-    private void checkPrintBoard(String input){
+    private void checkPrintBoard(String input) {
         switch (input) {
             case "-c":
                 cliPrinter.printCompleteBoard(cliState);
@@ -317,7 +329,7 @@ public class CLIView extends View implements Runnable {
     }
 
     private boolean checkCorrectInput(String inputString, int validInferior, int validSuperior) {
-        if (inputString.equals("u")){
+        if (inputString.equals("u")) {
             return false;
         }
         try {
@@ -333,8 +345,8 @@ public class CLIView extends View implements Runnable {
         return false;
     }
 
-    private boolean checkCorrectDraftPool(String inputString){
-        if (checkCorrectInput(inputString, 1, cliState.getDraftpool().size())){
+    private boolean checkCorrectDraftPool(String inputString) {
+        if (checkCorrectInput(inputString, 1, cliState.getDraftpool().size())) {
             draftPoolChoice = Integer.parseInt(inputString) - 1;
             return true;
         } else {
@@ -342,8 +354,8 @@ public class CLIView extends View implements Runnable {
         }
     }
 
-    private boolean checkCorrectRoundTrack(String inputString){
-        if (checkCorrectInput(inputString, 1, cliState.getRoundTrack().size())){
+    private boolean checkCorrectRoundTrack(String inputString) {
+        if (checkCorrectInput(inputString, 1, cliState.getRoundTrack().size())) {
             roundTrackChoice = Integer.parseInt(inputString) - 1;
             return true;
         } else {
@@ -351,8 +363,8 @@ public class CLIView extends View implements Runnable {
         }
     }
 
-    private boolean checkCorrectRow(String inputString){
-        if (checkCorrectInput(inputString, 1, 4)){
+    private boolean checkCorrectRow(String inputString) {
+        if (checkCorrectInput(inputString, 1, 4)) {
             rowChoice = Integer.parseInt(inputString) - 1;
             return true;
         } else {
@@ -360,8 +372,8 @@ public class CLIView extends View implements Runnable {
         }
     }
 
-    private boolean checkCorrectColumn(String inputString){
-        if (checkCorrectInput(inputString, 1, 5)){
+    private boolean checkCorrectColumn(String inputString) {
+        if (checkCorrectInput(inputString, 1, 5)) {
             columnChoice = Integer.parseInt(inputString) - 1;
             return true;
         } else {
@@ -369,12 +381,12 @@ public class CLIView extends View implements Runnable {
         }
     }
 
-    private boolean checkRowAndColumn(String inputString){
+    private boolean checkRowAndColumn(String inputString) {
         String[] rowAndColumn = inputString.split(" ");
-        if(inputString.equals("u")){
+        if (inputString.equals("u")) {
             return false;
         }
-        if (rowAndColumn.length!=2){
+        if (rowAndColumn.length != 2) {
             System.out.println("Please insert both row and column");
             return false;
         } else if (checkCorrectRow(rowAndColumn[0]) && (checkCorrectColumn(rowAndColumn[1]))) {
@@ -442,20 +454,20 @@ public class CLIView extends View implements Runnable {
         }
     }
 
-    private void replyPickDie(String input){
+    private void replyPickDie(String input) {
         switch (pickDieSource) {
             case "WPC":
-                if (checkRowAndColumn(input)){
-                    notify(new ReplyPickDie(rowChoice*5 + columnChoice));
+                if (checkRowAndColumn(input)) {
+                    notify(new ReplyPickDie(rowChoice * 5 + columnChoice));
                 }
                 break;
             case "DP":
-                if(checkCorrectDraftPool(input)){
+                if (checkCorrectDraftPool(input)) {
                     notify(new ReplyPickDie(draftPoolChoice));
                 }
                 break;
             case "RT":
-                if(checkCorrectRoundTrack(input)){
+                if (checkCorrectRoundTrack(input)) {
                     notify(new ReplyPickDie(roundTrackChoice));
                 }
                 break;
