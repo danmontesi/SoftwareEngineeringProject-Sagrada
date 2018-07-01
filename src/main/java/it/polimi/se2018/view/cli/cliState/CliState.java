@@ -60,6 +60,9 @@ public class CliState {
         for(int i = 0; i < command.getOtherPlayersTokens().size(); i++){
             players.get(i+1).setTokens(command.getOtherPlayersTokens().get(i));
         }
+        for(int i = 0; i < command.getToolCardsTokens().size(); i++){
+            toolcards.get(i).setTokens(command.getToolCardsTokens().get(i));
+        }
     }
 
     private void initPlayers(RefreshBoardCommand command){
