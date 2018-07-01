@@ -1,14 +1,16 @@
-package it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions;
+package it.polimi.se2018.view.gui.notifiers.wpcchoiceactions;
 
 import java.util.List;
 
 public class WPCChoice implements WPCChoiceAction {
     private List<String> wpcNames;
     private List<Integer> wpcDifficulties;
+    private String privateOC;
 
-    public WPCChoice(List<String> wpcNames, List<Integer> wpcDifficulties) {
+    public WPCChoice(List<String> wpcNames, List<Integer> wpcDifficulties, String privateObjectiveCard) {
         this.wpcNames = wpcNames;
         this.wpcDifficulties = wpcDifficulties;
+        this.privateOC = privateObjectiveCard;
     }
 
     @Override
@@ -22,5 +24,9 @@ public class WPCChoice implements WPCChoiceAction {
 
     public List<Integer> getWpcDifficulties() {
         return wpcDifficulties;
+    }
+
+    public String getPrivateOC() {
+        return privateOC;
     }
 }

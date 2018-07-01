@@ -1,9 +1,9 @@
-package it.polimi.se2018.view.gui.Notifiers.GameBoardActions;
+package it.polimi.se2018.view.gui.notifiers.gameboardactions;
 
-public class InvalidAction implements GameBoardAction {
+public class Message implements GameBoardAction {
     private String message;
 
-    public InvalidAction(String message) {
+    public Message(String message) {
         this.message = message;
     }
 

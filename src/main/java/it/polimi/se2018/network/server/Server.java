@@ -60,18 +60,26 @@ public class Server {
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
-                    System.out.println("Problem ");
+                    System.out.println("Problem!");
                     Thread.currentThread().interrupt();
                 }
                 for (String user : connectedClients.keySet()) {
                     connectedClients.get(user).notifyClient(new PingConnectionTester());  //Checking if still connected(for RMI)
                 }
+                removeInactiveControllers();
             }
         }
-
         ).start();
 
     }
+
+    private static void removeInactiveControllers() {
+        for (int i = 0; i < activeGames.size(); i++) {
+            if (!activeGames.get(i).isActive())
+                activeGames.remove(i);
+        }
+    }
+
     public static void handle(ClientToServerCommand command){
         String username = command.getUsername();
         userMap.get(username).notify(command);
@@ -100,7 +108,7 @@ public class Server {
             connectedClients.put(username, vc);
             vc.notifyClient(new AuthenticatedCorrectlyCommand(username));
             vc.notifyClient(new MessageFromServerCommand("You reconnected!"));
-            requestRefreshBoard(username);
+            refreshBoardAndNotifyReconnectedPlayer(username);
         } else if(!connectedClients.containsKey(username)){
             connectedClients.put(username, vc);
             addToWaitingClients(username);
@@ -148,7 +156,7 @@ public class Server {
             connectedClients.put(username, vc);
             vc.start();
             vc.notifyClient(new MessageFromServerCommand("You reconnected!"));
-            requestRefreshBoard(username);
+            refreshBoardAndNotifyReconnectedPlayer(username);
         }  else if (!connectedClients.containsKey(username)){
             connectedClients.put(username, vc);
             System.out.println("prima di inviare AuthCommand");
@@ -192,7 +200,7 @@ public class Server {
      * Disconnect a player from the server: his username is saved in disconnectedClients in case he will reconnect
      * @param username
      */
-    public synchronized static void disconnectClient(String username){
+    public static synchronized void disconnectClient(String username){
         if (waitingClients.contains(username)) { //Covers the case in which a player is connected but isn't in a started game
             removeClient(username);
             if (waitingClients.size() == 1) {
@@ -203,13 +211,23 @@ public class Server {
         if(connectedClients.containsKey(username)){
             connectedClients.remove(username);
             disconnectedClients.add(username);
-            //TODO Ale: controllo che ci siano abbastanza giocatori nella partita
-            // 1)- Cerco il controller associato all'username del view disconnesso
-            // 2) una volta trovato, controllo se ha almeno 2 giocatori nell'Hashmap dei ConnectedClients
-            // 3) Se ne ha almeno 2, no action
-            // 4) se ne ha uno soltato, proclamo vincitore l'ultimo rimasto
-
-            System.out.println("client " + username + " disconnected");
+            updateDisconnectedUser(username);
+            int counter = 0;
+            String lastPlayer = null;
+            Controller game = getControllerFromUsername(username);
+            for (String user : game.getUserViewMap().keySet()){
+                if (connectedClients.containsKey(user)){
+                    counter++;
+                    lastPlayer = user;
+                }
+            }
+            if (counter==1){
+                ArrayList<String> fakeScores = new ArrayList<>();
+                fakeScores.add("1_" + lastPlayer + "_999");
+                game.getUserViewMap().get(lastPlayer).winMessage(fakeScores);
+                activeGames.remove(game);
+                removeClient(lastPlayer);
+            }
         } else {
             System.out.println("Could not found such view");
         }
@@ -264,28 +282,41 @@ public class Server {
         activeGames.add(controller);
     }
 
-    public static void requestRefreshBoard(String username){
+    public static void refreshBoardAndNotifyReconnectedPlayer(String username){
         for (Controller game : activeGames){
             for (String user : game.getUserViewMap().keySet()){
                 if (username.equals(user)){
-                    game.getModel().notifyRefreshBoard(username, null); //TODO forse possibile indirizzarla ad solo a un player, che la richiede
-                    return;
+                    game.getModel().notifyRefreshBoard(username, null);
+                }
+                else{
+                    game.getUserViewMap().get(user).messageBox("Player " + username + " has reconnected");
                 }
             }
         }
     }
 
     public static void updateDisconnectedUser(String username){
+        try {
+            Controller game = getControllerFromUsername(username);
+            for (String usernameToNotify : game.getUserViewMap().keySet()) {
+                if (!username.equals(usernameToNotify))
+                    game.getUserViewMap().get(usernameToNotify).messageBox("Player" + username + " is disconnected");
+            }
+        }
+        catch (NoSuchElementException e){
+            System.out.println("Error: No controller found, error");
+        }
+    }
+
+    private static Controller getControllerFromUsername(String username){
         for (Controller game : activeGames){
             for (String user : game.getUserViewMap().keySet()){
                 if (username.equals(user)){ //found the right controller
-                    for (String usernameToNotify : game.getUserViewMap().keySet())
-                        if (!username.equals(usernameToNotify))
-                            game.getUserViewMap().get(user).playerDisconnection(username);
-                    return;
+                   return game;
                 }
             }
         }
+        throw new NoSuchElementException();
     }
 
     public static List<String> getWaitingClients(){

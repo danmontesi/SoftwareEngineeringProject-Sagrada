@@ -6,3 +6,7 @@
 .wpc {
     -fx-background-color: transparent;
 }
+
+#start {
+    -fx-font-size: 18px
+}

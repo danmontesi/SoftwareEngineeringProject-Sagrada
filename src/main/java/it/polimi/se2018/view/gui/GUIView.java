@@ -4,14 +4,14 @@ import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.view.gui.Notifiers.GameBoardActions.*;
-import it.polimi.se2018.view.gui.Notifiers.GameBoardNotifier;
-import it.polimi.se2018.view.gui.Notifiers.LobbyNotifier;
-import it.polimi.se2018.view.gui.Notifiers.RankingPaneNotifier;
-import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WGUIViewSetting;
-import it.polimi.se2018.view.gui.Notifiers.WPCChoiceActions.WPCChoice;
+import it.polimi.se2018.view.gui.notifiers.gameboardactions.*;
+import it.polimi.se2018.view.gui.notifiers.GameBoardNotifier;
+import it.polimi.se2018.view.gui.notifiers.LobbyNotifier;
+import it.polimi.se2018.view.gui.notifiers.RankingPaneNotifier;
+import it.polimi.se2018.view.gui.notifiers.wpcchoiceactions.WGUIViewSetting;
+import it.polimi.se2018.view.gui.notifiers.wpcchoiceactions.WPCChoice;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.view.gui.Notifiers.WPCChoiceNotifier;
+import it.polimi.se2018.view.gui.notifiers.WPCChoiceNotifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class GUIView extends View {
 
     @Override
     public void newConnectedPlayer(String username) {
-        lobbyNotifier.updateGui(username);
+        lobbyNotifier.updateGui(username, 1);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class GUIView extends View {
         if(GameBoardNotifier.getInstance().isOpen()){
             gameBoardNotifier.updateGui(new Message(username + " just disconnected."));
         } else {
-            lobbyNotifier.updateGui(username);
+            lobbyNotifier.updateGui(username, 1);
         }
     }
 
@@ -74,7 +74,7 @@ public class GUIView extends View {
             cardDifficulties.add(card.getDifficulty());
         }
         wpcChoiceNotifier.updateGui(new WGUIViewSetting(this));
-        wpcChoiceNotifier.updateGui(new WPCChoice(cardNames, cardDifficulties));
+        wpcChoiceNotifier.updateGui(new WPCChoice(cardNames, cardDifficulties, privateObjectiveCard));
     }
 
     @Override
@@ -176,7 +176,11 @@ public class GUIView extends View {
 
     @Override
     public void messageBox(String message) {
-        gameBoardNotifier.updateGui(new Message(message));
+        if(GameBoardNotifier.getInstance().isOpen()){
+            gameBoardNotifier.updateGui(new Message(message));
+        } else {
+            lobbyNotifier.updateGui(message, 0);
+        }
     }
 
     @Override

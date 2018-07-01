@@ -2,8 +2,8 @@ package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.server_to_client_command.RefreshBoardCommand;
-import it.polimi.se2018.view.gui.Notifiers.GameBoardActions.*;
-import it.polimi.se2018.view.gui.Notifiers.GameBoardNotifier;
+import it.polimi.se2018.view.gui.notifiers.gameboardactions.*;
+import it.polimi.se2018.view.gui.notifiers.GameBoardNotifier;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -52,7 +52,7 @@ public class GameBoardController extends Observable implements Observer {
     private List<Circle> circles;
     private List<ImageView> pubOCards;
     private List<ImageView> wpCards;
-    private List<Button> tcButtons;
+    private List<Button> tCards;
     private List<Label> userNames;
     private List<Label> usersTokens;
     private List<Label> tcTokens;
@@ -157,7 +157,7 @@ public class GameBoardController extends Observable implements Observer {
     public GameBoardController() {
         pubOCards = new ArrayList<>();
         wpCards = new ArrayList<>();
-        tcButtons = new ArrayList<>();
+        tCards = new ArrayList<>();
         userNames = new ArrayList<>();
         usersTokens = new ArrayList<>();
         tcTokens = new ArrayList<>();
@@ -172,11 +172,12 @@ public class GameBoardController extends Observable implements Observer {
     public void initialize() {
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.addObserver(this);
-        initCards();
+        initCardLists();
         initLabels();
         initCircles();
         initButtons();
         initRoundTrack();
+        initCards();
         initParents();
         initChoiceBox();
         disableAllButtons();
@@ -184,7 +185,7 @@ public class GameBoardController extends Observable implements Observer {
         gameBoardNotifier.setOpen(true);
     }
 
-    private void initCards() {
+    private void initCardLists() {
         pubOCards.add(pubOC1);
         pubOCards.add(pubOC2);
         pubOCards.add(pubOC3);
@@ -193,9 +194,9 @@ public class GameBoardController extends Observable implements Observer {
         wpCards.add(wpc2);
         wpCards.add(wpc3);
 
-        tcButtons.add(toolCard1);
-        tcButtons.add(toolCard2);
-        tcButtons.add(toolCard3);
+        tCards.add(toolCard1);
+        tCards.add(toolCard2);
+        tCards.add(toolCard3);
     }
 
     private void initLabels() {
@@ -293,6 +294,27 @@ public class GameBoardController extends Observable implements Observer {
         roundTrack.setImage(new Image("/client/images/RoundTrack.png"));
     }
 
+    private void initCards() {
+        Image prioc = new Image("/client/OC/ocback.jpg");
+        Image tc = new Image("/client/TC/tcback.jpg");
+        Image wpc = new Image("/client/WPC/wpcback.jpg");
+        for (ImageView iv : pubOCards) {
+            iv.setImage(prioc);
+        }
+        for (Button b : tCards) {
+            ImageView iv = new ImageView(tc);
+            iv.setFitWidth(140);
+            iv.setFitHeight(190);
+            b.setGraphic(iv);
+            b.setPadding(Insets.EMPTY);
+        }
+        for (ImageView iv : wpCards) {
+            iv.setImage(wpc);
+        }
+        wpc0.setImage(wpc);
+        priOC.setImage(prioc);
+    }
+
     private void setShadow(Pane p) {
         for (int i = 0; i < p.getChildren().size(); i++) {
             int h = i;
@@ -318,11 +340,11 @@ public class GameBoardController extends Observable implements Observer {
                 @Override
                 public void visitGameBoardAction(RefreshBoard refreshBoard) {
                     modelRepresentation = refreshBoard.getModelRepresentation();
-                    initPubOCards();
-                    initTCards();
-                    initWPCards();
-                    initPersonalWPC();
-                    initPersonalPriOC();
+                    setPubOCards();
+                    setTCards();
+                    setWPCardsDice();
+                    setPersonalWPCDice();
+                    setPersonalPriOC();
                     setRoundTrack(modelRepresentation.getRoundTrack());
                     moveDice();
                 }
@@ -346,6 +368,7 @@ public class GameBoardController extends Observable implements Observer {
                 public void visitGameBoardAction(TurnUpdate turnUpdate) {
                     if (turnUpdate.isDieMoved()) {
                         enableTCB(true);
+                        undo.setDisable(false);
                     }
                     if (turnUpdate.isToolUsed()) {
                         enablePersonalWPC(true, "partial");
@@ -363,8 +386,8 @@ public class GameBoardController extends Observable implements Observer {
 
                 @Override
                 public void visitGameBoardAction(WPCUpdate wpcUpdate) {
-                    setWPCards(wpcUpdate.getOtherWpcs());
-                    setPersonalWPC(wpcUpdate.getMyWpc());
+                    setWPCardsDice(wpcUpdate.getOtherWpcs());
+                    setPersonalWPCDice(wpcUpdate.getMyWpc());
                 }
 
                 @Override
@@ -420,7 +443,7 @@ public class GameBoardController extends Observable implements Observer {
         }
     }
 
-    private void initPubOCards() {
+    private void setPubOCards() {
         List<String> publicOC = modelRepresentation.getPublicObjectiveCards();
         List<String> publicOCDesc = modelRepresentation.getPublicObjectiveDescription();
         Platform.runLater(() -> {
@@ -438,34 +461,34 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void initTCards() {
-        List<String> tCards = modelRepresentation.getToolCards();
-        List<String> tCardsDesc = modelRepresentation.getToolCardDescription();
+    private void setTCards() {
+        List<String> toolCards = modelRepresentation.getToolCards();
+        List<String> toolCardsDesc = modelRepresentation.getToolCardDescription();
         Platform.runLater(() -> {
-            for (int i = 0; i < tCards.size(); i++) {
-                String img = tCards.get(i);
+            for (int i = 0; i < toolCards.size(); i++) {
+                String img = toolCards.get(i);
                 String path = "/client/TC/" + img + ".jpg";
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);
                 iv.setFitHeight(190);
                 iv.setFitWidth(140);
-                tcButtons.get(i).setGraphic(iv);
-                tcButtons.get(i).setPadding(Insets.EMPTY);
-                Tooltip t = new Tooltip(tCardsDesc.get(i));
+                tCards.get(i).setGraphic(iv);
+                tCards.get(i).setPadding(Insets.EMPTY);
+                Tooltip t = new Tooltip(toolCardsDesc.get(i));
                 t.setStyle("-fx-font-size: 15px");
                 t.setPrefWidth(200);
                 t.setWrapText(true);
-                Tooltip.install(tcButtons.get(i), t);
+                Tooltip.install(tCards.get(i), t);
                 tcCircles.get(i).setVisible(true);
             }
-            for (Button tc : tcButtons) {
+            for (Button tc : tCards) {
                 tc.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> tc.setEffect(shadow));
                 tc.addEventHandler(MouseEvent.MOUSE_EXITED, e -> tc.setEffect(null));
             }
         });
     }
 
-    private void initWPCards() {
+    private void setWPCardsDice() {
         Platform.runLater(() -> {
             for (int i = 0; i < modelRepresentation.getOtherPlayersWpcs().size(); i++) {
                 String img = modelRepresentation.getOtherPlayersWpcs().get(i).get(0).replace("_", " ");
@@ -484,7 +507,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void initPersonalWPC() {
+    private void setPersonalWPCDice() {
         Platform.runLater(() -> {
             String img = modelRepresentation.getPersonalWpc().get(0).replace("_", " ");
             String path = "/client/WPC/" + img + ".jpg";
@@ -496,7 +519,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void initPersonalPriOC() {
+    private void setPersonalPriOC() {
         Platform.runLater(() -> {
             String img = modelRepresentation.getPrivateObjectiveCard();
             String path = "/client/OC/" + img + ".jpg";
@@ -565,7 +588,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setWPCards(List<List<String>> wpcards) {
+    private void setWPCardsDice(List<List<String>> wpcards) {
         Platform.runLater(() -> {
             for (int i = 0; i < wpcards.size(); i++) {
                 int k = -1;
@@ -587,7 +610,7 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setPersonalWPC(List<String> wpc) {
+    private void setPersonalWPCDice(List<String> wpc) {
         Platform.runLater(() -> {
             for (int i = 0; i < wpc.size() - 1; i++) {
                 String img = wpc.get(i + 1);
@@ -762,11 +785,11 @@ public class GameBoardController extends Observable implements Observer {
 
     private void enableTCB(boolean b) {
         if (b) {
-            for (Button tc : tcButtons) {
+            for (Button tc : tCards) {
                 tc.setDisable(false);
             }
         } else {
-            for (Button tc : tcButtons) {
+            for (Button tc : tCards) {
                 tc.setDisable(true);
             }
         }
@@ -824,6 +847,7 @@ public class GameBoardController extends Observable implements Observer {
         enableRoundTrack(false);
         enablePersonalWPC(false, "partial");
         pass.setDisable(true);
+        undo.setDisable(true);
     }
 
     private void resetPostMove() {

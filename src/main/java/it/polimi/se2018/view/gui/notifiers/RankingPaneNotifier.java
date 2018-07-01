@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.gui.Notifiers;
+package it.polimi.se2018.view.gui.notifiers;
 
 import java.util.List;
 import java.util.Observable;
