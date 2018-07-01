@@ -21,7 +21,6 @@ public class ParserPrivateObjectiveCard {
     private ParserSettings settings;
 
     /**
-     *
      * @return ArrayList of all PrivateObjectiveCards in json file
      * @throws IOException
      */

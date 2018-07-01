@@ -6,8 +6,6 @@ import it.polimi.se2018.exceptions.WrongCellIndexException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Describes WindowPatternCard behavior. Dice can be placed on it, after checking restrictions.
@@ -18,7 +16,6 @@ public class WindowPatternCard {
     private List<Cell> schema;
     private int difficulty;
     private String name;
-    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
     public WindowPatternCard(List<Cell> schema, int difficulty, String name) {
         this.schema = schema;
@@ -55,12 +52,6 @@ public class WindowPatternCard {
     }
 
     /**
-     * @param d                    to be placed die
-     * @param row                  cell row number
-     * @param column               cell column number
-     * @param colorRestriction     cell color restriction
-     * @param valueRestriction     cell value restriction
-     * @param placementRestriction placement restriction
      * @return true if restrictions are respected and die is place, false otherwise
      */
     public boolean placeDie(Die d, int row, int column, boolean colorRestriction, boolean valueRestriction,
@@ -75,7 +66,7 @@ public class WindowPatternCard {
      */
     public boolean placeDie(Die d, int index, boolean colorRestriction, boolean valueRestriction,
                             boolean placementRestriction) {
-        if(checkDiePlacement(d, index, colorRestriction, valueRestriction, placementRestriction)){
+        if(checkCorrectDiePlacement(d, index, colorRestriction, valueRestriction, placementRestriction)){
             this.getCell(index).setAssociatedDie(d);
             return true;
         } else {
@@ -101,14 +92,14 @@ public class WindowPatternCard {
         return schema.get(index).removeDie();
     }
 
-    public boolean checkPlacementRestriction(Cell c, Die d) {
+    private boolean checkPlacementRestriction(Cell c, Die d) {
         int column = c.getColumn();
         int row = c.getRow();
 
         if (this.isEmpty()) {
             return row == 0 || row == 3 || column == 0 || column == 4;
         } else {
-            return (checkAdjacents(c, d) && checkColorsAndValues(c, d));
+            return (checkAdjacents(c) && checkAdjacentsColorsAndValues(c, d));
         }
     }
 
@@ -117,18 +108,14 @@ public class WindowPatternCard {
         int row = c.getRow();
 
         if (this.isEmpty()) {
-            if (row == 0 || row == 3 || column == 0 || column == 4) {
-                return true;
-            } else {
-                return false;
-            }
+            return row == 0 || row == 3 || column == 0 || column == 4;
         } else {
-            return (checkColorsAndValues(c, d));
+            return (checkAdjacentsColorsAndValues(c, d));
         }
     }
 
 
-    public boolean checkAdjacents(Cell c, Die d) {
+    private boolean checkAdjacents(Cell c) {
         int row = c.getRow();
         int column = c.getColumn();
         for (int i = -1; i <= 1; i++) {
@@ -147,8 +134,7 @@ public class WindowPatternCard {
         return false;
     }
 
-
-    public boolean checkColorsAndValues(Cell c, Die d) {
+    private boolean checkAdjacentsColorsAndValues(Cell c, Die d) {
         int row = c.getRow();
         int column = c.getColumn();
         int value = d.getValue();
@@ -192,6 +178,25 @@ public class WindowPatternCard {
 
     }
 
+    public boolean isPossibleToPlace(Die tempDieToCheckPlacement) {
+        for (int i = 0; i < schema.size(); i++) {
+            if (checkCorrectDiePlacement(tempDieToCheckPlacement, i, true, true, true)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkCorrectDiePlacement(Die die, int index, boolean colorRestriction, boolean valueRestriction, boolean placementRestriction) {
+        Cell cell = this.getCell(index);
+        if (cell.hasDie()) {
+            return false;
+        }
+        return (!colorRestriction || checkColorRestriction(cell, die)) &&
+                (!valueRestriction || checkValueRestriction(cell, die)) &&
+                (!placementRestriction || checkPlacementRestriction(cell, die));
+    }
+
     public String getCardName() {
         return this.name;
     }
@@ -207,11 +212,6 @@ public class WindowPatternCard {
     /**
      * Retrieve cell by row andd column
      * Throws unchecked WrongCellIndexException
-     *
-     * @param row
-     * @param column
-     * @return
-     * @throws WrongCellIndexException
      */
     public Cell getCell(int row, int column) {
         if (row < 0 || row > 3 || column < 0 || column > 4) {
@@ -238,80 +238,32 @@ public class WindowPatternCard {
     }
 
     public String toString() {
-        String printedCard = "\n - " + name + " - \n";
-        for (int i = 0; i < schema.size(); i++) {
-            try {
-                if (schema.get(i).isEmpty()) {
-                    if (schema.get(i).getColorConstraint() != null)
-                        printedCard += schema.get(i).getColorConstraint().toString();
-                    else if (schema.get(i).getValueConstraint() != null)
-                        printedCard += schema.get(i).getValueConstraint().toString();
-                    else
-                        printedCard += "noDie";
-                } else {
-                    printedCard += schema.get(i).getAssociatedDie().getColor() + "," + schema.get(i).getAssociatedDie().getValue();
-                }
-            } catch (EmptyCellException e) {
-                e.printStackTrace();
+        StringBuilder sb = new StringBuilder();
+        sb.append(name);
+        sb.append("\n");
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 5; j ++){
+                sb.append(getCell(i, j).toString());
+                sb.append("\t");
             }
-            if ((i + 1) % 5 == 0) {
-                printedCard += "\n";
-            }
-            printedCard += "\t";
+            sb.append("\n");
         }
-        return printedCard;
+        return sb.toString();
     }
 
     /**
      * Representation of the patch of the whole Wpc. Useful for gui
-     *
      * @return List of path last name
      */
     public List<String> wpcPathRepresentation() {
         List<String> wpcString = new ArrayList<>();
         String pathName = name.replaceAll(" ", "_");
         wpcString.add(pathName);
-        for (int i = 0; i < schema.size(); i++) {
-            try {
-                if (schema.get(i).isEmpty()) {
-                    if (schema.get(i).getColorConstraint() != null) {
-                        wpcString.add(schema.get(i).getColorConstraint().toString());   //COLOR constaint has just the "constr" color name. casn use ".contains"_" to know if there is a restriction
-                    } else if (schema.get(i).getValueConstraint() != null) {
-                        wpcString.add(schema.get(i).getValueConstraint().toString());   //VALUE constaint has just the "constr" + value name
-                    } else {
-                        wpcString.add("empty");
-                    }
-                } else {
-                    wpcString.add(schema.get(i).getAssociatedDie().getColor().toString() + "_" + schema.get(i).getAssociatedDie().getValue());
-                }
-            } catch (EmptyCellException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            }
+        for (Cell aSchema : schema) {
+            wpcString.add(aSchema.toString());
         }
         return wpcString;
     }
 
-    public boolean isPossibleToPlace(Die tempDieToCheckPlacement) {
-        for (int i = 0; i < schema.size(); i++) {
-            if (checkDiePlacement(tempDieToCheckPlacement, i, true, true, true)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean checkDiePlacement(Die d, int index, boolean colorRestriction, boolean valueRestriction, boolean placementRestriction) {
-        if (this.getCell(index).hasDie()) {
-            return false;
-        }
-        if ((colorRestriction) && (!checkColorRestriction(this.getCell(index), d))) {
-            return false;
-        }
-        if ((valueRestriction) && (!checkValueRestriction(this.getCell(index), d))) {
-            return false;
-        }
-        if ((placementRestriction) && (!checkPlacementRestriction(this.getCell(index), d))) {
-            return false;
-        }
-        return true;}
+   
 }
