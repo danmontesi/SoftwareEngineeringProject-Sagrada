@@ -28,6 +28,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -507,11 +509,14 @@ public class GameBoardController extends Observable implements Observer {
                     ImageView iv = new ImageView(image);
                     iv.setFitWidth(43);
                     iv.setFitHeight(43);
-                    ((ToggleButton) draftPoolDice.getChildren().get(i)).setText(img);
-                    ((ToggleButton) draftPoolDice.getChildren().get(i)).setGraphic(iv);
-                    ((ToggleButton) draftPoolDice.getChildren().get(i)).setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                    ((ToggleButton)draftPoolDice.getChildren().get(i)).setGraphic(iv);
                     draftPoolDice.getChildren().get(i).setDisable(false);
                 } else {
+                    Shape blank = new Rectangle();
+                    blank.setFill(Color.TRANSPARENT);
+                    ((Rectangle) blank).setWidth(43);
+                    ((Rectangle) blank).setHeight(43);
+                    ((ToggleButton)draftPoolDice.getChildren().get(i)).setGraphic(blank);
                     draftPoolDice.getChildren().get(i).setDisable(true);
                 }
             }
@@ -541,6 +546,11 @@ public class GameBoardController extends Observable implements Observer {
                     iv.setFitHeight(43);
                     ((ToggleButton) roundTrackDice.getChildren().get(i)).setGraphic(iv);
                 } else {
+                    Shape blank = new Rectangle();
+                    blank.setFill(Color.TRANSPARENT);
+                    ((Rectangle) blank).setWidth(43);
+                    ((Rectangle) blank).setHeight(43);
+                    ((ToggleButton)roundTrackDice.getChildren().get(i)).setGraphic(blank);
                     roundTrackDice.getChildren().get(i).setDisable(true);
                 }
             }
@@ -568,14 +578,14 @@ public class GameBoardController extends Observable implements Observer {
                     if (h == 0) k++;
                     String img = wpcards.get(i).get(j + 1);
                     ImageView iv = new ImageView();
+                    iv.setFitHeight(29);
+                    iv.setFitWidth(29);
                     if (img.contains("_")) {
                         String path = "/client/dice/" + img + ".jpg";
                         Image image = new Image(path);
                         iv.setImage(image);
-                        iv.setFitHeight(29);
-                        iv.setFitWidth(29);
-                        otherWPCsDice.get(i).add(iv, h, k);
                     }
+                    otherWPCsDice.get(i).add(iv, h, k);
                 }
             }
         });
@@ -593,6 +603,12 @@ public class GameBoardController extends Observable implements Observer {
                     iv.setFitHeight(43);
                     ((ToggleButton) personalWPCDice.getChildren().get(i)).setGraphic(iv);
                     personalWPCDice.getChildren().get(i).setDisable(true);
+                } else {
+                    Shape blank = new Rectangle();
+                    blank.setFill(Color.TRANSPARENT);
+                    ((Rectangle) blank).setWidth(43);
+                    ((Rectangle) blank).setHeight(43);
+                    ((ToggleButton)personalWPCDice.getChildren().get(i)).setGraphic(blank);
                 }
             }
             for (int i = 0; i < 20; i++) {
@@ -774,7 +790,7 @@ public class GameBoardController extends Observable implements Observer {
     private void enableDraftPoolRoundTrack(Pane p, boolean b) {
         if (b) {
             for (int i = 0; i < p.getChildren().size(); i++) {
-                if (((ToggleButton) p.getChildren().get(i)).getGraphic() != null) {
+                if (((ToggleButton) p.getChildren().get(i)).getGraphic().toString().contains("image")) {
                     p.getChildren().get(i).setDisable(false);
                 }
             }
@@ -788,7 +804,7 @@ public class GameBoardController extends Observable implements Observer {
     private void enablePersonalWPC(boolean b, String extent) {
         if (b) {
             for (int i = 0; i < personalWPCDice.getChildren().size(); i++) {
-                if ((((ToggleButton) personalWPCDice.getChildren().get(i)).getGraphic() == null) && !extent.equals("complete")) {
+                if (!((ToggleButton) personalWPCDice.getChildren().get(i)).getGraphic().toString().contains("image") && !extent.equals("complete")) {
                     personalWPCDice.getChildren().get(i).setDisable(false);
                 }
             }

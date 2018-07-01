@@ -28,6 +28,11 @@ public class GUIView extends View {
     }
 
     @Override
+    public void authenticatedCorrectlyMessage(String message) {
+        this.username = message;
+    }
+
+    @Override
     public void newConnectedPlayer(String username) {
         lobbyNotifier.updateGui(username);
     }
@@ -85,11 +90,6 @@ public class GUIView extends View {
             }
         }
         gameBoardNotifier.updateGui(new TurnStart(username));
-    }
-
-    @Override
-    public void authenticatedCorrectlyMessage(String message) {
-        this.username = message;
     }
 
     @Override
