@@ -80,7 +80,6 @@ public class GUIView extends View {
     @Override
     public void startTurnMenu() {
         gameBoardNotifier.updateGui(new TurnStart(null));
-        //casellina in cui scrivo "vuoi usare il tool x?"
     }
 
     @Override
