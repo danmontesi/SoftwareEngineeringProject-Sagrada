@@ -30,7 +30,7 @@ public class RMIVirtualClient implements ClientConnection{
              */
             String disconnecting;
             for (Map.Entry<String, ClientConnection> entry : Server.getConnectedClients().entrySet()) {
-                if (entry.getValue().equals(this)) {  //TODO: con il thread non mi prende this come connessione! COme risolvo?
+                if (entry.getValue().equals(this)) {
                     disconnecting = entry.getKey();
                     Server.disconnectClient(disconnecting);
                     System.out.println("client " + entry.getKey() + " disconnected");
