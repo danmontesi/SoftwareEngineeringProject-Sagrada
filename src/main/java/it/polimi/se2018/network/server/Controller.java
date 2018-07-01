@@ -127,7 +127,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         this.orderedPlayers = new ArrayList<>();
 
-        this.timerCostant = 600000;
+        this.timerCostant = CONSTANTS.TURN_TIMER;
         // Now I will start each player's View
         for (String username : usernamePlayerMap.keySet())
             userViewMap.get(username).startGame(); //notifying game starting
@@ -145,7 +145,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             WindowPatternCard defaultCard = localWpc.get(0); //default wpc in case the player disconnects
             usernamePlayerMap.get(p.getUsername()).setWindowPatternCard(defaultCard);
             LOGGER.log(Level.INFO, "invio command CHOOSEWPC a player:" + p.getUsername());
-            userViewMap.get(p.getUsername()).chooseWindowPatternCardMenu(localWpc);
+            userViewMap.get(p.getUsername()).chooseWindowPatternCardMenu(localWpc, model.getPlayerFromUsername(p.getUsername()).getPrivateObjectiveCard().getName());
         }
         checkBlockingTimer = new Timer(); //General timer for every player. Is starts the game stopping players without waiting the answer
         checkBlockingTimer.schedule(
@@ -190,7 +190,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private void startGame() {
         assignRoundPlayers(orderedPlayers);
-        model.forceRefreshEntireBoard(null, orderedPlayers);
+        model.notifyRefreshBoard(null, orderedPlayers);
         startNewRound();
     }
 
@@ -280,6 +280,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 }
             }
 
+            model.setCurrentPlayer(model.getPlayerFromUsername(currentPlayer));
+            model.setCurrentRound(10 - orderedRoundPlayers.size());
             usernameTimerMap.put(currentPlayer, new Timer());
             usernameTimerMap.get(currentPlayer).schedule(
                     new TimerTask() {
@@ -916,7 +918,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private void editCurrentPlayerVariables() {
         for (Action action : model.getExtractedToolCard().get(toolcardData.getLastUsedToolCardNum()).getActions())
-            if (action.getType().equals(ASK_PLACE_DIE) && action.getParameter().equals("DP") && toolcardData.getToolcardActions().isEmpty())
+            if (action.getType().equals(ASK_PLACE_DIE) && action.hasParameter() && action.getParameter().equals("DP") && toolcardData.getToolcardActions().isEmpty())
                 hasPerformedMove=true;
         hasUsedTool = true;
     }
@@ -952,7 +954,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
         model = toolcardData.removeOldModel();
-        model.forceRefreshEntireBoard(null, orderedPlayers);
+        model.notifyRefreshBoard(null, orderedPlayers);
     }
 
 

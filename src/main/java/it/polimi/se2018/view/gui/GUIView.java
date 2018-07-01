@@ -66,7 +66,7 @@ public class GUIView extends View {
     }
 
     @Override
-    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards) {
+    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards, String privateObjectiveCard) {
         List<String> cardNames = new ArrayList<>();
         List<Integer> cardDifficulties = new ArrayList<>();
         for (WindowPatternCard card : cards) {

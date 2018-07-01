@@ -3,16 +3,22 @@ package it.polimi.se2018.commands.server_to_client_command;
 import it.polimi.se2018.utils.ControllerClientInterface;
 
 public class ChooseWindowPatternCardCommand extends ServerToClientCommand{
-/**
- * Request of ToolCard
- * String with only NameClass
- */
-    /**
-     * Contains nameClass + three names of Wpcs
-     */
 
-    public ChooseWindowPatternCardCommand(String message) {
-        this.message = message;
+    private String wpcsInStrings;
+
+    private String privateObjectiveCard;
+
+    public String getWpcsInStrings() {
+        return wpcsInStrings;
+    }
+
+    public String getPrivateObjectiveCard() {
+        return privateObjectiveCard;
+    }
+
+    public ChooseWindowPatternCardCommand(String wpcsInString, String privateObjectiveCard) {
+        this.wpcsInStrings = wpcsInString;
+        this.privateObjectiveCard = privateObjectiveCard;
     }
 
     /**

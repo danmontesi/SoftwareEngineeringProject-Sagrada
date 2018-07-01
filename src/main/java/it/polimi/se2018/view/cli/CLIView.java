@@ -38,7 +38,7 @@ public class CLIView extends View implements Runnable {
     }
 
     @Override
-    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards) {
+    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards, String privateObjectiveCard) {
         wpcsForInitialChoice = cards;
         currentState = INPUT_STATE.CHOOSE_WPC;
         for (WindowPatternCard card : cards) {

@@ -13,6 +13,7 @@ import it.polimi.se2018.view.View;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +47,10 @@ public class Model extends Observable implements Serializable { //Observable of 
     private RoundTrack roundTrack;
 
     private DraftPool draftPool;
+
+    private int currentRound;
+
+    private Player currentPlayer;
 
     //private ArrayList<Observer> observers; Already in the class thanks to Observable ->le virtual view!
 
@@ -116,7 +121,6 @@ public class Model extends Observable implements Serializable { //Observable of 
         Collections.shuffle(privateObjectiveCardDeck);
         for (Player p : gamePlayers)
             p.setPrivateObjectiveCard(privateObjectiveCardDeck.remove(0));
-
     }
 
     public List<Die> extractDraftPoolDice(int numPlayers) {
@@ -218,13 +222,6 @@ public class Model extends Observable implements Serializable { //Observable of 
         return toReturn;
     }
 
-    public void forceRefreshEntireBoard(String reconnectedPlayer, List<Player> players) { //TODO rivedi
-        this.gamePlayers = players;
-        if (true){
-            notifyRefreshBoard();
-        }
-    }
-
     public void increaseToolCardTokens(int toolCardNumber, int tokens) {
         extractedToolCard.get(toolCardNumber).increaseTokens(tokens);
         notifyRefreshTokens();
@@ -302,7 +299,10 @@ public class Model extends Observable implements Serializable { //Observable of 
     /**
      * Method for initial setting of the board
      */
-    public void notifyRefreshBoard() {
+    public void notifyRefreshBoard(String playerUsername, ArrayList<Player> orderedPlayers) {
+        if (orderedPlayers!=null){
+            this.gamePlayers=orderedPlayers;
+        }
 
         List<String> draftpool = new ArrayList<>(); //Dice in the format: colorNumber/empty
 
@@ -373,8 +373,18 @@ public class Model extends Observable implements Serializable { //Observable of 
                 }
             }
             //TODO con 15 costruttori
-            ((View) observer).updateBoard(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
-                    draftpool, roundTrackString, personalWpc, myTokens, username, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
+            if (playerUsername != null) {
+                if (playerUsername.equals(((View) observer).getUsername())) {
+                    ((View) observer).updateBoard(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
+                            draftpool, roundTrackString, personalWpc, myTokens, username, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
+                    //TODO: avvisa che è il suo turno if (currentPlayer==getPlayerFromUsername(playerUsername)){
+                    return;
+                }
+            } else {
+                ((View) observer).updateBoard(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
+                        draftpool, roundTrackString, personalWpc, myTokens, username, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
+            }
+
         }
     }
 
@@ -411,6 +421,23 @@ public class Model extends Observable implements Serializable { //Observable of 
 
     public DraftPool getDraftPool() {
         return draftPool;
+    }
+
+    public Player getPlayerFromUsername(String username) {
+        for (Player p : gamePlayers){
+            if (p.getUsername().equals(username))
+                return p;
+        }
+        System.out.println("Error: returning a random one");
+        return gamePlayers.get(0);
+    }
+
+    public void setCurrentRound(int currentRound) {
+        this.currentRound = currentRound;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
 }

@@ -25,7 +25,7 @@ public class View extends Observable implements ObserverView { //VIEW: Osserva M
         return username;
     }
 
-    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards){
+    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards, String privateObjectiveCard){
 
     }
 

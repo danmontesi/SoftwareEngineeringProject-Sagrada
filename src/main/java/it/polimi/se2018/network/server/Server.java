@@ -268,7 +268,7 @@ public class Server {
         for (Controller game : activeGames){
             for (String user : game.getUserViewMap().keySet()){
                 if (username.equals(user)){
-                    game.getModel().notifyRefreshBoard(); //TODO forse possibile indirizzarla ad solo a un player, che la richiede
+                    game.getModel().notifyRefreshBoard(username, null); //TODO forse possibile indirizzarla ad solo a un player, che la richiede
                     return;
                 }
             }
