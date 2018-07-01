@@ -98,6 +98,7 @@ public class Server {
         if (disconnectedClients.contains(username)){
             disconnectedClients.remove(username);
             connectedClients.put(username, vc);
+            vc.notifyClient(new AuthenticatedCorrectlyCommand(username));
             vc.notifyClient(new MessageFromServerCommand("You reconnected!"));
             requestRefreshBoard(username);
         } else if(!connectedClients.containsKey(username)){

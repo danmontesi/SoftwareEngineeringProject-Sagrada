@@ -758,14 +758,20 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         switch (parameter) {
             case "WPC":
                 int indexWpc = toolcardData.getIndexFromWPC();
-                tempDieToPlace = model.removeDieFromDraftPool(indexWpc);
+                try {
+                    tempDieToPlace = usernamePlayerMap.get(currentPlayer).getWindowPatternCard().removeDie(indexWpc);
+                } catch (EmptyCellException e) {
+                    e.printStackTrace();
+                    System.out.println("Error: Non dovrebbe essere null!");
+                    return;
+                }
                 break;
             case "DP":
                 int indexDP = toolcardData.getIndexFromDraftpool();
                 tempDieToPlace = model.removeDieFromDraftPool(indexDP);
                 break;
             default:
-                LOGGER.log(Level.INFO,"Errore in doSwap, non arriva ne DB ne RT");
+                LOGGER.log(Level.INFO,"Errore in doSwap, non arriva ne DB ne WPC");
                 return;
         }
 
@@ -880,6 +886,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
 
         toolcardData.setDieValue(command.getValue());
+        toolcardData.getToolcardActions().remove(0);
         executeAction();
     }
 
@@ -891,6 +898,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
 
         toolcardData.setAnotherAction(command.isAnother());
+        toolcardData.getToolcardActions().remove(0);
         executeAction();
     }
 

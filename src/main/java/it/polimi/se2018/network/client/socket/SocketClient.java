@@ -64,9 +64,7 @@ public class SocketClient implements ServerConnection {
                             LOGGER.log(Level.FINE," SOCKET: arriva comando ", command.getMessage());
                         }
                         else {
-                            new Thread(() -> { //TODO HO DAVVERO BISOGNO DI TUTTI QUESTI THREAD??
-                                clientController.dispatchCommand(command);
-                            }).start();
+                            clientController.dispatchCommand(command);
                         }
                     } catch (IOException e) {
                         LOGGER.log(Level.SEVERE, e.getMessage(), e);
