@@ -1,6 +1,6 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.commands.client_to_server_command.MoveChoiceDicePlacement;
+import it.polimi.se2018.commands.client_to_server_command.MoveChoiceDiePlacement;
 import it.polimi.se2018.commands.client_to_server_command.MoveChoicePassTurn;
 import it.polimi.se2018.commands.client_to_server_command.MoveChoiceToolCard;
 import it.polimi.se2018.commands.client_to_server_command.UndoActionCommand;
@@ -620,7 +620,7 @@ public class GameBoardController extends Observable implements Observer {
                         if (((ToggleButton) draftPoolDice.getChildren().get(j)).isSelected()) {
                             ((ToggleButton) draftPoolDice.getChildren().get(j)).setSelected(false);
                             ((ToggleButton) personalWPCDice.getChildren().get(h)).setSelected(false);
-                            guiViewT.notify(new MoveChoiceDicePlacement(h, j));
+                            guiViewT.notify(new MoveChoiceDiePlacement(h, j));
                             resetPostMove();
                         }
                     }

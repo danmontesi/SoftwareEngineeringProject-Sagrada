@@ -69,13 +69,6 @@ public class CLIView extends View implements Runnable {
     }
 
     @Override
-    public synchronized void authenticatedCorrectlyMessage(String username) {
-        this.username = username;
-        cliState.getPlayer(0).setUsername(username);
-        System.out.println("Authenticated correctly!\nWelcome to Sagrada, " + this.username);
-    }
-
-    @Override
     public synchronized void continueTurnMenu(boolean hasAlreadyMovedDie, boolean hasAlreadyUsedTool) {
         placeDieAllowed = !hasAlreadyMovedDie;
         toolcardAllowed = !hasAlreadyUsedTool;
@@ -242,7 +235,7 @@ public class CLIView extends View implements Runnable {
                 break;
             case PLACE_DIE_ROW_COLUMN:
                 if (checkRowAndColumn(input)) {
-                    notify(new MoveChoiceDicePlacement(rowChoice * 5 + columnChoice, draftPoolChoice));
+                    notify(new MoveChoiceDiePlacement(rowChoice * 5 + columnChoice, draftPoolChoice));
                 } else {
                     this.currentState = INPUT_STATE.YOUR_TURN;
                 }

@@ -61,7 +61,7 @@ public class SocketClient implements ServerConnection {
                     try {
                         ServerToClientCommand command = (ServerToClientCommand) input.readObject();
                         if (command.hasMessage() && command.getMessage().contains("Ping")) {
-                            LOGGER.log(Level.FINE," SOCKET: arriva comando ", command.getMessage());
+                            LOGGER.log(Level.FINE,"Arrived ping from server");
                         }
                         else {
                             clientController.dispatchCommand(command);

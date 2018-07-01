@@ -17,10 +17,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static it.polimi.se2018.model.ACTION_TYPE.ASK_PICK_DIE;
+import static it.polimi.se2018.model.ACTION_TYPE.ASK_PLACE_DIE;
+import static it.polimi.se2018.model.ACTION_TYPE.DO_PLACE_DIE;
 
 public class Controller implements Observer, ControllerServerInterface { //Observer perchè osserva la View tramite le classi di mezzo (ClientConnection)
 
 
+    //TODO setta i messaggi
     private static final String WRONG_INDEX = "The cell you selected is wrong or our of index, try again!";
     private static final String WRONG_PLACEMENT = "The placement is incorrect. Check the rules of Sagrada";
     private static final String EMPTY_INDEX = "The cell you selected is empty, try again!";
@@ -167,7 +170,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                         }
                     }
                 },
-                100000); //TODO timer
+                CONSTANTS.WPC_TIMER); //TODO timer
     }
 
     /**
@@ -799,14 +802,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     }
 
-
-
-    private void startUsingTool(int toolNum) {
-        model.getExtractedToolCard().get(toolNum);
-    }
-
     @Override
-    public void applyCommand(String playerUsername, MoveChoiceDicePlacement command) {
+    public void applyCommand(String playerUsername, MoveChoiceDiePlacement command) {
         if (!isAllowed(playerUsername)) {
             userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
@@ -1016,8 +1013,16 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         model.increaseToolCardTokens(toolcardData.getLastUsedToolCardNum(), tokenToDecrease); //TODO a volte non funziona firmy pastry brush
         this.hasUsedTool = true;
         model.setGamePlayers(orderedPlayers);
+        editCurrentPlayerVariables();
         restoreTCGlobalVariables();
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+    }
+
+    private void editCurrentPlayerVariables() {
+        for (Action action : model.getExtractedToolCard().get(toolcardData.getLastUsedToolCardNum()).getActions())
+            if (action.getType().equals(ASK_PLACE_DIE) && action.getParameter().equals("DP") && toolcardData.getToolcardActions().isEmpty())
+                hasPerformedMove=true;
+        hasUsedTool = true;
     }
 
     //TODO gestisci il caso in cui l'utente sbaglia e nel frattempo arriva un timeout!

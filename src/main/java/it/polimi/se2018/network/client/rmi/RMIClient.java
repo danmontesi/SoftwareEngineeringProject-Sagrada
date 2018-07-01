@@ -52,6 +52,10 @@ public class RMIClient implements Remote, ServerConnection{
     }
 
     public void notifyRMI(ServerToClientCommand command) {
+        if (command.hasMessage() && command.getMessage().equals("Ping")){
+            LOGGER.log(Level.FINE, "Arrived ping from server");
+        }
+        else
             clientController.dispatchCommand(command);
     }
 

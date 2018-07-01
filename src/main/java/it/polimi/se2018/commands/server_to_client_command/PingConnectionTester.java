@@ -12,7 +12,7 @@ public class PingConnectionTester extends ServerToClientCommand {
      * @param clientController the parameters who calls the dynamic method
      */
     public void visit(ControllerClientInterface clientController) {
-        clientController.applyCommand(this);
+        System.out.println("Voleeeeevi!");
     }
 
 

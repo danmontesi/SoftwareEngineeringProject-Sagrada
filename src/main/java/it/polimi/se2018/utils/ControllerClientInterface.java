@@ -57,53 +57,6 @@ public interface ControllerClientInterface{
      */
     public void applyCommand(StartPlayerTurnCommand command);
 
-
-
-
-    //Correct use-> performs the move
-    //USING OF TOOLS: Correct Move performed -> has to update the View (The answer will be the new model or the move performed)
-
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolCorkLine command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolMoveDieNoRestriction command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolFirmPastryBrush1 command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolFirmPastryThinner1 command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolWheelsPincher command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolTwoDiceMove command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolChangeDieValue command);
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    public void applyCommand(CorrectUseToolCircularCutter command);
-
     public void applyCommand(OtherPlayerTurnCommand command);
 
     public void applyCommand(TimeOutCommand command);
@@ -122,8 +75,6 @@ public interface ControllerClientInterface{
     void applyCommand(RefreshRoundTrackCommand refreshRoundTrackCommand);
 
     void applyCommand(NewConnectedPlayerNotification newConnectedPlayerNotification);
-
-    void applyCommand(PingConnectionTester pingConnectionTester);
 
     void applyCommand(StartGameCommand startGameCommand);
 

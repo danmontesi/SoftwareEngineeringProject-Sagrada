@@ -172,65 +172,6 @@ public class ClientController extends Observable implements Observer, Controller
         view.messageBox(command.getMessage());
     }
 
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(CorrectUseToolCorkLine command){
-        view.corkLineMenu();
-    }
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(CorrectUseToolMoveDieNoRestriction command){
-        view.moveDieNoRestrictionMenu(command.getCardName());
-    }
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(CorrectUseToolFirmPastryBrush1 command){
-        Integer valueForDraftPoolDie = command.getDieValue();
-        view.firmPastryBrushMenu(valueForDraftPoolDie);
-
-    }
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(CorrectUseToolFirmPastryThinner1 command){
-        view.firmPastryThinnerMenu(command.getColor(), command.getDieValue());
-    }
-
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
-    @Override
-    public void applyCommand(CorrectUseToolWheelsPincher command){
-        view.wheelsPincherMenu();
-
-    }
-
-    @Override
-    public void applyCommand(CorrectUseToolTwoDiceMove command) {
-        view.twoDiceMoveMenu(command.getCardName());
-    }
-
-    @Override
-    public void applyCommand(CorrectUseToolChangeDieValue command) {
-        view.changeDieValueMenu(command.getCardName());
-
-    }
-
-    @Override
-    public void applyCommand(CorrectUseToolCircularCutter command) {
-        view.circularCutter();
-    }
-
-
     @Override
     public void applyCommand(OtherPlayerTurnCommand command){
         view.otherPlayerTurn(command.getUsername());
@@ -312,11 +253,6 @@ public class ClientController extends Observable implements Observer, Controller
     @Override
     public void applyCommand(NewConnectedPlayerNotification command) {
         view.newConnectedPlayer(command.getUsername());
-    }
-
-    @Override
-    public void applyCommand(PingConnectionTester pingConnectionTester) {
-        LOGGER.log(Level.FINEST,"ping from server" );
     }
 
 }
