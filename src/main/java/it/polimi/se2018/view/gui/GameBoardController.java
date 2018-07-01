@@ -295,25 +295,23 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     private void initCards() {
+        Image prioc = new Image("/client/OC/ocback.jpg");
+        Image tc = new Image("/client/TC/tcback.jpg");
+        Image wpc = new Image("/client/WPC/wpcback.jpg");
         for (ImageView iv : pubOCards) {
-            Image image = new Image("/client/OC/ocback.jpg");
-            iv.setImage(image);
+            iv.setImage(prioc);
         }
         for (Button b : tCards) {
-            Image image = new Image("/client/TC/tcback.jpg");
-            ImageView iv = new ImageView(image);
+            ImageView iv = new ImageView(tc);
             iv.setFitWidth(140);
             iv.setFitHeight(190);
             b.setGraphic(iv);
             b.setPadding(Insets.EMPTY);
         }
         for (ImageView iv : wpCards) {
-            Image image = new Image("/client/WPC/wpcback.jpg");
-            iv.setImage(image);
+            iv.setImage(wpc);
         }
-        Image wpc = new Image("/client/WPC/wpcback.jpg");
         wpc0.setImage(wpc);
-        Image prioc = new Image("/client/OC/ocback.jpg");
         priOC.setImage(prioc);
     }
 
