@@ -75,7 +75,7 @@ public class Server {
 
     private static void removeInactiveControllers() {
         for (int i = 0; i < activeGames.size(); i++) {
-            if (activeGames.get(i).getOrderedRoundPlayers().isEmpty() && activeGames.get(i).getOrderedPlayers().isEmpty())
+            if (!activeGames.get(i).isActive())
                 activeGames.remove(i);
         }
     }

@@ -62,6 +62,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private final Object mutex = new Object();
 
+    private boolean active;
 
     /**
      * ArrayList that contains the ordered players that has to play
@@ -81,6 +82,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     //List of Actions
 
     public Controller(List<String> usernameList) {
+        active=true;
         usernamePlayerMap = new HashMap<>();
         usernameTimerMap = new HashMap<>();
         uninitializedOrderedPlayers = new ArrayList<>();
@@ -108,6 +110,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     public Controller(List<String> usernameList, boolean forTesting) {
+        active = true;
         usernamePlayerMap = new HashMap<>();
         usernameTimerMap = new HashMap<>();
         uninitializedOrderedPlayers = new ArrayList<>();
@@ -246,6 +249,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             }
             counter++;
         }
+        active = false;
     }
 
     private Integer penaltyScore(WindowPatternCard card) {
@@ -1003,6 +1007,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         return userViewMap;
     }
 
+
+    public boolean isActive() {
+        return active;
+    }
 
     @Override
     public void update(Object event) {
