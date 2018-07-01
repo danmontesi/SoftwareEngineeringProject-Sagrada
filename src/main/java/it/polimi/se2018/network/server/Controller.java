@@ -440,7 +440,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                             if (toolcardData!=null)
                                 handlePlayerAfterIncorrectToolUse(currentPlayer, "You haven't finished to use the tool.", false);
                             try {
-                                Thread.sleep(2000);
+                                Thread.sleep(1000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -866,6 +866,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         else{
             handlePlayerAfterIncorrectToolUse(playerUsername, "The cell you've chosen isn't empty!", true);
+            return;
         }
         toolcardData.getToolcardActions().remove(0);
         executeAction();
@@ -900,24 +901,30 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
 
-        switch (toolcardData.getToolcardActions().get(0).getParameter()){
+        switch (toolcardData.getToolcardActions().get(0).getParameter()){ //DA' NULL POINTER
             case "WPC":
                 if (existsDieInCell("WPC", command.getIndex()))
                     toolcardData.setIndexFromWPC(command.getIndex());
-                else
+                else {
                     handlePlayerAfterIncorrectToolUse(playerUsername, "The cell you chose is empty, try again", true);
+                    return;
+                }
                 break;
             case "DP":
                 if (existsDieInCell("DP", command.getIndex()))
                     toolcardData.setIndexFromDraftpool(command.getIndex());
-                else
+                else {
                     handlePlayerAfterIncorrectToolUse(playerUsername, "The cell you chose is empty, try again", true);
+                    return;
+                }
                 break;
             case "RT":
                 if (existsDieInCell("RT", command.getIndex()))
                     toolcardData.setIndexFromRoundTrack(command.getIndex());
-                else
+                else {
                     handlePlayerAfterIncorrectToolUse(playerUsername, "The cell you chose is empty, try again", true);
+                    return;
+                }
                 break;
             default:
         }
