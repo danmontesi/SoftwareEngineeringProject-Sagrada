@@ -99,7 +99,7 @@ public class VirtualView extends View {
             notify(new MoveChoicePassTurn());
         } else {
             if (disconnected){
-                Server.requestRefreshBoard(this.username);
+                Server.refreshBoardAndNotifyReconnectedPlayer(this.username);
                 disconnected=false;
             }
             Server.getConnectedClients().get(username).notifyClient(new StartPlayerTurnCommand());
@@ -113,7 +113,7 @@ public class VirtualView extends View {
                 LOGGER.log(Level.INFO, "Disconnected->No action");
         } else {
             if (disconnected){
-                Server.requestRefreshBoard(this.username);
+                Server.refreshBoardAndNotifyReconnectedPlayer(this.username);
                 disconnected=false;
             }
             Server.getConnectedClients().get(username).notifyClient(new StartGameCommand());
@@ -136,10 +136,6 @@ public class VirtualView extends View {
             disconnected=true;
                 LOGGER.log(Level.INFO, "Disconnected-> No action");
         } else {
-            if (disconnected) {
-                Server.requestRefreshBoard(this.username);
-                disconnected = false;
-            }
             Server.getConnectedClients().get(this.username).notifyClient(new OtherPlayerTurnCommand(username));
         }
     }
@@ -166,7 +162,7 @@ public class VirtualView extends View {
         }
     }
 
-
+//TODO NON LA STO USANDO, DEVO USARLA PER QUANDO UN UTENTE SI RICONNETTE
     @Override
     public void playerDisconnection(String username) {
         if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
