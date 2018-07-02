@@ -391,12 +391,18 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     @Override
     public synchronized void applyCommand(String playerUsername, MoveChoiceToolCard command) {
         Player current = usernamePlayerMap.get(playerUsername);
-
         //check turno giusto del giocatore
         if (!isAllowed(playerUsername)) {
             userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
+
+        if (hasUsedTool) {
+            userViewMap.get(playerUsername).invalidActionMessage("You have already used a tool for this turn!");
+            userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+            return;
+        }
+
         if (toolcardData != null){
             System.out.println("Invalid: i sta chiedendo di utilizzare un tool ma ne sta utilizzando un altro");
             userViewMap.get(currentPlayer).invalidActionMessage("You have to finish the tool you are using before do something else!");
@@ -674,6 +680,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             case "DP":
                 int indexDP = toolcardData.getIndexFromDraftpool();
                 tempDieToPlace = model.removeDieFromDraftPool(indexDP);
+                System.out.println("RIMOSSO DA DP DADO" + tempDieToPlace.getColor());
                 break;
             default:
                 LOGGER.log(Level.INFO,"Errore in doSwap, non arriva ne DB ne WPC");
@@ -682,21 +689,27 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
         switch (parameter2) {
             case "VALUE":
-                usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getDieValue(), true, false, true);
+                if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), true, false, true)) {
+                    System.out.println("DADO NON PIAZZATO! ERRORE");//TODO!!!!!!! FAI I CONTROLLI PRIMA CHE LI PIAZZI SE PUOI!!!
+                }
                 break;
             case "COLOR":
-                usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getDieValue(), false, true, true);
+                if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), false, true, true))
+                    System.out.println("DADO NON PIAZZATO! ERRORE");
                 break;
             case "ADJACENT":
-                usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getDieValue(), true, true, false);
+                if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), true, true, false))
+                    System.out.println("DADO NON PIAZZATO! ERRORE");
                 break;
             case "NONE":
-                usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getDieValue(), true, true, true);
+                if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), true, true, true))
+                    System.out.println("DADO NON PIAZZATO! ERRORE");
                 break;
             default:
                 LOGGER.log(Level.INFO,"Errore in doSwap, non arriva una stringa conosciuta");
                 return;
         }
+        System.out.println("PIAZZATO DADO:" + usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(toolcardData.getIndexToWPC()));
 
         model.setGamePlayers(orderedPlayers);
         toolcardData.getToolcardActions().remove(0);
@@ -710,6 +723,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
+
+        if (hasPerformedMove) {
+            userViewMap.get(playerUsername).invalidActionMessage("You have already performed a move in this turn!");
+            userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+            return;
+        }
+
         if (toolcardData != null){
             System.out.println("Invalid: i sta chiedendo di utilizzare una mossa ma ne sta utilizzando un tool.. altro");
             userViewMap.get(currentPlayer).invalidActionMessage("You have to finish the tool you are using before do something else!");

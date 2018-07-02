@@ -75,8 +75,13 @@ public class Server {
 
     private static void removeInactiveControllers() {
         for (int i = 0; i < activeGames.size(); i++) {
-            if (!activeGames.get(i).isActive())
+            if (!activeGames.get(i).isActive()) {
+                for (String user : activeGames.get(i).getUserViewMap().keySet()){
+                    removeClient(user);
+                }
                 activeGames.remove(i);
+
+            }
         }
     }
 
@@ -222,6 +227,7 @@ public class Server {
                 }
             }
             if (counter==1){
+                game.getUserViewMap().get(lastPlayer).endGame();
                 ArrayList<String> fakeScores = new ArrayList<>();
                 fakeScores.add("1_" + lastPlayer + "_999");
                 game.getUserViewMap().get(lastPlayer).winMessage(fakeScores);
