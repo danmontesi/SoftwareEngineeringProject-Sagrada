@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 public class RankingPaneController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(GameBoardController.class.getName());
+    private RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
 
     private List<Button> buttons;
 
@@ -45,7 +46,6 @@ public class RankingPaneController extends Observable implements Observer {
     }
 
     public void initialize() {
-        RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
         rankingPaneNotifier.addObserver(this);
         initButtons();
         rankingPaneNotifier.setOpen(true);
@@ -103,7 +103,6 @@ public class RankingPaneController extends Observable implements Observer {
     }
 
     private void closeStage() {
-        RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
         rankingPaneNotifier.setOpen(false);
         Stage stage = (Stage)outcome.getScene().getWindow();
         stage.close();

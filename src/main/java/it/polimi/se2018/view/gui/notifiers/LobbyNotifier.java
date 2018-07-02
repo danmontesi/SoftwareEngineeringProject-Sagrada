@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 public class LobbyNotifier extends Observable {
-    private LobbyNotifier() {}
+    private boolean open;
+
+    private LobbyNotifier() {
+        open = false;
+    }
 
     private static class LobbyNotifierHolder {
         private static final LobbyNotifier INSTANCE = new LobbyNotifier();
@@ -25,5 +29,17 @@ public class LobbyNotifier extends Observable {
     public void updateGui() {
         setChanged();
         notifyObservers();
+    }
+
+    public void setOpen(boolean b) {
+        if (b) {
+            this.open = true;
+        } else {
+            this.open = false;
+        }
+    }
+
+    public boolean isOpen() {
+        return open;
     }
 }

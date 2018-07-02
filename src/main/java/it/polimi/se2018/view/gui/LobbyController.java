@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 public class LobbyController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(LobbyController.class.getName());
+    private LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
 
     private List<String> playerNames = new ArrayList<>();
 
@@ -39,8 +40,9 @@ public class LobbyController extends Observable implements Observer {
     }
 
     public void initialize() {
-        LobbyNotifier.getInstance().addObserver(this);
+        lobbyNotifier.addObserver(this);
         initLabels();
+        lobbyNotifier.setOpen(true);
     }
 
     public void update(Observable o, Object arg) {
@@ -111,6 +113,7 @@ public class LobbyController extends Observable implements Observer {
     }
 
     private void closeStage() {
+        lobbyNotifier.setOpen(false);
         Stage stage = (Stage)text.getScene().getWindow();
         stage.close();
     }

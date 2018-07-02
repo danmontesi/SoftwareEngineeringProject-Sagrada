@@ -277,7 +277,6 @@ public class GameBoardController extends Observable implements Observer {
         valueChoice.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5, 6));
         Tooltip tooltip = new Tooltip("Select the value");
         Tooltip.install(valueChoice, tooltip);
-        valueChoice.getSelectionModel().selectFirst();
     }
 
     private void initParents() {
@@ -401,6 +400,8 @@ public class GameBoardController extends Observable implements Observer {
                 public void visitGameBoardAction(DraftPoolRoundTrackUpdate draftPoolRoundTrackUpdate) {
                     if (draftPoolRoundTrackUpdate.getType().equals("DP")) {
                         setDraftPool(draftPoolRoundTrackUpdate.getDice());
+                        yes.setVisible(false);
+                        no.setVisible(false);
                     } else if (draftPoolRoundTrackUpdate.getType().equals("RT")) {
                         setRoundTrack(draftPoolRoundTrackUpdate.getDice());
                     }
@@ -577,6 +578,7 @@ public class GameBoardController extends Observable implements Observer {
                     roundTrackDice.getChildren().get(i).setDisable(true);
                 }
             }
+            setShadow(roundTrackDice);
         });
     }
 
@@ -721,8 +723,6 @@ public class GameBoardController extends Observable implements Observer {
             valueChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
                 int v = (int) newValue + 1;
                 guiViewT.notify(new ReplyDieValue(v));
-                System.out.println("notified");
-                resetPostMove();
             });
         });
     }
@@ -769,7 +769,6 @@ public class GameBoardController extends Observable implements Observer {
     @FXML
     public void undo() {
         guiViewT.notify(new UndoActionCommand());
-        resetPostMove();
     }
 
     private void closeStage() {
@@ -869,8 +868,7 @@ public class GameBoardController extends Observable implements Observer {
                     parent.getChildren().get(j).setEffect(null);
                 }
             }
-            yes.setVisible(false);
-            no.setVisible(false);
+            valueChoice.setVisible(false);
         });
     }
 

@@ -179,7 +179,15 @@ public class GUIView extends View {
         if(gameBoardNotifier.isOpen()){
             gameBoardNotifier.updateGui(new Message(message));
         } else {
+            while(!lobbyNotifier.isOpen()){
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
             lobbyNotifier.updateGui(message, 0);
+            System.out.println("sending reconnection message");
         }
     }
 
