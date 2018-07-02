@@ -13,18 +13,17 @@ import java.io.IOException;
  */
 public class ParserSettings {
     private static final String PATH = System.getProperty("user.dir") + "/src/resources/json/";
-
     private BufferedReader br = null;
     private FileReader fr = null;
 
     /**
      *
-     * @param jsonname name of json file without the whole path (e.g. "cards.json")
+     * @param jsonName name of json file without the whole path (e.g. "cards.json")
      * @return initial json object in json file
      * @throws IOException
      */
-    public JsonObject extractJsonObject(String jsonname) throws IOException{
-        String path = PATH + jsonname;
+    public JsonObject extractJsonObject(String jsonName) throws IOException{
+        String path = PATH + jsonName;
         open(path);
         JsonParser parser = new JsonParser();
         JsonObject object = parser.parse(br).getAsJsonObject();
