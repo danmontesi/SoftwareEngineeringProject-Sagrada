@@ -1021,9 +1021,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             LOGGER.log(Level.INFO,"ERROR: The tool is finished, no data in toolcardData");
             return;
         }
-        Model temp = toolcardData.removeOldModel();
-        System.out.println("SONO UGUALI= " + temp.equals(model) + "!");
-        model = temp;//toolcardData.removeOldModel();
+        this.model = toolcardData.removeOldModel();
+        for (String username : userViewMap.keySet()){
+            model.register(userViewMap.get(username));
+        }
         model.notifyRefreshBoard(null, orderedPlayers);
     }
 

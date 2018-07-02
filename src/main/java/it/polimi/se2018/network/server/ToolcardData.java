@@ -34,8 +34,8 @@ public class ToolcardData {
     }
 
     public void setOldModel(Model oldModel) {
-        this.oldModel = oldModel; //NON FUNZIONA
-                //(Model) SerializationUtils.clone(oldModel);
+        Model newModel = new Model(oldModel);
+        this.oldModel = newModel;
     }
 
     public void setRequiredTokensForLastToolUse(int requiredTokensForLastToolUse) {

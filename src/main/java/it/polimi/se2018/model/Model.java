@@ -122,6 +122,16 @@ public class Model extends Observable implements Serializable, Cloneable { //Obs
             p.setPrivateObjectiveCard(privateObjectiveCardDeck.remove(0));
     }
 
+    public Model(Model oldModel){
+        this.gamePlayers = oldModel.getGamePlayers();
+        this.setCurrentRound(oldModel.getCurrentRound());
+        this.setDraftPool(oldModel.getDraftPool());
+        this.setDiceBag(oldModel.getDiceBag());
+        this.setExtractedToolCard(oldModel.getExtractedToolCard());
+        this.setExtractedPublicObjectiveCard(oldModel.getExtractedPublicObjectiveCard());
+        this.setRoundTrack(oldModel.getRoundTrack());
+    }
+
     public List<Die> extractDraftPoolDice(int numPlayers) {
         ArrayList<Die> temp = new ArrayList<>();
         for (int i = 0; i < 2 * numPlayers + 1; i++) {
@@ -437,6 +447,44 @@ public class Model extends Observable implements Serializable, Cloneable { //Obs
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+
+
+    public List<Player> getGamePlayers() {
+        return gamePlayers;
+    }
+
+    public void setDiceBag(DiceBag diceBag) {
+        this.diceBag = diceBag;
+    }
+
+    public void setExtractedPublicObjectiveCard(List<PublicObjectiveCard> extractedPublicObjectiveCard) {
+        this.extractedPublicObjectiveCard = extractedPublicObjectiveCard;
+    }
+
+    public void setExtractedToolCard(List<ToolCard> extractedToolCard) {
+        this.extractedToolCard = extractedToolCard;
+    }
+
+    public void setWindowPatternCardDeck(List<WindowPatternCard> windowPatternCardDeck) {
+        this.windowPatternCardDeck = windowPatternCardDeck;
+    }
+
+    public void setRoundTrack(RoundTrack roundTrack) {
+        this.roundTrack = roundTrack;
+    }
+
+    public void setDraftPool(DraftPool draftPool) {
+        this.draftPool = draftPool;
+    }
+
+    public int getCurrentRound() {
+        return currentRound;
+
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
     }
 
 }
