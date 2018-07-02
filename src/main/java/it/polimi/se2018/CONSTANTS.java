@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Constants loaded from json
+ */
 public class CONSTANTS {
 
     private static final String CONSTANTS_JSON = "constants.json";
