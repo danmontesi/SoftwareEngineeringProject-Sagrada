@@ -27,6 +27,12 @@ public class ToolcardData {
     private int lastUsedToolCardNum;
 
 
+    private boolean hasDoneMove;
+    private int indexMovedDie;
+    private int indexDieBeforeMoved;
+    private String souce;
+
+
     public Model removeOldModel(){
         Model temp = oldModel;
         oldModel = null;
@@ -131,7 +137,39 @@ public class ToolcardData {
         return savedColor;
     }
 
+
+    public void setIndexMovedDie(int indexMovedDie) {
+        this.indexMovedDie = indexMovedDie;
+    }
+
+    public void setIndexDieBeforeMoved(int indexDieBeforeMoved) {
+        this.indexDieBeforeMoved = indexDieBeforeMoved;
+    }
+
+    public void setSouce(String souce) {
+        this.souce = souce;
+    }
+
+    public int getIndexMovedDie() {
+        return indexMovedDie;
+    }
+
+    public int getIndexDieBeforeMoved() {
+        return indexDieBeforeMoved;
+    }
+
+    public String getSouce() {
+        return souce;
+    }
+
+    public boolean hasDoneMove(){
+        return hasDoneMove==true;
+    }
     public void setSavedColor(COLOR savedColor) {
         this.savedColor = savedColor;
+    }
+
+    public void setHasDoneMove() {
+        hasDoneMove=true;
     }
 }
