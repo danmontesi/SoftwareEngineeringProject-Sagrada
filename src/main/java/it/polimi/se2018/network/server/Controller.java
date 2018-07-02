@@ -37,13 +37,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private HashMap<String, Timer> usernameTimerMap;
     private ToolcardData toolcardData;
 
-    private Integer randomValueForFirmPastryBrush;
-    private Action currentAction;
-
-    public Map<String, Timer> getUsernameTimerMap() { //just for testing
-        return usernameTimerMap;
-    }
-
     public Timer getCheckBlockingTimer() { //just for testing
         return checkBlockingTimer;
 
@@ -175,7 +168,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     /**
      * Initializes all Lists of players for each round, ordered.
      */
-    private void assignRoundPlayers(List<Player> orderedPlayers) {
+    public void assignRoundPlayers(List<Player> orderedPlayers) {
         orderedRoundPlayers = new ArrayList<>();
         int numberOfPlayers = orderedPlayers.size();
         for (int i = 0; i < 10; i++){
@@ -826,7 +819,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
 
-        toolcardData.setDieValue(command.getValue()); //TODO si può togliere
         if (toolcardData.getDieValue()>6 || toolcardData.getDieValue()<1){
             handlePlayerAfterIncorrectToolUse(currentPlayer, "Value is incorrect, try again:", true);
             return;
@@ -1084,6 +1076,14 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     public boolean isActive() {
         return active;
+    }
+
+    public void setInactive(){
+        active = false;
+        for (String username : usernameTimerMap.keySet()){
+            usernameTimerMap.get(username).cancel();
+        }
+        usernameTimerMap.clear(); //TODO: metti un unico timer
     }
 
     @Override
