@@ -989,9 +989,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     private void editCurrentPlayerVariables() {
-        for (Action action : model.getExtractedToolCard().get(toolcardData.getLastUsedToolCardNum()).getActions())
-            if (action.getType().equals(ASK_PLACE_DIE) && action.hasParameter() && action.getParameter().equals("DP") && toolcardData.getToolcardActions().isEmpty())
-                hasPerformedMove=true;
+        for (Action action : model.getExtractedToolCard().get(toolcardData.getLastUsedToolCardNum()).getActions()) {
+            if (action.getType().equals(DO_PLACE_DIE) && action.hasParameter() && action.getParameter().equals("DP") && toolcardData.getToolcardActions().isEmpty()) {
+                hasPerformedMove = true;
+                System.out.println("Ha un piazzamento, setto performedMove = true");
+            }
+        }
         hasUsedTool = true;
     }
 
@@ -1026,7 +1029,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             LOGGER.log(Level.INFO,"ERROR: The tool is finished, no data in toolcardData");
             return;
         }
-        model = toolcardData.removeOldModel();
+        Model temp = toolcardData.removeOldModel();
+        System.out.println("SONO UGUALI= " + temp.equals(model) + "!");
+        model = temp;//toolcardData.removeOldModel();
         model.notifyRefreshBoard(null, orderedPlayers);
     }
 
