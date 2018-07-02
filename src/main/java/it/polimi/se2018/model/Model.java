@@ -487,4 +487,7 @@ public class Model extends Observable implements Serializable, Cloneable { //Obs
         return currentPlayer;
     }
 
+    public void setGamePlayersNoRefresh(List<Player> players) {
+        this.gamePlayers = players;
+    }
 }

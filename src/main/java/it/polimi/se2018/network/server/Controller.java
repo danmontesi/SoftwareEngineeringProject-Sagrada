@@ -663,6 +663,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 int indexWpc = toolcardData.getIndexFromWPC();
                 try {
                     tempDieToPlace = usernamePlayerMap.get(currentPlayer).getWindowPatternCard().removeDie(indexWpc);
+                    model.setGamePlayersNoRefresh(orderedPlayers);
                 } catch (EmptyCellException e) {
                     e.printStackTrace();
                     System.out.println("Error: Non dovrebbe essere null!");
@@ -972,7 +973,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private void handlePlayerAfterCorrectToolUse(String playerUsername, int tokenToDecrease) {
         usernamePlayerMap.get(playerUsername).decreaseTokens(tokenToDecrease);
-        model.increaseToolCardTokens(toolcardData.getLastUsedToolCardNum(), tokenToDecrease); //TODO a volte non funziona firmy pastry brush
+        model.increaseToolCardTokens(toolcardData.getLastUsedToolCardNum(), tokenToDecrease);
         this.hasUsedTool = true;
         model.setGamePlayers(orderedPlayers);
         editCurrentPlayerVariables();
