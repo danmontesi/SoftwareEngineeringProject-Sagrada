@@ -1,6 +1,5 @@
 package it.polimi.se2018.network.client;
 
-import com.google.gson.stream.MalformedJsonException;
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.model.WindowPatternCard;
@@ -80,10 +79,8 @@ public class ClientController extends Observable implements Observer, Controller
             wpc.add(1, parser.parseCardByName(words[1]));
             wpc.add(2, parser.parseCardByName(words[2]));
             wpc.add(3, parser.parseCardByName(words[3]));
-        } catch (MalformedJsonException e){
-
         } catch (IOException e){
-
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         view.chooseWindowPatternCardMenu(wpc, command.getPrivateObjectiveCard());
     }
@@ -140,7 +137,6 @@ public class ClientController extends Observable implements Observer, Controller
     }
     @Override
     public void setPlayerModel(String modelString){
-        //TODO: Edit the modelView
         //PROBABLY TO DELETE
     }
 

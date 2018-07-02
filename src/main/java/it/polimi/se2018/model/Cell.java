@@ -13,9 +13,6 @@ public class Cell {
     private Die associatedDie;
     private int index;
 
-    //ATTENZIONE: E' NECESSARIO CONSIDERARE IL CONTROLLO DEI NUMERI SUI COSTRUTTORI?
-    //AD ESEMPIO BISOGNA RESTITUIRE UN'ECCEZIONE SE IL value CONSTRAINT E' 7?
-
     /**
      * Constructor: generates a cell with color and value constraints
      * @param colorConstraint cell color constraint
@@ -109,6 +106,22 @@ public class Cell {
         Die temp = this.associatedDie;
         associatedDie = toSwitchDie;
         return temp;
+    }
+
+    @Override
+    public String toString(){
+        try{
+            Die d = getAssociatedDie();
+            return d.getColor().toString() + "_" + d.getValue();
+        } catch (EmptyCellException e) {
+            if (getColorConstraint() != null){
+                return getColorConstraint().toString();
+            }
+            if (getValueConstraint() != null){
+                return getValueConstraint().toString();
+            }
+            return "empty";
+        }
     }
 
     /**
