@@ -1,5 +1,6 @@
 package it.polimi.se2018.MatchTest;
 
+import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.model.COLOR;
 import it.polimi.se2018.model.Cell;
 import it.polimi.se2018.model.Die;
@@ -106,6 +107,36 @@ public class WindowPatternCardTest {
     public void setDieOnSideButNotAtFirstTurn(){
         wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 4);
         assertFalse(wpc.placeDie(new Die(COLOR.RED, 3), 1, 0));
+    }
+
+    @Test
+    public void removeDie(){
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 0);
+        try {
+            wpc.removeDie(0);
+        } catch (EmptyCellException e) {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void removeWrongDie(){
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 0);
+        try {
+            wpc.removeDie(10);
+        } catch (EmptyCellException e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void moveDie(){
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 0);
+        try {
+            wpc.moveDie(0, 17, false, false, false);
+        } catch (EmptyCellException e) {
+            Assert.fail();
+        }
     }
 
     @Test
