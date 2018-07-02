@@ -774,16 +774,20 @@ public class GameBoardController extends Observable implements Observer {
 
     private void disableAllButtons(boolean b) {
         for (Button tc : tCards) {
-            tc.setDisable(b);
+            //tc.setDisable(b);
+            tc.setMouseTransparent(b);
         }
         for (int i = 0; i < roundDice; i++) {
-            draftPoolDice.getChildren().get(i).setDisable(b);
+            //draftPoolDice.getChildren().get(i).setDisable(b);
+            draftPoolDice.getChildren().get(i).setMouseTransparent(b);
         }
         for (int i = 0; i < roundTrackDice.getChildren().size(); i++) {
-            roundTrackDice.getChildren().get(i).setDisable(b);
+            //roundTrackDice.getChildren().get(i).setDisable(b);
+            roundTrackDice.getChildren().get(i).setMouseTransparent(b);
         }
         for (int i = 0; i < personalWPCDice.getChildren().size(); i++) {
-            personalWPCDice.getChildren().get(i).setDisable(b);
+            //personalWPCDice.getChildren().get(i).setDisable(b);
+            personalWPCDice.getChildren().get(i).setMouseTransparent(b);
         }
         pass.setDisable(b);
         undo.setDisable(b);
