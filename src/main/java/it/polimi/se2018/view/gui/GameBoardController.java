@@ -58,6 +58,7 @@ public class GameBoardController extends Observable implements Observer {
     private List<Label> tcTokens;
     private List<GridPane> otherWPCsDice;
     private List<Button> buttons;
+    private List<Pane> parents;
 
     @FXML
     private GridPane personalWPCDice;
@@ -165,6 +166,7 @@ public class GameBoardController extends Observable implements Observer {
         circles = new ArrayList<>();
         otherWPCsDice = new ArrayList<>();
         buttons = new ArrayList<>();
+        parents = new ArrayList<>();
     }
 
     public void initialize() {
@@ -194,9 +196,14 @@ public class GameBoardController extends Observable implements Observer {
         tCards.add(toolCard1);
         tCards.add(toolCard2);
         tCards.add(toolCard3);
+
         otherWPCsDice.add(wpc1dice);
         otherWPCsDice.add(wpc2dice);
         otherWPCsDice.add(wpc3dice);
+
+        parents.add(draftPoolDice);
+        parents.add(roundTrackDice);
+        parents.add(personalWPCDice);
     }
 
     private void initLabels() {
@@ -413,6 +420,7 @@ public class GameBoardController extends Observable implements Observer {
                 @Override
                 public void visitGameBoardAction(TimeUp timeUp) {
                     disableAllButtons(true);
+                    resetPostMove();
                 }
 
                 @Override
@@ -620,6 +628,7 @@ public class GameBoardController extends Observable implements Observer {
                             ((ToggleButton) draftPoolDice.getChildren().get(j)).setSelected(false);
                             ((ToggleButton) personalWPCDice.getChildren().get(h)).setSelected(false);
                             guiViewT.notify(new MoveChoiceDiePlacement(h, j));
+                            resetPostMove();
                         }
                     }
                 });
@@ -659,6 +668,7 @@ public class GameBoardController extends Observable implements Observer {
                     } else {
                         guiViewT.notify(new ReplyPlaceDie(h));
                     }
+                    resetPostMove();
                 });
             }
         });
@@ -674,10 +684,12 @@ public class GameBoardController extends Observable implements Observer {
             yes.setOnAction(event -> {
                 msgBox.appendText("The value will be increased by 1.\n");
                 guiViewT.notify(new ReplyIncreaseDecrease(true));
+                resetPostMove();
             });
             no.setOnAction(event -> {
                 msgBox.appendText("The value will be decreased by 1.\n");
                 guiViewT.notify(new ReplyIncreaseDecrease(false));
+                resetPostMove();
             });
         });
     }
@@ -689,6 +701,7 @@ public class GameBoardController extends Observable implements Observer {
             valueChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
                 int v = (int) newValue + 1;
                 guiViewT.notify(new ReplyDieValue(v));
+                resetPostMove();
             });
         });
     }
@@ -700,8 +713,14 @@ public class GameBoardController extends Observable implements Observer {
             no.setText("No");
             yes.setVisible(true);
             no.setVisible(true);
-            yes.setOnAction(event -> guiViewT.notify(new ReplyAnotherAction(true)));
-            no.setOnAction(event -> guiViewT.notify(new ReplyAnotherAction(false)));
+            yes.setOnAction(event -> {
+                guiViewT.notify(new ReplyAnotherAction(true));
+                resetPostMove();
+            });
+            no.setOnAction(event -> {
+                guiViewT.notify(new ReplyAnotherAction(false));
+                resetPostMove();
+            });
         });
     }
 
@@ -722,8 +741,8 @@ public class GameBoardController extends Observable implements Observer {
 
     @FXML
     public void passTurn() {
-        disableAllButtons(true);
         guiViewT.notify(new MoveChoicePassTurn());
+        resetPostMove();
     }
 
     @FXML
@@ -768,6 +787,19 @@ public class GameBoardController extends Observable implements Observer {
         }
         pass.setDisable(b);
         undo.setDisable(b);
+    }
+
+    private void resetPostMove() {
+        Platform.runLater(() -> {
+            for (Pane parent : parents) {
+                for (int j = 0; j < parent.getChildren().size(); j++) {
+                    ((ToggleButton)parent.getChildren().get(j)).setOnAction(null);
+                    ((ToggleButton)parent.getChildren().get(j)).setSelected(false);
+                    parent.getChildren().get(j).setEffect(null);
+                    }
+                }
+            valueChoice.setVisible(false);
+        });
     }
 
     private void inputError() {
