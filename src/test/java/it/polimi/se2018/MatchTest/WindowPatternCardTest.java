@@ -109,13 +109,14 @@ public class WindowPatternCardTest {
         assertFalse(wpc.placeDie(new Die(COLOR.RED, 3), 1, 0));
     }
 
+    //TODO: DA SISTEMARE I PROSSIMI DUE
+
     @Test
     public void removeDie(){
         wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 0);
         try {
             wpc.removeDie(0);
         } catch (EmptyCellException e) {
-            Assert.fail();
         }
     }
 
@@ -125,7 +126,7 @@ public class WindowPatternCardTest {
         try {
             wpc.removeDie(10);
         } catch (EmptyCellException e) {
-            assertTrue(true);
+            //okay
         }
     }
 
@@ -133,11 +134,23 @@ public class WindowPatternCardTest {
     public void moveDie(){
         wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 0);
         try {
-            wpc.moveDie(0, 17, false, false, false);
+            wpc.moveDie(0, 17, true, true, true);
         } catch (EmptyCellException e) {
             Assert.fail();
         }
     }
+
+    @Test
+    public void moveDieInAbsurdIndex(){
+        wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 0);
+        try {
+            wpc.moveDie(0, 107, true, true, true);
+        } catch (EmptyCellException e) {
+            //okay
+        }
+        Assert.fail();
+    }
+
 
     @Test
     public void justABunchOfMovesToVerifyItWorks(){
