@@ -58,7 +58,7 @@ public class Server {
         new Thread(() -> {
             while (activeServer) {
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(CONSTANTS.PING_TIMER);
                 } catch (InterruptedException e) {
                     System.out.println("Problem!");
                     Thread.currentThread().interrupt();
@@ -80,7 +80,6 @@ public class Server {
                     removeClient(user);
                 }
                 activeGames.remove(i);
-
             }
         }
     }
@@ -160,6 +159,7 @@ public class Server {
             disconnectedClients.remove(username);
             connectedClients.put(username, vc);
             vc.start();
+            vc.notifyClient(new AuthenticatedCorrectlyCommand(username));
             vc.notifyClient(new MessageFromServerCommand("You reconnected!"));
             refreshBoardAndNotifyReconnectedPlayer(username);
         }  else if (!connectedClients.containsKey(username)){
@@ -231,7 +231,7 @@ public class Server {
                 ArrayList<String> fakeScores = new ArrayList<>();
                 fakeScores.add("1_" + lastPlayer + "_999");
                 game.getUserViewMap().get(lastPlayer).winMessage(fakeScores);
-                activeGames.remove(game);
+                game.setInactive();
                 removeClient(lastPlayer);
             }
         } else {
@@ -293,6 +293,8 @@ public class Server {
             for (String user : game.getUserViewMap().keySet()){
                 if (username.equals(user)){
                     game.getModel().notifyRefreshBoard(username, null);
+                    game.getModel().notifyRefreshDraftPool();
+                    game.getModel().setGamePlayers(game.getOrderedPlayers());
                 }
                 else{
                     game.getUserViewMap().get(user).messageBox("Player " + username + " has reconnected");

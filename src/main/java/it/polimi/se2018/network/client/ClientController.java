@@ -48,10 +48,6 @@ public class ClientController extends Observable implements Observer, Controller
 
     }
 
-    public void setUsername(String username){
-        this.username = username;
-    }
-
     // Main method for sending commands to Server
 
 

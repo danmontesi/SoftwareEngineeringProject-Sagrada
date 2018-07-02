@@ -187,7 +187,6 @@ public class GUIView extends View {
                 }
             }
             lobbyNotifier.updateGui(message, 0);
-            System.out.println("sending reconnection message");
         }
     }
 

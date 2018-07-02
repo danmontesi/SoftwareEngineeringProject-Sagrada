@@ -57,7 +57,6 @@ public class GameBoardController extends Observable implements Observer {
     private List<Label> usersTokens;
     private List<Label> tcTokens;
     private List<GridPane> otherWPCsDice;
-    private List<Pane> parents;
     private List<Button> buttons;
 
     @FXML
@@ -165,7 +164,6 @@ public class GameBoardController extends Observable implements Observer {
         wpcCircles = new ArrayList<>();
         circles = new ArrayList<>();
         otherWPCsDice = new ArrayList<>();
-        parents = new ArrayList<>();
         buttons = new ArrayList<>();
     }
 
@@ -178,9 +176,8 @@ public class GameBoardController extends Observable implements Observer {
         initButtons();
         initRoundTrack();
         initCards();
-        initParents();
         initChoiceBox();
-        disableAllButtons();
+        disableAllButtons(true);
         msgBox.setText("Waiting for other players to choose their Window Pattern Card...\n");
         gameBoardNotifier.setOpen(true);
     }
@@ -197,6 +194,9 @@ public class GameBoardController extends Observable implements Observer {
         tCards.add(toolCard1);
         tCards.add(toolCard2);
         tCards.add(toolCard3);
+        otherWPCsDice.add(wpc1dice);
+        otherWPCsDice.add(wpc2dice);
+        otherWPCsDice.add(wpc3dice);
     }
 
     private void initLabels() {
@@ -279,16 +279,6 @@ public class GameBoardController extends Observable implements Observer {
         Tooltip.install(valueChoice, tooltip);
     }
 
-    private void initParents() {
-        otherWPCsDice.add(wpc1dice);
-        otherWPCsDice.add(wpc2dice);
-        otherWPCsDice.add(wpc3dice);
-
-        parents.add(draftPoolDice);
-        parents.add(roundTrackDice);
-        parents.add(personalWPCDice);
-    }
-
     private void initRoundTrack() {
         roundTrack.setImage(new Image("/client/images/RoundTrack.png"));
     }
@@ -351,17 +341,11 @@ public class GameBoardController extends Observable implements Observer {
                 @Override
                 public void visitGameBoardAction(TurnStart turnStart) {
                     if (turnStart.getUsername() == null) {
-                        pass.setDisable(false);
-                        undo.setDisable(false);
-                        enableTCB(true);
-                        enableDraftPool(true);
-                        enablePersonalWPC(true, "partial");
+                        disableAllButtons(false);
                         moveDice();
                         msgBox.setText("It's your turn!\n");
                     } else {
-                        pass.setDisable(true);
-                        undo.setDisable(true);
-                        disableAllButtons();
+                        disableAllButtons(true);
                         msgBox.setText("It's " + turnStart.getUsername() + "'s turn!\n");
                     }
                 }
@@ -369,14 +353,8 @@ public class GameBoardController extends Observable implements Observer {
                 @Override
                 public void visitGameBoardAction(TurnUpdate turnUpdate) {
                     if (!turnUpdate.isDieMoved()) {
-                        enablePersonalWPC(true, "partial");
-                        enableDraftPool(true);
                         moveDice();
                     }
-                    if (!turnUpdate.isToolUsed()) {
-                        enableTCB(true);
-                    }
-
                 }
 
                 @Override
@@ -434,9 +412,7 @@ public class GameBoardController extends Observable implements Observer {
 
                 @Override
                 public void visitGameBoardAction(TimeUp timeUp) {
-                    pass.setDisable(true);
-                    undo.setDisable(true);
-                    resetPostMove();
+                    disableAllButtons(true);
                 }
 
                 @Override
@@ -551,7 +527,6 @@ public class GameBoardController extends Observable implements Observer {
                         ((ToggleButton) draftPoolDice.getChildren().get(i)).setGraphic(iv);
                     } else {
                         ((ToggleButton) draftPoolDice.getChildren().get(i)).setGraphic(null);
-                        draftPoolDice.getChildren().get(i).setDisable(true);
                     }
                 }
                 for (int i = dice.size(); i < 9; i++) {
@@ -627,7 +602,6 @@ public class GameBoardController extends Observable implements Observer {
                     iv.setFitWidth(43);
                     iv.setFitHeight(43);
                     ((ToggleButton) personalWPCDice.getChildren().get(i)).setGraphic(iv);
-                    personalWPCDice.getChildren().get(i).setDisable(true);
                 } else {
                     ((ToggleButton)personalWPCDice.getChildren().get(i)).setGraphic(null);
                 }
@@ -646,7 +620,6 @@ public class GameBoardController extends Observable implements Observer {
                             ((ToggleButton) draftPoolDice.getChildren().get(j)).setSelected(false);
                             ((ToggleButton) personalWPCDice.getChildren().get(h)).setSelected(false);
                             guiViewT.notify(new MoveChoiceDiePlacement(h, j));
-                            resetPostMove();
                         }
                     }
                 });
@@ -659,15 +632,12 @@ public class GameBoardController extends Observable implements Observer {
         switch (from) {
             case "WPC":
                 parent = personalWPCDice;
-                enablePersonalWPC(true, "complete");
                 break;
             case "RT":
                 parent = roundTrackDice;
-                enableRoundTrack(true);
                 break;
             default:
                 parent = draftPoolDice;
-                enableDraftPool(true);
                 break;
         }
         selectDie(parent, "pick");
@@ -678,7 +648,6 @@ public class GameBoardController extends Observable implements Observer {
             if (action.equals("pick")) {
                 msgBox.appendText("Select the die.\n");
             } else {
-                enablePersonalWPC(true, "partial");
                 msgBox.appendText("Select the cell.\n");
             }
             for (int i = 0; i < parent.getChildren().size(); i++) {
@@ -690,7 +659,6 @@ public class GameBoardController extends Observable implements Observer {
                     } else {
                         guiViewT.notify(new ReplyPlaceDie(h));
                     }
-                    resetPostMove();
                 });
             }
         });
@@ -706,12 +674,10 @@ public class GameBoardController extends Observable implements Observer {
             yes.setOnAction(event -> {
                 msgBox.appendText("The value will be increased by 1.\n");
                 guiViewT.notify(new ReplyIncreaseDecrease(true));
-                resetPostMove();
             });
             no.setOnAction(event -> {
                 msgBox.appendText("The value will be decreased by 1.\n");
                 guiViewT.notify(new ReplyIncreaseDecrease(false));
-                resetPostMove();
             });
         });
     }
@@ -734,14 +700,8 @@ public class GameBoardController extends Observable implements Observer {
             no.setText("No");
             yes.setVisible(true);
             no.setVisible(true);
-            yes.setOnAction(event -> {
-                guiViewT.notify(new ReplyAnotherAction(true));
-                resetPostMove();
-            });
-            no.setOnAction(event -> {
-                guiViewT.notify(new ReplyAnotherAction(false));
-                resetPostMove();
-            });
+            yes.setOnAction(event -> guiViewT.notify(new ReplyAnotherAction(true)));
+            no.setOnAction(event -> guiViewT.notify(new ReplyAnotherAction(false)));
         });
     }
 
@@ -762,7 +722,7 @@ public class GameBoardController extends Observable implements Observer {
 
     @FXML
     public void passTurn() {
-        disableAllButtons();
+        disableAllButtons(true);
         guiViewT.notify(new MoveChoicePassTurn());
     }
 
@@ -793,83 +753,21 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void enableTCB(boolean b) {
-        if (b) {
-            for (Button tc : tCards) {
-                tc.setDisable(false);
-            }
-        } else {
-            for (Button tc : tCards) {
-                tc.setDisable(true);
-            }
+    private void disableAllButtons(boolean b) {
+        for (Button tc : tCards) {
+            tc.setDisable(b);
         }
-    }
-
-    private void enableDraftPool(boolean b) {
-        Platform.runLater(() -> {
-            synchronized (available) {
-                if (b) {
-                    for (int i = 0; i < roundDice; i++) {
-                        if (((ToggleButton) draftPoolDice.getChildren().get(i)).getGraphic() != null) {
-                            draftPoolDice.getChildren().get(i).setDisable(false);
-                        }
-                    }
-                } else {
-                    for (int i = 0; i < roundDice; i++) {
-                        draftPoolDice.getChildren().get(i).setDisable(true);
-                    }
-                }
-            }
-        });
-    }
-
-    private void enableRoundTrack(boolean b) {
-        if (b) {
-            for (int i = 0; i < roundTrackDice.getChildren().size(); i++) {
-                if (((ToggleButton) roundTrackDice.getChildren().get(i)).getGraphic() != null) {
-                    roundTrackDice.getChildren().get(i).setDisable(false);
-                }
-            }
-        } else {
-            for (int i = 0; i < roundTrackDice.getChildren().size(); i++) {
-                roundTrackDice.getChildren().get(i).setDisable(true);
-            }
+        for (int i = 0; i < roundDice; i++) {
+            draftPoolDice.getChildren().get(i).setDisable(b);
         }
-    }
-
-    private void enablePersonalWPC(boolean b, String extent) {
-        if (b) {
-            for (int i = 0; i < personalWPCDice.getChildren().size(); i++) {
-                if (((ToggleButton) personalWPCDice.getChildren().get(i)).getGraphic() == null || extent.equals("complete")) {
-                    personalWPCDice.getChildren().get(i).setDisable(false);
-                }
-            }
-        } else {
-            for (int i = 0; i < personalWPCDice.getChildren().size(); i++) {
-                personalWPCDice.getChildren().get(i).setDisable(true);
-            }
+        for (int i = 0; i < roundTrackDice.getChildren().size(); i++) {
+            roundTrackDice.getChildren().get(i).setDisable(b);
         }
-    }
-
-    private void disableAllButtons() {
-        enableTCB(false);
-        enableDraftPool(false);
-        enableRoundTrack(false);
-        enablePersonalWPC(false, "partial");
-    }
-
-    private void resetPostMove() {
-        Platform.runLater(() -> {
-            disableAllButtons();
-            for (Pane parent : parents) {
-                for (int j = 0; j < parent.getChildren().size(); j++) {
-                    ((ToggleButton)parent.getChildren().get(j)).setOnAction(null);
-                    ((ToggleButton)parent.getChildren().get(j)).setSelected(false);
-                    parent.getChildren().get(j).setEffect(null);
-                }
-            }
-            valueChoice.setVisible(false);
-        });
+        for (int i = 0; i < personalWPCDice.getChildren().size(); i++) {
+            personalWPCDice.getChildren().get(i).setDisable(b);
+        }
+        pass.setDisable(b);
+        undo.setDisable(b);
     }
 
     private void inputError() {
