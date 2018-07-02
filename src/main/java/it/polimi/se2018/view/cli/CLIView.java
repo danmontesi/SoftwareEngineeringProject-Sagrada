@@ -106,7 +106,7 @@ public class CLIView extends View implements Runnable {
     @Override
     public void winMessage(List<String> scores) {
         System.out.println("Congratulation! You won!");
-        System.out.println("Here other players ordered scores:");
+        System.out.println("Here other players ordered scores:\n");
         for (String score : scores) {
             score = score.replace("_", " ");
             System.out.println(score);
