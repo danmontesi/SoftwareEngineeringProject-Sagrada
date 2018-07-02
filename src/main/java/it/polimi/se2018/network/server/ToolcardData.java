@@ -3,6 +3,7 @@ package it.polimi.se2018.network.server;
 import it.polimi.se2018.model.Action;
 import it.polimi.se2018.model.COLOR;
 import it.polimi.se2018.model.Model;
+import org.apache.commons.lang.SerializationUtils;
 
 import java.util.List;
 
@@ -33,7 +34,8 @@ public class ToolcardData {
     }
 
     public void setOldModel(Model oldModel) {
-        this.oldModel = oldModel;
+        this.oldModel = oldModel; //NON FUNZIONA
+                //(Model) SerializationUtils.clone(oldModel);
     }
 
     public void setRequiredTokensForLastToolUse(int requiredTokensForLastToolUse) {
@@ -52,6 +54,7 @@ public class ToolcardData {
     public int getLastUsedToolCardNum() {
         return lastUsedToolCardNum;
     }
+
     public ToolcardData() {
     }
 

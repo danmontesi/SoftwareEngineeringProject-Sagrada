@@ -15,8 +15,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static it.polimi.se2018.model.ACTION_TYPE.ASK_PICK_DIE;
-import static it.polimi.se2018.model.ACTION_TYPE.ASK_PLACE_DIE;
+import static it.polimi.se2018.model.ACTION_TYPE.*;
 
 public class Controller implements Observer, ControllerServerInterface { //Observer perchè osserva la View tramite le classi di mezzo (ClientConnection)
 
@@ -690,20 +689,31 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         switch (parameter2) {
             case "VALUE":
                 if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), true, false, true)) {
-                    System.out.println("DADO NON PIAZZATO! ERRORE");//TODO!!!!!!! FAI I CONTROLLI PRIMA CHE LI PIAZZI SE PUOI!!!
+                    handlePlayerAfterIncorrectToolUse(currentPlayer, "You can't place the die here, check the toolcard effect and retry", false);
+                    userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                    return;
                 }
                 break;
             case "COLOR":
-                if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), false, true, true))
-                    System.out.println("DADO NON PIAZZATO! ERRORE");
+                if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), false, true, true)) {
+                    handlePlayerAfterIncorrectToolUse(currentPlayer, "You can't place the die here, check the toolcard effect and retry", false);
+                    userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                    return;
+                }
                 break;
             case "ADJACENT":
-                if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), true, true, false))
-                    System.out.println("DADO NON PIAZZATO! ERRORE");
+                if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), true, true, false)) {
+                    handlePlayerAfterIncorrectToolUse(currentPlayer, "You can't place the die here, check the toolcard effect and retry", false);
+                    userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                    return;
+                }
                 break;
             case "NONE":
-                if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), true, true, true))
-                    System.out.println("DADO NON PIAZZATO! ERRORE");
+                if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), true, true, true)) {
+                    handlePlayerAfterIncorrectToolUse(currentPlayer, "You can't place the die here, check the toolcard effect and retry", false);
+                    userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                    return;
+                }
                 break;
             default:
                 LOGGER.log(Level.INFO,"Errore in doSwap, non arriva una stringa conosciuta");
@@ -785,6 +795,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
 
+        if (toolcardData == null || !toolcardData.getToolcardActions().get(0).getType().equals(ASK_PLACE_DIE)){
+            userViewMap.get(playerUsername).invalidActionMessage("You can't do this action now!");
+            userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+            return;
+        }
+
         //TODO metodo che controlla se la risposta è quella che mi aspetto
         if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().getCell(command.getPosition()).hasDie()) {
             toolcardData.setIndexToWPC(command.getPosition());
@@ -804,7 +820,19 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
 
-        toolcardData.setDieValue(command.getValue());
+        if (toolcardData == null || !toolcardData.getToolcardActions().get(0).getType().equals(ASK_DIE_VALUE)){
+            userViewMap.get(playerUsername).invalidActionMessage("You can't do this action now!");
+            userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+            return;
+        }
+
+        toolcardData.setDieValue(command.getValue()); //TODO si può togliere
+        if (toolcardData.getDieValue()>6 || toolcardData.getDieValue()<1){
+            handlePlayerAfterIncorrectToolUse(currentPlayer, "Value is incorrect, try again:", true);
+            return;
+        }
+        model.changeDieValueOnDraftPool(toolcardData.getIndexFromDraftpool(), command.getValue());
+
         toolcardData.getToolcardActions().remove(0);
         executeAction();
     }
@@ -816,7 +844,14 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
 
+        if (toolcardData == null || !toolcardData.getToolcardActions().get(0).getType().equals(ASK_ANOTHER_ACTION)){
+            userViewMap.get(playerUsername).invalidActionMessage("You can't do this action now!");
+            userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+            return;
+        }
+
         toolcardData.setAnotherAction(command.isAnother());
+
         toolcardData.getToolcardActions().remove(0);
         executeAction();
     }
@@ -825,6 +860,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     public void applyCommand(String playerUsername, ReplyPickDie command) {
         if (!isAllowed(playerUsername)) {
             userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
+            return;
+        }
+
+        if (toolcardData == null || !toolcardData.getToolcardActions().get(0).getType().equals(ASK_PICK_DIE)){
+            userViewMap.get(playerUsername).invalidActionMessage("You can't do this action now!");
+            userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
 
@@ -889,6 +930,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
+
+        if (toolcardData == null || !toolcardData.getToolcardActions().get(0).getType().equals(ASK_INCREASE_DECREASE)){
+            userViewMap.get(playerUsername).invalidActionMessage("You can't do this action now!");
+            userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+            return;
+        }
+
         try {
             int currentValue = model.getDraftPool().getCell(toolcardData.getIndexFromDraftpool()).getAssociatedDie().getValue();
             if ( (currentValue==6 && command.isIncrease())
@@ -954,6 +1002,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             if (model.getExtractedToolCard().get(toolcardData.getLastUsedToolCardNum()).isReversible()) {
                 userViewMap.get(playerUsername).invalidActionMessage(messageToSend);
                 resetModel();
+                System.out.println("RESETTO MODEL DOPO AZIONE INVALIDA");
                 restoreTCGlobalVariables();
             } else {
                 //not reversible -> token decreased

@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  * <p>
  * The controller directly modifies the Model.
  */
-public class Model extends Observable implements Serializable { //Observable of View
+public class Model extends Observable implements Serializable{ //Observable of View
 
 
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
