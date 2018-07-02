@@ -84,13 +84,13 @@ public class CLIView extends View implements Runnable {
 
     @Override
     public synchronized void playerDisconnection(String username) {
-        System.out.println(username + "got disconnected");
+        System.out.println(username + " got disconnected");
     }
 
     @Override
     public synchronized void invalidActionMessage(String message) {
-        System.out.println("Invalid action: " + message);
         cliPrinter.printBasicInformation(cliState, currentState, placeDieAllowed, toolcardAllowed);
+        System.out.println("Invalid action: " + message);
     }
 
     @Override
@@ -340,7 +340,7 @@ public class CLIView extends View implements Runnable {
                 return true;
             }
         } catch (NumberFormatException e) {
-            System.out.println("Input is not a number, retry");
+            System.out.println("Input is not a number");
         }
         return false;
     }
