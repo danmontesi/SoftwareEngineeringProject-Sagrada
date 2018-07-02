@@ -1,0 +1,6 @@
+{
+  "TURN_TIMER" : 120000,
+  "WPC_TIMER" : 20000,
+  "LOBBY_TIMER" : 20000,
+  "PING_TIMER" : 1000
+}

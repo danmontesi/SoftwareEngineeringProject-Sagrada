@@ -12,7 +12,6 @@ public class ToolCard {
     private String description;
     private int tokenCount;
     private final List<Action> actions;
-
     private final boolean reversible;
 
     public ToolCard(String name, String description, List<Action> actions, boolean reversible) {

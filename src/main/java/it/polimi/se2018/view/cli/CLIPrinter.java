@@ -26,6 +26,7 @@ class CLIPrinter {
 
     CLIPrinter() {
     }
+
     public void printBasicInformation(CliState cliState, INPUT_STATE state, boolean placeDieAllowed, boolean toolcardAllowed){
         printSyntheticBoard(cliState, true);
         printYourTurn(state, placeDieAllowed, toolcardAllowed);

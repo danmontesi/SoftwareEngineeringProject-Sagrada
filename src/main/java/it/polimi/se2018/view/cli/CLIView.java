@@ -2,6 +2,7 @@ package it.polimi.se2018.view.cli;
 
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.server_to_client_command.*;
+import it.polimi.se2018.exceptions.TimeUpException;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
@@ -44,6 +45,7 @@ public class CLIView extends View implements Runnable {
         for (WindowPatternCard card : cards) {
             cliPrinter.printWPC(card);
         }
+        System.out.println("\nYour Private Objective is: " + privateObjectiveCard);
         System.out.println("\n Which one do you chose?");
         for (int i = 0; i < cards.size(); i++) {
             System.out.println(i + 1 + ") " + cards.get(i).getCardName());
@@ -72,6 +74,7 @@ public class CLIView extends View implements Runnable {
         placeDieAllowed = !hasAlreadyMovedDie;
         toolcardAllowed = !hasAlreadyUsedTool;
         currentState = INPUT_STATE.YOUR_TURN;
+        cliPrinter.printBasicInformation(cliState, currentState, placeDieAllowed, toolcardAllowed);
     }
 
     @Override
@@ -169,8 +172,12 @@ public class CLIView extends View implements Runnable {
     @Override
     public void run() {
         while (!currentState.equals(INPUT_STATE.END_GAME)) {
-            String input = inputReader.readLine();
-            manageCommand(currentState, input);
+            try{
+                String input = inputReader.readLine();
+                manageCommand(currentState, input);
+            } catch (TimeUpException e) {
+                //not sure if this catch is needed
+            }
         }
     }
 
@@ -191,6 +198,7 @@ public class CLIView extends View implements Runnable {
                 notify(new UndoActionCommand());
             } else if (INPUT_STATE.isLocallyReversible(currentState)){
                 System.out.println("Action interrupted");
+                cliPrinter.printYourTurn(currentState, placeDieAllowed, toolcardAllowed);
             } else {
                 System.out.println("You cannot interrupt the action right now");
                 this.currentState = currentState;
@@ -208,6 +216,7 @@ public class CLIView extends View implements Runnable {
                     System.out.println("What toolcard do you want to use?\n");
                 } else if (input.equals("d")) {
                     System.out.println("Select draft pool index");
+                    cliPrinter.printInlineList(cliState.getDraftpool());
                 } else {
                     checkPrintBoard(input);
                 }
@@ -437,6 +446,7 @@ public class CLIView extends View implements Runnable {
                 break;
             case "DP":
                 System.out.println("(From Draft Pool:)");
+                cliPrinter.printInlineList(cliState.getDraftpool());
                 break;
             case "RT":
                 System.out.println("(From Round Track:)");

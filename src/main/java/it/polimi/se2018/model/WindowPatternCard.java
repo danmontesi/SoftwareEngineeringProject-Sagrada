@@ -264,6 +264,4 @@ public class WindowPatternCard {
         }
         return wpcString;
     }
-
-   
 }

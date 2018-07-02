@@ -120,16 +120,8 @@ public class ToolcardData {
         return toolcardActions;
     }
 
-    public void setToolcardActions(List<Action> toolcardActions) {
-        this.toolcardActions = toolcardActions;
-    }
-
     public String getToolcardName() {
         return toolcardName;
-    }
-
-    public void setToolcardName(String toolcardName) {
-        this.toolcardName = toolcardName;
     }
 
     public COLOR getSavedColor() {
