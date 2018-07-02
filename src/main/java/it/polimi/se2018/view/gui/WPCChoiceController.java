@@ -43,6 +43,8 @@ public class WPCChoiceController extends Observable implements Observer {
     @FXML
     private Label choose;
     @FXML
+    private Label priocname;
+    @FXML
     private Label wpc1n;
     @FXML
     private Label wpc2n;
@@ -145,6 +147,7 @@ public class WPCChoiceController extends Observable implements Observer {
     private void setCards(List<String> names, List<Integer> difficulties, String priOC) {
         Platform.runLater(() -> {
             Image image1 = new Image("/client/OC/" + priOC + ".jpg");
+            priocname.setText(priOC);
             prioc.setImage(image1);
             for (int i=0; i<names.size(); i++) {
                 String img = names.get(i);

@@ -38,3 +38,15 @@
 .text-area .content {
     -fx-background-color: #f0f0f0;
 }
+
+.choice-box .list-view {
+    -fx-font-size: 16px;
+}
+
+#yes {
+    -fx-font-size: 16px;
+}
+
+#no {
+    -fx-font-size: 16px;
+}

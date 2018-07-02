@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
+
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1254.0" stylesheets="/client/gameboard.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.view.gui.GameBoardController">
    <children>
        <AnchorPane fx:id="cardsbox" prefHeight="630.0" prefWidth="328.0" styleClass="box">
@@ -12,9 +14,9 @@
             <ImageView fx:id="pubOC1" fitHeight="190.0" fitWidth="140.0" layoutX="15.0" layoutY="15.0" preserveRatio="true" />
             <ImageView fx:id="pubOC2" fitHeight="190.0" fitWidth="140.0" layoutX="15.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="pubOC3" fitHeight="190.0" fitWidth="140.0" layoutX="15.0" layoutY="425.0" preserveRatio="true" />
-            <Button styleClass="toolcardbutton" fx:id="toolCard1" layoutX="160.0" layoutY="12.0" mnemonicParsing="false" onAction="#tc1Action" prefHeight="190.0" prefWidth="140.0" />
-            <Label fx:id="tc1tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="260.0" layoutY="22.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
-            <Circle fx:id="tCircle1" layoutX="290.0" layoutY="35.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
+            <Button fx:id="toolCard1" layoutX="160.0" layoutY="15.0" mnemonicParsing="false" onAction="#tc1Action" prefHeight="190.0" prefWidth="140.0" styleClass="toolcardbutton" />
+            <Label fx:id="tc1tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="253.0" layoutY="20.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
+            <Circle fx:id="tCircle1" layoutX="283.0" layoutY="33.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
                <fill>
                   <RadialGradient centerX="0.5115606936416185" centerY="0.5" radius="0.5">
                      <stops>
@@ -25,9 +27,9 @@
                   </RadialGradient>
                </fill>
             </Circle>
-            <Button styleClass="toolcardbutton" fx:id="toolCard2" layoutX="160.0" layoutY="217.0" mnemonicParsing="false" onAction="#tc2Action" prefHeight="190.0" prefWidth="140.0" />
-            <Label fx:id="tc2tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="260.0" layoutY="227.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
-            <Circle fx:id="tCircle2" layoutX="290.0" layoutY="240.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
+            <Button fx:id="toolCard2" layoutX="160.0" layoutY="220.0" mnemonicParsing="false" onAction="#tc2Action" prefHeight="190.0" prefWidth="140.0" styleClass="toolcardbutton" />
+            <Label fx:id="tc2tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="253.0" layoutY="225.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
+            <Circle fx:id="tCircle2" layoutX="283.0" layoutY="238.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
                <fill>
                   <RadialGradient centerX="0.5115606936416185" centerY="0.5" radius="0.5">
                      <stops>
@@ -38,9 +40,9 @@
                   </RadialGradient>
                </fill>
             </Circle>
-            <Button styleClass="toolcardbutton" fx:id="toolCard3" layoutX="160.0" layoutY="422.0" mnemonicParsing="false" onAction="#tc3Action" prefHeight="190.0" prefWidth="140.0" />
-            <Label fx:id="tc3tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="260.0" layoutY="424.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
-            <Circle fx:id="tCircle3" layoutX="290.0" layoutY="437.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
+            <Button fx:id="toolCard3" layoutX="160.0" layoutY="425.0" mnemonicParsing="false" onAction="#tc3Action" prefHeight="190.0" prefWidth="140.0" styleClass="toolcardbutton" />
+            <Label fx:id="tc3tokens" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="253.0" layoutY="430.0" prefHeight="25.0" prefWidth="20.0" style="-fx-font-size: 16px" />
+            <Circle fx:id="tCircle3" layoutX="283.0" layoutY="443.0" radius="7.0" stroke="#d4af37" strokeType="INSIDE" strokeWidth="0.5">
                <fill>
                   <RadialGradient centerX="0.5115606936416185" centerY="0.5" radius="0.5">
                      <stops>
@@ -184,9 +186,9 @@
             </GridPane>
             <ImageView fx:id="priOC" fitHeight="267.0" fitWidth="188.0" layoutX="335.0" layoutY="15.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.topAnchor="15.0" />
             <TextArea fx:id="msgBox" editable="false" layoutX="556.0" layoutY="23.0" prefHeight="198.0" prefWidth="190.0" style="-fx-font-size: 14px" wrapText="true" />
-            <Button fx:id="yes" layoutX="556.0" layoutY="233.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="55.0" style="-fx-font-size: 18px" />
-            <Button fx:id="no" layoutX="691.0" layoutY="233.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="55.0" style="-fx-font-size: 18px" />
-            <ChoiceBox fx:id="valueChoice" layoutX="624.0" layoutY="233.0" prefHeight="35.0" prefWidth="55.0" />
+            <Button fx:id="yes" layoutX="556.0" layoutY="233.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="50.0" text="Yes" />
+            <Button fx:id="no" layoutX="696.0" layoutY="233.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="50.0" text="No" />
+            <ChoiceBox fx:id="valueChoice" layoutX="619.0" layoutY="231.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="65.0" />
          </children>
       </AnchorPane>
        <AnchorPane fx:id="rtbox" layoutX="1100.0" prefHeight="630.0" prefWidth="158.0">

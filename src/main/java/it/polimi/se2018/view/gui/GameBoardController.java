@@ -352,13 +352,16 @@ public class GameBoardController extends Observable implements Observer {
                 @Override
                 public void visitGameBoardAction(TurnStart turnStart) {
                     if (turnStart.getUsername() == null) {
+                        pass.setDisable(false);
+                        undo.setDisable(false);
                         enableTCB(true);
                         enableDraftPool(true);
                         enablePersonalWPC(true, "partial");
-                        pass.setDisable(false);
                         moveDice();
                         msgBox.setText("It's your turn!\n");
                     } else {
+                        pass.setDisable(true);
+                        undo.setDisable(true);
                         disableAllButtons();
                         msgBox.setText("It's " + turnStart.getUsername() + "'s turn!\n");
                     }
@@ -366,16 +369,15 @@ public class GameBoardController extends Observable implements Observer {
 
                 @Override
                 public void visitGameBoardAction(TurnUpdate turnUpdate) {
-                    if (turnUpdate.isDieMoved()) {
-                        enableTCB(true);
-                        undo.setDisable(false);
-                    }
-                    if (turnUpdate.isToolUsed()) {
+                    if (!turnUpdate.isDieMoved()) {
                         enablePersonalWPC(true, "partial");
                         enableDraftPool(true);
                         moveDice();
                     }
-                    pass.setDisable(false);
+                    if (!turnUpdate.isToolUsed()) {
+                        enableTCB(true);
+                    }
+
                 }
 
                 @Override
@@ -431,6 +433,8 @@ public class GameBoardController extends Observable implements Observer {
 
                 @Override
                 public void visitGameBoardAction(TimeUp timeUp) {
+                    pass.setDisable(true);
+                    undo.setDisable(true);
                     resetPostMove();
                 }
 
@@ -700,12 +704,13 @@ public class GameBoardController extends Observable implements Observer {
             yes.setOnAction(event -> {
                 msgBox.appendText("The value will be increased by 1.\n");
                 guiViewT.notify(new ReplyIncreaseDecrease(true));
+                resetPostMove();
             });
             no.setOnAction(event -> {
                 msgBox.appendText("The value will be decreased by 1.\n");
                 guiViewT.notify(new ReplyIncreaseDecrease(false));
+                resetPostMove();
             });
-            resetPostMove();
         });
     }
 
@@ -716,6 +721,7 @@ public class GameBoardController extends Observable implements Observer {
             valueChoice.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
                 int v = (int) newValue + 1;
                 guiViewT.notify(new ReplyDieValue(v));
+                System.out.println("notified");
                 resetPostMove();
             });
         });
@@ -728,9 +734,14 @@ public class GameBoardController extends Observable implements Observer {
             no.setText("No");
             yes.setVisible(true);
             no.setVisible(true);
-            yes.setOnAction(event -> guiViewT.notify(new ReplyAnotherAction(true)));
-            no.setOnAction(event -> guiViewT.notify(new ReplyAnotherAction(false)));
-            resetPostMove();
+            yes.setOnAction(event -> {
+                guiViewT.notify(new ReplyAnotherAction(true));
+                resetPostMove();
+            });
+            no.setOnAction(event -> {
+                guiViewT.notify(new ReplyAnotherAction(false));
+                resetPostMove();
+            });
         });
     }
 
@@ -830,7 +841,7 @@ public class GameBoardController extends Observable implements Observer {
     private void enablePersonalWPC(boolean b, String extent) {
         if (b) {
             for (int i = 0; i < personalWPCDice.getChildren().size(); i++) {
-                if (((ToggleButton) personalWPCDice.getChildren().get(i)).getGraphic() == null && !extent.equals("complete")) {
+                if (((ToggleButton) personalWPCDice.getChildren().get(i)).getGraphic() == null || extent.equals("complete")) {
                     personalWPCDice.getChildren().get(i).setDisable(false);
                 }
             }
@@ -846,8 +857,6 @@ public class GameBoardController extends Observable implements Observer {
         enableDraftPool(false);
         enableRoundTrack(false);
         enablePersonalWPC(false, "partial");
-        pass.setDisable(true);
-        undo.setDisable(true);
     }
 
     private void resetPostMove() {

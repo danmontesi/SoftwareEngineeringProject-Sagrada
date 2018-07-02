@@ -4,14 +4,14 @@ import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.view.gui.notifiers.gameboardactions.*;
+import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.gui.notifiers.GameBoardNotifier;
 import it.polimi.se2018.view.gui.notifiers.LobbyNotifier;
 import it.polimi.se2018.view.gui.notifiers.RankingPaneNotifier;
+import it.polimi.se2018.view.gui.notifiers.WPCChoiceNotifier;
+import it.polimi.se2018.view.gui.notifiers.gameboardactions.*;
 import it.polimi.se2018.view.gui.notifiers.wpcchoiceactions.WGUIViewSetting;
 import it.polimi.se2018.view.gui.notifiers.wpcchoiceactions.WPCChoice;
-import it.polimi.se2018.view.View;
-import it.polimi.se2018.view.gui.notifiers.WPCChoiceNotifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class GUIView extends View {
 
     @Override
     public void playerDisconnection(String username) {
-        if(GameBoardNotifier.getInstance().isOpen()){
+        if(gameBoardNotifier.isOpen()){
             gameBoardNotifier.updateGui(new Message(username + " just disconnected."));
         } else {
             lobbyNotifier.updateGui(username, 1);
@@ -48,7 +48,7 @@ public class GUIView extends View {
 
     @Override
     public void timeOut() {
-        if(GameBoardNotifier.getInstance().isOpen()){
+        if(gameBoardNotifier.isOpen()){
             gameBoardNotifier.updateGui(new TimeUp());
         } else {
             wpcChoiceNotifier.updateGui();
@@ -84,7 +84,7 @@ public class GUIView extends View {
 
     @Override
     public void otherPlayerTurn(String username) {
-        while(!GameBoardNotifier.getInstance().isOpen()){
+        while(!gameBoardNotifier.isOpen()){
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -126,7 +126,7 @@ public class GUIView extends View {
 
     @Override
     public void updateDraftPool(RefreshDraftPoolCommand refreshCommand) {
-        while(!GameBoardNotifier.getInstance().isOpen()){
+        while(!gameBoardNotifier.isOpen()){
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -138,7 +138,7 @@ public class GUIView extends View {
 
     @Override
     public void updateBoard(RefreshBoardCommand refreshCommand) {
-        while(!GameBoardNotifier.getInstance().isOpen()){
+        while(!gameBoardNotifier.isOpen()){
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -176,7 +176,7 @@ public class GUIView extends View {
 
     @Override
     public void messageBox(String message) {
-        if(GameBoardNotifier.getInstance().isOpen()){
+        if(gameBoardNotifier.isOpen()){
             gameBoardNotifier.updateGui(new Message(message));
         } else {
             lobbyNotifier.updateGui(message, 0);
@@ -185,7 +185,7 @@ public class GUIView extends View {
 
     @Override
     public void loseMessage(Integer position, List<String> scores) {
-        while(!GameBoardNotifier.getInstance().isOpen()){
+        while(!rankingPaneNotifier.isOpen()){
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -198,7 +198,7 @@ public class GUIView extends View {
 
     @Override
     public void winMessage(List<String> scores) {
-        while(!GameBoardNotifier.getInstance().isOpen()){
+        while(!rankingPaneNotifier.isOpen()){
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
