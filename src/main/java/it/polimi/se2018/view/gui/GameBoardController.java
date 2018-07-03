@@ -42,7 +42,6 @@ public class GameBoardController extends Observable implements Observer {
     private GUIView guiViewT;
     private RefreshBoardCommand modelRepresentation;
     private int roundDice;
-    private final Object available = new Object();
 
     private ToggleGroup draftPoolGroup = new ToggleGroup();
     private ToggleGroup roundTrackGroup = new ToggleGroup();
@@ -247,10 +246,7 @@ public class GameBoardController extends Observable implements Observer {
         no.setVisible(false);
         for (Button b : buttons) {
             b.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
-            b.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> b.setEffect(shadow));
-            b.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> b.setEffect(null));
         }
-
         for (int i = 0; i < 10; i++) {
             ToggleButton tb = new ToggleButton();
             tb.setPrefSize(43, 43);
@@ -274,13 +270,22 @@ public class GameBoardController extends Observable implements Observer {
             tb.setPadding(Insets.EMPTY);
             personalWPCDice.add(tb, h, k);
         }
+        for (GridPane gridPane : otherWPCsDice) {
+            int j = -1;
+            for (int i = 0; i < 20; i++) {
+                int h = i % 5;
+                if (h == 0) j++;
+                ImageView imageView = new ImageView();
+                imageView.setFitHeight(29);
+                imageView.setFitWidth(29);
+                gridPane.add(imageView, h, j);
+            }
+        }
     }
 
     private void initChoiceBox() {
         valueChoice.setVisible(false);
         valueChoice.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
-        valueChoice.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> valueChoice.setEffect(shadow));
-        valueChoice.addEventHandler(MouseEvent.MOUSE_EXITED, e -> valueChoice.setEffect(null));
         valueChoice.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5, 6));
         Tooltip tooltip = new Tooltip("Select the value");
         Tooltip.install(valueChoice, tooltip);
@@ -385,8 +390,6 @@ public class GameBoardController extends Observable implements Observer {
                 public void visitGameBoardAction(DraftPoolRoundTrackUpdate draftPoolRoundTrackUpdate) {
                     if (draftPoolRoundTrackUpdate.getType().equals("DP")) {
                         setDraftPool(draftPoolRoundTrackUpdate.getDice());
-                        yes.setVisible(false);
-                        no.setVisible(false);
                     } else if (draftPoolRoundTrackUpdate.getType().equals("RT")) {
                         setRoundTrack(draftPoolRoundTrackUpdate.getDice());
                     }
@@ -522,26 +525,24 @@ public class GameBoardController extends Observable implements Observer {
 
     private void setDraftPool(List<String> dice) {
         Platform.runLater(() -> {
-            synchronized (available) {
-                roundDice = dice.size();
-                for (int i = 0; i < dice.size(); i++) {
-                    String img = dice.get(i);
-                    if (img.contains("_")) {
-                        String path = "/client/dice/" + img + ".jpg";
-                        Image image = new Image(path);
-                        ImageView iv = new ImageView(image);
-                        iv.setFitWidth(43);
-                        iv.setFitHeight(43);
-                        ((ToggleButton) draftPoolDice.getChildren().get(i)).setGraphic(iv);
-                    } else {
-                        ((ToggleButton) draftPoolDice.getChildren().get(i)).setGraphic(null);
-                    }
+            roundDice = dice.size();
+            for (int i = 0; i < dice.size(); i++) {
+                String img = dice.get(i);
+                if (img.contains("_")) {
+                    String path = "/client/dice/" + img + ".jpg";
+                    Image image = new Image(path);
+                    ImageView iv = new ImageView(image);
+                    iv.setFitWidth(43);
+                    iv.setFitHeight(43);
+                    ((ToggleButton) draftPoolDice.getChildren().get(i)).setGraphic(iv);
+                } else {
+                    ((ToggleButton) draftPoolDice.getChildren().get(i)).setGraphic(null);
                 }
-                for (int i = dice.size(); i < 9; i++) {
-                    draftPoolDice.getChildren().get(i).setDisable(true);
-                }
-                setShadow(draftPoolDice);
             }
+            for (int i = dice.size(); i < 9; i++) {
+                draftPoolDice.getChildren().get(i).setDisable(true);
+            }
+            setShadow(draftPoolDice);
         });
     }
 
@@ -558,7 +559,6 @@ public class GameBoardController extends Observable implements Observer {
                     ((ToggleButton) roundTrackDice.getChildren().get(i)).setGraphic(iv);
                 } else {
                     ((ToggleButton)roundTrackDice.getChildren().get(i)).setGraphic(null);
-                    roundTrackDice.getChildren().get(i).setDisable(true);
                 }
             }
             setShadow(roundTrackDice);
@@ -580,10 +580,7 @@ public class GameBoardController extends Observable implements Observer {
     private void setWPCardsDice(List<List<String>> wpcards) {
         Platform.runLater(() -> {
             for (int i = 0; i < wpcards.size(); i++) {
-                int k = -1;
                 for (int j = 0; j < 20; j++) {
-                    int h = j % 5;
-                    if (h == 0) k++;
                     String img = wpcards.get(i).get(j + 1);
                     ImageView iv = new ImageView();
                     iv.setFitHeight(29);
@@ -591,9 +588,11 @@ public class GameBoardController extends Observable implements Observer {
                     if (img.contains("_")) {
                         String path = "/client/dice/" + img + ".jpg";
                         Image image = new Image(path);
-                        iv.setImage(image);
+                        ((ImageView)otherWPCsDice.get(i).getChildren().get(j)).setImage(image);
+                    } else {
+                        Image image = new Image("/client/dice/transparent.png");
+                        ((ImageView)otherWPCsDice.get(i).getChildren().get(j)).setImage(image);
                     }
-                    otherWPCsDice.get(i).add(iv, h, k);
                 }
             }
         });
@@ -774,20 +773,16 @@ public class GameBoardController extends Observable implements Observer {
 
     private void disableAllButtons(boolean b) {
         for (Button tc : tCards) {
-            //tc.setDisable(b);
-            tc.setMouseTransparent(b);
+            tc.setDisable(b);
         }
         for (int i = 0; i < roundDice; i++) {
-            //draftPoolDice.getChildren().get(i).setDisable(b);
-            draftPoolDice.getChildren().get(i).setMouseTransparent(b);
+            draftPoolDice.getChildren().get(i).setDisable(b);
         }
         for (int i = 0; i < roundTrackDice.getChildren().size(); i++) {
-            //roundTrackDice.getChildren().get(i).setDisable(b);
-            roundTrackDice.getChildren().get(i).setMouseTransparent(b);
+            roundTrackDice.getChildren().get(i).setDisable(b);
         }
         for (int i = 0; i < personalWPCDice.getChildren().size(); i++) {
-            //personalWPCDice.getChildren().get(i).setDisable(b);
-            personalWPCDice.getChildren().get(i).setMouseTransparent(b);
+            personalWPCDice.getChildren().get(i).setDisable(b);
         }
         pass.setDisable(b);
         undo.setDisable(b);
@@ -802,6 +797,8 @@ public class GameBoardController extends Observable implements Observer {
                     parent.getChildren().get(j).setEffect(null);
                     }
                 }
+            yes.setVisible(false);
+            no.setVisible(false);
             valueChoice.setVisible(false);
         });
     }

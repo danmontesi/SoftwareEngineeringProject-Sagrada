@@ -10,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -38,30 +37,15 @@ public class ClientStarterController implements Observer {
 
     private ToggleGroup connectionType = new ToggleGroup();
 
-    private DropShadow shadow = new DropShadow();
     private DropShadow redShadow = new DropShadow();
 
     public void initialize() {
-        initStyle();
         initToggleGroup();
     }
 
     private void initToggleGroup() {
         connectionType.getToggles().addAll(rmi, socket);
         socket.setSelected(true);
-    }
-
-    private void initStyle() {
-        rmi.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> rmi.setEffect(shadow));
-        rmi.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
-            if (!rmi.isSelected()) rmi.setEffect(null);
-        });
-        socket.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> socket.setEffect(shadow));
-        socket.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
-            if (!socket.isSelected()) socket.setEffect(null);
-        });
-        connect.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> connect.setEffect(shadow));
-        connect.addEventHandler(MouseEvent.MOUSE_EXITED, e -> connect.setEffect(null));
     }
 
     @Override
@@ -92,6 +76,9 @@ public class ClientStarterController implements Observer {
                 server = new SocketClient(2, ipAddressField.getText());
                 server.startConnection(getUsername());
             }
+            connect.setDisable(true);
+            rmi.setDisable(true);
+            socket.setDisable(true);
             showLobby();
         }
     }

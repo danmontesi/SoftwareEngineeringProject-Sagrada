@@ -93,8 +93,8 @@ public class WPCChoiceController extends Observable implements Observer {
     public void initialize() {
         WPCChoiceNotifier.getInstance().addObserver(this);
         initWPCards();
-        initButton();
-        setTGroup();
+        wpcGroup.getToggles().addAll(wpc1, wpc2, wpc3, wpc4);
+        start.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
     }
 
     public void update(Observable o, Object arg) {
@@ -117,10 +117,6 @@ public class WPCChoiceController extends Observable implements Observer {
         }
     }
 
-    private void setTGroup() {
-        wpcGroup.getToggles().addAll(wpc1, wpc2, wpc3, wpc4);
-    }
-
     private void initWPCards() {
         wpCards.add(wpc1);
         wpCards.add(wpc2);
@@ -136,12 +132,6 @@ public class WPCChoiceController extends Observable implements Observer {
         wpcDifficulties.add(wpc2d);
         wpcDifficulties.add(wpc3d);
         wpcDifficulties.add(wpc4d);
-    }
-
-    private void initButton() {
-        start.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
-        start.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> start.setEffect(shadow));
-        start.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> start.setEffect(null));
     }
 
     private void setCards(List<String> names, List<Integer> difficulties, String priOC) {
@@ -235,6 +225,9 @@ public class WPCChoiceController extends Observable implements Observer {
             inputError();
         } else {
             guiViewT.notify(new ChosenWindowPatternCard(selectedWPC));
+            for (ToggleButton tb : wpCards) {
+                tb.setDisable(true);
+            }
             showGameBoard();
         }
     }
