@@ -1,36 +1,38 @@
 package it.polimi.se2018.MatchTest;
 
+import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.model.COLOR;
 import it.polimi.se2018.model.Die;
-import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.model.RoundTrack;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 /**
- * Tests RoundTrack methods.
  * @author Alessio Molinari
  */
-public class RoundTrackTest{
-    RoundTrack rt;
+public class RoundTrackTest {
+    private RoundTrack rt;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         rt = new RoundTrack();
-        rt.placeDie(new Die(COLOR.GREEN));
-        rt.placeDie(new Die(COLOR.RED));
+        rt.placeDie(new Die(COLOR.GREEN, 5));
+        rt.placeDie(new Die(COLOR.RED, 3));
     }
 
     @Test
-    public void setUpTest(){
+    public void setUpTest() {
         assertEquals(10, rt.getRoundCells().size());
         assertTrue(rt.getCell(2).isEmpty());
     }
 
     @Test
-    public void removeDieTest(){
+    public void removeDie() {
         try {
             rt.removeDie(1);
             rt.removeDie(5);
@@ -40,17 +42,53 @@ public class RoundTrackTest{
     }
 
     @Test
-    public void switchDieTest(){
-
-
+    public void switchDie(){
+        try {
+            rt.switchDie(0, new Die(COLOR.BLUE, 1));
+            assertFalse(rt.isPresent(COLOR.GREEN));
+            assertEquals(new Die(COLOR.BLUE, 1), rt.getDie(0));
+        } catch (EmptyCellException e) {
+            Assert.fail();
+        }
     }
+
     @Test
-    public void placeDieTest(){
+    public void wrongSwitchDie() {
+        try {
+            rt.switchDie(7, new Die(COLOR.BLUE, 1));
+            Assert.fail();
+        } catch (EmptyCellException e) {
+            //correct catch
+        }
+    }
+
+    @Test
+    public void isPresent() {
+        assertTrue(rt.isPresent(COLOR.RED));
+    }
+
+    @Test
+    public void shouldNotBePresent(){
+        assertFalse(rt.isPresent(COLOR.BLUE));
+        assertFalse(rt.isPresent(COLOR.VIOLET));
+    }
+
+    @Test
+    public void correctRepresentation(){
+        List<String> representation;
+        representation = rt.roundtrackPathRepresentation();
+        assertEquals("GREEN_5", representation.get(0));
+        assertEquals("empty", representation.get(3));
+    }
+
+
+    @Test
+    public void placeDie() {
         assertEquals(2, rt.diceInTrack());
     }
 
     @Test
-    public void getDieTest(){
+    public void getDie() {
         try {
             assertNotNull(rt.getDie(0));
             rt.getDie(4);

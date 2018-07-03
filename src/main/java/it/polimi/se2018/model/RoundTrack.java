@@ -45,8 +45,6 @@ public class RoundTrack {
         return roundCells.get(diePosition).switchDie(toBeSwitched);
     }
 
-    //Cosa succede se ci sono due dadi da mettere contemporaneamente sul roundTrack? Si mette prima uno e poi l'altro
-
     /**
      * Places a die on the roundTrack (in last position)
      * @param toBePlaced to be placed on the roundTrack die
@@ -98,25 +96,21 @@ public class RoundTrack {
      */
     public List<String> roundtrackPathRepresentation() {
         List<String> roundtrackString = new ArrayList<>();
-        for (int i = 0; i < roundCells.size(); i++) {
-            try {
-                if (roundCells.get(i).isEmpty()) {
-                    roundtrackString.add("empty");
-                } else {
-                    roundtrackString.add(roundCells.get(i).getAssociatedDie().getColor().toString() + "_" + roundCells.get(i).getAssociatedDie().getValue());
-                }
-            } catch (EmptyCellException e) {
-                e.printStackTrace();
-            }
+        for (Cell roundCell : roundCells) {
+            roundtrackString.add(roundCell.toString());
         }
         return roundtrackString;
     }
 
-    public boolean isPresent(COLOR color) throws EmptyCellException {
+    public boolean isPresent(COLOR color) {
         for (Cell cell : roundCells){
             if (cell.hasDie()){
-                if (cell.getAssociatedDie().getColor()==color)
-                    return true;
+                try {
+                    if (cell.getAssociatedDie().getColor()==color)
+                        return true;
+                } catch (EmptyCellException e) {
+                    //cell must have die, since it is true cell.hasDie()
+                }
             }
         }
         return false;

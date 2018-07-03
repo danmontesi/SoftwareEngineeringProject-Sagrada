@@ -38,16 +38,12 @@ public class Player {
         return tokens;
     }
 
-    public void setPrivateObjectiveCard(PrivateObjectiveCard privateObjToBeSet){
-        this.privateObjectiveCard = privateObjToBeSet;
+    public void setPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard){
+        this.privateObjectiveCard = privateObjectiveCard;
     }
 
-    public void setWindowPatternCard(WindowPatternCard patternToBeSet){
-        this.windowPatternCard = patternToBeSet;
-        this.tokens = this.windowPatternCard.getDifficulty();
-    }
-
-    public void setTokens(){
+    public void setWindowPatternCard(WindowPatternCard windowPatternCard){
+        this.windowPatternCard = windowPatternCard;
         this.tokens = this.windowPatternCard.getDifficulty();
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.se2018.model;
 
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -81,5 +82,19 @@ public class Die {
         Integer i = value;
         toBePrinted = toBePrinted + "num:" + i.toString();
         return toBePrinted;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Die die = (Die) o;
+        return value == die.value &&
+                color == die.color;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, value);
     }
 }
