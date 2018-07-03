@@ -10,11 +10,18 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Manages Socket connections (server side)
+ * @author Alessio Molianri
+ */
 public class SocketServer {
     private static final int port = 11111;
 
     ServerSocket serverSocket;
 
+    /**
+     * Starts listening
+     */
     public void socketStartListening(){
         try {
             serverSocket = new ServerSocket(port);

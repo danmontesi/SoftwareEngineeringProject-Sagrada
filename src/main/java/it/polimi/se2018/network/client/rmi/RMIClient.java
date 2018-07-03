@@ -17,6 +17,10 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Manages RMI connections (client side)
+ * @author Alessio Molinari
+ */
 public class RMIClient implements Remote, ServerConnection{
 
     private Registry registry;
@@ -33,8 +37,6 @@ public class RMIClient implements Remote, ServerConnection{
 
     public RMIClient(int viewChoice, String ipAddress){
         clientController = new ClientController(viewChoice, this);
-        Thread commandHandlerRMI = new Thread(new CommandHandlerRMI());
-        commandHandlerRMI.start();
         this.ipAddress = ipAddress;
     }
 
@@ -51,7 +53,10 @@ public class RMIClient implements Remote, ServerConnection{
         }
     }
 
-    public void notifyRMI(ServerToClientCommand command) {
+    /**
+     * Notify server that the connection is active
+     */
+    void notifyRMI(ServerToClientCommand command) {
         if (command.hasMessage() && command.getMessage().equals("Ping")){
             LOGGER.log(Level.FINE, "Arrived ping from server");
         }

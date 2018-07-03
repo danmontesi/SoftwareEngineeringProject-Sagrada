@@ -3,15 +3,17 @@ package it.polimi.se2018.network.server;
 import it.polimi.se2018.model.Action;
 import it.polimi.se2018.model.COLOR;
 import it.polimi.se2018.model.Model;
-import org.apache.commons.lang.SerializationUtils;
 
 import java.util.List;
 
+/**
+ *
+ */
 public class ToolcardData {
-    private String toolcardName;
-    private List<Action> toolcardActions;
+    private String toolCardName;
+    private List<Action> toolCardActions;
 
-    private int indexFromDraftpool;
+    private int indexFromDraftPool;
     private int indexFromRoundTrack;
     private int indexFromWPC;
     private int indexToWPC;
@@ -26,12 +28,15 @@ public class ToolcardData {
     private int requiredTokensForLastToolUse;
     private int lastUsedToolCardNum;
 
-
     private boolean hasDoneMove;
     private int indexMovedDie;
     private int indexDieBeforeMoved;
-    private String souce;
+    private String source;
 
+    ToolcardData(String toolCardName, List<Action> toolCardActions) {
+        this.toolCardName = toolCardName;
+        this.toolCardActions = toolCardActions;
+    }
 
     public Model removeOldModel(){
         Model temp = oldModel;
@@ -39,85 +44,77 @@ public class ToolcardData {
         return temp;
     }
 
-    public void setOldModel(Model oldModel) {
+    void setOldModel(Model oldModel) {
         Model newModel = new Model(oldModel);
         this.oldModel = newModel;
     }
 
-    public void setRequiredTokensForLastToolUse(int requiredTokensForLastToolUse) {
+    void setRequiredTokensForLastToolUse(int requiredTokensForLastToolUse) {
         this.requiredTokensForLastToolUse = requiredTokensForLastToolUse;
     }
 
-    public void setLastUsedToolCardNum(int lastUsedToolCardNum) {
+    void setLastUsedToolCardNum(int lastUsedToolCardNum) {
         this.lastUsedToolCardNum = lastUsedToolCardNum;
     }
 
-    public int getRequiredTokensForLastToolUse() {
+    int getRequiredTokensForLastToolUse() {
 
         return requiredTokensForLastToolUse;
     }
 
-    public int getLastUsedToolCardNum() {
+    int getLastUsedToolCardNum() {
         return lastUsedToolCardNum;
     }
 
-    public ToolcardData() {
+    int getIndexFromDraftPool() {
+        return indexFromDraftPool;
     }
 
-    public ToolcardData(String toolcardName, List<Action> toolcardActions) {
-        this.toolcardName = toolcardName;
-        this.toolcardActions = toolcardActions;
+    void setIndexFromDraftPool(int indexFromDraftPool) {
+        this.indexFromDraftPool = indexFromDraftPool;
     }
 
-    public int getIndexFromDraftpool() {
-        return indexFromDraftpool;
-    }
-
-    public void setIndexFromDraftpool(int indexFromDraftpool) {
-        this.indexFromDraftpool = indexFromDraftpool;
-    }
-
-    public int getIndexFromRoundTrack() {
+    int getIndexFromRoundTrack() {
         return indexFromRoundTrack;
     }
 
-    public void setIndexFromRoundTrack(int indexFromRoundTrack) {
+    void setIndexFromRoundTrack(int indexFromRoundTrack) {
         this.indexFromRoundTrack = indexFromRoundTrack;
     }
 
-    public int getIndexFromWPC() {
+    int getIndexFromWPC() {
         return indexFromWPC;
     }
 
-    public void setIndexFromWPC(int indexFromWPC) {
+    void setIndexFromWPC(int indexFromWPC) {
         this.indexFromWPC = indexFromWPC;
     }
 
-    public int getIndexToWPC() {
+    int getIndexToWPC() {
         return indexToWPC;
     }
 
-    public void setIndexToWPC(int indexToWPC) {
+    void setIndexToWPC(int indexToWPC) {
         this.indexToWPC = indexToWPC;
     }
 
-    public boolean isIncreaseValue() {
+    boolean isIncreaseValue() {
         return increaseValue;
     }
 
-    public void setIncreaseValue(boolean increaseValue) {
+    void setIncreaseValue(boolean increaseValue) {
         this.increaseValue = increaseValue;
     }
 
-    public boolean isAnotherAction() {
+    boolean isAnotherAction() {
         return anotherAction;
     }
 
-    public void setAnotherAction(boolean anotherAction) {
+    void setAnotherAction(boolean anotherAction) {
         this.anotherAction = anotherAction;
     }
 
-    public int getDieValue() {
+    int getDieValue() {
         return dieValue;
     }
 
@@ -125,51 +122,51 @@ public class ToolcardData {
         this.dieValue = dieValue;
     }
 
-    public List<Action> getToolcardActions() {
-        return toolcardActions;
+    List<Action> getToolCardActions() {
+        return toolCardActions;
     }
 
-    public String getToolcardName() {
-        return toolcardName;
+    public String getToolCardName() {
+        return toolCardName;
     }
 
-    public COLOR getSavedColor() {
+    COLOR getSavedColor() {
         return savedColor;
     }
 
-
-    public void setIndexMovedDie(int indexMovedDie) {
+    void setIndexMovedDie(int indexMovedDie) {
         this.indexMovedDie = indexMovedDie;
     }
 
-    public void setIndexDieBeforeMoved(int indexDieBeforeMoved) {
+    void setIndexDieBeforeMoved(int indexDieBeforeMoved) {
         this.indexDieBeforeMoved = indexDieBeforeMoved;
     }
 
-    public void setSouce(String souce) {
-        this.souce = souce;
+    void setSource(String source) {
+        this.source = source;
     }
 
-    public int getIndexMovedDie() {
+    int getIndexMovedDie() {
         return indexMovedDie;
     }
 
-    public int getIndexDieBeforeMoved() {
+    int getIndexDieBeforeMoved() {
         return indexDieBeforeMoved;
     }
 
-    public String getSouce() {
-        return souce;
+    String getSource() {
+        return source;
     }
 
-    public boolean hasDoneMove(){
-        return hasDoneMove==true;
+    boolean hasDoneMove(){
+        return hasDoneMove;
     }
-    public void setSavedColor(COLOR savedColor) {
+
+    void setSavedColor(COLOR savedColor) {
         this.savedColor = savedColor;
     }
 
-    public void setHasDoneMove() {
+    void setHasDoneMove() {
         hasDoneMove=true;
     }
 }

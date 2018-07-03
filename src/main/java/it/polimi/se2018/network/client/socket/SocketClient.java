@@ -14,6 +14,10 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Manages Socket connections (client side)
+ * @author Alessio Molinari
+ */
 public class SocketClient implements ServerConnection {
     private static final int port = 11111;
     private static String host = "127.0.0.1";
@@ -23,8 +27,6 @@ public class SocketClient implements ServerConnection {
     private ControllerClientInterface clientController;
     private boolean isAlive = true;
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
-
-
 
     public SocketClient(int viewChoice, String ipAddress){
         clientController = new ClientController(viewChoice, this);

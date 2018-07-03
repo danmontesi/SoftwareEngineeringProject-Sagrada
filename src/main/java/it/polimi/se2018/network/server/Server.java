@@ -18,42 +18,33 @@ import java.util.*;
 
 public class Server {
 
-    /**
-     * Clients that are waiting for a game to start and saved by username
-     */
+    /* Clients that are waiting for a game to start and saved by username*/
     private static List<String> waitingClients = new ArrayList<>();
-    /**
-     * Clients connected with their own username and ClientConnection:
-     * ClientConnection is the reference that the server has to contact them
-     * These clients could both be in a game or be waiting for a game to start
-     */
+
+    /* Clients connected with their own username and ClientConnection:
+       ClientConnection is the reference that the server has to contact them
+       These clients could both be in a game or be waiting for a game to start */
     private static Map<String, ClientConnection> connectedClients = new HashMap<>();
 
-    /**
-     * Clients that were in a game andd then got disconnected
-     * These clients could be reinserted in a paused game when they reconnect to the server
-     * Clients are saved by their unique username
-     */
+    /* Clients that were in a game andd then got disconnected
+       These clients could be reinserted in a paused game when they reconnect to the server
+       Clients are saved by their unique username */
     private static List<String> disconnectedClients = new ArrayList<>();
-    /**
-     * List of active games (one Thread for each game)
-     */
+
+    /* List of active games (one Thread for each game) */
     private static List<Controller> activeGames = new ArrayList<>();
-    /**
-     * Map used to pass a command coming from the network to the right controller (the right game) to manage it
-     */
+
+    /* Map used to pass a command coming from the network to the right controller (the right game) to manage it */
     private static Map<String, VirtualView> userMap = new HashMap<>();
 
     private static Timer timer;
 
     public static void main(String[] args) {
-
         boolean activeServer = true;
         //pubblica RMI impl server side
         new RMIServer().RMIStartListening();
         //listen socket connections
         new SocketServer().socketStartListening();
-
 
         new Thread(() -> {
             while (activeServer) {
@@ -70,9 +61,11 @@ public class Server {
             }
         }
         ).start();
-
     }
 
+    /**
+     * Removes inactive controllers
+     */
     private static void removeInactiveControllers() {
         for (int i = 0; i < activeGames.size(); i++) {
             if (!activeGames.get(i).isActive()) {
@@ -90,16 +83,14 @@ public class Server {
     }
 
 
+    /* New connections are automatically added to waitingClients because they haven't chosen a username yet.
+       They are later moved from waitingClients to connnectedClients when they are connected with their user. */
     /**
-     * New connections are automatically added to waitingClients because they haven't chosen a username yet.
-     * They are later moved from waitingClients to connnectedClients when they are connected with their user.
-     * @param client
+     * Adds clients (RMI)
      */
     public static void addClientInterface(RMIClientInterface client, String username){
-
         //Create reference to RMIClient
         RMIVirtualClient vc = new RMIVirtualClient(client);
-
         /*
         Three cases:
         1) Attempt to reconnect after disconnection
@@ -132,6 +123,9 @@ public class Server {
         }
     }
 
+    /**
+     * Notifies other clients of a new player connection
+     */
     private static void notifyNewConnectedPlayer(String username){
         for (String connectionReference : waitingClients){
             if (!connectionReference.equals(username)) {
@@ -141,12 +135,12 @@ public class Server {
 
     }
 
+    /**
+     * Adds clients (Socket)
+     */
     public static void addClientInterface(Socket socket, ObjectInputStream input, ObjectOutputStream output, String username){
-
         //Create reference to Socket view
-
         SocketVirtualClient vc = new SocketVirtualClient(socket, input, output);
-
         /*
         Three cases:
         1) Attempt to reconnect after disconnection
@@ -186,8 +180,7 @@ public class Server {
     }
 
     /**
-     * Remove any reference of a given player from the server
-     * @param username
+     * Removes all references of a given player from the server
      */
     public static void removeClient(String username){
         if (connectedClients.containsKey(username)){
@@ -202,8 +195,7 @@ public class Server {
     }
 
     /**
-     * Disconnect a player from the server: his username is saved in disconnectedClients in case he will reconnect
-     * @param username
+     * Disconnects a player from the server: his username is saved in disconnectedClients in case he reconnects
      */
     public static synchronized void disconnectClient(String username){
         if (waitingClients.contains(username)) { //Covers the case in which a player is connected but isn't in a started game
@@ -239,7 +231,10 @@ public class Server {
         }
     }
 
-    public synchronized static void addToWaitingClients(String username){ //TODO Gestire la concorrenza: se vengono addati insieme 6 view, faccio partire un timer e l'altro per i 2 player rimanenti?
+    /**
+     * Adds players to a game and starts the game
+     */
+    public synchronized static void addToWaitingClients(String username){ //TODO Gestire la concorrenza: se vengono addate insieme 6 view, faccio partire un timer e l'altro per i 2 player rimanenti?
         waitingClients.add(username);
         System.out.println("Addato "+ username);
         notifyNewConnectedPlayer(username);
@@ -247,19 +242,18 @@ public class Server {
             System.out.println("Starting timer");
             timer = new Timer(); //TODO gestire il caso di più partite in attesa: devo avere degli ARRAY di timer in quel caso! e sapere quali sono attivi
             timer.schedule(
-                    new TimerTask() {
-                        @Override
-                        public void run() {
-                            // Inutile -> itsTimeToStart = true;  //TODO a cosa serve questa variabile? startNewGame() deve essere controllato da questa variabile? deve essere messo in un thread quindi?
-                            System.out.println("Time expired");
-                            //TODO: check all players from RMI are connected -> Ping
-                            //wait for 1s (time to the ping to be sent)
-
-                            //if arrives here, the client connected are more than 1 (if not, disconnectPlayers can cancel the timer
-                            startNewGame(); //DA TOGLIERE, l'ho utilizzato solo come prova. il metodo deve essere contorllato dalla variabile itsTimeToStart
-                        }
-                    },
-                    CONSTANTS.LOBBY_TIMER
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        // Inutile -> itsTimeToStart = true;  //TODO a cosa serve questa variabile? startNewGame() deve essere controllato da questa variabile? deve essere messo in un thread quindi?
+                        System.out.println("Time expired");
+                        //TODO: check all players from RMI are connected -> Ping
+                        //wait for 1s (time to the ping to be sent)
+                        //if arrives here, the client connected are more than 1 (if not, disconnectPlayers can cancel the timer
+                        startNewGame(); //DA TOGLIERE, l'ho utilizzato solo come prova. il metodo deve essere contorllato dalla variabile itsTimeToStart
+                    }
+                },
+                CONSTANTS.LOBBY_TIMER
             );
         }
         if (waitingClients.size()==4){
@@ -267,7 +261,10 @@ public class Server {
         }
     }
 
-    public static synchronized void startNewGame(){
+    /**
+     * Starts a new game
+     */
+    private static synchronized void startNewGame(){
         //when a game starts, timer is cancelled
         timer.cancel();
         List<String> players = new ArrayList<>();
@@ -288,7 +285,10 @@ public class Server {
         activeGames.add(controller);
     }
 
-    public static void refreshBoardAndNotifyReconnectedPlayer(String username){
+    /**
+     * Sends a game board refresh to reconnected players
+     */
+    static void refreshBoardAndNotifyReconnectedPlayer(String username){
         for (Controller game : activeGames){
             for (String user : game.getUserViewMap().keySet()){
                 if (username.equals(user)){
@@ -303,7 +303,10 @@ public class Server {
         }
     }
 
-    public static void updateDisconnectedUser(String username){
+    /**
+     * Notifies other players of the disconnection of a player
+     */
+    static void updateDisconnectedUser(String username){
         try {
             Controller game = getControllerFromUsername(username);
             for (String usernameToNotify : game.getUserViewMap().keySet()) {
@@ -316,6 +319,9 @@ public class Server {
         }
     }
 
+    /**
+     * Retrieves the game in which a client is playing from its username
+     */
     private static Controller getControllerFromUsername(String username){
         for (Controller game : activeGames){
             for (String user : game.getUserViewMap().keySet()){
@@ -343,7 +349,7 @@ public class Server {
         return activeGames;
     }
 
-    public static Map<String, VirtualView> getUserMap() {
+    static Map<String, VirtualView> getUserMap() {
         return userMap;
     }
 

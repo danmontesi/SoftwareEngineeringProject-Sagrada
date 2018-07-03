@@ -9,10 +9,8 @@ import it.polimi.se2018.view.gui.LoginMain;
 import java.util.Scanner;
 
 public class Client{
-    /*
-    Default choices: gui and Socket
-    In case of incorrect input no exception is thrown: default choices are applied.
-     */
+    /* Default choices: GUI and Socket
+       In case of incorrect input no exception is thrown: default choices are applied.*/
     public static void main(String[] args) {
         ServerConnection server;
         Scanner scanner = new Scanner(System.in);

@@ -21,13 +21,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
 
     //TODO setta i messaggi
-    private static final String WRONG_INDEX = "The cell you selected is wrong or our of index, try again!";
+    private static final String WRONG_INDEX = "The cell you selected is wrong or our of index, try again";
     private static final String WRONG_PLACEMENT = "The placement is incorrect. Check the rules of Sagrada";
-    private static final String EMPTY_INDEX = "The cell you selected is empty, try again!";
-    private static final String EMPTY_DRAFTPOOL_INDEX = "The draftpool die you selected doesn't exits! Try again";
+    private static final String EMPTY_INDEX = "The cell you selected is empty, try again";
+    private static final String EMPTY_DRAFTPOOL_INDEX = "The draft pool die you selected doesn't exits. Try again";
 
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
-    private static final String NOT_YOUR_TURN = "It's not your turn, you can't no any action.";
+    private static final String NOT_YOUR_TURN = "It's not your turn, you can't do any action.";
 
     private Model model;
     private HashMap<String, Player> usernamePlayerMap;
@@ -56,16 +56,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private boolean active;
 
-    /**
-     * ArrayList that contains the ordered players that has to play
-     * is created by the model in its constructor
-     */
     private List<List<String>> orderedRoundPlayers;
     private List<String> currentRoundOrderedPlayers;
-
-    /**
-     * Represent current player. That is necessary to know which is the player i'm expecting an answer
-     */
     private String currentPlayer;
     private boolean hasUsedTool;
     private boolean hasPerformedMove;
@@ -129,7 +121,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     public void initializeGame() {
-        //Let people chose their Wpc, and call a method that waits until all chose theirs.
+        //Let people choose their Wpc, and call a method that waits until all chose theirs.
         //Once i receive all -> move to orderedPlayers List
         List<WindowPatternCard> localWpc;
 
@@ -144,31 +136,31 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         checkBlockingTimer = new Timer(); //General timer for every player. Is starts the game stopping players without waiting the answer
         checkBlockingTimer.schedule(
-                new TimerTask() {
-                    @Override
-                    public void run() {
-                        synchronized (mutex) {
-                            LOGGER.log(Level.INFO, "This is last call for chosing Wpc: starting the game with disconnected Players");
-                            if (!uninitializedOrderedPlayers.isEmpty()) {
-                                for (Player p : uninitializedOrderedPlayers) {
-                                    LOGGER.log(Level.INFO, "Dimension of orderedP" + uninitializedOrderedPlayers.size());
-                                    userViewMap.get(p.getUsername()).timeOut();
-                                    orderedPlayers.add(p);
-                                    LOGGER.log(Level.INFO, "Added " + p.getUsername());
-                                }
-                                uninitializedOrderedPlayers.clear();
-                                startGame();
+            new TimerTask() {
+                @Override
+                public void run() {
+                    synchronized (mutex) {
+                        LOGGER.log(Level.INFO, "This is last call for chosing Wpc: starting the game with disconnected Players");
+                        if (!uninitializedOrderedPlayers.isEmpty()) {
+                            for (Player p : uninitializedOrderedPlayers) {
+                                LOGGER.log(Level.INFO, "Dimension of orderedP" + uninitializedOrderedPlayers.size());
+                                userViewMap.get(p.getUsername()).timeOut();
+                                orderedPlayers.add(p);
+                                LOGGER.log(Level.INFO, "Added " + p.getUsername());
                             }
+                            uninitializedOrderedPlayers.clear();
+                            startGame();
                         }
                     }
-                },
-                CONSTANTS.WPC_TIMER); //TODO timer
+                }
+            },
+            CONSTANTS.WPC_TIMER); //TODO timer
     }
 
     /**
-     * Initializes all Lists of players for each round, ordered.
+     * Initializes all lists of players for each round, ordered
      */
-    public void assignRoundPlayers(List<Player> orderedPlayers) {
+    private void assignRoundPlayers(List<Player> orderedPlayers) {
         orderedRoundPlayers = new ArrayList<>();
         int numberOfPlayers = orderedPlayers.size();
         for (int i = 0; i < 10; i++){
@@ -183,17 +175,22 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
     }
 
-    public void startGame() {
+    /**
+     * Starts game
+     */
+    private void startGame() {
         assignRoundPlayers(orderedPlayers);
         model.notifyRefreshBoard(null, orderedPlayers);
         startNewRound();
     }
 
-    void endGame() {
+    /**
+     * Ends game and sends game outcome to players
+     */
+    private void endGame() {
         for (Player p : orderedPlayers) {
             getUserViewMap().get(p.getUsername()).endGame();
         }
-
         //For each player, create an HashMap calling on every player a Win/Lose command
         HashMap<String, Integer> playerScoreMap = new HashMap<>();
         Integer tempScore;
@@ -219,6 +216,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         sendResultToPlayers(orderedPlayerScores);
     }
 
+    /**
+     * Sends game outcome to players
+     */
     private void sendResultToPlayers(LinkedHashMap<String, Integer> orderedPlayerScores) {
         Set set1 = orderedPlayerScores.entrySet();
         Set set2 = orderedPlayerScores.entrySet();
@@ -244,6 +244,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         active = false;
     }
 
+    /**
+     * Calculates empty Window Pattern Card cells penalties
+     */
     private Integer penaltyScore(WindowPatternCard card) {
         int tempScore = 0;
         for (Cell c : card.getSchema()) {
@@ -253,10 +256,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     /**
-     * Calls method for initializing a new round
-     * - send to all players a new RefreshBoardCommand
-     * - extract Dice ..
-     * - set first player and
+     * Starts a new Round
      */
     private void startNewRound() {
         if (orderedRoundPlayers.isEmpty()) {
@@ -264,47 +264,43 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         } else {
             LOGGER.log(Level.INFO, "Start round " + (10 - orderedRoundPlayers.size()));
             model.setDraftPool(model.extractDraftPoolDice(orderedPlayers.size()));
-
             currentRoundOrderedPlayers = orderedRoundPlayers.remove(0);
             currentPlayer = currentRoundOrderedPlayers.remove(0);
             hasPerformedMove = false;
             hasUsedTool = false;
-
             for (Player p : orderedPlayers) {
                 if (!(p.getUsername().equals(currentPlayer))) {
                     userViewMap.get(p.getUsername()).otherPlayerTurn(currentPlayer);
                 }
             }
-
             model.setCurrentPlayer(model.getPlayerFromUsername(currentPlayer));
             model.setCurrentRound(10 - orderedRoundPlayers.size());
             usernameTimerMap.put(currentPlayer, new Timer());
             usernameTimerMap.get(currentPlayer).schedule(
-                    new TimerTask() {
-                        @Override
-                        public void run() {
-                            LOGGER.log(Level.INFO, "Sending timeout");
-                            userViewMap.get(currentPlayer).timeOut();
-                            if (toolcardData!=null)
-                                handlePlayerAfterIncorrectToolUse(currentPlayer, "You haven't finished to use the tool, the changes are restored", false);
-                            //TODO se l'utente sta usando un tool, resetto il model
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            startNewTurn();
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        LOGGER.log(Level.INFO, "Sending timeout");
+                        userViewMap.get(currentPlayer).timeOut();
+                        if (toolcardData!=null)
+                            handlePlayerAfterIncorrectToolUse(currentPlayer, "You haven't finished to use the tool, the changes are restored", false);
+                        //TODO se l'utente sta usando un tool, resetto il model
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                    },
-                    timerCostant
+                        startNewTurn();
+                    }
+                },
+                timerCostant
             );
             userViewMap.get(currentPlayer).startTurnMenu();
         }
     }
 
     /**
-     * Has to start a turn of a new player in a round.
-     * if the round has still 2*n turns played, i have to call starNewRound()
+     * Starts new turn
      */
     private void startNewTurn() {
         if (currentRoundOrderedPlayers.isEmpty()) {
@@ -326,30 +322,32 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     userViewMap.get(p.getUsername()).otherPlayerTurn(currentPlayer);
                 }
             }
-
             usernameTimerMap.put(currentPlayer, new Timer());
             usernameTimerMap.get(currentPlayer).schedule(
-                    new TimerTask() {
-                        @Override
-                        public void run() {
-                            LOGGER.log(Level.INFO, "Sending timeout");
-                            userViewMap.get(currentPlayer).timeOut();
-                            if (toolcardData!=null)
-                                handlePlayerAfterIncorrectToolUse(currentPlayer, "You haven't finished to use the tool.", false);
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            startNewTurn();
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        LOGGER.log(Level.INFO, "Sending timeout");
+                        userViewMap.get(currentPlayer).timeOut();
+                        if (toolcardData!=null)
+                            handlePlayerAfterIncorrectToolUse(currentPlayer, "You haven't finished to use the tool.", false);
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                    },
-                    timerCostant
+                        startNewTurn();
+                    }
+                },
+                timerCostant
             );
             userViewMap.get(currentPlayer).startTurnMenu();
         }
     }
 
+    /**
+     * Checks whether it is the player's turn
+     */
     private boolean isAllowed(String username) {
         return username.equals(currentPlayer);
     }
@@ -396,8 +394,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
 
         if (toolcardData != null){
-            System.out.println("Invalid: i sta chiedendo di utilizzare un tool ma ne sta utilizzando un altro");
-            userViewMap.get(currentPlayer).invalidActionMessage("You have to finish the tool you are using before do something else!");
+            System.out.println("Invalid: sta chiedendo di utilizzare un tool ma ne sta utilizzando un altro");
+            userViewMap.get(currentPlayer).invalidActionMessage("You have to finish using the Tool Card before doing something else");
             executeAction();
             return;
         }
@@ -417,16 +415,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         //check turno giusto per la toolcard
         if (chosen.getName().equals("Gavel")) {
             if (currentRoundOrderedPlayers.contains(playerUsername)) { //Can't use the tool, has to be in second turn
-                handleCurrentPlayerAfterIncorrectRequest("You have to be in your second turn to use this turn. Use it later.");
+                handleCurrentPlayerAfterIncorrectRequest("You have to be in your second turn to use this turn");
                 return;
             }
-        } else if (chosen.getName().equals("Wheels Pincher")) {
-            if (!currentRoundOrderedPlayers.contains(playerUsername)) { //Can't use the tool, has to be in first turn
-                handleCurrentPlayerAfterIncorrectRequest( "You have to be in your first turn to use this tool");
-                return;
-            }
+        } else if (chosen.getName().equals("Wheels Pincher") && !currentRoundOrderedPlayers.contains(playerUsername)) {
+            handleCurrentPlayerAfterIncorrectRequest( "You have to be in your first turn to use this tool");
+            return;
         }
-
 
         //inizializza toolcardData
         toolcardData = new ToolcardData(chosen.getName(), chosen.getActions());
@@ -434,25 +429,30 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         toolcardData.setRequiredTokensForLastToolUse(requiredTokens);
         toolcardData.setLastUsedToolCardNum(usedToolNumber);
 
-        System.out.println("Assegnata lista toolcard: la prima è " + toolcardData.getToolcardActions().get(0));
+        System.out.println("Assegnata lista toolcard: la prima è " + toolcardData.getToolCardActions().get(0));
         //fai cose:
         executeAction();
     }
 
     //TODO modifica e vedi se sono giusti gli afterTool
+    /**
+     * Handles incorrect requests from the player
+     */
     private void handleCurrentPlayerAfterIncorrectRequest(String message) {
         userViewMap.get(currentPlayer).invalidActionMessage(message);
         userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
     }
 
+    /**
+     * Executes the Tool Cards actions
+     */
     private void executeAction() {
-        if (toolcardData.getToolcardActions().isEmpty()){
+        if (toolcardData.getToolCardActions().isEmpty()){
             System.out.println("handling for correct use");
             handlePlayerAfterCorrectToolUse(currentPlayer, toolcardData.getRequiredTokensForLastToolUse());
             return;
         }
-
-        Action action = toolcardData.getToolcardActions().get(0);
+        Action action = toolcardData.getToolCardActions().get(0);
         switch (action.getType()) {
             case ASK_PICK_DIE:
                 userViewMap.get(currentPlayer).askPickDie(action.getParameter());
@@ -507,27 +507,30 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
     }
 
+    /**
+     * Checks whether the player decided to do another action or not
+     */
     private void executeCheckAnotherAction() {
         if (toolcardData.isAnotherAction()) {
-            toolcardData.getToolcardActions().remove(0);
+            toolcardData.getToolCardActions().remove(0);
             executeAction();
-        }
-        else{
+        } else{
             handlePlayerAfterCorrectToolUse(currentPlayer, toolcardData.getRequiredTokensForLastToolUse());
         }
     }
 
     //TODO ordered players da settare ogni volta
-
+    /**
+     * Checks whether it is possible to place the selected die or not
+     */
     private void executeCheckPossiblePlacement() {
         try {
-            Die tempDieToCheckPlacement = model.getDraftPool().getCell(toolcardData.getIndexFromDraftpool()).getAssociatedDie();
+            Die tempDieToCheckPlacement = model.getDraftPool().getCell(toolcardData.getIndexFromDraftPool()).getAssociatedDie();
             if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().isPossibleToPlace(tempDieToCheckPlacement)){
                 userViewMap.get(currentPlayer).messageBox("There is no possible placement for the die. It stays in DraftPool");
                 handlePlayerAfterCorrectToolUse(currentPlayer, toolcardData.getRequiredTokensForLastToolUse());
-            }
-            else {
-                toolcardData.getToolcardActions().remove(0);
+            } else {
+                toolcardData.getToolCardActions().remove(0);
                 executeAction();
             }
         } catch (EmptyCellException e) {
@@ -535,6 +538,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
     }
 
+    /**
+     * Checks whether the selected die's color is colorToCheck
+     */
     private void executeCheckSameColor() {
         try {
             COLOR colorToCheck = usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(toolcardData.getIndexFromWPC()).getAssociatedDie().getColor();
@@ -543,9 +549,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 restoreTCGlobalVariables();
                 userViewMap.get(currentPlayer).invalidActionMessage("The color of the chosen die is different from the previous one, try again!");
                 userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
-            }
-            else{
-                toolcardData.getToolcardActions().remove(0);
+            } else{
+                toolcardData.getToolCardActions().remove(0);
                 executeAction();
             }
         } catch (EmptyCellException e) {
@@ -553,6 +558,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
     }
 
+    /**
+     * Checks whether there is a die on the Round Track the same color as the selected die
+     */
     private void executeCheckExistsColorRT() {
         try {
             COLOR colorToCheck = usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(toolcardData.getIndexFromWPC()).getAssociatedDie().getColor();
@@ -561,9 +569,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 restoreTCGlobalVariables();
                 userViewMap.get(currentPlayer).invalidActionMessage("The color of the chosen die is different from at least one of the Roundtrack, try again!");
                 userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
-            }
-            else {
-                toolcardData.getToolcardActions().remove(0);
+            } else {
+                toolcardData.getToolCardActions().remove(0);
                 executeAction();
             }
         } catch (EmptyCellException e) {
@@ -571,94 +578,107 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
     }
 
+    /**
+     * Saves the selected die's color
+     */
     private void executeDoSaveColor() {
-        int dieIndexToSaveColor = toolcardData.getIndexFromDraftpool();
+        int dieIndexToSaveColor = toolcardData.getIndexFromDraftPool();
         try {
             toolcardData.setSavedColor(model.getDraftPool().getDie(dieIndexToSaveColor).getColor());
         } catch (EmptyCellException e) {
             LOGGER.log(Level.INFO,"Dado non trovato nel metodo executeDoSaveColor");
         }
-        toolcardData.getToolcardActions().remove(0);
+        toolcardData.getToolCardActions().remove(0);
         executeAction();
     }
 
+    /**
+     * Flips the selected die
+     */
     private void executeDoFlip() {
-        int indexDieToFlip = toolcardData.getIndexFromDraftpool();
+        int indexDieToFlip = toolcardData.getIndexFromDraftPool();
         try {
             model.flipDraftPoolDie(indexDieToFlip);
         } catch (EmptyCellException e) {
             LOGGER.log(Level.INFO,"Dado non trovato nel metodo doFlip");
         }
-        toolcardData.getToolcardActions().remove(0);
+        toolcardData.getToolCardActions().remove(0);
         executeAction();
     }
 
-
+    /**
+     * Shuffles all dice in the Draft Pool
+     */
     private void executeDoShuffleAll() {
         model.rollDraftpoolDice();
-        toolcardData.getToolcardActions().remove(0);
+        toolcardData.getToolCardActions().remove(0);
         executeAction();
     }
 
-
+    /**
+     * Shuffles the selected die
+     */
     private void executeDoShuffle() {
         try {
-            model.rollDraftpoolDie(toolcardData.getIndexFromDraftpool());
+            model.rollDraftpoolDie(toolcardData.getIndexFromDraftPool());
         } catch (EmptyCellException e) {
             LOGGER.log(Level.INFO,"Errore in doShuffle");
         }
-        toolcardData.getToolcardActions().remove(0);
+        toolcardData.getToolCardActions().remove(0);
         executeAction();
     }
 
-
+    /**
+     * Swaps the selected dice
+     * @param parameter first die
+     * @param parameter2 second die
+     */
     private void executeDoSwap(String parameter, String parameter2) {
         switch (parameter2) {
             //parameter is not useful, is always "RP".
             case "DB":
-                Die tempDP = model.removeDieFromDraftPool(toolcardData.getIndexFromDraftpool());
+                Die tempDP = model.removeDieFromDraftPool(toolcardData.getIndexFromDraftPool());
                 Die tempDB = model.extractDieFromDiceBag();
-                model.setDieOnDraftPool(tempDB, toolcardData.getIndexFromDraftpool());
+                model.setDieOnDraftPool(tempDB, toolcardData.getIndexFromDraftPool());
                 model.insertDieInDiceBag(tempDP);
                 break;
             case "RT":
-                Die temp = model.removeDieFromDraftPool(toolcardData.getIndexFromDraftpool());
+                Die temp = model.removeDieFromDraftPool(toolcardData.getIndexFromDraftPool());
                 Die tempRT = model.swapDieOnRoundTrack(temp, toolcardData.getIndexFromRoundTrack());
-                model.setDieOnDraftPool(tempRT, toolcardData.getIndexFromDraftpool());
+                model.setDieOnDraftPool(tempRT, toolcardData.getIndexFromDraftPool());
                 break;
             default:
                 LOGGER.log(Level.INFO,"Errore in doSwap, non arriva ne DB ne RT");
                 break;
         }
-        toolcardData.getToolcardActions().remove(0);
+        toolcardData.getToolCardActions().remove(0);
         executeAction();
     }
 //TODO: se esegue una mossa, devo modificare la variabile
 
-
+    /**
+     * Increases or decreases the selected die's value depending on the player's choice
+     */
     private void executeDoIncreaseDecrease() {
         if (toolcardData.isIncreaseValue()){
             try {
-                model.increaseDraftpoolDieValue(toolcardData.getIndexFromDraftpool(), true);
+                model.increaseDraftpoolDieValue(toolcardData.getIndexFromDraftPool(), true);
             } catch (EmptyCellException e) {
                 e.printStackTrace();
             }
-        }
-        else{
+        } else{
             try {
-                model.increaseDraftpoolDieValue(toolcardData.getIndexFromDraftpool(), false);
+                model.increaseDraftpoolDieValue(toolcardData.getIndexFromDraftPool(), false);
             } catch (EmptyCellException e) {
                 e.printStackTrace();
             }
         }
-        toolcardData.getToolcardActions().remove(0);
+        toolcardData.getToolCardActions().remove(0);
         executeAction();
     }
 
-
     private void executeDoPlaceDie(String parameter, String parameter2) {
         Die tempDieToPlace;
-
         switch (parameter) {
             case "WPC":
                 int indexWpc = toolcardData.getIndexFromWPC();
@@ -671,7 +691,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 }
                 break;
             case "DP":
-                int indexDP = toolcardData.getIndexFromDraftpool();
+                int indexDP = toolcardData.getIndexFromDraftPool();
                 try {
                     tempDieToPlace = model.getDraftPool().getDie(indexDP);
                     System.out.println("RIMOSSO DA DP DADO" + tempDieToPlace.getColor());
@@ -735,8 +755,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 }
                 break;
             case "DP":
-                int indexDP = toolcardData.getIndexFromDraftpool();
-                toolcardData.setIndexDieBeforeMoved(toolcardData.getIndexFromDraftpool());
+                int indexDP = toolcardData.getIndexFromDraftPool();
+                toolcardData.setIndexDieBeforeMoved(toolcardData.getIndexFromDraftPool());
                 model.removeDieFromDraftPool(indexDP);
                 System.out.println("RIMOSSO DA DP DADO" + tempDieToPlace.getColor());
                 break;
@@ -744,11 +764,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 LOGGER.log(Level.INFO,"Errore in doSwap, non arriva ne DB ne WPC");
                 return;
         }
-        toolcardData.setSouce(parameter);
+        toolcardData.setSource(parameter);
         toolcardData.setIndexMovedDie(toolcardData.getIndexToWPC());
         toolcardData.setHasDoneMove();
         model.setGamePlayers(orderedPlayers);
-        toolcardData.getToolcardActions().remove(0);
+        toolcardData.getToolCardActions().remove(0);
         executeAction();
 
     }
@@ -809,7 +829,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             executeAction();
             return;
         }
-
         usernameTimerMap.get(currentPlayer).cancel();
         startNewTurn();
     }
@@ -820,22 +839,19 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
-
-        if (toolcardData == null || !toolcardData.getToolcardActions().get(0).getType().equals(ASK_PLACE_DIE)){
+        if (toolcardData == null || !toolcardData.getToolCardActions().get(0).getType().equals(ASK_PLACE_DIE)){
             userViewMap.get(playerUsername).invalidActionMessage("You can't do this action now!");
             userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
-
         //TODO metodo che controlla se la risposta è quella che mi aspetto
         if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().getCell(command.getPosition()).hasDie()) {
             toolcardData.setIndexToWPC(command.getPosition());
-        }
-        else{
+        } else{
             handlePlayerAfterIncorrectToolUse(playerUsername, "The cell you've chosen isn't empty!", true);
             return;
         }
-        toolcardData.getToolcardActions().remove(0);
+        toolcardData.getToolCardActions().remove(0);
         executeAction();
     }
 
@@ -845,20 +861,17 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
-
-        if (toolcardData == null || !toolcardData.getToolcardActions().get(0).getType().equals(ASK_DIE_VALUE)){
+        if (toolcardData == null || !toolcardData.getToolCardActions().get(0).getType().equals(ASK_DIE_VALUE)){
             userViewMap.get(playerUsername).invalidActionMessage("You can't do this action now!");
             userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
-
         if (!(toolcardData.getDieValue()>6 || toolcardData.getDieValue()<1)){
             handlePlayerAfterIncorrectToolUse(currentPlayer, "Value is incorrect, try again:", true);
             return;
         }
-        model.changeDieValueOnDraftPool(toolcardData.getIndexFromDraftpool(), command.getValue());
-
-        toolcardData.getToolcardActions().remove(0);
+        model.changeDieValueOnDraftPool(toolcardData.getIndexFromDraftPool(), command.getValue());
+        toolcardData.getToolCardActions().remove(0);
         executeAction();
     }
 
@@ -868,16 +881,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
-
-        if (toolcardData == null || !toolcardData.getToolcardActions().get(0).getType().equals(ASK_ANOTHER_ACTION)){
+        if (toolcardData == null || !toolcardData.getToolCardActions().get(0).getType().equals(ASK_ANOTHER_ACTION)){
             userViewMap.get(playerUsername).invalidActionMessage("You can't do this action now!");
             userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
-
         toolcardData.setAnotherAction(command.isAnother());
-
-        toolcardData.getToolcardActions().remove(0);
+        toolcardData.getToolCardActions().remove(0);
         executeAction();
     }
 
@@ -887,14 +897,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
-
-        if (toolcardData == null || !toolcardData.getToolcardActions().get(0).getType().equals(ASK_PICK_DIE)){
+        if (toolcardData == null || !toolcardData.getToolCardActions().get(0).getType().equals(ASK_PICK_DIE)){
             userViewMap.get(playerUsername).invalidActionMessage("You can't do this action now!");
             userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
-
-        switch (toolcardData.getToolcardActions().get(0).getParameter()){ //DA' NULL POINTER
+        switch (toolcardData.getToolCardActions().get(0).getParameter()){ //DA' NULL POINTER
             case "WPC":
                 if (existsDieInCell("WPC", command.getIndex()))
                     toolcardData.setIndexFromWPC(command.getIndex());
@@ -905,7 +913,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 break;
             case "DP":
                 if (existsDieInCell("DP", command.getIndex()))
-                    toolcardData.setIndexFromDraftpool(command.getIndex());
+                    toolcardData.setIndexFromDraftPool(command.getIndex());
                 else {
                     handlePlayerAfterIncorrectToolUse(playerUsername, "The cell you chose is empty, try again", true);
                     return;
@@ -921,10 +929,16 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 break;
             default:
         }
-        toolcardData.getToolcardActions().remove(0);
+        toolcardData.getToolCardActions().remove(0);
         executeAction();
     }
 
+    /**
+     * Checks whether there is a die on the given cell or not
+     * @param source Window Pattern Card, Draft Pool or Round Track
+     * @param index cell position
+     * @return true if there is a die on the cell, false otherwise
+     */
     private boolean existsDieInCell(String source, Integer index) {
         switch(source){
             case "WPC":
@@ -955,15 +969,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
         }
-
-        if (toolcardData == null || !toolcardData.getToolcardActions().get(0).getType().equals(ASK_INCREASE_DECREASE)){
+        if (toolcardData == null || !toolcardData.getToolCardActions().get(0).getType().equals(ASK_INCREASE_DECREASE)){
             userViewMap.get(playerUsername).invalidActionMessage("You can't do this action now!");
             userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
-
         try {
-            int currentValue = model.getDraftPool().getCell(toolcardData.getIndexFromDraftpool()).getAssociatedDie().getValue();
+            int currentValue = model.getDraftPool().getCell(toolcardData.getIndexFromDraftPool()).getAssociatedDie().getValue();
             if ( (currentValue==6 && command.isIncrease())
                     || (currentValue==1 && !command.isIncrease())){
                 resetModel();
@@ -976,10 +988,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             System.out.println("Empty cell! Can't happen here");
         }
         toolcardData.setIncreaseValue(command.isIncrease());
-        toolcardData.getToolcardActions().remove(0);
+        toolcardData.getToolCardActions().remove(0);
         executeAction();
     }
-
 
     @Override
     public void applyCommand(String playerUsername, UndoActionCommand command) {
@@ -989,7 +1000,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         if ((toolcardData != null)){
             if ((model.getExtractedToolCard().get(toolcardData.getLastUsedToolCardNum()).isReversible())
-                    || (toolcardData.getToolcardActions().get(0).getType().equals(ASK_PICK_DIE))) {
+                    || (toolcardData.getToolCardActions().get(0).getType().equals(ASK_PICK_DIE))) {
                 userViewMap.get(playerUsername).messageBox("Correctly got back");
                 resetModel();
                 restoreTCGlobalVariables();
@@ -1003,6 +1014,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
     }
 
+    /**
+     * Updates tokens after a Tool Card use and allows the turn to go on
+     */
     private void handlePlayerAfterCorrectToolUse(String playerUsername, int tokenToDecrease) {
         usernamePlayerMap.get(playerUsername).decreaseTokens(tokenToDecrease);
         model.increaseToolCardTokens(toolcardData.getLastUsedToolCardNum(), tokenToDecrease);
@@ -1013,9 +1027,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
     }
 
+    /**
+     * Updates the players variables
+     */
     private void editCurrentPlayerVariables() {
         for (Action action : model.getExtractedToolCard().get(toolcardData.getLastUsedToolCardNum()).getActions()) {
-            if (action.getType().equals(DO_PLACE_DIE) && action.hasParameter() && action.getParameter().equals("DP") && toolcardData.getToolcardActions().isEmpty()) {
+            if (action.getType().equals(DO_PLACE_DIE) && action.hasParameter() && action.getParameter().equals("DP") && toolcardData.getToolCardActions().isEmpty()) {
                 hasPerformedMove = true;
                 System.out.println("Ha un piazzamento, setto performedMove = true");
             }
@@ -1024,6 +1041,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     //TODO gestisci il caso in cui l'utente sbaglia e nel frattempo arriva un timeout!
+
+    /**
+     * Updates variables after an incorrect Tool Card use and allows the turn to go on
+     */
     private void handlePlayerAfterIncorrectToolUse(String playerUsername, String messageToSend, boolean sendContinue) {
         if (!sendContinue) {
             //Case in which is a timeOut
@@ -1049,12 +1070,14 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
     }
 
+    /**
+     * Reset the previous game state after an incorrect action
+     */
     private void resetModel() {
         if (toolcardData==null){
             LOGGER.log(Level.INFO,"ERROR: The tool is finished, no data in toolcardData");
             return;
         }
-
         //Restoring past moves
         if (toolcardData.hasDoneMove()) {
             Die temp = null; //indice WPC ORA
@@ -1063,7 +1086,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             } catch (EmptyCellException e) {
                 System.out.println("Errore! Dado non presente");
             }
-            switch (toolcardData.getSouce()) {
+            switch (toolcardData.getSource()) {
                 case "WPC":
                     //rimuovo un dado che è stato preso dalla wpc e messo in un'altra posizione
                     int indexWpc = toolcardData.getIndexDieBeforeMoved();
@@ -1080,7 +1103,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             }
             model.setGamePlayers(orderedPlayers);
         }
-
         //this.model = toolcardData.removeOldModel();
         //for (String username : userViewMap.keySet()){
         //    model.register(userViewMap.get(username));
@@ -1088,7 +1110,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         //model.notifyRefreshBoard(null, orderedPlayers);
     }
 
-
+    /**
+     * Restores toolcardData
+     */
     private void restoreTCGlobalVariables() {
         toolcardData=null;
     }
@@ -1097,12 +1121,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     public void applyCommand(String playerUsername, ClientToServerCommand command) {
         LOGGER.log(Level.INFO, "You shouldn't be here");
     }
-
-
-    /**
-     * Getters
-     */
-
 
     public List<List<String>> getOrderedRoundPlayers() {
         return orderedRoundPlayers;
@@ -1125,7 +1143,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         return currentPlayer;
     }
 
-
     public Model getModel() {
         return model;
     }
@@ -1134,12 +1151,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         return userViewMap;
     }
 
-
-    public boolean isActive() {
+    boolean isActive() {
         return active;
     }
 
-    public void setInactive(){
+    void setInactive(){
         active = false;
         for (String username : usernameTimerMap.keySet()){
             usernameTimerMap.get(username).cancel();

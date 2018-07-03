@@ -15,7 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The class represents the virtual view. Is Observable of Controller, Observer of Model
+ * The class represents the virtual view. It is Observable of Controller, Observer of Model
+ * @author Daniele Montesi
  */
 public class VirtualView extends View {
 
@@ -43,19 +44,13 @@ public class VirtualView extends View {
             LOGGER.log(Level.INFO, "Creata virtual view di username: " + username);
     }
 
-    /**
-     * Nel VirtualView devono stare:
-     * - il metodo notify(un comando) che da' al Controller i comandi che prende dal view
-     * poi il Controller deve associare col binding un effetto (grazie al Visitor)
-     * -> Il clientToServerCOmmand prende parametro Controller
-     *
-     * VirtualView ha tutti i metodi di View (di tipo Show(...))
-     */
-
-    /**
-     * VirtualView can also know when a user is disconnected.
-     * Every time virtualView tries to send a command to a disconnectedClient, it directy calls passTurn()
-     */
+    /* Nel VirtualView devono stare:
+       - il metodo notify(un comando) che da' al Controller i comandi che prende dal view
+       poi il Controller deve associare col binding un effetto (grazie al Visitor)
+       -> Il clientToServerCOmmand prende parametro Controller
+       VirtualView ha tutti i metodi di View (di tipo Show(...))
+       VirtualView can also know when a user is disconnected.
+       Every time virtualView tries to send a command to a disconnectedClient, it directy calls passTurn() */
 
     public void notify(ClientToServerCommand command) { // chiamata dalla rete
         for (Observer o : observers)
@@ -86,9 +81,6 @@ public class VirtualView extends View {
         }
     }
 
-    /**
-     * Handle the network calling the connection associated to the username
-     */
     @Override
     public void startTurnMenu() {
         if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
@@ -296,7 +288,6 @@ public class VirtualView extends View {
             Server.getConnectedClients().get(username).notifyClient(new MessageFromServerCommand(message));
     }
 
-
     @Override
     public void askAnotherAction() {
         if (Server.getConnectedClients().get(username)==null){ //disconnected
@@ -306,6 +297,7 @@ public class VirtualView extends View {
         else
             Server.getConnectedClients().get(username).notifyClient(new AskAnotherAction());
     }
+
     @Override
     public void askIncreaseDecrease() {
         if (Server.getConnectedClients().get(username)==null){ //disconnected
@@ -315,6 +307,7 @@ public class VirtualView extends View {
         else
             Server.getConnectedClients().get(username).notifyClient(new AskIncreaseDecrease());
     }
+
     @Override
     public void askDieValue() {
         if (Server.getConnectedClients().get(username)==null){ //disconnected
@@ -324,6 +317,7 @@ public class VirtualView extends View {
         else
             Server.getConnectedClients().get(username).notifyClient(new AskDieValue());
     }
+
     @Override
     public void askPlaceDie() {
         if (Server.getConnectedClients().get(username)==null){ //disconnected
@@ -333,6 +327,7 @@ public class VirtualView extends View {
         else
             Server.getConnectedClients().get(username).notifyClient(new AskPlaceDie());
     }
+
     @Override
     public void askPickDie(String from) {
         if (Server.getConnectedClients().get(username)==null){ //disconnected
@@ -342,5 +337,4 @@ public class VirtualView extends View {
         else
             Server.getConnectedClients().get(username).notifyClient(new AskPickDie(from));
     }
-
 }

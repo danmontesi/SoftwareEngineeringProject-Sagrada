@@ -10,7 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RMIServerImplementation extends UnicastRemoteObject implements RMIServerInterface {
 
-    public RMIServerImplementation() throws RemoteException {
+    RMIServerImplementation() throws RemoteException {
         //port:0 means port is chosen automatically
         super(0);
     }

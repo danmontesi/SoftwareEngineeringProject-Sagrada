@@ -6,14 +6,17 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+/**
+ * Manages RMI connection (server side)
+ * @author Alessio Molinari
+ */
 public class RMIServer {
     private static int port = 1099;
 
-
-
+    /**
+     * Starts listening
+     */
     public void RMIStartListening(){
-
-
         try {
             Registry registry = LocateRegistry.createRegistry(port);
             RMIServerImplementation serverImplementation = new RMIServerImplementation();

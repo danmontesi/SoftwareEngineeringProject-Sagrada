@@ -35,7 +35,7 @@ public class ClientController extends Observable implements Observer, Controller
 
 
     /**
-     * Contructor:
+     * Constructor
      */
     public ClientController(int viewChoice, ServerConnection connection){
         this.connection = connection;
