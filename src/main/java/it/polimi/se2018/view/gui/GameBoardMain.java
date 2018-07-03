@@ -14,7 +14,7 @@ public class GameBoardMain extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/client/gameboard.fxml"));
         primaryStage.setTitle("Sagrada - Gameboard");
         primaryStage.setScene(new Scene(root, 1254, 630));
-        Font.loadFont(ClientStarterMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
+        Font.loadFont(LoginMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
         primaryStage.show();
     }
 

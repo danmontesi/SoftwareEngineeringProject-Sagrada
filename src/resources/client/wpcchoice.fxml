@@ -13,16 +13,16 @@
       <ImageView fx:id="prioc" fitHeight="320.0" fitWidth="235.0" layoutX="59.0" layoutY="166.0" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="wpc1n" layoutX="352.0" layoutY="73.0" prefHeight="27.0" prefWidth="205.0" style="-fx-font-size: 16px" />
       <Label fx:id="wpc1d" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="557.0" layoutY="73.0" prefHeight="27.0" prefWidth="19.0" style="-fx-font-size: 16px" />
-      <ToggleButton fx:id="wpc1" layoutX="350.0" layoutY="101.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc1Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
+      <ToggleButton fx:id="wpc1" layoutX="350.0" layoutY="101.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#selectWPC" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
       <Label fx:id="wpc2n" layoutX="613.0" layoutY="73.0" prefHeight="27.0" prefWidth="205.0" style="-fx-font-size: 16px" />
       <Label fx:id="wpc2d" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="818.0" layoutY="73.0" prefHeight="27.0" prefWidth="19.0" style="-fx-font-size: 16px" />
-      <ToggleButton fx:id="wpc2" layoutX="610.0" layoutY="101.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc2Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
+      <ToggleButton fx:id="wpc2" layoutX="610.0" layoutY="101.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#selectWPC" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
       <Label fx:id="wpc3n" layoutX="353.0" layoutY="304.0" prefHeight="27.0" prefWidth="205.0" style="-fx-font-size: 16px" />
       <Label fx:id="wpc3d" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="558.0" layoutY="304.0" prefHeight="27.0" prefWidth="19.0" style="-fx-font-size: 16px" />
-      <ToggleButton fx:id="wpc3" layoutX="350.0" layoutY="332.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc3Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
+      <ToggleButton fx:id="wpc3" layoutX="350.0" layoutY="332.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#selectWPC" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
       <Label fx:id="wpc4n" layoutX="613.0" layoutY="304.0" prefHeight="27.0" prefWidth="205.0" style="-fx-font-size: 16px" />
       <Label fx:id="wpc4d" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="818.0" layoutY="304.0" prefHeight="27.0" prefWidth="19.0" style="-fx-font-size: 16px" />
-      <ToggleButton fx:id="wpc4" layoutX="610.0" layoutY="332.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#wpc4Action" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
+      <ToggleButton fx:id="wpc4" layoutX="610.0" layoutY="332.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#selectWPC" prefHeight="184.0" prefWidth="230.0" styleClass="wpc" />
       <Button fx:id="start" layoutX="544.0" layoutY="547.0" mnemonicParsing="false" onAction="#start" prefHeight="40" prefWidth="100.0" style="-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px" text="Start" />
       <Line endX="530.0" layoutX="54.0" layoutY="304.0" rotate="90.0" />
    </children>

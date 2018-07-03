@@ -8,8 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -19,12 +17,14 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class RankingPaneController extends Observable implements Observer {
+/**
+ * Manages the Ranking Pane window
+ * @author Nives Migotto
+ */
+public class RankingController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(GameBoardController.class.getName());
     private RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
-
-    private List<Button> buttons;
 
     @FXML
     private Label outcome;
@@ -39,15 +39,10 @@ public class RankingPaneController extends Observable implements Observer {
     @FXML
     private Button exit;
 
-    private DropShadow shadow = new DropShadow();
-
-    public RankingPaneController() {
-        buttons = new ArrayList<>();
-    }
-
     public void initialize() {
         rankingPaneNotifier.addObserver(this);
-        initButtons();
+        playAgain.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
+        exit.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
         rankingPaneNotifier.setOpen(true);
     }
 
@@ -55,16 +50,10 @@ public class RankingPaneController extends Observable implements Observer {
         setContent((List<String>)arg);
     }
 
-    private void initButtons() {
-        buttons.add(playAgain);
-        buttons.add(exit);
-        for (Button b : buttons) {
-            b.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
-            b.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> b.setEffect(shadow));
-            b.addEventHandler(MouseEvent.MOUSE_EXITED, e -> b.setEffect(null));
-        }
-    }
-
+    /**
+     * Sets outcome message (victory/defeat)
+     * @param scores
+     */
     private void setContent(List<String> scores) {
         Platform.runLater(() -> {
         if (scores.get(0).equals("1")) {
@@ -82,6 +71,10 @@ public class RankingPaneController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Sets ranking
+     * @param scores list of players and relative scores
+     */
     private void setRanking(List<String> scores) {
         Platform.runLater(() -> {
             List<String> tmp;
@@ -102,16 +95,22 @@ public class RankingPaneController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Closes current stage
+     */
     private void closeStage() {
         rankingPaneNotifier.setOpen(false);
         Stage stage = (Stage)outcome.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Opens Login window
+     */
     private void showClientStarter() {
         Platform.runLater(() ->  {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/clientstarter.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/login.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage wpcChoiceStage = new Stage();
                 wpcChoiceStage.setScene(new Scene(root));

@@ -35,6 +35,10 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Manages the Game Board window
+ * @author Nives Migotto
+ */
 public class GameBoardController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(WPCChoiceController.class.getName());
@@ -183,6 +187,9 @@ public class GameBoardController extends Observable implements Observer {
         gameBoardNotifier.setOpen(true);
     }
 
+    /**
+     * Adds cards to lists
+     */
     private void initCardLists() {
         pubOCards.add(pubOC1);
         pubOCards.add(pubOC2);
@@ -205,6 +212,9 @@ public class GameBoardController extends Observable implements Observer {
         parents.add(personalWPCDice);
     }
 
+    /**
+     * Adds labels to lists
+     */
     private void initLabels() {
         userNames.add(user1);
         userNames.add(user2);
@@ -219,6 +229,9 @@ public class GameBoardController extends Observable implements Observer {
         tcTokens.add(tc3tokens);
     }
 
+    /**
+     * Adds circles to lists and hides them
+     */
     private void initCircles() {
         tcCircles.add(tCircle1);
         tcCircles.add(tCircle2);
@@ -237,6 +250,9 @@ public class GameBoardController extends Observable implements Observer {
         }
     }
 
+    /**
+     * Initializes service buttons, creates and initializes dice buttons and image views
+     */
     private void initButtons() {
         buttons.add(pass);
         buttons.add(undo);
@@ -283,6 +299,9 @@ public class GameBoardController extends Observable implements Observer {
         }
     }
 
+    /**
+     * Initializes choice box valueChoice
+     */
     private void initChoiceBox() {
         valueChoice.setVisible(false);
         valueChoice.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
@@ -291,10 +310,16 @@ public class GameBoardController extends Observable implements Observer {
         Tooltip.install(valueChoice, tooltip);
     }
 
+    /**
+     * Shows Round Track image
+     */
     private void initRoundTrack() {
         roundTrack.setImage(new Image("/client/images/RoundTrack.png"));
     }
 
+    /**
+     * Initializes cards showing the backside
+     */
     private void initCards() {
         Image prioc = new Image("/client/OC/ocback.jpg");
         Image tc = new Image("/client/TC/tcback.jpg");
@@ -316,6 +341,10 @@ public class GameBoardController extends Observable implements Observer {
         priOC.setImage(prioc);
     }
 
+    /**
+     * Sets the shadow effect on hover
+     * @param p pane whose children will be affected
+     */
     private void setShadow(Pane p) {
         for (int i = 0; i < p.getChildren().size(); i++) {
             int h = i;
@@ -343,8 +372,8 @@ public class GameBoardController extends Observable implements Observer {
                     modelRepresentation = refreshBoard.getModelRepresentation();
                     setPubOCards();
                     setTCards();
-                    setWPCardsDice();
-                    setPersonalWPCDice();
+                    setWPCards();
+                    setPersonalWPC();
                     setPersonalPriOC();
                     setRoundTrack(modelRepresentation.getRoundTrack());
                     moveDice();
@@ -397,7 +426,7 @@ public class GameBoardController extends Observable implements Observer {
 
                 @Override
                 public void visitGameBoardAction(PickDie pickDie) {
-                    pickDie(pickDie.getFrom());
+                    selectParent(pickDie.getFrom());
                 }
 
                 @Override
@@ -435,6 +464,9 @@ public class GameBoardController extends Observable implements Observer {
         }
     }
 
+    /**
+     * Shows Public Objective Cards
+     */
     private void setPubOCards() {
         List<String> publicOC = modelRepresentation.getPublicObjectiveCards();
         List<String> publicOCDesc = modelRepresentation.getPublicObjectiveDescription();
@@ -453,6 +485,9 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Shows Tool Cards
+     */
     private void setTCards() {
         List<String> toolCards = modelRepresentation.getToolCards();
         List<String> toolCardsDesc = modelRepresentation.getToolCardDescription();
@@ -480,7 +515,10 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setWPCardsDice() {
+    /**
+     * Shows other players' Window Pattern Cards
+     */
+    private void setWPCards() {
         Platform.runLater(() -> {
             for (int i = 0; i < modelRepresentation.getOtherPlayersWpcs().size(); i++) {
                 String img = modelRepresentation.getOtherPlayersWpcs().get(i).get(0).replace("_", " ");
@@ -499,7 +537,10 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void setPersonalWPCDice() {
+    /**
+     * Shows player's Window Pattern Card
+     */
+    private void setPersonalWPC() {
         Platform.runLater(() -> {
             String img = modelRepresentation.getPersonalWpc().get(0).replace("_", " ");
             String path = "/client/WPC/" + img + ".jpg";
@@ -511,6 +552,9 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Shows Private Objective Card
+     */
     private void setPersonalPriOC() {
         Platform.runLater(() -> {
             String img = modelRepresentation.getPrivateObjectiveCard();
@@ -523,6 +567,10 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Shows the dice on the DraftPool
+     * @param dice to be shown dice
+     */
     private void setDraftPool(List<String> dice) {
         Platform.runLater(() -> {
             roundDice = dice.size();
@@ -546,6 +594,10 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Shows the dice ont he RoundTrack
+     * @param dice to be shown dice
+     */
     private void setRoundTrack(List<String> dice) {
         Platform.runLater(() -> {
             for (int i = 0; i < 10; i++) {
@@ -565,6 +617,12 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Updates Tool Cards and players' tokens
+     * @param tcTok list of Tool Cards tokens numbers
+     * @param playersTok player's tokens number
+     * @param personalTok list of other players' tokens numbers
+     */
     private void setTokens(List<Integer> tcTok, List<Integer> playersTok, Integer personalTok) {
         Platform.runLater(() -> {
             for (int i = 0; i < tcTok.size(); i++) {
@@ -577,6 +635,10 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Shows the dice on the other players' Window Pattern Cards
+     * @param wpcards to be shown dice
+     */
     private void setWPCardsDice(List<List<String>> wpcards) {
         Platform.runLater(() -> {
             for (int i = 0; i < wpcards.size(); i++) {
@@ -598,6 +660,10 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Shows the dice in the player's Window Pattern Card
+     * @param wpc to be shown dice
+     */
     private void setPersonalWPCDice(List<String> wpc) {
         Platform.runLater(() -> {
             for (int i = 0; i < wpc.size() - 1; i++) {
@@ -617,6 +683,9 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Allows to move a die from hte Draft Pool to the Window Pattern Card
+     */
     private void moveDice() {
         Platform.runLater(() -> {
             for (int i = 0; i < personalWPCDice.getChildren().size(); i++) {
@@ -635,7 +704,11 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
-    private void pickDie(String from) {
+    /**
+     * Selects where the die can be selected from
+     * @param from indicates where the dice can be selected from
+     */
+    private void selectParent(String from) {
         Pane parent;
         switch (from) {
             case "WPC":
@@ -651,6 +724,11 @@ public class GameBoardController extends Observable implements Observer {
         selectDie(parent, "pick");
     }
 
+    /**
+     * Allows to select a die
+     * @param parent indicates where the dice can be selected from
+     * @param action indicates why the dice is selected (pick it or place it)
+     */
     private void selectDie(Pane parent, String action) {
         Platform.runLater(() -> {
             if (action.equals("pick")) {
@@ -673,6 +751,9 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Allows to choose whether to increase or decrease the die value
+     */
     private void increaseValue() {
         Platform.runLater(() -> {
             msgBox.appendText("Do you want to increase or decrease the die value?\n");
@@ -693,6 +774,9 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Allows to choose a die value
+     */
     private void chooseValue() {
         Platform.runLater(() -> {
             msgBox.appendText("Choose the value.\n");
@@ -705,6 +789,9 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Allows to choose whether to do another action or not
+     */
     private void chooseAnotherAction() {
         Platform.runLater(() -> {
             msgBox.appendText("Do you want to move another die?\n");
@@ -723,32 +810,50 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Notifies use of first Tool Card
+     */
     @FXML
     public void tc1Action() {
         guiViewT.notify(new MoveChoiceToolCard(0));
     }
 
+    /**
+     * Notifies use of second Tool Card
+     */
     @FXML
     public void tc2Action() {
         guiViewT.notify(new MoveChoiceToolCard(1));
     }
 
+    /**
+     * Notifies use of second Tool Card
+     */
     @FXML
     public void tc3Action() {
         guiViewT.notify(new MoveChoiceToolCard(2));
     }
 
+    /**
+     * Allows to pass turn
+     */
     @FXML
     public void passTurn() {
         guiViewT.notify(new MoveChoicePassTurn());
         resetPostMove();
     }
 
+    /**
+     * Allows to undo the last action
+     */
     @FXML
     public void undo() {
         guiViewT.notify(new UndoActionCommand());
     }
 
+    /**
+     * Closes current stage
+     */
     private void closeStage() {
         GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.setOpen(false);
@@ -756,10 +861,13 @@ public class GameBoardController extends Observable implements Observer {
         stage.close();
     }
 
+    /**
+     * Opens Ranking Window
+     */
     private void showRanking() {
         Platform.runLater(() -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/rankingpane.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/ranking.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage gameBoardStage = new Stage();
                 gameBoardStage.setScene(new Scene(root));
@@ -771,6 +879,10 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Disables or enables all buttons
+     * @param b indicates whether the buttons are to be enabled or disabled
+     */
     private void disableAllButtons(boolean b) {
         for (Button tc : tCards) {
             tc.setDisable(b);
@@ -788,6 +900,9 @@ public class GameBoardController extends Observable implements Observer {
         undo.setDisable(b);
     }
 
+    /**
+     * Disables all buttons effects and actions
+     */
     private void resetPostMove() {
         Platform.runLater(() -> {
             for (Pane parent : parents) {
@@ -803,6 +918,9 @@ public class GameBoardController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Indicates if an input error occurred
+     */
     private void inputError() {
         redShadow.setColor(new Color(0.7, 0, 0, 1));
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.6), evt -> msgBox.setEffect(null)),

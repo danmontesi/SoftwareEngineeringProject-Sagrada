@@ -30,6 +30,10 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Manages the Window Pattern Card window
+ * @author Nives Migotto
+ */
 public class WPCChoiceController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(WPCChoiceController.class.getName());
@@ -92,7 +96,7 @@ public class WPCChoiceController extends Observable implements Observer {
 
     public void initialize() {
         WPCChoiceNotifier.getInstance().addObserver(this);
-        initWPCards();
+        initCards();
         wpcGroup.getToggles().addAll(wpc1, wpc2, wpc3, wpc4);
         start.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
     }
@@ -110,14 +114,17 @@ public class WPCChoiceController extends Observable implements Observer {
 
                 @Override
                 public void visitWPCChoiceAction(WPCChoice wpcChoice) {
-                    setCards(wpcChoice.getWpcNames(), wpcChoice.getWpcDifficulties(), wpcChoice.getPrivateOC());
+                    setWPCards(wpcChoice.getWpcNames(), wpcChoice.getWpcDifficulties(), wpcChoice.getPrivateOC());
                 }
             };
             guiReply.acceptWPCChoiceVisitor(wpcChoiceVisitor);
         }
     }
 
-    private void initWPCards() {
+    /**
+     * Adds all cards attributes to lists
+     */
+    private void initCards() {
         wpCards.add(wpc1);
         wpCards.add(wpc2);
         wpCards.add(wpc3);
@@ -134,7 +141,13 @@ public class WPCChoiceController extends Observable implements Observer {
         wpcDifficulties.add(wpc4d);
     }
 
-    private void setCards(List<String> names, List<Integer> difficulties, String priOC) {
+    /**
+     * Assigns to each card the relative information
+     * @param names list of Window Pattern Cards names
+     * @param difficulties  list of Window Pattern Cards difficulties
+     * @param priOC Private Objective Card name
+     */
+    private void setWPCards(List<String> names, List<Integer> difficulties, String priOC) {
         Platform.runLater(() -> {
             Image image1 = new Image("/client/OC/" + priOC + ".jpg");
             priocname.setText(priOC);
@@ -159,66 +172,38 @@ public class WPCChoiceController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Saves Window Pattern Card name
+     */
     @FXML
-    public void wpc1Action(){
-        if (wpc1.isSelected()) {
-            wpc2.setDisable(true);
-            wpc3.setDisable(true);
-            wpc4.setDisable(true);
+    public void selectWPC(){
+        for (int i=0; i<wpCards.size(); i++) {
+            if (wpCards.get(i).isSelected()) {
+                disableOtherWPCs(i, true);
+                selectedWPC = wpcNames.get(i).getText();
+                System.out.println(selectedWPC);
+            } else {
+                disableOtherWPCs(i, false);
+            }
         }
-        if (!wpc1.isSelected()) {
-            wpc2.setDisable(false);
-            wpc3.setDisable(false);
-            wpc4.setDisable(false);
-        }
-        selectedWPC = wpc1n.getText();
     }
 
-    @FXML
-    public void wpc2Action(){
-        if (wpc2.isSelected()) {
-            wpc1.setDisable(true);
-            wpc3.setDisable(true);
-            wpc4.setDisable(true);
+    /**
+     * Disables or enables all Window Pattern Cards exept the given one
+     * @param i selected Widow Pattern Card index
+     * @param b indicates whether the Window Pattern Cards have to be enabled or disabled
+     */
+    private void disableOtherWPCs(int i, boolean b) {
+        for (int j=0; j<wpCards.size(); j++) {
+            if (j!=i) {
+                wpCards.get(j).setDisable(b);
+            }
         }
-        if (!wpc2.isSelected()) {
-            wpc1.setDisable(false);
-            wpc3.setDisable(false);
-            wpc4.setDisable(false);
-        }
-        selectedWPC = wpc2n.getText();
     }
 
-    @FXML
-    public void wpc3Action(){
-        if (wpc3.isSelected()) {
-            wpc2.setDisable(true);
-            wpc1.setDisable(true);
-            wpc4.setDisable(true);
-        }
-        if (!wpc3.isSelected()) {
-            wpc2.setDisable(false);
-            wpc1.setDisable(false);
-            wpc4.setDisable(false);
-        }
-        selectedWPC = wpc3n.getText();
-    }
-
-    @FXML
-    public void wpc4Action(){
-        if (wpc4.isSelected()) {
-            wpc2.setDisable(true);
-            wpc3.setDisable(true);
-            wpc1.setDisable(true);
-        }
-        if (!wpc4.isSelected()) {
-            wpc2.setDisable(false);
-            wpc3.setDisable(false);
-            wpc1.setDisable(false);
-        }
-        selectedWPC = wpc4n.getText();
-    }
-
+    /**
+     * Starts the game
+     */
     @FXML
     public void start() {
         if (!wpc1.isSelected() && !wpc2.isSelected() && !wpc3.isSelected() && !wpc4.isSelected()) {
@@ -232,11 +217,17 @@ public class WPCChoiceController extends Observable implements Observer {
         }
     }
 
+    /**
+     * Closes current stage
+     */
     private void closeStage() {
         Stage stage = (Stage)start.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Opens Game Board window
+     */
     private void showGameBoard(){
         Platform.runLater(() -> {
             try {
@@ -252,6 +243,9 @@ public class WPCChoiceController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Indicates if an input error occurred (no Window Pattern Card selected)
+     */
     private void inputError() {
         redShadow.setColor(new Color(0.7, 0,0,1));
         choose.setEffect(redShadow);

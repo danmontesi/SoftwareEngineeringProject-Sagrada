@@ -17,6 +17,10 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Manages the Lobby window
+ * @author Nives Migotto
+ */
 public class LobbyController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(LobbyController.class.getName());
@@ -58,12 +62,19 @@ public class LobbyController extends Observable implements Observer {
         }
     }
 
+    /**
+     * Adds all labels to a list
+     */
     private void initLabels() {
         players.add(player1);
         players.add(player2);
         players.add(player3);
     }
 
+    /**
+     * Shows if a player connected
+     * @param player player that connected
+     */
     private void updatePlayers(String player) {
         Platform.runLater(() -> {
             if (!playerNames.contains(player)) {
@@ -73,7 +84,7 @@ public class LobbyController extends Observable implements Observer {
             }
             if (!playerNames.isEmpty()) {
                 for (int i = 0; i < playerNames.size(); i++) {
-                    players.get(i).setText(playerNames.get(i) + " just connected");
+                    players.get(i).setText(playerNames.get(i) + " joined the game");
                 }
                 for (int j = playerNames.size(); j < 3; j++) {
                     players.get(j).setText("");
@@ -82,6 +93,9 @@ public class LobbyController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Opens Window Pattern Card Choice window
+     */
     private void showWPCChoice(){
         Platform.runLater(() ->  {
             try {
@@ -97,6 +111,9 @@ public class LobbyController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Opens Game Board window
+     */
     private void showGameBoard(){
         Platform.runLater(() ->  {
             try {
@@ -112,6 +129,9 @@ public class LobbyController extends Observable implements Observer {
         });
     }
 
+    /**
+     * Closes current stage
+     */
     private void closeStage() {
         lobbyNotifier.setOpen(false);
         Stage stage = (Stage)text.getScene().getWindow();

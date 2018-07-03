@@ -19,9 +19,13 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ClientStarterController implements Observer {
+/**
+ * Manages the Login window
+ * @author Nives Migotto
+ */
+public class LoginController implements Observer {
 
-    private static final Logger LOGGER = Logger.getLogger(ClientStarterController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
 
     @FXML
     private TextField usernameField;
@@ -40,10 +44,6 @@ public class ClientStarterController implements Observer {
     private DropShadow redShadow = new DropShadow();
 
     public void initialize() {
-        initToggleGroup();
-    }
-
-    private void initToggleGroup() {
         connectionType.getToggles().addAll(rmi, socket);
         socket.setSelected(true);
     }
@@ -57,11 +57,18 @@ public class ClientStarterController implements Observer {
         return usernameField.getText();
     }
 
+    /**
+     * Gets the connection type (socket or RMI)
+     * @return
+     */
     private String getConnection() {
         ToggleButton selectedButton = (ToggleButton)connectionType.getSelectedToggle();
         return selectedButton.getText();
     }
 
+    /**
+     * Starts a connection
+     */
     @FXML
     public void startConnection() {
         if (getUsername().equals("")) {
@@ -76,13 +83,23 @@ public class ClientStarterController implements Observer {
                 server = new SocketClient(2, ipAddressField.getText());
                 server.startConnection(getUsername());
             }
-            connect.setDisable(true);
-            rmi.setDisable(true);
-            socket.setDisable(true);
+            disableButtons();
             showLobby();
         }
     }
 
+    /**
+     * Disables all buttons
+     */
+    private void disableButtons() {
+        connect.setDisable(true);
+        rmi.setDisable(true);
+        socket.setDisable(true);
+    }
+
+    /**
+     * Opens Lobby window
+     */
     private void showLobby() {
         Platform.runLater(() ->  {
             try {
@@ -98,11 +115,17 @@ public class ClientStarterController implements Observer {
         });
     }
 
+    /**
+     * Closes current stage
+     */
     private void closeScene() {
         Stage stage = (Stage)connect.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Indicates if an input error occurred (no Username)
+     */
     private void inputError() {
         redShadow.setColor(new Color(0.7, 0,0,1));
         usernameField.setEffect(redShadow);
