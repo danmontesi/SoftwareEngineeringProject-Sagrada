@@ -20,6 +20,11 @@ public class Die {
         this.value = ThreadLocalRandom.current().nextInt(1, 7);
     }
 
+    /**
+     * Constructor: generates a die with given color and value
+     * @param color die color
+     * @param value die value
+     */
     public Die(COLOR color, int value) {
         this.color = color;
         this.value = value;
@@ -29,6 +34,10 @@ public class Die {
         this.color = color;
     }
 
+    /**
+     * Constructor: generates a die with a random color and a given value
+     * @param value die value
+     */
     public Die(int value) {
         this.value = value;
     }

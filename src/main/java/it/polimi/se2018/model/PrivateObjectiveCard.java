@@ -12,12 +12,23 @@ public class PrivateObjectiveCard {
     private String description;
     private COLOR color;
 
+    /**
+     * Constructor: generates a Private Objective Card with given name, description and color
+     * @param name card name
+     * @param description card description
+     * @param color card color
+     */
     public PrivateObjectiveCard(String name, String description, COLOR color) {
         this.name = name;
         this.description = description;
         this.color = color;
     }
 
+    /**
+     * Calculates the score relative to the private objective
+     * @param w considered Window Pattern Card
+     * @return calculated score
+     */
     public int calculateScore(WindowPatternCard w){
         int score = 0;
         for (Cell c : w.getSchema()){

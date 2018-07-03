@@ -25,7 +25,7 @@ public class RoundTrack {
     }
 
     /**
-     * Removes a die from the roundTrack
+     * Removes a die from the Round Track
      * @param diePosition position from which the die is taken
      * @return removed die
      * @throws EmptyCellException if there is no die in diePosition
@@ -35,7 +35,7 @@ public class RoundTrack {
     }
 
     /**
-     * Switches a die with a given one in the RoundTrack
+     * Switches a die with a given one in the Round Track
      * @param diePosition position from which the die is taken
      * @param toBeSwitched new die in roundTrack
      * @return old die from roundTrack
@@ -46,7 +46,7 @@ public class RoundTrack {
     }
 
     /**
-     * Places a die on the roundTrack (in last position)
+     * Places a die on the Round Track (in last position)
      * @param toBePlaced to be placed on the roundTrack die
      */
     public void placeDie(Die toBePlaced) {
@@ -59,7 +59,7 @@ public class RoundTrack {
     }
 
     /**
-     * Returns the number of dice on the roundTrack
+     * Returns the number of dice on the Round Track
      * @return number of dice in round track
      */
     public int diceInTrack(){
@@ -72,12 +72,6 @@ public class RoundTrack {
         return n;
     }
 
-    /**
-     * Returns associated die
-     * @param cellNumber cell number
-     * @return associated die
-     * @throws EmptyCellException if the cell is empty
-     */
     public Die getDie(int cellNumber) throws EmptyCellException {
         return roundCells.get(cellNumber).getAssociatedDie();
     }
@@ -91,8 +85,8 @@ public class RoundTrack {
     }
 
     /**
-     * Representation of the patch of the whole roundtrack. Useful for gui and cli
-     * @return List of path last name
+     * Returns a textual representation of Round Track dice
+     * @return list of dice textual representations
      */
     public List<String> roundtrackPathRepresentation() {
         List<String> roundtrackString = new ArrayList<>();

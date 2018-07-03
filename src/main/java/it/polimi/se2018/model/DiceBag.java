@@ -36,7 +36,7 @@ public class DiceBag {
     }
 
     /**
-     * Return the exact number of dice needed to start a turn, given the number of players
+     * Returns the exact number of dice needed to start a turn, given the number of players
      * @return dice needed to start a turn
      */
     public List<Die> extractDice(int numberOfPlayers){
@@ -73,7 +73,7 @@ public class DiceBag {
     }
 
     /**
-     * Returns how many dice remain in the bag
+     * Returns how many dice are in the bag
      * @return DiceBag size
      */
     public int size(){

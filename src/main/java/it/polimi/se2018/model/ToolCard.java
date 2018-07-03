@@ -13,6 +13,13 @@ public class ToolCard {
     private final List<Action> actions;
     private final boolean reversible;
 
+    /**
+     * Constructor: generates a Tool Card with given name, description, list of actions and reversible flag
+     * @param name card name
+     * @param description card description
+     * @param actions list of actions the card allows to perform
+     * @param reversible flag that indicates whether the Tool Card use can be reversed
+     */
     public ToolCard(String name, String description, List<Action> actions, boolean reversible) {
         this.name = name;
         this.description = description;
@@ -20,11 +27,14 @@ public class ToolCard {
         this.reversible = reversible;
     }
 
-
     public int getTokenCount(){
         return tokenCount;
     }
 
+    /**
+     * Increases the tokens number
+     * @param toBeIncreased the amount the tokens number will be increased by
+     */
     public void increaseTokens(int toBeIncreased){
         tokenCount +=toBeIncreased;
     }
@@ -44,5 +54,4 @@ public class ToolCard {
     public boolean isReversible() {
         return reversible;
     }
-
 }

@@ -124,11 +124,6 @@ public class Cell {
         }
     }
 
-    /**
-     *
-     * @return Die in Cell
-     * @throws EmptyCellException if the cell is empty
-     */
     public Die getAssociatedDie() throws EmptyCellException {
         if (associatedDie == null){
             throw new EmptyCellException();
@@ -136,48 +131,28 @@ public class Cell {
             return this.associatedDie;
     }
 
-    /**
-     *
-     * @return Color constraint for the cell, null if there is no constraint for color
-     */
     public COLOR getColorConstraint(){
         return colorConstraint;
     }
 
-    /**
-     *
-     * @return Value constraint for the cell, null if there is no constraint for value
-     */
     public Integer getValueConstraint(){
         return valueConstraint;
     }
 
-    /**
-     *
-     * @return Cell index
-     */
     public int getIndex() {
         return index;
     }
 
-    /**
-     * Set Cell color constraint
-     * @param colorConstraint cell color constraint
-     */
     public void setColorConstraint(COLOR colorConstraint) {
         this.colorConstraint = colorConstraint;
     }
 
-    /**
-     * Set value constraint for the cell
-     * @param valueConstraint cell value constraint
-     */
     public void setValueConstraint(Integer valueConstraint) {
         this.valueConstraint = valueConstraint;
     }
 
     /**
-     *
+     * Checks if the Cell is empty
      * @return true if there is no Die on the cell, false otherwise
      */
     public boolean isEmpty(){
@@ -185,7 +160,7 @@ public class Cell {
     }
 
     /**
-     *
+     * Checks if there is a die on the Cell
      * @return true if there is a die on the cell, false otherwise
      */
     public boolean hasDie(){

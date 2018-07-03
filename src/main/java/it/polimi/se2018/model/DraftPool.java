@@ -13,7 +13,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 
 public class DraftPool {
-    public Die getLastDie() throws EmptyCellException {
+
+    Die getLastDie() throws EmptyCellException {
         for (Cell c : cells){
             if (c.hasDie()){
                 return c.removeDie();
@@ -22,10 +23,8 @@ public class DraftPool {
         throw new EmptyCellException();
     }
 
-    /**
-     * The arraylist is a List of Die.
-     * If a Die is picked, the value has to remain NULL in order to let the Graphic to remain the same when a die is removed
-     */
+    /* The arraylist is a List of Die.
+       If a Die is picked, the value has to remain NULL in order to let the Graphic remain the same when a die is removed */
     private List<Cell> cells;
 
     /**
@@ -87,7 +86,8 @@ public class DraftPool {
     }
 
     /**
-     * Places a die in the draftPool
+     * Places a die in the draftPool in a given position
+     * @param index position in which the die will be placed
      * @param toBePlaced to be placed in the draftPool die
      */
     public void placeDie(int index, Die toBePlaced){
@@ -95,13 +95,13 @@ public class DraftPool {
     }
 
     /**
-     * Place a die
-     * @param toBePlaced
+     * Places a die in the first free position
+     * @param toBePlaced to be placed in the draftPool die
      */
     public void placeDie(Die toBePlaced){
-        for(int i = 0; i < cells.size(); i++){
-            if(cells.get(i).isEmpty()){
-                cells.get(i).setAssociatedDie(toBePlaced);
+        for (Cell cell : cells) {
+            if (cell.isEmpty()) {
+                cell.setAssociatedDie(toBePlaced);
                 return;
             }
         }
@@ -124,8 +124,8 @@ public class DraftPool {
     }
 
     /**
-     *
-     * @return numbers of dice in Draft Pool
+     * Returns the size of the Draft Pool
+     * @return number of dice in the Draft Pool
      */
     public int draftPoolSize(){
         int counter=0;
@@ -136,11 +136,6 @@ public class DraftPool {
         return counter;
     }
 
-    /**
-     *
-     * @param index draftPool index
-     * @return Die at given index
-     */
     public Die getDie(int index) throws EmptyCellException {
         return cells.get(index).getAssociatedDie();
     }
@@ -168,17 +163,17 @@ public class DraftPool {
     }
 
     /**
-     * Representation of the patch of the whole draftpool. Useful for gui
-     * @return List of path last name
+     * Returns a textual representation of Draft Pool dice
+     * @return list of dice textual representations
      */
     public List<String> draftpoolPathRepresentation() {
         List<String> draftpoolString = new ArrayList<>();
-        for (int i = 0; i < cells.size(); i++) {
+        for (Cell cell : cells) {
             try {
-                if (cells.get(i).isEmpty()) {
+                if (cell.isEmpty()) {
                     draftpoolString.add("empty");
                 } else {
-                    draftpoolString.add(cells.get(i).getAssociatedDie().getColor().toString() + "_" + cells.get(i).getAssociatedDie().getValue());
+                    draftpoolString.add(cell.getAssociatedDie().getColor().toString() + "_" + cell.getAssociatedDie().getValue());
                 }
             } catch (EmptyCellException e) {
                 e.printStackTrace();
@@ -186,5 +181,4 @@ public class DraftPool {
         }
         return draftpoolString;
     }
-
 }

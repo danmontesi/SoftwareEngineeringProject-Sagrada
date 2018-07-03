@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Describes WindowPatternCard behavior. Dice can be placed on it, after checking restrictions.
- *
+ * Describes Window Pattern Card behavior. Dice can be placed on it, after checking restrictions.
  * @author Alessio Molinari
  */
 public class WindowPatternCard {
@@ -24,7 +23,7 @@ public class WindowPatternCard {
     }
 
     /**
-     * Create an empty WindowPatternCard with plain numbered cells from 0 to 19
+     * Constructor: creates an empty Window Pattern Card with plain numbered cells from 0 to 19
      */
     public WindowPatternCard() {
         this.difficulty = 0;
@@ -42,6 +41,10 @@ public class WindowPatternCard {
         this.schema = cells;
     }
 
+    /**
+     * Checks whether there are dice on the Window Pattern Card or not
+     * @return true if there are no dice, false if there are dice
+     */
     public boolean isEmpty() {
         for (Cell cell : schema) {
             if (cell.hasDie()) {
@@ -52,7 +55,14 @@ public class WindowPatternCard {
     }
 
     /**
-     * @return true if restrictions are respected and die is place, false otherwise
+     * Places a given die in a given position, checking restrictions
+     * @param d to be placed die
+     * @param row row index
+     * @param column column index
+     * @param colorRestriction indicates whether the color restrictions have to be checked
+     * @param valueRestriction indicates whether the value restrictions have to be checked
+     * @param placementRestriction indicates whether the placement restrictions have to be checked
+     * @return true if restrictions are respected and die is placed, false otherwise
      */
     public boolean placeDie(Die d, int row, int column, boolean colorRestriction, boolean valueRestriction,
                             boolean placementRestriction) {
@@ -75,12 +85,22 @@ public class WindowPatternCard {
     }
 
     /**
-     * Overloaded method for ordinary moves (without toolcards)
+     * Overloaded method for ordinary moves (without Tool Cards)
      */
     public boolean placeDie(Die d, int row, int column) {
         return placeDie(d, row, column, true, true, true);
     }
 
+    /**
+     * Moves a die on the Window Pattern Card, checking restrictions
+     * @param oldPosition old die position
+     * @param newPosition new die position
+     * @param colorRestriction indicates whether the color restrictions have to be checked
+     * @param valueRestriction indicates whether the value restrictions have to be checked
+     * @param placementRestriction indicates whether the placement restrictions have to be checked
+     * @return true if restrictions are respected and die is placed, false otherwise
+     * @throws EmptyCellException if the old position is empty
+     */
     public boolean moveDie(int oldPosition, int newPosition, boolean colorRestriction, boolean valueRestriction,
                            boolean placementRestriction) throws EmptyCellException {
         Die d = this.removeDie(oldPosition);
@@ -92,15 +112,25 @@ public class WindowPatternCard {
         }
     }
 
-
+    /**
+     * Removes the die from a given index
+     * @param index index
+     * @return removed die
+     * @throws EmptyCellException if the cell is empty
+     */
     public Die removeDie(int index) throws EmptyCellException {
         return schema.get(index).removeDie();
     }
 
+    /**
+     * Checks placement restrictions
+     * @param c to be checked cell
+     * @param d to be placed die
+     * @return true if restrictions are respected, false otherwise
+     */
     private boolean checkPlacementRestriction(Cell c, Die d) {
         int column = c.getColumn();
         int row = c.getRow();
-
         if (this.isEmpty()) {
             return row == 0 || row == 3 || column == 0 || column == 4;
         } else {
@@ -119,7 +149,11 @@ public class WindowPatternCard {
         }
     }
 
-
+    /**
+     * Checks whether the destination cell is adjacent to the source one or not
+     * @param c destination cell
+     * @return true if the destination cell is next to the source one (vertically, horizontally or diagonally), false otherwise
+     */
     private boolean checkAdjacents(Cell c) {
         int row = c.getRow();
         int column = c.getColumn();
@@ -139,6 +173,12 @@ public class WindowPatternCard {
         return false;
     }
 
+    /**
+     * Checks whether the destination cell respects the adjacent color and value restrictions
+     * @param c destination cell
+     * @param d to be placed die
+     * @return true if the destination cell (if is next to the source one) doesn't have the same color or value as the die, false otherwise
+     */
     private boolean checkAdjacentsColorsAndValues(Cell c, Die d) {
         int row = c.getRow();
         int column = c.getColumn();
@@ -168,6 +208,12 @@ public class WindowPatternCard {
         return true;
     }
 
+    /**
+     * Checks whether the destination cell has the same color as the die or not
+     * @param c destination cell
+     * @param d to be place die
+     * @return true if the destination cell does not have the same color as the die, false otherwise
+     */
     private boolean checkColorRestriction(Cell c, Die d) {
         if (c.getColorConstraint() == null) {
             return true;
@@ -175,6 +221,12 @@ public class WindowPatternCard {
         return (c.getColorConstraint().equals(d.getColor()));
     }
 
+    /**
+     * Checks whether the destination cell has the same value as the die or not
+     * @param c destination cell
+     * @param d to be place die
+     * @return true if the destination cell does not have the same value as the die, false otherwise
+     */
     private boolean checkValueRestriction(Cell c, Die d) {
         if (c.getValueConstraint() == null) {
             return true;
@@ -183,6 +235,11 @@ public class WindowPatternCard {
 
     }
 
+    /**
+     * Checks all restrictions for every cell in the Window Pattern Card
+     * @param tempDieToCheckPlacement die to be placed
+     * @return true if there is at least one possible placement, false otherwise
+     */
     public boolean isPossibleToPlace(Die tempDieToCheckPlacement) {
         for (int i = 0; i < schema.size(); i++) {
             if (checkCorrectDiePlacement(tempDieToCheckPlacement, i, true, true, true)) {
@@ -192,6 +249,15 @@ public class WindowPatternCard {
         return false;
     }
 
+    /**
+     * Checks all restrictions for a given cell
+     * @param die to be placed die
+     * @param index destination cell position
+     * @param colorRestriction indicates whether the color restrictions have to be checked
+     * @param valueRestriction indicates whether the value restrictions have to be checked
+     * @param placementRestriction indicates whether the placement restrictions have to be checked
+     * @return true if all restrictions are respected, false otherwise
+     */
     private boolean checkCorrectDiePlacement(Die die, int index, boolean colorRestriction, boolean valueRestriction, boolean placementRestriction) {
         Cell cell = this.getCell(index);
         if (cell.hasDie()) {
@@ -214,10 +280,6 @@ public class WindowPatternCard {
         return this.difficulty;
     }
 
-    /**
-     * Retrieve cell by row andd column
-     * Throws unchecked WrongCellIndexException
-     */
     public Cell getCell(int row, int column) {
         if (row < 0 || row > 3 || column < 0 || column > 4) {
             throw new WrongCellIndexException();
@@ -225,7 +287,6 @@ public class WindowPatternCard {
         return schema.get(row * 5 + column);
     }
 
-    //retrieve cell by linear index
     public Cell getCell(int index) {
         return schema.get(index);
     }
@@ -261,9 +322,8 @@ public class WindowPatternCard {
     }
 
     /**
-     * Representation of the patch of the whole Wpc. Useful for gui
-     *
-     * @return List of path last name
+     * Returns a textual representation of Window Pattern Card dice
+     * @return list of dice textual representations
      */
     public List<String> wpcPathRepresentation() {
         List<String> wpcString = new ArrayList<>();
