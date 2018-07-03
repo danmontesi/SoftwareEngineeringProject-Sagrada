@@ -69,7 +69,7 @@
     {
       "name": "Manual Cutter",
       "description": "Move up to two dice of the same color that match the color of a die on the Round Track. You must obey all placement restrictions.",
-      "actions": [["ASK_PICK_DIE", "WPC"], ["CHECK_EXISTS_COLOR_RT"], ["DO_SAVE_COLOR"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC", "NONE"], ["ASK_ANOTHER_ACTION"], ["ASK_PICK_DIE", "WPC"], ["CHECK_SAME_COLOR"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC"]],
+      "actions": [["ASK_PICK_DIE", "WPC"], ["CHECK_EXISTS_COLOR_RT"], ["DO_SAVE_COLOR"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC", "NONE"], ["ASK_ANOTHER_ACTION"], ["ASK_PICK_DIE", "WPC"], ["CHECK_SAME_COLOR"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC", "NONE"]],
       "reversible": true
     }
   ]

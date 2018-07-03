@@ -538,7 +538,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private void executeCheckSameColor() {
         try {
             COLOR colorToCheck = usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(toolcardData.getIndexFromWPC()).getAssociatedDie().getColor();
-            if (toolcardData.getSavedColor()!=colorToCheck){
+            if (toolcardData.getSavedColor().equals(colorToCheck)){
                 resetModel();
                 restoreTCGlobalVariables();
                 userViewMap.get(currentPlayer).invalidActionMessage("The color of the chosen die is different from the previous one, try again!");
@@ -556,7 +556,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private void executeCheckExistsColorRT() {
         try {
             COLOR colorToCheck = usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(toolcardData.getIndexFromWPC()).getAssociatedDie().getColor();
-            if (model.getRoundTrack().isPresent(colorToCheck)){
+            if (!model.getRoundTrack().isPresent(colorToCheck)){
                 resetModel();
                 restoreTCGlobalVariables();
                 userViewMap.get(currentPlayer).invalidActionMessage("The color of the chosen die is different from at least one of the Roundtrack, try again!");
@@ -658,11 +658,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private void executeDoPlaceDie(String parameter, String parameter2) {
         Die tempDieToPlace;
+
         switch (parameter) {
             case "WPC":
                 int indexWpc = toolcardData.getIndexFromWPC();
                 try {
-                    tempDieToPlace = usernamePlayerMap.get(currentPlayer).getWindowPatternCard().removeDie(indexWpc);
+                    tempDieToPlace = usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(indexWpc).getAssociatedDie();
                 } catch (EmptyCellException e) {
                     e.printStackTrace();
                     System.out.println("Error: Non dovrebbe essere null!");
@@ -671,8 +672,14 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 break;
             case "DP":
                 int indexDP = toolcardData.getIndexFromDraftpool();
-                tempDieToPlace = model.removeDieFromDraftPool(indexDP);
-                System.out.println("RIMOSSO DA DP DADO" + tempDieToPlace.getColor());
+                try {
+                    tempDieToPlace = model.getDraftPool().getDie(indexDP);
+                    System.out.println("RIMOSSO DA DP DADO" + tempDieToPlace.getColor());
+                } catch (EmptyCellException e) {
+                    e.printStackTrace();
+                    System.out.println("Error! shouldn't be null");
+                    return;
+                }
                 break;
             default:
                 LOGGER.log(Level.INFO,"Errore in doSwap, non arriva ne DB ne WPC");
@@ -714,6 +721,32 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         System.out.println("PIAZZATO DADO:" + usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(toolcardData.getIndexToWPC()));
 
+        switch (parameter) {
+            case "WPC":
+                int indexWpc = toolcardData.getIndexFromWPC();
+                toolcardData.setIndexDieBeforeMoved(toolcardData.getIndexFromWPC());
+                try {
+                    usernamePlayerMap.get(currentPlayer).getWindowPatternCard().removeDie(indexWpc);
+                    model.setGamePlayersNoRefresh(orderedPlayers);
+                } catch (EmptyCellException e) {
+                    e.printStackTrace();
+                    System.out.println("Error: Non dovrebbe essere null!");
+                    return;
+                }
+                break;
+            case "DP":
+                int indexDP = toolcardData.getIndexFromDraftpool();
+                toolcardData.setIndexDieBeforeMoved(toolcardData.getIndexFromDraftpool());
+                model.removeDieFromDraftPool(indexDP);
+                System.out.println("RIMOSSO DA DP DADO" + tempDieToPlace.getColor());
+                break;
+            default:
+                LOGGER.log(Level.INFO,"Errore in doSwap, non arriva ne DB ne WPC");
+                return;
+        }
+        toolcardData.setSouce(parameter);
+        toolcardData.setIndexMovedDie(toolcardData.getIndexToWPC());
+        toolcardData.setHasDoneMove();
         model.setGamePlayers(orderedPlayers);
         toolcardData.getToolcardActions().remove(0);
         executeAction();
@@ -819,7 +852,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
 
-        if (toolcardData.getDieValue()>6 || toolcardData.getDieValue()<1){
+        if (!(toolcardData.getDieValue()>6 || toolcardData.getDieValue()<1)){
             handlePlayerAfterIncorrectToolUse(currentPlayer, "Value is incorrect, try again:", true);
             return;
         }
@@ -972,7 +1005,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     private void handlePlayerAfterCorrectToolUse(String playerUsername, int tokenToDecrease) {
         usernamePlayerMap.get(playerUsername).decreaseTokens(tokenToDecrease);
-        model.increaseToolCardTokens(toolcardData.getLastUsedToolCardNum(), tokenToDecrease); //TODO a volte non funziona firmy pastry brush
+        model.increaseToolCardTokens(toolcardData.getLastUsedToolCardNum(), tokenToDecrease);
         this.hasUsedTool = true;
         model.setGamePlayers(orderedPlayers);
         editCurrentPlayerVariables();
@@ -1021,11 +1054,38 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             LOGGER.log(Level.INFO,"ERROR: The tool is finished, no data in toolcardData");
             return;
         }
-        this.model = toolcardData.removeOldModel();
-        for (String username : userViewMap.keySet()){
-            model.register(userViewMap.get(username));
+
+        //Restoring past moves
+        if (toolcardData.hasDoneMove()) {
+            Die temp = null; //indice WPC ORA
+            try {
+                temp = usernamePlayerMap.get(currentPlayer).getWindowPatternCard().removeDie(toolcardData.getIndexMovedDie());
+            } catch (EmptyCellException e) {
+                System.out.println("Errore! Dado non presente");
+            }
+            switch (toolcardData.getSouce()) {
+                case "WPC":
+                    //rimuovo un dado che è stato preso dalla wpc e messo in un'altra posizione
+                    int indexWpc = toolcardData.getIndexDieBeforeMoved();
+                    usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(indexWpc).setAssociatedDie(temp);
+                    break;
+                case "DP":
+                    //Rimuovo un dado che è stato preso dalla dp e messo nella wpc
+                    int indexDP = toolcardData.getIndexDieBeforeMoved();
+                    model.setDieOnDraftPool(temp, indexDP);
+                    break;
+                default:
+                    LOGGER.log(Level.INFO, "Errore in doSwap, non arriva ne DB ne WPC");
+                    return;
+            }
+            model.setGamePlayers(orderedPlayers);
         }
-        model.notifyRefreshBoard(null, orderedPlayers);
+
+        //this.model = toolcardData.removeOldModel();
+        //for (String username : userViewMap.keySet()){
+        //    model.register(userViewMap.get(username));
+        //}
+        //model.notifyRefreshBoard(null, orderedPlayers);
     }
 
 
