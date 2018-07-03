@@ -4,12 +4,7 @@ public class PublicObjectiveLight {
     private String name;
     private String description;
 
-    public PublicObjectiveLight(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    public PublicObjectiveLight() {
+    PublicObjectiveLight() {
     }
 
     public String getName() {

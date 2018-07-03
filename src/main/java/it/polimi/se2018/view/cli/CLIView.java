@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Manages CLI
+ * @author Alessio Molinari
+ */
 public class CLIView extends View implements Runnable {
 
     private CLIPrinter cliPrinter = new CLIPrinter();
@@ -187,7 +191,9 @@ public class CLIView extends View implements Runnable {
     private int columnChoice;
     private String pickDieSource;
 
-    //output Function
+    /**
+     * Output function
+     */
     private void manageCommand(INPUT_STATE currentState, String input) {
         input = input.toLowerCase();
         this.currentState = INPUT_STATE.nextState(currentState, input);
@@ -292,11 +298,16 @@ public class CLIView extends View implements Runnable {
         }
     }
 
-
+    /**
+     * Checks whether the input corresponds to an allowed command or not
+     */
     private boolean actionIsNotAllowedForThisTurn(String input) {
         return input.equals("d") || input.equals("t") || input.equals("p") || input.equals("u");
     }
 
+    /**
+     * Prints different board elements or text depending on the input, whether it is the player's turn or not
+     */
     private void checkPrintBoard(String input) {
         switch (input) {
             case "-c":
@@ -327,6 +338,9 @@ public class CLIView extends View implements Runnable {
         cliPrinter.printYourTurn(currentState, placeDieAllowed, toolcardAllowed);
     }
 
+    /**
+     * Checks whether the input value is correct or not
+     */
     private boolean checkCorrectInput(String inputString, int validInferior, int validSuperior) {
         if (inputString.equals("u")) {
             return false;
@@ -344,6 +358,9 @@ public class CLIView extends View implements Runnable {
         return false;
     }
 
+    /**
+     * Checks whether the input is a valid Draft Pool index or not
+     */
     private boolean checkCorrectDraftPool(String inputString) {
         if (checkCorrectInput(inputString, 1, cliState.getDraftpool().size())) {
             draftPoolChoice = Integer.parseInt(inputString) - 1;
@@ -353,6 +370,9 @@ public class CLIView extends View implements Runnable {
         }
     }
 
+    /**
+     * Checks whether the input is a valid Round Track index or not
+     */
     private boolean checkCorrectRoundTrack(String inputString) {
         if (checkCorrectInput(inputString, 1, cliState.getRoundTrack().size())) {
             roundTrackChoice = Integer.parseInt(inputString) - 1;
@@ -362,6 +382,9 @@ public class CLIView extends View implements Runnable {
         }
     }
 
+    /**
+     * Checks whether the input is a valid Window Pattern Card row index or not
+     */
     private boolean checkCorrectRow(String inputString) {
         if (checkCorrectInput(inputString, 1, 4)) {
             rowChoice = Integer.parseInt(inputString) - 1;
@@ -371,6 +394,9 @@ public class CLIView extends View implements Runnable {
         }
     }
 
+    /**
+     * Checks whether the input is a valid Window Pattern Card column index or not
+     */
     private boolean checkCorrectColumn(String inputString) {
         if (checkCorrectInput(inputString, 1, 5)) {
             columnChoice = Integer.parseInt(inputString) - 1;
@@ -380,6 +406,9 @@ public class CLIView extends View implements Runnable {
         }
     }
 
+    /**
+     * Checks whether the input values are valid Window Pattern Card row and column indexes or not
+     */
     private boolean checkRowAndColumn(String inputString) {
         String[] rowAndColumn = inputString.split(" ");
         if (inputString.equals("u")) {
@@ -394,6 +423,9 @@ public class CLIView extends View implements Runnable {
         return false;
     }
 
+    /**
+     * Prints help menu
+     */
     private synchronized void printHelp() {
         System.out.println(
                 "Here's what you can do:\n" +
@@ -454,6 +486,9 @@ public class CLIView extends View implements Runnable {
         }
     }
 
+    /**
+     * Sends die index, after checking input validity
+     */
     private void replyPickDie(String input) {
         switch (pickDieSource) {
             case "WPC":

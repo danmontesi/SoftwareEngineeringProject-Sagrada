@@ -9,25 +9,27 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Manages CLI input reading
  * Every method can throw a TimeUpException when a Timeout occurs from server
+ * @author Alessio Molinari
  */
 public class InputReader{
     private BufferedReader br;
     private boolean timeout = false;
-    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
-    public InputReader() {
+    InputReader() {
         br = new BufferedReader(new InputStreamReader(System.in));
     }
 
-    public String readLine(){
+    String readLine(){
        return readLine(false);
     }
 
     /**
+     * Reads an input line
      * Return null if an IOException is caught
      */
-    public String readLine(boolean throwException){
+    private String readLine(boolean throwException){
         try{
             while(!br.ready()){
                 if(timeout){
@@ -52,9 +54,10 @@ public class InputReader{
     }
 
     /**
+     * Reads a number and checks its validity
      * Return null if an IOException is caught
      */
-    public int readInt(int validInferior, int validSuperior, boolean throwException){
+    private int readInt(int validInferior, int validSuperior, boolean throwException){
         while (true) {
             String inputString = readLine(throwException);
             try {
@@ -70,19 +73,15 @@ public class InputReader{
         }
     }
 
-    public int readInt(int validInferior, int validSuperior){
+    /**
+     * Reads a number and checks its validity
+     */
+    private int readInt(int validInferior, int validSuperior){
         return readInt(validInferior, validSuperior, false);
     }
 
-        public void setTimeOut() {
+    void setTimeOut() {
         timeout = true;
     }
 
-    public void close() {
-        try {
-            br.close();
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-    }
 }

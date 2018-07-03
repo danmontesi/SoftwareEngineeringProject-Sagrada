@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Manages CLI output printing
+ * @author Alessio Molinari
+ */
 class CLIPrinter {
 
     private static final String ANSI_RED_BACKGROUND = "\u001B[41m";
@@ -27,12 +31,18 @@ class CLIPrinter {
     CLIPrinter() {
     }
 
-    public void printBasicInformation(CliState cliState, INPUT_STATE state, boolean placeDieAllowed, boolean toolcardAllowed){
+    /**
+     * Prints Round Track, Draft Pool, player's Window Pattern Card and turn menu
+     */
+    void printBasicInformation(CliState cliState, INPUT_STATE state, boolean placeDieAllowed, boolean toolcardAllowed){
         printSyntheticBoard(cliState, true);
         printYourTurn(state, placeDieAllowed, toolcardAllowed);
     }
 
-    public synchronized void printYourTurn(INPUT_STATE state, boolean placeDieAllowed, boolean toolcardAllowed){
+    /**
+     * Prints turn menu
+     */
+    synchronized void printYourTurn(INPUT_STATE state, boolean placeDieAllowed, boolean toolcardAllowed){
         if (state.equals(INPUT_STATE.YOUR_TURN)){
             System.out.println("\nWhat do you want to do?");
             System.out.println(placeDieAllowed ? "d - Place die" : "");
@@ -41,11 +51,17 @@ class CLIPrinter {
         }
     }
 
+    /**
+     * Clears screen
+     */
     private static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
+    /**
+     * Prints Round Track, Draft Pool and player's Window Pattern Card
+     */
     private void printSyntheticBoard(CliState cliState, boolean clearScreen){
         if (clearScreen){
             clearScreen();
@@ -63,7 +79,10 @@ class CLIPrinter {
         printSyntheticBoard(cliState,true);
     }
 
-    public void printToolcards(CliState cliState){
+    /**
+     * Prints Tool Cards
+     */
+    void printToolcards(CliState cliState){
         System.out.println("Toolcards:");
         for(int i = 0; i < cliState.getToolcards().size(); i++){
             ToolcardLight card = cliState.getToolcards().get(i);
@@ -72,7 +91,10 @@ class CLIPrinter {
         }
     }
 
-    public void printPublicObjectiveCards(CliState cliState){
+    /**
+     * Prints Public Objective Cards
+     */
+    private void printPublicObjectiveCards(CliState cliState){
         System.out.println("Public Objective Cards:");
         for(int i = 0; i < cliState.getPublicObjectiveCards().size(); i++){
             PublicObjectiveLight card = cliState.getPublicObjectiveCards().get(i);
@@ -80,7 +102,10 @@ class CLIPrinter {
         }
     }
 
-    public synchronized void printCompleteBoard(CliState cliState){
+    /**
+     * Prints the complete board
+     */
+    synchronized void printCompleteBoard(CliState cliState){
         clearScreen();
         printPublicObjectiveCards(cliState);
         printToolcards(cliState);
@@ -95,7 +120,8 @@ class CLIPrinter {
     }
 
     /**
-     * Used only to print DraftPool and RoundTrack
+     * Creates DraftPool and RoundTrack
+     * @param list to be printed cells
      */
     void printInlineList(List<String> list){
         String[][] table = new String[5][list.size()+1];
@@ -107,7 +133,11 @@ class CLIPrinter {
         System.out.println("\n");
     }
 
-    void printWPC(List<String> stringWpc){
+    /**
+     * Creates Window Pattern Cards
+     * @param stringWpc to be printed cells
+     */
+    private void printWPC(List<String> stringWpc){
         String[][] table = new String[17][6];
         addWPCBorders(table);
         System.out.println(stringWpc.get(0) + "\n");
@@ -123,6 +153,9 @@ class CLIPrinter {
         System.out.println("\n");
     }
 
+    /**
+     * Adds borders to Window Pattern Cards
+     */
     private void addWPCBorders(String[][] table){
         for(int i = 0; i < table.length; i++){
             if(i%4 != 0){
@@ -136,6 +169,9 @@ class CLIPrinter {
         }
     }
 
+    /**
+     * Creates Window Pattern Cards
+     */
     void printWPC(WindowPatternCard wpc){
         String[][] table = new String[17][6];
         addWPCBorders(table);
@@ -163,7 +199,12 @@ class CLIPrinter {
         System.out.println("\n");
     }
 
-    private String[][] insertStringInTable(String[][] table, int row, int column, String string){
+    /**
+     * Inserts die on Window Pattern Card, Draft Pool or RoundTrack
+     * @param table Window Pattern Card, Draft Pool or RoundTrack
+     * @param string die representation
+     */
+    private void insertStringInTable(String[][] table, int row, int column, String string){
         String[] die = string.split("_");
         if(die[0].equals("empty")){
             insertDieValue(table, row, column);
@@ -182,31 +223,45 @@ class CLIPrinter {
                 }
             }
         }
-        return table;
     }
 
+    /**
+     * Prints a die in a given position
+     */
     private void insertDieValue(String[][] table, int row, int column, int value, COLOR color){
         String background = stringColorBackground(color);
         String[] die = stringDieValue(value);
         addStringToMatrix(table, row, column, background, die, true);
     }
 
+    /**
+     * Prints a cell with value constraints in a given position
+     */
     private void insertDieValue(String[][] table, int row, int column, int value){
         String[] die = stringDieValue(value);
         addStringToMatrix(table, row, column, ANSI_RESET, die);
     }
 
+    /**
+     * Prints a cell with color constraints in a given position
+     */
     private void insertDieValue(String[][] table, int row, int column, COLOR color){
         String background = stringColorBackground(color);
         String[] die = stringDieValue(0);
         addStringToMatrix(table, row, column, background, die);
     }
 
+    /**
+     * Prints a cell with no constraints in a given position
+     */
     private void insertDieValue(String[][] table, int row, int column){
         String[] die = stringDieValue(0);
         addStringToMatrix(table, row, column, ANSI_RESET, die);
     }
 
+    /**
+     *Converts color values
+     */
     private String stringColorBackground(COLOR color){
         String background;
         switch(color){
@@ -231,6 +286,9 @@ class CLIPrinter {
         return background;
     }
 
+    /**
+     * Converts die value into graphical representation
+     */
     private String[] stringDieValue(int value){
         String[] die = new String[3];
 
@@ -274,6 +332,10 @@ class CLIPrinter {
     }
 
     //sinceramente dovrebbe stampare i pallini neri sui dadi colorati: in realtà sono bianchi ma hanno abbastanza constrasto
+
+    /**
+     * Prints a cell or die in a given position
+     */
     private void addStringToMatrix(String[][] table, int row, int column, String background, String[] die, boolean printBlack){
         int i = row*4;
         i++;
@@ -290,10 +352,16 @@ class CLIPrinter {
         table[i+3][column] = "--------";
     }
 
+    /**
+     * Prints a cell or die in a given position
+     */
     private void addStringToMatrix(String[][] table, int row, int column, String background, String[] die) {
         addStringToMatrix(table, row, column, background, die, false);
     }
 
+    /**
+     * Prints Window Pattern Card, Draft Pool or Round Track
+     */
     private void printTable(String[][] table){
         StringBuilder line;
         for (int i = 0; i < table.length; i++){

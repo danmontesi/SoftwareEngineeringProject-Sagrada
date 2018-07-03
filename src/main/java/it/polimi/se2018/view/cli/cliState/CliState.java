@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representation of the game state seen by the player
+ * @author Alessio Molinari
+ */
 public class CliState {
 
     private String privateObjectiveCard;
@@ -19,9 +23,7 @@ public class CliState {
     private List<String> draftpool; //Dice in the format: colorNumber/empty
     private List<String> roundTrack; //Dice in the format: colorNumber/empty
 
-    /**
-     * It is guaranteed that at index 0 there is personal player's data
-     */
+    /* It is guaranteed that at index 0 there is personal player's data */
     private List<PlayerLight> players;
 
     public CliState() {
@@ -30,6 +32,9 @@ public class CliState {
         players = new ArrayList<>();
     }
 
+    /**
+     * Updates game board
+     */
     public void parseRefreshBoard(RefreshBoardCommand command){
         privateObjectiveCard = command.getPrivateObjectiveCard();
         privateObjectiveCardDescription = command.getPrivateObjectiveCardDescription();
@@ -40,14 +45,23 @@ public class CliState {
         parsePlayers(command);
     }
 
+    /**
+     * Updates Draft Pool
+     */
     public void parseRefreshDraftPool(RefreshDraftPoolCommand command){
         draftpool = command.getDraftpool();
     }
 
+    /**
+     * Updates RoundTrack
+     */
     public void parseRefreshRoundTrack(RefreshRoundTrackCommand command){
         roundTrack = command.getRoundTrack();
     }
 
+    /**
+     * Updates player's Window Pattern Card
+     */
     public void parseRefreshWPC(RefreshWpcCommand command){
         players.get(0).setWpc(command.getPersonalWpc());
         for(int i = 0; i < command.getOtherPlayersWpcs().size(); i++){
@@ -55,6 +69,9 @@ public class CliState {
         }
     }
 
+    /**
+     * Updates Tool Cards and all players' tokens
+     */
     public void parseRefreshTokens(RefreshTokensCommand command){
         players.get(0).setTokens(command.getPersonalTokens());
         for(int i = 0; i < command.getOtherPlayersTokens().size(); i++){
@@ -65,6 +82,9 @@ public class CliState {
         }
     }
 
+    /**
+     * Adds players
+     */
     private void initPlayers(RefreshBoardCommand command){
         if (players.isEmpty()){
             for (int i = 0; i < 1 + command.getOtherPlayersUsernames().size(); i++)
@@ -72,6 +92,9 @@ public class CliState {
         }
     }
 
+    /**
+     * Updates all players' information (usernames, tokens, Window Pattern Cards)
+     */
     private void parsePlayers(RefreshBoardCommand command){
         initPlayers(command);
         //set personal data
@@ -88,7 +111,9 @@ public class CliState {
         }
     }
 
-
+    /**
+     * Updates Public Objective Cards
+     */
     private void initPublicObjectiveLight(RefreshBoardCommand command){
         if (publicObjectiveCards.isEmpty()){
             for(int i = 0; i < command.getPublicObjectiveCards().size(); i++){
@@ -97,6 +122,9 @@ public class CliState {
         }
     }
 
+    /**
+     * Updates Private Objective Card
+     */
     private void parsePublicObjectiveCards(RefreshBoardCommand command){
         initPublicObjectiveLight(command);
         List<String> cards =  command.getPublicObjectiveCards();
@@ -107,6 +135,9 @@ public class CliState {
         }
     }
 
+    /**
+     * Adds Tool Cards
+     */
     private void initToolcards(RefreshBoardCommand command){
         if (toolcards.isEmpty()){
             for(int i = 0; i < command.getToolCards().size(); i++){
@@ -115,6 +146,9 @@ public class CliState {
         }
     }
 
+    /**
+     * Updates Tool Cards
+     */
     private void parseToolcards(RefreshBoardCommand command){
         initToolcards(command);
         List<String> cards = command.getToolCards();

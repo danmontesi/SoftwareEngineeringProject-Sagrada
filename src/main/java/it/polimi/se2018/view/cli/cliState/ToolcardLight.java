@@ -5,13 +5,7 @@ public class ToolcardLight {
     private String description;
     private Integer tokens;
 
-    public ToolcardLight(String toolcardName, String description, Integer tokens) {
-        this.toolcardName = toolcardName;
-        this.description = description;
-        this.tokens = tokens;
-    }
-
-    public ToolcardLight() {
+    ToolcardLight() {
     }
 
     public String getToolcardName() {

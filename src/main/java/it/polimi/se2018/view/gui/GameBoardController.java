@@ -618,7 +618,7 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     /**
-     * Updates Tool Cards and players' tokens
+     * Updates Tool Cards and all players' tokens
      * @param tcTok list of Tool Cards tokens numbers
      * @param playersTok player's tokens number
      * @param personalTok list of other players' tokens numbers

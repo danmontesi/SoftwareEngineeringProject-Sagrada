@@ -14,6 +14,9 @@ public enum INPUT_STATE {
     REPLY_PLACE_DIE,
     END_GAME;
 
+    /**
+     * Next state function
+     */
     public static INPUT_STATE nextState(INPUT_STATE currentState, String input){
         INPUT_STATE nextState;
 
@@ -40,6 +43,9 @@ public enum INPUT_STATE {
         return nextState;
     }
 
+    /**
+     * Checks if it is possible to go back from current state without notifying the Controller
+     */
    public static boolean isLocallyReversible(INPUT_STATE currentState){
         if ((currentState.equals(PLACE_DIE_ROW_COLUMN))
                 || currentState.equals(PLACE_DIE_INDEX)

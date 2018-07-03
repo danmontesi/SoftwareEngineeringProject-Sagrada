@@ -11,12 +11,6 @@ public class PlayerLight {
     public PlayerLight() {
     }
 
-    public PlayerLight(String username, int tokens, List<String> wpc) {
-        this.username = username;
-        this.tokens = tokens;
-        this.wpc = wpc;
-    }
-
     public String getUsername() {
         return username;
     }

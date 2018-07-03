@@ -16,6 +16,10 @@ import it.polimi.se2018.view.gui.notifiers.wpcchoiceactions.WPCChoice;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages interactions with Controller
+ * @author Nives Migotto
+ */
 public class GUIView extends View {
 
     private LobbyNotifier lobbyNotifier = LobbyNotifier.getInstance();
