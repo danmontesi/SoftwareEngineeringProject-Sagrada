@@ -66,7 +66,7 @@ public class WindowPatternCard {
      */
     public boolean placeDie(Die d, int index, boolean colorRestriction, boolean valueRestriction,
                             boolean placementRestriction) {
-        if(checkCorrectDiePlacement(d, index, colorRestriction, valueRestriction, placementRestriction)){
+        if (checkCorrectDiePlacement(d, index, colorRestriction, valueRestriction, placementRestriction)) {
             this.getCell(index).setAssociatedDie(d);
             return true;
         } else {
@@ -84,8 +84,13 @@ public class WindowPatternCard {
     public boolean moveDie(int oldPosition, int newPosition, boolean colorRestriction, boolean valueRestriction,
                            boolean placementRestriction) throws EmptyCellException {
         Die d = this.removeDie(oldPosition);
-        return placeDie(d, newPosition, colorRestriction, valueRestriction, placementRestriction);
+        if (checkCorrectDiePlacement(d, newPosition, colorRestriction, valueRestriction, placementRestriction)) {
+            return placeDie(d, newPosition, colorRestriction, valueRestriction, placementRestriction);
+        } else {
+            this.setDie(d, oldPosition);
+            return false;
         }
+    }
 
 
     public Die removeDie(int index) throws EmptyCellException {
@@ -237,12 +242,16 @@ public class WindowPatternCard {
         this.schema = schema;
     }
 
+    private void setDie(Die die, int index) {
+        this.schema.get(index).setAssociatedDie(die);
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(name);
         sb.append("\n");
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 5; j ++){
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 5; j++) {
                 sb.append(getCell(i, j).toString());
                 sb.append("\t");
             }
@@ -253,6 +262,7 @@ public class WindowPatternCard {
 
     /**
      * Representation of the patch of the whole Wpc. Useful for gui
+     *
      * @return List of path last name
      */
     public List<String> wpcPathRepresentation() {

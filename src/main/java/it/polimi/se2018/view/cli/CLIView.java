@@ -190,7 +190,6 @@ public class CLIView extends View implements Runnable {
     //output Function
     private void manageCommand(INPUT_STATE currentState, String input) {
         input = input.toLowerCase();
-        INPUT_STATE tempCurrentState = currentState;
         this.currentState = INPUT_STATE.nextState(currentState, input);
 
         if (input.equals("u")) {
@@ -206,7 +205,7 @@ public class CLIView extends View implements Runnable {
             return;
         }
 
-        switch (tempCurrentState) {
+        switch (currentState) {
             case YOUR_TURN:
                 if (input.equals("p")) {
                     System.out.println("Passing turn");

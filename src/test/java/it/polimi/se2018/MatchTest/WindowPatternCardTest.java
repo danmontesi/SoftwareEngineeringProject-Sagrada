@@ -14,9 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 /**
  * Author: Alessio
@@ -141,14 +139,26 @@ public class WindowPatternCardTest {
     }
 
     @Test
+    public void moveDieIgnoringColorRestriction(){
+        wpc.placeDie(new Die(COLOR.BLUE, 4), 3, 2);
+        wpc.placeDie(new Die(COLOR.VIOLET, 1), 2, 3);
+        try {
+            assertTrue(wpc.moveDie(equivalentIndex(2, 3), equivalentIndex(2, 2),
+                    false, true, true));
+        } catch (EmptyCellException e) {
+            Assert.fail();
+        }
+    }
+
+    @Test
     public void moveDieInAbsurdIndex(){
         wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 0);
         try {
             wpc.moveDie(0, 107, true, true, true);
-        } catch (EmptyCellException e) {
-            //okay
+            Assert.fail();
+        } catch (IndexOutOfBoundsException | EmptyCellException e) {
+            //correct catch
         }
-        Assert.fail();
     }
 
 
@@ -160,6 +170,10 @@ public class WindowPatternCardTest {
         assertTrue(wpc.placeDie(new Die(COLOR.YELLOW, 6), 2, 1));
         assertFalse(wpc.placeDie(new Die(COLOR.YELLOW, 5), 2, 0));
 
+    }
+
+    private int equivalentIndex(int row, int column){
+        return row*5+column;
     }
 }
 
