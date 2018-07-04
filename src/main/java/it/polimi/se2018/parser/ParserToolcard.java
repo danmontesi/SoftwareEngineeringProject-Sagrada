@@ -10,11 +10,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that instantiates all the Tool Cards
+ * @author Alessio Molinari
+ */
 public class ParserToolcard {
 
     private static final String TC_JSON = "tc.json";
     private static final int MAX_NUMBER_OF_FIELDS_IN_ACTION = 3;
 
+    /**
+     * @return ArrayList of all Tool Cards in json file
+     * @throws IOException
+     */
     public List<ToolCard> parseCards() throws IOException {
         ParserSettings settings = new ParserSettings();
         JsonObject jsonObject = settings.extractJsonObject(TC_JSON);
@@ -35,7 +43,7 @@ public class ParserToolcard {
                 for (int k = 0; k < jParameters.size(); k++) {
                     parameters[k] = jParameters.get(k).getAsString();
                 }
-                //  !!!  Notice that this could throw an IlligalArgumentException if the json does not mactch the enum
+                //  !!!  Notice that this could throw an IlligalArgumentException if the json does not match the enum
                 actions.add(new Action(ACTION_TYPE.valueOf(parameters[0]), parameters[1], parameters[2]));
             }
             toolCards.add(new ToolCard(name, description, actions, reversible));

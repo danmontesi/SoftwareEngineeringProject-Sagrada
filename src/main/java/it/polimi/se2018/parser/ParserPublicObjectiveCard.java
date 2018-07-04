@@ -10,9 +10,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that instantiates all the Public Objective Cards
+ * @author Alessio Molinari
+ */
 public class ParserPublicObjectiveCard {
     private static final String PATH_NAME = "publicoc.json";
 
+    /**
+     * @return ArrayList of all Public Objective Cards in json file
+     * @throws IOException
+     */
     public List<PublicObjectiveCard> parseCards() throws IOException {
         ParserSettings settings = new ParserSettings();
         JsonObject json = settings.extractJsonObject(PATH_NAME);

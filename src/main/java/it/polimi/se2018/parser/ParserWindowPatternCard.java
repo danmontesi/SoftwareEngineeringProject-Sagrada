@@ -13,27 +13,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Alessio
- * Class that instantiates Window Pattern Cards
+ * Class that instantiates all the Window Pattern Cards
+ * @author Alessio Molinari
  */
 public class ParserWindowPatternCard {
     private static final String WPC_JSON = "wpc.json";
 
     private JsonArray cards;
 
-
     /**
-     *
-     * @return ArrayList of all WindowPatternCards contained in json file
+     * @return ArrayList of all Window Pattern Cards contained in json file
      * @throws IOException
      */
-
     public ParserWindowPatternCard() throws IOException {
         ParserSettings settings = new ParserSettings();
         JsonObject WPCCards = settings.extractJsonObject(WPC_JSON);
         cards = WPCCards.get("WindowPatternCards").getAsJsonArray();
     }
 
+    /**
+     * @return ArrayList of all Window Pattern Cards contained in json file
+     */
     public List<WindowPatternCard> parseAllCards(){
         //ArrayList which will contain every WindowPatternCard
         List<WindowPatternCard> windowPatternCards = new ArrayList<>();
@@ -49,6 +49,10 @@ public class ParserWindowPatternCard {
         return windowPatternCards;
     }
 
+    /**
+     * @return Specific Window Pattern Card based on its name
+     * @throws MalformedJsonException
+     */
     public WindowPatternCard parseCardByName(String cardName) throws MalformedJsonException {
         for(JsonElement card : cards){
             if (card.getAsJsonObject().get("name").getAsString().equals(cardName)){
@@ -60,6 +64,9 @@ public class ParserWindowPatternCard {
         throw new MalformedJsonException("Cannot find such card in deck");
     }
 
+    /**
+     * Retrieves a specific Window Pattern Card information from json file and uses it to create a Window Pattern Card
+     */
     private void parseSingleCard(WindowPatternCard wpc, JsonObject card){
 
         String name = card.get("name").getAsString();

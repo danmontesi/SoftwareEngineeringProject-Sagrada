@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Alessio
- * Class that instantiates all the PrivateObjectiveCards
- *
+ * Class that instantiates all the Private Objective Cards
+ * @author Alessio Molinari
  */
 public class ParserPrivateObjectiveCard {
     private static final String PATH_NAME = "privateoc.json";
@@ -21,7 +20,7 @@ public class ParserPrivateObjectiveCard {
     private ParserSettings settings;
 
     /**
-     * @return ArrayList of all PrivateObjectiveCards in json file
+     * @return ArrayList of all Private Objective Cards in json file
      * @throws IOException
      */
     public List<PrivateObjectiveCard> parseCards() throws IOException {

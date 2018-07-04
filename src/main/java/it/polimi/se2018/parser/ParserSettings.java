@@ -8,8 +8,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * @author Alessio
  * Class with common configuration settings for every json file
+ * @author Alessio
  */
 public class ParserSettings {
     private static final String PATH = System.getProperty("user.dir") + "/src/resources/json/";
@@ -17,7 +17,7 @@ public class ParserSettings {
     private FileReader fr = null;
 
     /**
-     *
+     * Extracts json object
      * @param jsonName name of json file without the whole path (e.g. "cards.json")
      * @return initial json object in json file
      * @throws IOException
@@ -32,7 +32,7 @@ public class ParserSettings {
     }
 
     /**
-     *Instantiates new FileReader and BufferReader
+     * Instantiates new FileReader and BufferReader
      * @param path entire path of json file to open
      * @throws IOException
      */

@@ -17,8 +17,11 @@ import java.util.logging.Logger;
 
 import static it.polimi.se2018.model.ACTION_TYPE.*;
 
+/**
+ * Manages game logic
+ * @author  Daniele Montesi
+ */
 public class Controller implements Observer, ControllerServerInterface { //Observer perchè osserva la View tramite le classi di mezzo (ClientConnection)
-
 
     //TODO setta i messaggi
     private static final String WRONG_INDEX = "The cell you selected is wrong or our of index, try again";
@@ -39,7 +42,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     public Timer getCheckBlockingTimer() { //just for testing
         return checkBlockingTimer;
-
     }
 
     public List<Player> getOrderedPlayers() {
@@ -121,13 +123,12 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     public void initializeGame() {
-        //Let people choose their Wpc, and call a method that waits until all chose theirs.
+        //Let people choose their Wpc, and call a method that waits until everyone chose.
         //Once i receive all -> move to orderedPlayers List
         List<WindowPatternCard> localWpc;
-
         //Gives to each a player 4 WindowPatternCard to choose from
         for (Player p : uninitializedOrderedPlayers) {
-            // I give the cards (in strings) to the command, and to the method that waits until all players finishes to chose
+            // I give the cards (in strings) to the command, and to the method that waits until all players finished choosing
             localWpc = model.extractWindowPatternCard();
             WindowPatternCard defaultCard = localWpc.get(0); //default wpc in case the player disconnects
             usernamePlayerMap.get(p.getUsername()).setWindowPatternCard(defaultCard);
@@ -135,26 +136,25 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(p.getUsername()).chooseWindowPatternCardMenu(localWpc, model.getPlayerFromUsername(p.getUsername()).getPrivateObjectiveCard().getName());
         }
         checkBlockingTimer = new Timer(); //General timer for every player. Is starts the game stopping players without waiting the answer
-        checkBlockingTimer.schedule(
-            new TimerTask() {
-                @Override
-                public void run() {
-                    synchronized (mutex) {
-                        LOGGER.log(Level.INFO, "This is last call for chosing Wpc: starting the game with disconnected Players");
-                        if (!uninitializedOrderedPlayers.isEmpty()) {
-                            for (Player p : uninitializedOrderedPlayers) {
-                                LOGGER.log(Level.INFO, "Dimension of orderedP" + uninitializedOrderedPlayers.size());
-                                userViewMap.get(p.getUsername()).timeOut();
-                                orderedPlayers.add(p);
-                                LOGGER.log(Level.INFO, "Added " + p.getUsername());
-                            }
-                            uninitializedOrderedPlayers.clear();
-                            startGame();
+        checkBlockingTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                synchronized (mutex) {
+                    LOGGER.log(Level.INFO, "Last call for choosing Wpc: starting the game with disconnected Players");
+                    if (!uninitializedOrderedPlayers.isEmpty()) {
+                        for (Player p : uninitializedOrderedPlayers) {
+                            LOGGER.log(Level.INFO, "Dimension of orderedP" + uninitializedOrderedPlayers.size());
+                            userViewMap.get(p.getUsername()).timeOut();
+                            orderedPlayers.add(p);
+                            LOGGER.log(Level.INFO, "Added " + p.getUsername());
                         }
+                        uninitializedOrderedPlayers.clear();
+                        startGame();
                     }
                 }
-            },
-            CONSTANTS.WPC_TIMER); //TODO timer
+            }
+        },
+        CONSTANTS.WPC_TIMER); //TODO timer
     }
 
     /**
@@ -185,7 +185,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     /**
-     * Ends game and sends game outcome to players
+     * Ends game and sends game outcome and ranking to players
      */
     private void endGame() {
         for (Player p : orderedPlayers) {
