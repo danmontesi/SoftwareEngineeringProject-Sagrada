@@ -18,6 +18,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
 
@@ -27,7 +28,7 @@ public class Server {
     /* Clients connected with their own username and ClientConnection:
        ClientConnection is the reference that the server has to contact them
        These clients could both be in a game or be waiting for a game to start */
-    private static Map<String, ClientConnection> connectedClients = new HashMap<>();
+    private static Map<String, ClientConnection> connectedClients = new ConcurrentHashMap<>();
 
     /* Clients that were in a game andd then got disconnected
        These clients could be reinserted in a paused game when they reconnect to the server

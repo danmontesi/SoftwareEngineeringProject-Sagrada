@@ -28,6 +28,7 @@ public class SocketVirtualClient extends Thread implements ClientConnection {
             output.writeObject(command);
             output.flush();
         } catch (IOException e) {
+            //TODO disconnetti client
             e.printStackTrace();
         }
     }

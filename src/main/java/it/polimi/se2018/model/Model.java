@@ -38,8 +38,6 @@ public class Model extends Observable { //Observable of View
     private Player currentPlayer;
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
-
-
     /**
      * Constructor: generates a game by
      * uploading all WindowPatternCards, PublicObjectiveCards, PrivateObjectiveCards and ToolCards
@@ -57,7 +55,6 @@ public class Model extends Observable { //Observable of View
         List<PrivateObjectiveCard> privateObjectiveCardDeck;
         List<PublicObjectiveCard> publicObjectiveCardDeck;
         List<ToolCard> toolCardDeck;
-
 
         try {
             //instantiate Parsers
