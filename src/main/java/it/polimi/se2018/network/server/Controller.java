@@ -180,7 +180,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
      */
     private void startGame() {
         assignRoundPlayers(orderedPlayers);
-        model.notifyRefreshBoard(null, orderedPlayers);
+        model.notifyRefreshBoard(orderedPlayers);
         startNewRound();
     }
 
@@ -263,7 +263,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             endGame();
         } else {
             LOGGER.log(Level.INFO, "Start round " + (10 - orderedRoundPlayers.size()));
-            model.setDraftPool(model.extractDraftPoolDice(orderedPlayers.size()));
+            model.setDraftPool(orderedPlayers.size());
+            //model.setDraftPool(model.extractDraftPoolDice(orderedPlayers.size()));
             currentRoundOrderedPlayers = orderedRoundPlayers.remove(0);
             currentPlayer = currentRoundOrderedPlayers.remove(0);
             hasPerformedMove = false;
@@ -282,8 +283,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                     public void run() {
                         LOGGER.log(Level.INFO, "Sending timeout");
                         userViewMap.get(currentPlayer).timeOut();
-                        if (toolcardData!=null)
+                        if (toolcardData!=null) {
                             handlePlayerAfterIncorrectToolUse(currentPlayer, "You haven't finished to use the tool, the changes are restored", false);
+                            //TODO potrebbe essere necesario eliminare i dati (toolcardData dopo il timeout)
+                        }
                         //TODO se l'utente sta usando un tool, resetto il model
                         try {
                             Thread.sleep(1000);
@@ -424,7 +427,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
 
         //inizializza toolcardData
-        toolcardData = new ToolcardData(chosen.getName(), chosen.getActions());
+        toolcardData = new ToolcardData(chosen.getName(), chosen.getActions(), current);
         toolcardData.setOldModel(model);
         toolcardData.setRequiredTokensForLastToolUse(requiredTokens);
         toolcardData.setLastUsedToolCardNum(usedToolNumber);

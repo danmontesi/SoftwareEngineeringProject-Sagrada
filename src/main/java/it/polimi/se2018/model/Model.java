@@ -12,7 +12,6 @@ import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,38 +24,21 @@ import java.util.logging.Logger;
  * This is the model, the class that maintain the State of the game
  * It is an Observable from a VirtualView (the Observer).
  * The Virtual View just send "broadcast" all graphical changes of the board
- * <p>
  * The controller directly modifies the Model.
  */
-public class Model extends Observable implements Serializable, Cloneable { //Observable of View
-
-
+public class Model extends Observable { //Observable of View
+    private DiceBag diceBag;
+    private List<PublicObjectiveCard> extractedPublicObjectiveCard = new ArrayList<>();
+    private List<ToolCard> extractedToolCard = new ArrayList<>();
+    private List<WindowPatternCard> windowPatternCardDeck;
+    private List<Player> gamePlayers;
+    private RoundTrack roundTrack;
+    private DraftPool draftPool;
+    private int currentRound;
+    private Player currentPlayer;
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
-    private DiceBag diceBag;
 
-    private List<PublicObjectiveCard> extractedPublicObjectiveCard;
-
-    private List<ToolCard> extractedToolCard;
-
-    private List<WindowPatternCard> windowPatternCardDeck;
-
-    private List<Player> gamePlayers;
-
-    private RoundTrack roundTrack;
-
-    private DraftPool draftPool;
-
-    private int currentRound;
-
-    private Player currentPlayer;
-
-    //private ArrayList<Observer> observers; Already in the class thanks to Observable ->le virtual view!
-
-    public void setDraftPool(List<Die> dice) {
-        this.draftPool = new DraftPool(dice);
-        notifyRefreshDraftPool();
-    }
 
     /**
      * Constructor: generates a game by
@@ -70,83 +52,61 @@ public class Model extends Observable implements Serializable, Cloneable { //Obs
         gamePlayers = players;
         diceBag = new DiceBag();
         roundTrack = new RoundTrack();
-        ParserPrivateObjectiveCard parserPrivateObjectiveCard = new ParserPrivateObjectiveCard();
-        ParserPublicObjectiveCard parserPublicObjectiveCard = new ParserPublicObjectiveCard();
-        ParserToolcard parserToolcard = new ParserToolcard();
-        ParserWindowPatternCard parserWindowPatternCard;
+        draftPool = new DraftPool(gamePlayers.size());
+
+        List<PrivateObjectiveCard> privateObjectiveCardDeck;
+        List<PublicObjectiveCard> publicObjectiveCardDeck;
+        List<ToolCard> toolCardDeck;
+
 
         try {
-            parserWindowPatternCard = new ParserWindowPatternCard();
+            //instantiate Parsers
+            ParserPrivateObjectiveCard parserPrivateObjectiveCard = new ParserPrivateObjectiveCard();
+            ParserPublicObjectiveCard parserPublicObjectiveCard = new ParserPublicObjectiveCard();
+            ParserToolcard parserToolcard = new ParserToolcard();
+            ParserWindowPatternCard parserWindowPatternCard = new ParserWindowPatternCard();
+
+            //Parse cards
             windowPatternCardDeck = parserWindowPatternCard.parseAllCards();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        List<PrivateObjectiveCard> privateObjectiveCardDeck = new ArrayList<>();
-        List<PublicObjectiveCard> publicObjectiveCardDeck = new ArrayList<>();
-
-        try {
-            privateObjectiveCardDeck = parserPrivateObjectiveCard.parseCards();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            publicObjectiveCardDeck = parserPublicObjectiveCard.parseCards();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Extracting three cards
-        Collections.shuffle(publicObjectiveCardDeck);
-        extractedPublicObjectiveCard = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
-            extractedPublicObjectiveCard.add(publicObjectiveCardDeck.remove(0));
-        }
-
-        List<ToolCard> toolCardDeck = new ArrayList<>();
-        try {
             toolCardDeck = parserToolcard.parseCards();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        extractedToolCard = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            int index = ThreadLocalRandom.current().nextInt(0, toolCardDeck.size());
-            extractedToolCard.add(i, toolCardDeck.remove(index));
-        }
+            privateObjectiveCardDeck = parserPrivateObjectiveCard.parseCards();
+            publicObjectiveCardDeck = parserPublicObjectiveCard.parseCards();
 
-        Collections.shuffle(privateObjectiveCardDeck);
-        for (Player p : gamePlayers)
-            p.setPrivateObjectiveCard(privateObjectiveCardDeck.remove(0));
+            //Shuffle decks
+            Collections.shuffle(publicObjectiveCardDeck);
+            Collections.shuffle(toolCardDeck);
+            Collections.shuffle(privateObjectiveCardDeck);
+
+            //extract cards
+            for (int i = 0; i < 3; i++) {
+                extractedPublicObjectiveCard.add(publicObjectiveCardDeck.remove(0));
+                extractedToolCard.add(toolCardDeck.remove(0));
+            }
+
+            for (Player p : gamePlayers){
+                p.setPrivateObjectiveCard(privateObjectiveCardDeck.remove(0));
+            }
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 
     public Model(Model oldModel){
         this.gamePlayers = oldModel.getGamePlayers();
-        this.setCurrentRound(oldModel.getCurrentRound());
-        this.setDraftPool(oldModel.getDraftPool());
-        this.setDiceBag(oldModel.getDiceBag());
-        this.setExtractedToolCard(oldModel.getExtractedToolCard());
-        this.setExtractedPublicObjectiveCard(oldModel.getExtractedPublicObjectiveCard());
-        this.setRoundTrack(oldModel.getRoundTrack());
-    }
+        this.currentRound = oldModel.getCurrentRound();
+        this.draftPool = oldModel.getDraftPool();
+        this.diceBag = oldModel.getDiceBag();
+        this.extractedToolCard = oldModel.getExtractedToolCard();
+        this.extractedPublicObjectiveCard = oldModel.getExtractedPublicObjectiveCard();
+        this.roundTrack = oldModel.getRoundTrack();
+        }
 
     public List<Die> extractDraftPoolDice(int numPlayers) {
-        ArrayList<Die> temp = new ArrayList<>();
-        for (int i = 0; i < 2 * numPlayers + 1; i++) {
-            temp.add(diceBag.extractDie());
-        }
-        return temp;
-    }
-
-    public List<PublicObjectiveCard> getExtractedPublicObjectiveCard() {
-        return extractedPublicObjectiveCard;
+        return diceBag.extractDice(numPlayers);
     }
 
     /**
      * Returns an ArrayList of 4 WindowPatternCards
-     *
      * @return list of extracted cards
      */
     public List<WindowPatternCard> extractWindowPatternCard() {
@@ -158,11 +118,6 @@ public class Model extends Observable implements Serializable, Cloneable { //Obs
         return toReturn;
     }
 
-    /**
-     * Returns an ArrayList of 3 ToolCard
-     *
-     * @return list of extracted cards
-     */
     public List<ToolCard> getExtractedToolCard() {
         return extractedToolCard;
     }
@@ -175,12 +130,16 @@ public class Model extends Observable implements Serializable, Cloneable { //Obs
         return diceBag;
     }
 
+    public List<PublicObjectiveCard> getExtractedPublicObjectiveCard() {
+        return extractedPublicObjectiveCard;
+    }
+
     public void insertDieInDiceBag(Die die) {
-        getDiceBag().insertDie(die);
+        this.diceBag.insertDie(die);
     }
 
     public Die extractDieFromDiceBag() {
-        return getDiceBag().extractDie();
+        return this.diceBag.extractDie();
     }
 
     public void setGamePlayers(List<Player> gamePlayers) {
@@ -193,7 +152,7 @@ public class Model extends Observable implements Serializable, Cloneable { //Obs
         try {
             temp = getDraftPool().takeDie(index);
         } catch (EmptyCellException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         notifyRefreshDraftPool();
         return temp;
@@ -201,9 +160,9 @@ public class Model extends Observable implements Serializable, Cloneable { //Obs
 
     public void changeDieValueOnDraftPool(int index, int value) {
         try {
-            draftPool.getDie(index).setValue(value);
+            this.draftPool.getDie(index).setValue(value);
         } catch (EmptyCellException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         notifyRefreshDraftPool();
     }
@@ -224,7 +183,7 @@ public class Model extends Observable implements Serializable, Cloneable { //Obs
         try {
             toReturn = getRoundTrack().switchDie(index, die);
         } catch (EmptyCellException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
         notifyRefreshRoundTrack();
@@ -238,168 +197,108 @@ public class Model extends Observable implements Serializable, Cloneable { //Obs
 
     public void notifyRefreshDraftPool() {
         List<String> draftpool;
-        draftpool = getDraftPool().draftpoolPathRepresentation();
+        draftpool = draftPool.draftpoolPathRepresentation();
 
         for (Observer observer : observers) {
             ((View) observer).updateDraftPool(new RefreshDraftPoolCommand(draftpool));
         }
-
     }
 
     private void notifyRefreshWpcs() {
-
         for (Observer observer : observers) {
-            List<String> personalWpc = new ArrayList<>(); //Dice in the format: colorNumber/empty
-            List<List<String>> otherPlayersWpcs = new ArrayList<>();
-            View currentView = (View) observer;
-
-            for (Player p : gamePlayers) {
-                if (p.getUsername().equals(currentView.getUsername())) {
-                    personalWpc = p.getWindowPatternCard().wpcPathRepresentation();
-                } else {
-                    otherPlayersWpcs.add(p.getWindowPatternCard().wpcPathRepresentation());
-                }
-            }
-
-            ((View) observer).updateWpc(new RefreshWpcCommand(personalWpc, otherPlayersWpcs));
-            LOGGER.log(Level.INFO, "Notificando una V.V. della new board -> new WPCards for " + currentView.getUsername());
-
+            View view = (View) observer;
+            List<List<String>> otherPlayersWpcs = refreshWPCs(view);
+            List<String> personalWpc = otherPlayersWpcs.remove(0);
+            view.updateWpc(new RefreshWpcCommand(personalWpc, otherPlayersWpcs));
+            LOGGER.log(Level.INFO, "Notificando una V.V. delle nuove WPC: " + view.getUsername());
         }
+    }
+
+    public List<List<String>> refreshWPCs(View view){
+        List<List<String>> wpcList = new ArrayList<>();
+
+        for (Player p : gamePlayers) {
+            if (p.getUsername().equals(view.getUsername())) {
+                //my wpc is in first place
+                wpcList.add(0, p.getWindowPatternCard().wpcPathRepresentation());
+            } else {
+                wpcList.add(p.getWindowPatternCard().wpcPathRepresentation());
+            }
+        }
+        return wpcList;
     }
 
     private void notifyRefreshRoundTrack() {
-
+        List<String> roundTrackString = refreshRoundTrack();
         for (Observer observer : observers) {
-            List<String> roundTrackString = new ArrayList<>(); //Dice in the format: colorNumber/empty
-            roundTrackString = getRoundTrack().roundtrackPathRepresentation();
-            LOGGER.log(Level.INFO, "Notificando una V.V. della new board");
+            LOGGER.log(Level.INFO, "Notificando una V.V. del nuovo round track");
             ((View) observer).updateRoundTrack(new RefreshRoundTrackCommand(roundTrackString));
         }
+    }
 
+    public List<String> refreshRoundTrack(){
+        List<String> roundTrackString; //Dice in the format: colorNumber/empty
+        roundTrackString = this.roundTrack.roundtrackPathRepresentation();
+        return roundTrackString;
     }
 
     private void notifyRefreshTokens() {
-        LOGGER.log(Level.INFO, "Notificando una V.V. della new board");
-        List<Integer> tokensToolCards = new ArrayList<>(); //Ordered
+        LOGGER.log(Level.INFO, "Notificando una V.V. dei nuovi tokens");
+        List<Integer> tokensToolCards = refreshToolCardTokens(); //Ordered
 
+        for (Observer observer : observers) {
+            View player = (View) observer;
+            List<Integer> otherPlayersTokens = refreshPlayerTokens(player);
+            int myTokens = otherPlayersTokens.remove(0);
+            ((View) observer).updateTokens(new RefreshTokensCommand(otherPlayersTokens, tokensToolCards, myTokens));
+        }
+    }
 
+    public List<Integer> refreshToolCardTokens(){
+        List<Integer> tokensToolCards = new ArrayList<>();
         for (ToolCard toolCard : extractedToolCard) {
             tokensToolCards.add(toolCard.getTokenCount());
         }
+        return tokensToolCards;
+    }
 
-
-        for (Observer observer : observers) {
-            View temp = (View) observer;
-            List<Integer> otherPlayersTokens = new ArrayList<>();
-            Integer myTokens = null;
-            for (Player p : gamePlayers) {
-                if (p.getUsername().equals(temp.getUsername()))
-                    myTokens = p.getTokens();
-                else {
-                    otherPlayersTokens.add(p.getTokens());
-                }
+    public List<Integer> refreshPlayerTokens(View view){
+        List<Integer> tokenList = new ArrayList<>();
+        for (Player p : gamePlayers) {
+            if (p.getUsername().equals(view.getUsername())) {
+                //my tokens is in first place
+                tokenList.add(0, p.getTokens());
             }
-
-
-            ((View) observer).updateTokens(new RefreshTokensCommand(otherPlayersTokens, tokensToolCards, myTokens));
+            else {
+                tokenList.add(p.getTokens());
+            }
         }
+        return tokenList;
     }
 
     /**
      * Method for initial setting of the board
      */
-    public void notifyRefreshBoard(String playerUsername, List<Player> orderedPlayers) {
-        if (orderedPlayers!=null){
-            this.gamePlayers=orderedPlayers;
-        }
-
-        List<String> draftpool = new ArrayList<>(); //Dice in the format: colorNumber/empty
-
-        if (this.draftPool == null) { //not istantiated yet
-            for (int i = 0; i < 9; i++) {
-                draftpool.add("empty");
-            }
-        } else {
-            draftpool = getDraftPool().draftpoolPathRepresentation();
-        }
-
-
-        List<String> roundTrackString; //Dice in the format: colorNumber/empty
-        roundTrackString = getRoundTrack().roundtrackPathRepresentation();
-
-        List<String> publicObjectiveCards = new ArrayList<>();
-        List<String> publicObjectiveDescription = new ArrayList<>();
-
-
-        for (PublicObjectiveCard card : extractedPublicObjectiveCard) {
-            publicObjectiveCards.add(card.getName());
-            publicObjectiveDescription.add(card.getDescription());
-        }
-
-        List<String> toolCards = new ArrayList<>();
-        List<String> toolCardDescription = new ArrayList<>();
-        List<Integer> tokensToolCards = new ArrayList<>(); //Ordered
-
-
-        for (ToolCard toolCard : extractedToolCard) {
-            toolCards.add(toolCard.getName());
-            toolCardDescription.add(toolCard.getDescription());
-            tokensToolCards.add(toolCard.getTokenCount());
-        }
-
-
+    public void notifyRefreshBoard(List<Player> players ) {
+        gamePlayers = players;
         for (Observer observer : observers) {
             View currentView = (View) observer;
-            String username = currentView.getUsername();
-            String privateObjectiveCard = null;
-            String privateObjectiveCardDescription = null;
-            List<String> personalWpc = new ArrayList<>(); //Dice in the format: colorNumber/empty
-            List<List<String>> otherPlayersWpcs = new ArrayList<>();
-
-
-            for (Player p : gamePlayers) {
-                if (p.getUsername().equals(username)) {
-                    personalWpc = p.getWindowPatternCard().wpcPathRepresentation();
-                    privateObjectiveCard = p.getPrivateObjectiveCard().getName();
-                    privateObjectiveCardDescription = p.getPrivateObjectiveCard().getDescription();
-                } else {
-                    otherPlayersWpcs.add(p.getWindowPatternCard().wpcPathRepresentation());
-                }
-            }
-
-
-            List<Integer> otherPlayersTokens = new ArrayList<>();
-            List<String> otherPlayersUsernames = new ArrayList<>();
-            Integer myTokens = null;
-
-
-            for (Player p : gamePlayers) {
-                if (p.getUsername().equals(username))
-                    myTokens = p.getTokens();
-                else {
-                    otherPlayersTokens.add(p.getTokens());
-                    otherPlayersUsernames.add(p.getUsername());
-                }
-            }
-            //TODO con 15 costruttori
-            if (playerUsername != null) {
-                if (playerUsername.equals(((View) observer).getUsername())) {
-                    ((View) observer).updateBoard(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
-                            draftpool, roundTrackString, personalWpc, myTokens, username, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
-                    //TODO: avvisa che è il suo turno if (currentPlayer==getPlayerFromUsername(playerUsername)){
-                    return;
-                }
-            } else {
-                ((View) observer).updateBoard(new RefreshBoardCommand(privateObjectiveCard, privateObjectiveCardDescription, publicObjectiveCards, publicObjectiveDescription, toolCards, toolCardDescription, tokensToolCards,
-                        draftpool, roundTrackString, personalWpc, myTokens, username, otherPlayersWpcs, otherPlayersTokens, otherPlayersUsernames));
-            }
-
+            currentView.updateBoard(new RefreshBoardCommand(this, currentView));
         }
+    }
+
+    public void notifyBoardSinglePlayer(View view){
+        view.updateBoard(new RefreshBoardCommand(this, view));
     }
 
     public void putDieOnRoundTrack(Die die) {
         roundTrack.placeDie(die);
         notifyRefreshRoundTrack();
+    }
+
+    public void setDraftPool(int numberOfPlayers) {
+        this.draftPool.fillDraftPool(diceBag.extractDice(numberOfPlayers));
+        notifyRefreshDraftPool();
     }
 
     public void flipDraftPoolDie(int index) throws EmptyCellException {
@@ -417,10 +316,8 @@ public class Model extends Observable implements Serializable, Cloneable { //Obs
             draftPool.getDie(index).increaseByOne();
         else
             draftPool.getDie(index).decreaseByOne();
-
         notifyRefreshDraftPool();
     }
-
 
     public Die getLastDie() throws EmptyCellException {
         Die toReturn;
@@ -437,7 +334,7 @@ public class Model extends Observable implements Serializable, Cloneable { //Obs
             if (p.getUsername().equals(username))
                 return p;
         }
-        System.out.println("Error: returning a random one");
+        LOGGER.log(Level.INFO, "Error: returning a random one");
         return gamePlayers.get(0);
     }
 
@@ -449,38 +346,12 @@ public class Model extends Observable implements Serializable, Cloneable { //Obs
         this.currentPlayer = currentPlayer;
     }
 
-
     public List<Player> getGamePlayers() {
         return gamePlayers;
     }
 
-    public void setDiceBag(DiceBag diceBag) {
-        this.diceBag = diceBag;
-    }
-
-    public void setExtractedPublicObjectiveCard(List<PublicObjectiveCard> extractedPublicObjectiveCard) {
-        this.extractedPublicObjectiveCard = extractedPublicObjectiveCard;
-    }
-
-    public void setExtractedToolCard(List<ToolCard> extractedToolCard) {
-        this.extractedToolCard = extractedToolCard;
-    }
-
-    public void setWindowPatternCardDeck(List<WindowPatternCard> windowPatternCardDeck) {
-        this.windowPatternCardDeck = windowPatternCardDeck;
-    }
-
-    public void setRoundTrack(RoundTrack roundTrack) {
-        this.roundTrack = roundTrack;
-    }
-
-    public void setDraftPool(DraftPool draftPool) {
-        this.draftPool = draftPool;
-    }
-
     public int getCurrentRound() {
         return currentRound;
-
     }
 
     public Player getCurrentPlayer() {

@@ -152,7 +152,7 @@ public class GameMatchTest {
         controller.getOrderedPlayers().get(0).setWindowPatternCard(card);
         controller.getOrderedPlayers().get(1).setWindowPatternCard(card);
         controller.getOrderedPlayers().get(2).setWindowPatternCard(card);
-        controller.getModel().setDraftPool((ArrayList<Die>) fillWithColoredDice("rrrrrr",1));
+        //TODO RIASSEGNA controller.getModel().setDraftPool();
 
          }
 

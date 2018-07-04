@@ -1,7 +1,5 @@
 package it.polimi.se2018.utils;
 
-import javafx.application.Application;
-
 import java.util.ArrayList;
 import java.util.List;
 

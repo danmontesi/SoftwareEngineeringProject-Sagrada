@@ -3,6 +3,7 @@ package it.polimi.se2018.network.server;
 import it.polimi.se2018.model.Action;
 import it.polimi.se2018.model.COLOR;
 import it.polimi.se2018.model.Model;
+import it.polimi.se2018.model.Player;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public class ToolcardData {
     private String toolCardName;
     private List<Action> toolCardActions;
+    private Player playerUsingTool;
 
     private int indexFromDraftPool;
     private int indexFromRoundTrack;
@@ -33,9 +35,10 @@ public class ToolcardData {
     private int indexDieBeforeMoved;
     private String source;
 
-    ToolcardData(String toolCardName, List<Action> toolCardActions) {
+    ToolcardData(String toolCardName, List<Action> toolCardActions, Player playerUsingTool) {
         this.toolCardName = toolCardName;
         this.toolCardActions = toolCardActions;
+        this.playerUsingTool = playerUsingTool;
     }
 
     public Model removeOldModel(){
@@ -168,5 +171,9 @@ public class ToolcardData {
 
     void setHasDoneMove() {
         hasDoneMove=true;
+    }
+
+    public Player getPlayerUsingTool() {
+        return playerUsingTool;
     }
 }

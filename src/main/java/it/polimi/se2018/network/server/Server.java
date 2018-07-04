@@ -3,7 +3,10 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.CONSTANTS;
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
-import it.polimi.se2018.commands.server_to_client_command.*;
+import it.polimi.se2018.commands.server_to_client_command.AuthenticatedCorrectlyCommand;
+import it.polimi.se2018.commands.server_to_client_command.MessageFromServerCommand;
+import it.polimi.se2018.commands.server_to_client_command.NewConnectedPlayerNotification;
+import it.polimi.se2018.commands.server_to_client_command.PingConnectionTester;
 import it.polimi.se2018.network.client.ClientConnection;
 import it.polimi.se2018.network.client.rmi.RMIClientInterface;
 import it.polimi.se2018.network.server.rmi.RMIServer;
@@ -236,7 +239,7 @@ public class Server {
      */
     public synchronized static void addToWaitingClients(String username){ //TODO Gestire la concorrenza: se vengono addate insieme 6 view, faccio partire un timer e l'altro per i 2 player rimanenti?
         waitingClients.add(username);
-        System.out.println("Addato "+ username);
+        System.out.println("Aggiunto "+ username);
         notifyNewConnectedPlayer(username);
         if (waitingClients.size() == 2){
             System.out.println("Starting timer");
@@ -292,7 +295,7 @@ public class Server {
         for (Controller game : activeGames){
             for (String user : game.getUserViewMap().keySet()){
                 if (username.equals(user)){
-                    game.getModel().notifyRefreshBoard(username, null);
+                    game.getModel().notifyBoardSinglePlayer(userMap.get(username));
                     game.getModel().notifyRefreshDraftPool();
                     game.getModel().setGamePlayers(game.getOrderedPlayers());
                 }

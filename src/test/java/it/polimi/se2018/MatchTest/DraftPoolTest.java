@@ -25,7 +25,8 @@ public class DraftPoolTest {
     public void setUp(){
         //Instantiate a DiceBag and get dice from that bag
         DiceBag diceBag = new DiceBag();
-        dp = new DraftPool(diceBag.extractDice(numberOfPlayers));
+        dp = new DraftPool(numberOfPlayers);
+        dp.fillDraftPool(diceBag.extractDice(numberOfPlayers));
     }
 
     @Test

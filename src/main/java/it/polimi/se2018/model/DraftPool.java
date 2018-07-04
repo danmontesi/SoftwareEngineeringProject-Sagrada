@@ -14,29 +14,24 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class DraftPool {
 
-    Die getLastDie() throws EmptyCellException {
-        for (Cell c : cells){
-            if (c.hasDie()){
-                return c.removeDie();
-            }
-        }
-        throw new EmptyCellException();
-    }
-
-    /* The arraylist is a List of Die.
-       If a Die is picked, the value has to remain NULL in order to let the Graphic remain the same when a die is removed */
     private List<Cell> cells;
 
     /**
      * Constructor: generates a draftPool by taking from the dicebag 2 dice for each player + 1
-     * @param dice dice to assign
      */
-    public DraftPool(List<Die> dice) {
+    public DraftPool(int numberOfPlayers) {
         this.cells = new ArrayList<>();
-        for (int i = 0; i < dice.size(); i++) {
-            cells.add(new Cell(dice.get(i), i));
+        for (int i = 0; i < numberOfPlayers*2 +1; i++) {
+            cells.add(new Cell(i));
         }
     }
+
+    public void fillDraftPool(List<Die> dice){
+        for(int i = 0; i < cells.size(); i++){
+            cells.get(i).setAssociatedDie(dice.get(i));
+        }
+    }
+
 
     /**
      * Removes a die from the draftPool
@@ -107,6 +102,14 @@ public class DraftPool {
         }
     }
 
+    Die getLastDie() throws EmptyCellException {
+        for (Cell c : cells){
+            if (c.hasDie()){
+                return c.removeDie();
+            }
+        }
+        throw new EmptyCellException();
+    }
 
     /**
      * Rolls all dice in the draftPool (gives all dice a new random value)
@@ -169,15 +172,7 @@ public class DraftPool {
     public List<String> draftpoolPathRepresentation() {
         List<String> draftpoolString = new ArrayList<>();
         for (Cell cell : cells) {
-            try {
-                if (cell.isEmpty()) {
-                    draftpoolString.add("empty");
-                } else {
-                    draftpoolString.add(cell.getAssociatedDie().getColor().toString() + "_" + cell.getAssociatedDie().getValue());
-                }
-            } catch (EmptyCellException e) {
-                e.printStackTrace();
-            }
+            draftpoolString.add(cell.toString());
         }
         return draftpoolString;
     }

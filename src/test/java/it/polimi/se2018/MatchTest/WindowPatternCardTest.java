@@ -151,6 +151,31 @@ public class WindowPatternCardTest {
     }
 
     @Test
+    public void moveDieIgnoringPlacementRestriction(){
+        wpc.placeDie(new Die(COLOR.RED, 4), 3, 2);
+        try {
+            assertTrue(wpc.moveDie(equivalentIndex(3, 2), equivalentIndex(2, 2),
+                    true, true, false));
+        } catch (EmptyCellException e) {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void incorrectMoveDie(){
+        List<Cell> initialSchema = wpc.getSchema();
+        wpc.placeDie(new Die(COLOR.RED, 4), 3, 2);
+        try {
+            assertFalse(wpc.moveDie(equivalentIndex(3, 2), equivalentIndex(2, 2),
+                    true, true, true));
+            //check if wpc has been restored after incorrect move
+            assertEquals(initialSchema, wpc.getSchema());
+        } catch (EmptyCellException e) {
+            Assert.fail();
+        }
+    }
+
+    @Test
     public void moveDieInAbsurdIndex(){
         wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 0);
         try {

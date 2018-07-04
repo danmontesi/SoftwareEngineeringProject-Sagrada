@@ -1,7 +1,11 @@
 package it.polimi.se2018.commands.server_to_client_command;
 
+import it.polimi.se2018.model.Model;
+import it.polimi.se2018.model.Player;
 import it.polimi.se2018.utils.ControllerClientInterface;
+import it.polimi.se2018.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RefreshBoardCommand extends ServerToClientCommand{
@@ -10,17 +14,12 @@ public class RefreshBoardCommand extends ServerToClientCommand{
      * Contains each player's view of the board.
      */
     private String privateObjectiveCard;
-
-    public String getPrivateObjectiveCardDescription() {
-        return privateObjectiveCardDescription;
-    }
-
     private String privateObjectiveCardDescription;
-    private List<String> publicObjectiveCards;
-    private List<String> publicObjectiveDescription;
+    private List<String> publicObjectiveCards = new ArrayList<>();
+    private List<String> publicObjectiveDescription = new ArrayList<>();
 
-    private List<String> toolCards;
-    private List<String> toolCardDescription;
+    private List<String> toolCards = new ArrayList<>();
+    private List<String> toolCardDescription = new ArrayList<>();
     private List<Integer> tokensToolCards; //Ordered
 
     private List<String> draftpool; //Dice in the format: colorNumber/empty
@@ -32,28 +31,24 @@ public class RefreshBoardCommand extends ServerToClientCommand{
 
     private List<List<String>> otherPlayersWpcs; //Dice in the format colorNumber/empty or restrictionColor or restrictionValue
     private List<Integer> otherPlayersTokens;
-    private List<String> otherPlayersUsernames;
+    private List<String> otherPlayersUsernames = new ArrayList<>();
 
-    public RefreshBoardCommand(String model){
-        this.message = model;
-    }
-
-    public RefreshBoardCommand(String privateObjectiveCard, String privateObjectiveCardDescription, List<String> publicObjectiveCards, List<String> publicObjectiveDescription, List<String> toolCards, List<String> toolCardDescription, List<Integer> tokensToolCards, List<String> draftpool, List<String> roundTrack, List<String> personalWpc, Integer personalTokens, String username, List<List<String>> otherPlayersWpcs, List<Integer> otherPlayersTokens, List<String> otherPlayersUsernames) {
-        this.privateObjectiveCard = privateObjectiveCard;
-        this.publicObjectiveCards = publicObjectiveCards;
-        this.publicObjectiveDescription = publicObjectiveDescription;
-        this.toolCards = toolCards;
-        this.toolCardDescription = toolCardDescription;
-        this.tokensToolCards = tokensToolCards;
-        this.draftpool = draftpool;
-        this.roundTrack = roundTrack;
-        this.personalWpc = personalWpc;
-        this.personalTokens = personalTokens;
-        this.username = username;
-        this.otherPlayersWpcs = otherPlayersWpcs;
-        this.otherPlayersTokens = otherPlayersTokens;
-        this.otherPlayersUsernames = otherPlayersUsernames;
-        this.privateObjectiveCardDescription = privateObjectiveCardDescription;
+    public RefreshBoardCommand(Model model, View view){
+        //set private objective (name and description)
+        getMyPrivateObjective(model, view);
+        //set every username
+        getUsernames(model, view);
+        //set public cards information
+        getPublicCardsInfo(model);
+        this.tokensToolCards = model.refreshToolCardTokens();
+        this.draftpool = model.getDraftPool().draftpoolPathRepresentation();
+        this.roundTrack = model.getRoundTrack().roundtrackPathRepresentation();
+        List<List<String>> wpcs = model.refreshWPCs(view);
+        List<Integer> tokens = model.refreshPlayerTokens(view);
+        this.personalWpc = wpcs.remove(0);
+        this.personalTokens = tokens.remove(0);
+        this.otherPlayersWpcs = wpcs;
+        this.otherPlayersTokens = tokens;
     }
 
     /**
@@ -120,4 +115,40 @@ public class RefreshBoardCommand extends ServerToClientCommand{
     public List<String> getOtherPlayersUsernames() {
         return otherPlayersUsernames;
     }
+
+    public String getPrivateObjectiveCardDescription() {
+        return privateObjectiveCardDescription;
+    }
+
+    private void getMyPrivateObjective(Model model, View view){
+        for(Player player : model.getGamePlayers()){
+            if(view.getUsername().equals(player.getUsername())){
+                 privateObjectiveCard = player.getPrivateObjectiveCard().getName();
+                 privateObjectiveCardDescription = player.getPrivateObjectiveCard().getDescription();
+            }
+        }
+    }
+
+    private void getUsernames(Model model, View view){
+        for (Player player : model.getGamePlayers()){
+            if(!view.getUsername().equals(player.getUsername())){
+                otherPlayersUsernames.add(player.getUsername());
+            } else {
+                username = player.getUsername();
+            }
+        }
+    }
+
+    private void getPublicCardsInfo(Model model){
+        for(int i = 0; i < model.getExtractedToolCard().size(); i++){
+            toolCards.add(model.getExtractedToolCard().get(i).getName());
+            toolCardDescription.add(model.getExtractedToolCard().get(i).getDescription());
+        }
+
+        for(int i = 0; i <model.getExtractedPublicObjectiveCard().size(); i++){
+            publicObjectiveCards.add(model.getExtractedPublicObjectiveCard().get(i).getName());
+            publicObjectiveDescription.add(model.getExtractedPublicObjectiveCard().get(i).getDescription());
+        }
+    }
+
 }

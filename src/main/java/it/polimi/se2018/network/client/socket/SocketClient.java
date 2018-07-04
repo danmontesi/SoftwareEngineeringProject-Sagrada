@@ -2,10 +2,11 @@ package it.polimi.se2018.network.client.socket;
 
 
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
-import it.polimi.se2018.network.client.ClientController;
-import it.polimi.se2018.utils.ControllerClientInterface;
-import it.polimi.se2018.network.server.ServerConnection;
+import it.polimi.se2018.commands.server_to_client_command.PingConnectionTester;
 import it.polimi.se2018.commands.server_to_client_command.ServerToClientCommand;
+import it.polimi.se2018.network.client.ClientController;
+import it.polimi.se2018.network.server.ServerConnection;
+import it.polimi.se2018.utils.ControllerClientInterface;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -58,15 +59,18 @@ public class SocketClient implements ServerConnection {
             output.writeObject(username);
             output.flush();
 
+
+
             new Thread(() -> {
                 while (isAlive){
                     try {
                         ServerToClientCommand command = (ServerToClientCommand) input.readObject();
-                        if (command.hasMessage() && command.getMessage().contains("Ping")) {
-                            LOGGER.log(Level.FINE,"Arrived ping from server");
+                        if (!(command instanceof PingConnectionTester)) {
+                            ServerToClientCommand toDispatch = command;
+                            clientController.dispatchCommand(toDispatch);
                         }
                         else {
-                            clientController.dispatchCommand(command);
+                            LOGGER.log(Level.FINE,"Arrived ping from server");
                         }
                     } catch (IOException e) {
                         LOGGER.log(Level.SEVERE, e.getMessage(), e);
