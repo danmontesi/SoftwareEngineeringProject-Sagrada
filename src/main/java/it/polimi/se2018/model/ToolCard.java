@@ -1,5 +1,6 @@
 package it.polimi.se2018.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,7 +49,9 @@ public class ToolCard {
     }
 
     public List<Action> getActions() {
-        return actions;
+        ArrayList<Action> actionsToReturn = new ArrayList<>();
+        actionsToReturn.addAll(actions);
+        return actionsToReturn;
     }
 
     public boolean isReversible() {
