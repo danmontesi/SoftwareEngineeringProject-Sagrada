@@ -177,14 +177,16 @@ public class WPCChoiceController extends Observable implements Observer {
      */
     @FXML
     public void selectWPC(){
+        int s = wpCards.size();
         for (int i=0; i<wpCards.size(); i++) {
             if (wpCards.get(i).isSelected()) {
                 disableOtherWPCs(i, true);
                 selectedWPC = wpcNames.get(i).getText();
-                System.out.println(selectedWPC);
-            } else {
-                disableOtherWPCs(i, false);
+                s--;
             }
+        }
+        if (s == wpCards.size()) {
+            disableOtherWPCs(5, false);
         }
     }
 

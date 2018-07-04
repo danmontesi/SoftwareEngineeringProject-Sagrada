@@ -169,7 +169,7 @@
                </fill>
             </Circle>
             <ImageView fx:id="wpc0" fitHeight="232.0" fitWidth="288.0" layoutX="15.0" layoutY="40.0" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="46.0" />
-            <GridPane fx:id="personalWPCDice" hgap="14.0" layoutX="27.0" layoutY="55.0" vgap="14.0" AnchorPane.bottomAnchor="28.0" AnchorPane.topAnchor="55.0">
+            <GridPane fx:id="personalWPCDice" hgap="14.0" layoutX="27.0" layoutY="56.0" vgap="14.0" AnchorPane.bottomAnchor="27.0" AnchorPane.topAnchor="56.0">
                <columnConstraints>
                   <ColumnConstraints prefWidth="43.0" />
                   <ColumnConstraints prefWidth="43.0" />
