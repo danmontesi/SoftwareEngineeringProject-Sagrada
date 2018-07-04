@@ -154,7 +154,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 }
             }
         },
-        CONSTANTS.WPC_TIMER); //TODO timer
+        CONSTANTS.WPC_TIMER);
     }
 
     /**
@@ -264,7 +264,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         } else {
             LOGGER.log(Level.INFO, "Start round " + (10 - orderedRoundPlayers.size()));
             model.setDraftPool(orderedPlayers.size());
-            //model.setDraftPool(model.extractDraftPoolDice(orderedPlayers.size()));
             currentRoundOrderedPlayers = orderedRoundPlayers.remove(0);
             currentPlayer = currentRoundOrderedPlayers.remove(0);
             hasPerformedMove = false;
@@ -285,13 +284,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                         userViewMap.get(currentPlayer).timeOut();
                         if (toolcardData!=null) {
                             handlePlayerAfterIncorrectToolUse(currentPlayer, "You haven't finished to use the tool, the changes are restored", false);
-                            //TODO potrebbe essere necesario eliminare i dati (toolcardData dopo il timeout)
                         }
-                        //TODO se l'utente sta usando un tool, resetto il model
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            Thread.currentThread().interrupt();
                         }
                         startNewTurn();
                     }
@@ -337,7 +334,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            Thread.currentThread().interrupt();
                         }
                         startNewTurn();
                     }
@@ -360,7 +357,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         LOGGER.log(Level.INFO, "entra controller command" + command.getMessage());
         synchronized (mutex) {
             LOGGER.log(Level.INFO, "Dentro il mutex il comm" + command.getMessage());
-            if (uninitializedOrderedPlayers.contains(usernamePlayerMap.get(playerUsername))) { //so the timer isn't finished yet
+            if (uninitializedOrderedPlayers.contains(usernamePlayerMap.get(playerUsername))) { //means the timer isn't finished yet
                 LOGGER.log(Level.INFO, "Entra nell'if" + command.getMessage());
                 ParserWindowPatternCard parser = null;
                 try {
@@ -396,7 +393,18 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
 
-        if (toolcardData != null){
+        if (hasPerformedMove) {
+            for (Action action : model.getExtractedToolCard().get(command.getNumberChosen()).getActions()) {
+                if (action.getType().equals(DO_PLACE_DIE) && action.hasParameter() && action.getParameter().equals("DP")) {
+                    userViewMap.get(playerUsername).invalidActionMessage("You have already performed a move! You can't use a tool that let you move a die");
+                    userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
+                    System.out.println("Ha un piazzamento di dado, non gli permetto di usare una tool che piazza un dado");
+                    return;
+                }
+            }
+        }
+
+        if (toolcardData != null) {
             System.out.println("Invalid: sta chiedendo di utilizzare un tool ma ne sta utilizzando un altro");
             userViewMap.get(currentPlayer).invalidActionMessage("You have to finish using the Tool Card before doing something else");
             executeAction();
@@ -422,7 +430,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 return;
             }
         } else if (chosen.getName().equals("Wheels Pincher") && !currentRoundOrderedPlayers.contains(playerUsername)) {
-            handleCurrentPlayerAfterIncorrectRequest( "You have to be in your first turn to use this tool");
+            handleCurrentPlayerAfterIncorrectRequest("You have to be in your first turn to use this tool");
             return;
         }
 
@@ -436,7 +444,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         //fai cose:
         executeAction();
     }
-
     //TODO modifica e vedi se sono giusti gli afterTool
     /**
      * Handles incorrect requests from the player
@@ -522,7 +529,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
     }
 
-    //TODO ordered players da settare ogni volta
     /**
      * Checks whether it is possible to place the selected die or not
      */
@@ -657,7 +663,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         toolcardData.getToolCardActions().remove(0);
         executeAction();
     }
-//TODO: se esegue una mossa, devo modificare la variabile
 
     /**
      * Increases or decreases the selected die's value depending on the player's choice
@@ -686,7 +691,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             case "WPC":
                 int indexWpc = toolcardData.getIndexFromWPC();
                 try {
-                    tempDieToPlace = usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(indexWpc).getAssociatedDie();
+                    tempDieToPlace = usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(indexWpc).removeDie();
                 } catch (EmptyCellException e) {
                     e.printStackTrace();
                     System.out.println("Error: Non dovrebbe essere null!");
@@ -705,44 +710,49 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 }
                 break;
             default:
-                LOGGER.log(Level.INFO,"Errore in doSwap, non arriva ne DB ne WPC");
+                LOGGER.log(Level.INFO, "Errore in doSwap, non arriva ne DB ne WPC");
                 return;
         }
+
+        boolean isPlaced = true;
 
         switch (parameter2) {
             case "VALUE":
                 if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), true, false, true)) {
-                    handlePlayerAfterIncorrectToolUse(currentPlayer, "You can't place the die here, check the toolcard effect and retry", false);
-                    userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
-                    return;
+                    isPlaced = false;
                 }
                 break;
             case "COLOR":
                 if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), false, true, true)) {
-                    handlePlayerAfterIncorrectToolUse(currentPlayer, "You can't place the die here, check the toolcard effect and retry", false);
-                    userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
-                    return;
+                    isPlaced = false;
                 }
                 break;
             case "ADJACENT":
                 if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), true, true, false)) {
-                    handlePlayerAfterIncorrectToolUse(currentPlayer, "You can't place the die here, check the toolcard effect and retry", false);
-                    userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
-                    return;
+                    isPlaced = false;
                 }
                 break;
             case "NONE":
                 if (!usernamePlayerMap.get(currentPlayer).getWindowPatternCard().placeDie(tempDieToPlace, toolcardData.getIndexToWPC(), true, true, true)) {
-                    handlePlayerAfterIncorrectToolUse(currentPlayer, "You can't place the die here, check the toolcard effect and retry", false);
-                    userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
-                    return;
+                    isPlaced = false;
                 }
                 break;
             default:
-                LOGGER.log(Level.INFO,"Errore in doSwap, non arriva una stringa conosciuta");
+                LOGGER.log(Level.INFO, "Errore in doSwap, non arriva una stringa conosciuta");
                 return;
         }
-        System.out.println("PIAZZATO DADO:" + usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(toolcardData.getIndexToWPC()));
+
+        if (parameter.equals("WPC")) {
+            //reinsert the die used for wpc logic
+            int indexWpc = toolcardData.getIndexFromWPC();
+            usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(indexWpc).setAssociatedDie(tempDieToPlace);
+            model.setGamePlayers(orderedPlayers);
+        }
+        if (!isPlaced) {
+            handlePlayerAfterIncorrectToolUse(currentPlayer, "You can't place the die here, check the toolcard effect and retry", false);
+            userViewMap.get(currentPlayer).continueTurnMenu(hasPerformedMove, hasUsedTool);
+            return;
+        }
 
         switch (parameter) {
             case "WPC":
@@ -764,9 +774,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
                 System.out.println("RIMOSSO DA DP DADO" + tempDieToPlace.getColor());
                 break;
             default:
-                LOGGER.log(Level.INFO,"Errore in doSwap, non arriva ne DB ne WPC");
+                LOGGER.log(Level.INFO, "Errore in doSwap, non arriva ne DB ne WPC");
                 return;
         }
+
         toolcardData.setSource(parameter);
         toolcardData.setIndexMovedDie(toolcardData.getIndexToWPC());
         toolcardData.setHasDoneMove();
@@ -838,6 +849,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     @Override
     public void applyCommand(String playerUsername, ReplyPlaceDie command) {
+
         if (!isAllowed(playerUsername)) {
             userViewMap.get(playerUsername).invalidActionMessage(NOT_YOUR_TURN);
             return;
@@ -847,7 +859,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
-        //TODO metodo che controlla se la risposta è quella che mi aspetto
+
+            //TODO metodo che controlla se la risposta è quella che mi aspetto
         if (!usernamePlayerMap.get(playerUsername).getWindowPatternCard().getCell(command.getPosition()).hasDie()) {
             toolcardData.setIndexToWPC(command.getPosition());
         } else{
@@ -856,6 +869,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
         toolcardData.getToolCardActions().remove(0);
         executeAction();
+
     }
 
     @Override
@@ -1011,8 +1025,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             }
             else{ //Not Reversible
                 userViewMap.get(playerUsername).invalidActionMessage("You can't go back in this Tool!");
-                executeAction();
-                //TODO se sto eseguendo un action che non chiede interazioni all'utente? LAsso di tempo piccolissimo, ma pu capitare
+                if (toolcardData.getToolCardActions().get(0).getType().toString().contains("ASK")) {
+                    executeAction();
+                }
+                //TODO (modificato)
             }
         }
     }
@@ -1106,11 +1122,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             }
             model.setGamePlayers(orderedPlayers);
         }
-        //this.model = toolcardData.removeOldModel();
-        //for (String username : userViewMap.keySet()){
-        //    model.register(userViewMap.get(username));
-        //}
-        //model.notifyRefreshBoard(null, orderedPlayers);
     }
 
     /**
@@ -1163,7 +1174,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         for (String username : usernameTimerMap.keySet()){
             usernameTimerMap.get(username).cancel();
         }
-        usernameTimerMap.clear(); //TODO: metti un unico timer
+        usernameTimerMap.clear();
     }
 
     @Override
