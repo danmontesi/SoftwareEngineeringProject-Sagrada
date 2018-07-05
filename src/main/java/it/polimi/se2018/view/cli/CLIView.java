@@ -3,7 +3,6 @@ package it.polimi.se2018.view.cli;
 import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.exceptions.TimeUpException;
-import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.cli.cliState.CliState;
@@ -27,7 +26,7 @@ public class CLIView extends View implements Runnable {
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
     private InputReader inputReader = new InputReader();
     private INPUT_STATE currentState = INPUT_STATE.NOT_YOUR_TURN;
-    private List<WindowPatternCard> wpcsForInitialChoice;
+    private List<List<String>> wpcsForInitialChoice;
 
     private boolean placeDieAllowed;
     private boolean toolcardAllowed;
@@ -43,16 +42,18 @@ public class CLIView extends View implements Runnable {
     }
 
     @Override
-    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards, String privateObjectiveCard) {
+    public void chooseWindowPatternCardMenu(List<List<String>> cards, String privateObjectiveCard, List<Integer> wpcDifficulties) {
         wpcsForInitialChoice = cards;
         currentState = INPUT_STATE.CHOOSE_WPC;
-        for (WindowPatternCard card : cards) {
-            cliPrinter.printWPC(card);
+        for (int j = 0; j < cards.size(); j++) {
+            System.out.println("Difficulty: " + wpcDifficulties.get(j));
+            cliPrinter.printWPC(cards.get(j));
         }
+
         System.out.println("\nYour Private Objective is: " + privateObjectiveCard);
         System.out.println("\n Which one do you chose?");
         for (int i = 0; i < cards.size(); i++) {
-            System.out.println(i + 1 + ") " + cards.get(i).getCardName());
+            System.out.println(i + 1 + ") " + cards.get(i).get(0));
         }
     }
 
@@ -229,8 +230,8 @@ public class CLIView extends View implements Runnable {
             case CHOOSE_WPC:
                 if (checkCorrectInput(input, 1, 4)) {
                     int chosen = Integer.parseInt(input);
-                    notify(new ChosenWindowPatternCard(wpcsForInitialChoice.get(chosen - 1).getCardName()));
-                    System.out.println("You chose: " + wpcsForInitialChoice.get(chosen - 1).getCardName());
+                    notify(new ChosenWindowPatternCard(wpcsForInitialChoice.get(chosen - 1).get(0)));
+                    System.out.println("You chose: " + wpcsForInitialChoice.get(chosen - 1).get(0));
                     //free memory
                     wpcsForInitialChoice = null;
                 } else {

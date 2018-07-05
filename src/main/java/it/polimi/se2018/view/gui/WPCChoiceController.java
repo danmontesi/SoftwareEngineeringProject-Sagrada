@@ -154,6 +154,7 @@ public class WPCChoiceController extends Observable implements Observer {
             prioc.setImage(image1);
             for (int i=0; i<names.size(); i++) {
                 String img = names.get(i);
+                System.out.println("card name: "+img);
                 String path = "/client/WPC/" + img + ".jpg";
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);

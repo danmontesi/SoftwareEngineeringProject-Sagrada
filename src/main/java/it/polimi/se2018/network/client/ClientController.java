@@ -2,9 +2,7 @@ package it.polimi.se2018.network.client;
 
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
-import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.network.server.ServerConnection;
-import it.polimi.se2018.parser.ParserWindowPatternCard;
 import it.polimi.se2018.utils.ControllerClientInterface;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
@@ -12,9 +10,6 @@ import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.cli.CLIView;
 import it.polimi.se2018.view.gui.GUIView;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,20 +60,7 @@ public class ClientController extends Observable implements Observer, Controller
     @Override
     public void applyCommand(ChooseWindowPatternCardCommand command){
         //Splitting the string obtaining the correct Wpc
-        String[] words = command.getWpcsInStrings().split(",");
-        List<WindowPatternCard> wpc = new ArrayList<>();
-
-        //Parse the entire list of wpc, remove all the non occurences
-        try{
-            ParserWindowPatternCard parser = new ParserWindowPatternCard();
-            wpc.add(0, parser.parseCardByName(words[0]));
-            wpc.add(1, parser.parseCardByName(words[1]));
-            wpc.add(2, parser.parseCardByName(words[2]));
-            wpc.add(3, parser.parseCardByName(words[3]));
-        } catch (IOException e){
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-        view.chooseWindowPatternCardMenu(wpc, command.getPrivateObjectiveCard());
+        view.chooseWindowPatternCardMenu(command.getWpcsInStrings(), command.getPrivateObjectiveCard(), command.getWpcDifficulties());
     }
 
     /**

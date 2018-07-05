@@ -70,12 +70,12 @@ public class GUIView extends View {
     }
 
     @Override
-    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards, String privateObjectiveCard) {
+    public void chooseWindowPatternCardMenu(List<List<String>> cards, String privateObjectiveCard, List<Integer> wpcDifficulties) {
         List<String> cardNames = new ArrayList<>();
         List<Integer> cardDifficulties = new ArrayList<>();
-        for (WindowPatternCard card : cards) {
-            cardNames.add(card.getCardName());
-            cardDifficulties.add(card.getDifficulty());
+        for (int i = 0; i < cards.size(); i++) {
+            cardNames.add(cards.get(i).get(0));
+            cardDifficulties.add(wpcDifficulties.get(i));
         }
         wpcChoiceNotifier.updateGui(new WGUIViewSetting(this));
         wpcChoiceNotifier.updateGui(new WPCChoice(cardNames, cardDifficulties, privateObjectiveCard));

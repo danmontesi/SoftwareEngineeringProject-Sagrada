@@ -137,7 +137,7 @@ class CLIPrinter {
      * Creates Window Pattern Cards
      * @param stringWpc to be printed cells
      */
-    private void printWPC(List<String> stringWpc){
+    void printWPC(List<String> stringWpc){
         String[][] table = new String[17][6];
         addWPCBorders(table);
         System.out.println(stringWpc.get(0) + "\n");
@@ -167,36 +167,6 @@ class CLIPrinter {
         for(int i = 1; i < table[0].length; i++){
             table[0][i] = "--------";
         }
-    }
-
-    /**
-     * Creates Window Pattern Cards
-     */
-    void printWPC(WindowPatternCard wpc){
-        String[][] table = new String[17][6];
-        addWPCBorders(table);
-        System.out.println(wpc.getCardName() + " - " + wpc.getDifficulty() + "\n");
-
-        for(int i = 0; i < wpc.getSchema().size(); i++){
-            int row = wpc.getCell(i).getRow();
-            int column = wpc.getCell(i).getColumn();
-            Cell cell = wpc.getCell(i);
-            try {
-                Die die = cell.getAssociatedDie();
-                insertDieValue(table, row, column, die.getValue(), die.getColor());
-            } catch (EmptyCellException e) {
-                if (cell.getColorConstraint() != null){
-                    insertDieValue(table, row, column, cell.getColorConstraint());
-                }
-                else if (cell.getValueConstraint() != null){
-                    insertDieValue(table, row, column, cell.getValueConstraint());
-                } else {
-                    insertDieValue(table, row, column);
-                }
-            }
-        }
-        printTable(table);
-        System.out.println("\n");
     }
 
     /**

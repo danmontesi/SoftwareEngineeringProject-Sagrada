@@ -1,7 +1,6 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.commands.server_to_client_command.*;
-import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
 import it.polimi.se2018.utils.ObserverView;
@@ -25,7 +24,7 @@ public class View extends Observable implements ObserverView { //VIEW: Osserva M
         return username;
     }
 
-    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards, String privateObjectiveCard){
+    public void chooseWindowPatternCardMenu(List<List<String>> cards, String privateObjectiveCard, List<Integer> wpcDifficulties){
 
     }
 

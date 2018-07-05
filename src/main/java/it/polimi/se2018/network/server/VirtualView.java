@@ -6,7 +6,6 @@ import it.polimi.se2018.model.Model;
 import it.polimi.se2018.commands.client_to_server_command.MoveChoicePassTurn;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.Observer;
-import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
 import it.polimi.se2018.commands.server_to_client_command.*;
 
@@ -58,11 +57,11 @@ public class VirtualView extends View {
     }
 
     @Override
-    public void chooseWindowPatternCardMenu(List<WindowPatternCard> cards, String privateObjectiveCard) {
+    public void chooseWindowPatternCardMenu(List<List<String>> cards, String privateObjectiveCard, List<Integer> wpcDifficulties) {
         if (!Server.getConnectedClients().containsKey(username)) { //disconnected
             disconnected=true;
                 LOGGER.log(Level.INFO, "Disconnected-> choosing a random Wpc");
-            notify(new ChosenWindowPatternCard(cards.get(0).getCardName()));
+            notify(new ChosenWindowPatternCard(cards.get(0).get(0)));
         }
         else {
             Server.getConnectedClients().get(username).notifyClient(new PingConnectionTester());
@@ -70,12 +69,9 @@ public class VirtualView extends View {
                 disconnected=true;
                 Server.updateDisconnectedUser(this.username);
                     LOGGER.log(Level.INFO, "Disconnected-> choosing a random Wpc");
-                notify(new ChosenWindowPatternCard(cards.get(0).getCardName()));
+                notify(new ChosenWindowPatternCard(cards.get(0).get(0)));
             } else {
-                StringBuilder cardNames = new StringBuilder();
-                for (WindowPatternCard card : cards)
-                    cardNames.append(card.getCardName() + ",");
-                Server.getConnectedClients().get(username).notifyClient(new ChooseWindowPatternCardCommand(cardNames.toString(), privateObjectiveCard));
+                Server.getConnectedClients().get(username).notifyClient(new ChooseWindowPatternCardCommand(cards, privateObjectiveCard, wpcDifficulties));
                 //DATE NEL FORMATO nomeCarta nomeCarta nomeCarta
             }
         }

@@ -133,10 +133,18 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         for (Player p : uninitializedOrderedPlayers) {
             // I give the cards (in strings) to the command, and to the method that waits until all players finished choosing
             localWpc = model.extractWindowPatternCard();
+
+            List<List<String>> localWpcsString = new ArrayList<>();
+            List<Integer> wpcDifficulties = new ArrayList<>();
+            for (int i = 0; i < localWpc.size(); i++) {
+                localWpcsString.add(localWpc.get(i).wpcPathRepresentation());
+                wpcDifficulties.add(localWpc.get(i).getDifficulty());
+            }
+
             WindowPatternCard defaultCard = localWpc.get(0); //default wpc in case the player disconnects
             usernamePlayerMap.get(p.getUsername()).setWindowPatternCard(defaultCard);
             LOGGER.log(Level.INFO, "invio command CHOOSEWPC a player:" + p.getUsername());
-            userViewMap.get(p.getUsername()).chooseWindowPatternCardMenu(localWpc, model.getPlayerFromUsername(p.getUsername()).getPrivateObjectiveCard().getName());
+            userViewMap.get(p.getUsername()).chooseWindowPatternCardMenu(localWpcsString, model.getPlayerFromUsername(p.getUsername()).getPrivateObjectiveCard().getName(), wpcDifficulties);
         }
         checkBlockingTimer = new Timer(); //General timer for every player. Is starts the game stopping players without waiting the answer
         checkBlockingTimer.schedule(new TimerTask() {

@@ -331,8 +331,7 @@ public class WindowPatternCard {
      */
     public List<String> wpcPathRepresentation() {
         List<String> wpcString = new ArrayList<>();
-        String pathName = name.replaceAll(" ", "_");
-        wpcString.add(pathName);
+        wpcString.add(name);
         for (Cell aSchema : schema) {
             wpcString.add(aSchema.toString());
         }
