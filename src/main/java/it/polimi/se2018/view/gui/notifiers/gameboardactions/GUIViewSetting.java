@@ -5,6 +5,9 @@ import it.polimi.se2018.view.gui.GUIView;
 public class GUIViewSetting implements GameBoardAction {
     private GUIView guiView;
 
+    /**
+     * Passes guiView on to GameBoardController so that it can interact with guiView
+     */
     public GUIViewSetting(GUIView guiView) {
         this.guiView = guiView;
     }

@@ -3,19 +3,21 @@ package it.polimi.se2018.commands.server_to_client_command;
 import it.polimi.se2018.utils.ControllerClientInterface;
 
 public class ContinueTurnCommand extends ServerToClientCommand {
-
     private boolean move;
-
     private boolean tool;
 
     /**
-     * Command that let the view continue its turn
-     * @param move true if can do a move
+     * Allows the user to continue his turn
+     * @param move true if can do a move, false otherwise
      * @param tool true if can use a tool\
      */
     public ContinueTurnCommand(boolean move, boolean tool) {
         this.move = move;
         this.tool = tool;
+    }
+
+    public void visit(ControllerClientInterface clientController) {
+        clientController.applyCommand(this);
     }
 
     public boolean hasPerformedMove() {
@@ -25,12 +27,4 @@ public class ContinueTurnCommand extends ServerToClientCommand {
     public boolean hasPerformedTool() {
         return tool;
     }
-    /**
-     * Visitor methods, it calls the clientController to perform a move using dynamic binding
-     * @param clientController the parameters who calls the dynamic method
-     */
-    public void visit(ControllerClientInterface clientController) {
-        clientController.applyCommand(this);
-    }
-
 }

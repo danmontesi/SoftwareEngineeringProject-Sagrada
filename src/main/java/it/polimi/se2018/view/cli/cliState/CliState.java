@@ -49,7 +49,7 @@ public class CliState {
      * Updates Draft Pool
      */
     public void parseRefreshDraftPool(RefreshDraftPoolCommand command){
-        draftpool = command.getDraftpool();
+        draftpool = command.getDraftPool();
     }
 
     /**

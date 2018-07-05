@@ -7,5 +7,4 @@ public class StartGameCommand extends ServerToClientCommand {
     public void visit(ControllerClientInterface clientController) {
         clientController.applyCommand(this);
     }
-
 }

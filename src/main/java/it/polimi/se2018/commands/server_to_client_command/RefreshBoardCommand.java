@@ -9,10 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RefreshBoardCommand extends ServerToClientCommand{
-    /**
-     * That's the unique command that contains an object different from string and integer
-     * Contains each player's view of the board.
-     */
     private String privateObjectiveCard;
     private String privateObjectiveCardDescription;
     private List<String> publicObjectiveCards = new ArrayList<>();
@@ -33,12 +29,12 @@ public class RefreshBoardCommand extends ServerToClientCommand{
     private List<Integer> otherPlayersTokens;
     private List<String> otherPlayersUsernames = new ArrayList<>();
 
+    /**
+     * Contains each player's view of the board
+     */
     public RefreshBoardCommand(Model model, View view){
-        //set private objective (name and description)
         getMyPrivateObjective(model, view);
-        //set every username
         getUsernames(model, view);
-        //set public cards information
         getPublicCardsInfo(model);
         this.tokensToolCards = model.refreshToolCardTokens();
         this.draftpool = model.getDraftPool().draftpoolPathRepresentation();
@@ -51,14 +47,9 @@ public class RefreshBoardCommand extends ServerToClientCommand{
         this.otherPlayersTokens = tokens;
     }
 
-    /**
-     * Visitor methods, it calls the clientController to perform a move using dynamic binding
-     * @param clientController the parameters who calls the dynamic method
-     */
     public void visit(ControllerClientInterface clientController) {
         clientController.applyCommand(this);
     }
-
 
     public String getPrivateObjectiveCard() {
         return privateObjectiveCard;
@@ -150,5 +141,4 @@ public class RefreshBoardCommand extends ServerToClientCommand{
             publicObjectiveDescription.add(model.getExtractedPublicObjectiveCard().get(i).getDescription());
         }
     }
-
 }

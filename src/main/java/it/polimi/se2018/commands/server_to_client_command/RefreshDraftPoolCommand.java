@@ -5,23 +5,20 @@ import it.polimi.se2018.utils.ControllerClientInterface;
 import java.util.List;
 
 public class RefreshDraftPoolCommand extends ServerToClientCommand {
-
-    public List<String> getDraftpool() {
-        return draftpool;
-    }
-
-    private List<String> draftpool; //Dice in the format: colorNumber/empty
-
-    public RefreshDraftPoolCommand(List<String> draftpool) {
-        this.draftpool = draftpool;
-    }
+    private List<String> draftPool;
 
     /**
-     * Visitor methods, it calls the clientController to perform a move using dynamic binding
-     * @param clientController the parameters who calls the dynamic method
+     * Contains a String representation of the Draft Pool dice
      */
+    public RefreshDraftPoolCommand(List<String> draftPool) {
+        this.draftPool = draftPool;
+    }
+
     public void visit(ControllerClientInterface clientController) {
         clientController.applyCommand(this);
     }
 
+    public List<String> getDraftPool() {
+        return draftPool;
+    }
 }

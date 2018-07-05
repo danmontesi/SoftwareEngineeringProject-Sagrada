@@ -4,6 +4,9 @@ import it.polimi.se2018.utils.ControllerClientInterface;
 
 public class TimeOutCommand extends ServerToClientCommand{
 
+    /**
+     * Notifies the user that his turn time ended
+     */
     public TimeOutCommand() {
     }
 

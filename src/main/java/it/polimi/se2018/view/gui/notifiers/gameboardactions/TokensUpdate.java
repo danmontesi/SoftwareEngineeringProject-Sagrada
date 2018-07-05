@@ -7,6 +7,9 @@ public class TokensUpdate implements GameBoardAction {
     private List<Integer> playersTokens;
     private Integer personalTokens;
 
+    /**
+     * Updates each Tool Card and player tokens
+     */
     public TokensUpdate(List<Integer> tcTokens, List<Integer> playersTokens, Integer personalTokens) {
         this.tcTokens = tcTokens;
         this.playersTokens = playersTokens;
