@@ -3,19 +3,11 @@ package client.view.gui;
 import client.view.gui.notifiers.RankingPaneNotifier;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Manages the Ranking Pane window
@@ -23,7 +15,6 @@ import java.util.logging.Logger;
  */
 public class RankingController extends Observable implements Observer {
 
-    private static final Logger LOGGER = Logger.getLogger(GameBoardController.class.getName());
     private RankingPaneNotifier rankingPaneNotifier = RankingPaneNotifier.getInstance();
 
     @FXML
@@ -47,12 +38,12 @@ public class RankingController extends Observable implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        setContent((List<String>) arg);
+        setContent((List<String>)arg);
     }
 
     /**
      * Sets outcome message (victory/defeat)
-     * @param scores
+     * @param scores list of players and relative scores
      */
     private void setContent(List<String> scores) {
         Platform.runLater(() -> {
@@ -92,43 +83,7 @@ public class RankingController extends Observable implements Observer {
                 label.setStyle("-fx-font-size: 22px");
                 ranking.add(label, h, k);
             }
+            rankingPaneNotifier.setOpen(false);
         });
-    }
-
-    /**
-     * Closes current stage
-     */
-    private void closeStage() {
-        rankingPaneNotifier.setOpen(false);
-        Stage stage = (Stage)outcome.getScene().getWindow();
-        stage.close();
-    }
-
-    /**
-     * Opens Login window
-     */
-    private void showClientStarter() {
-        Platform.runLater(() ->  {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/login.fxml"));
-                Parent root = fxmlLoader.load();
-                Stage wpcChoiceStage = new Stage();
-                wpcChoiceStage.setScene(new Scene(root));
-                wpcChoiceStage.show();
-                closeStage();
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch game board", e);
-            }
-        });
-    }
-
-    @FXML
-    public void startNewGame() {
-        showClientStarter();
-    }
-
-    @FXML
-    public void exit(){
-        closeStage();
     }
 }

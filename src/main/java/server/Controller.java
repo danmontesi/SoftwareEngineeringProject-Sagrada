@@ -78,8 +78,9 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     //List of Actions
 
     /**
-     * @param usernameList list of usernames, the players
-     * @param doNotStartGame specifies to not start the game, just build the model, View (not VirtualView) and set Players
+     * Constructor
+     * @param usernameList list of players usernames
+     * @param doNotStartGame specifies to not start the game, just build the Model and View (not VirtualView) and set Players
      */
     public Controller(List<String> usernameList, boolean doNotStartGame) {
         active=true;
@@ -124,8 +125,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
 
     /**
-     * Let people choose their Wpc, and call a method that waits until everyone chose.
-     * Once the Controller receive player's choice moves its username to orderedPlayers List
+     * Allows the players to choose their Window Pattern Cards and calls a method that waits until everyone has chosen.
+     * Once the Controller received the player's choice, it moves his username to orderedPlayers List
      */
     public void initializeGame() {
         List<WindowPatternCard> localWpc;
@@ -308,7 +309,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     /**
-     * Starts new turn
+     * Starts a new turn
      */
     private void startNewTurn() {
         if (currentRoundOrderedPlayers.isEmpty()) {
@@ -356,7 +357,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     }
 
     /**
-     * Checks whether it is the player's turn
+     * Checks whether it is the player's turn or not
      */
     private boolean isAllowed(String username) {
         return username.equals(currentPlayer);
@@ -459,14 +460,13 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
     /**
      * Executes the Tool Cards actions.
-     * Each toolcard is suddivided in micro actions
-     * It exists a Type for every micro-action, and this method check the type and call proper methods.
-     * 3 Sub-Classes of types:
-     * 1- ASK_"..." -> ask the player an information. Wait until he replies. If timeout -> call newTurn without waiting any more
-     * 2- CHECK_"..." -> check the correct input from the player's reply.
-     * 3- DO_".." -> do actions dependent from the type of the type
-     *
-     * When a micro-action is finished, the stack of actions push and calls this method (executeAction) meanwhile the list has elements
+     * Each Tool Card is composed of micro actions.
+     * Every micro action has a type:
+     * ASK_-: asks the player for information and waits until he replies. If a timeout occurs newTurn is called
+     * CHECK_: checks the player's reply correctness
+     * DO_-: does actions depending on the specific micro action
+     * This method checks the type and calls the proper methods to execute the micro action.
+     * When a micro action is finished, the stack of actions pushes and calls this method, as long as the list has elements
      */
     private void executeAction() {
         if (toolcardData.getToolCardActions().isEmpty()){
@@ -755,7 +755,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         }
 
         if (parameter.equals("WPC")) {
-            //reinsert the die used for wpc logic
             int indexWpc = toolcardData.getIndexFromWPC();
             usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(indexWpc).setAssociatedDie(tempDieToPlace);
             model.setGamePlayers(orderedPlayers);
@@ -1080,7 +1079,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         if (toolcardData==null){
             return;
         }
-        //Restoring past moves
         if (toolcardData.hasDoneMove()) {
             Die temp = null; //indice WPC ORA
             try {
@@ -1090,12 +1088,10 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             }
             switch (toolcardData.getSource()) {
                 case "WPC":
-                    //remove die from saved position and replace in the old position
                     int indexWpc = toolcardData.getIndexDieBeforeMoved();
                     usernamePlayerMap.get(currentPlayer).getWindowPatternCard().getCell(indexWpc).setAssociatedDie(temp);
                     break;
                 case "DP":
-                    //same, with DP
                     int indexDP = toolcardData.getIndexDieBeforeMoved();
                     model.setDieOnDraftPool(temp, indexDP);
                     break;

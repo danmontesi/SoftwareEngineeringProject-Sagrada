@@ -13,7 +13,6 @@ import java.util.logging.Logger;
  * @author Alessio Molinari
  */
 class CLIPrinter {
-
     private static final String ANSI_RED_BACKGROUND = "\u001B[41m";
     private static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
     private static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
@@ -24,8 +23,7 @@ class CLIPrinter {
 
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
-    CLIPrinter() {
-    }
+    CLIPrinter() {}
 
     /**
      * Prints Round Track, Draft Pool, player's Window Pattern Card and turn menu
@@ -166,7 +164,7 @@ class CLIPrinter {
     }
 
     /**
-     * Inserts die on Window Pattern Card, Draft Pool or RoundTrack
+     * Inserts a die on Window Pattern Card, Draft Pool or RoundTrack in a given position
      * @param table Window Pattern Card, Draft Pool or RoundTrack
      * @param string die representation
      */
@@ -192,7 +190,7 @@ class CLIPrinter {
     }
 
     /**
-     * Prints a die in a given position
+     * Inserts a die on Window Pattern Card, Draft Pool or RoundTrack in a given position
      */
     private void insertDieValue(String[][] table, int row, int column, int value, COLOR color){
         String background = stringColorBackground(color);
@@ -201,7 +199,7 @@ class CLIPrinter {
     }
 
     /**
-     * Prints a cell with value constraints in a given position
+     * Inserts a cell with value constraints on Window Pattern Card, Draft Pool or RoundTrack in a given position
      */
     private void insertDieValue(String[][] table, int row, int column, int value){
         String[] die = stringDieValue(value);
@@ -209,7 +207,7 @@ class CLIPrinter {
     }
 
     /**
-     * Prints a cell with color constraints in a given position
+     * Inserts a cell with color constraints on Window Pattern Card, Draft Pool or RoundTrack in a given position
      */
     private void insertDieValue(String[][] table, int row, int column, COLOR color){
         String background = stringColorBackground(color);
@@ -218,7 +216,7 @@ class CLIPrinter {
     }
 
     /**
-     * Prints a cell with no constraints in a given position
+     * Inserts a cell with no constraints on Window Pattern Card, Draft Pool or RoundTrack in a given position
      */
     private void insertDieValue(String[][] table, int row, int column){
         String[] die = stringDieValue(0);
