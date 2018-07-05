@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 public class Model extends Observable { //Observable of View
     private DiceBag diceBag;
     private List<PublicObjectiveCard> extractedPublicObjectiveCard = new ArrayList<>();
+
     private List<ToolCard> extractedToolCard = new ArrayList<>();
     private List<WindowPatternCard> windowPatternCardDeck;
     private List<Player> gamePlayers;
@@ -345,6 +346,15 @@ public class Model extends Observable { //Observable of View
 
     public int getCurrentRound() {
         return currentRound;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+
+    public void setExtractedToolCard(List<ToolCard> extractedToolCard) {
+        this.extractedToolCard = extractedToolCard;
     }
 
     public void setGamePlayersNoRefresh(List<Player> players) {

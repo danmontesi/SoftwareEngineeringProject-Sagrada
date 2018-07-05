@@ -3,10 +3,7 @@ package it.polimi.se2018.network.server;
 
 import it.polimi.se2018.CONSTANTS;
 import it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand;
-import it.polimi.se2018.commands.server_to_client_command.AuthenticatedCorrectlyCommand;
-import it.polimi.se2018.commands.server_to_client_command.MessageFromServerCommand;
-import it.polimi.se2018.commands.server_to_client_command.NewConnectedPlayerNotification;
-import it.polimi.se2018.commands.server_to_client_command.PingConnectionTester;
+import it.polimi.se2018.commands.server_to_client_command.*;
 import it.polimi.se2018.network.client.ClientConnection;
 import it.polimi.se2018.network.client.rmi.RMIClientInterface;
 import it.polimi.se2018.network.server.rmi.RMIServer;
@@ -299,6 +296,12 @@ public class Server {
                     game.getModel().notifyBoardSinglePlayer(userMap.get(username));
                     game.getModel().notifyRefreshDraftPool();
                     game.getModel().setGamePlayers(game.getOrderedPlayers());
+                    if (game.getModel().getCurrentPlayer().getUsername().equals(username)){
+                        game.getUserViewMap().get(username).startTurnMenu();
+                    }
+                    else{
+                        game.getUserViewMap().get(username).otherPlayerTurn(game.getModel().getCurrentPlayer().getUsername());
+                    }
                 }
                 else{
                     game.getUserViewMap().get(user).messageBox("Player " + username + " has reconnected");
@@ -315,7 +318,7 @@ public class Server {
             Controller game = getControllerFromUsername(username);
             for (String usernameToNotify : game.getUserViewMap().keySet()) {
                 if (!username.equals(usernameToNotify))
-                    game.getUserViewMap().get(usernameToNotify).messageBox("Player" + username + " is disconnected");
+                    game.getUserViewMap().get(usernameToNotify).messageBox("Player" + username + " has disconnected");
             }
         }
         catch (NoSuchElementException e){

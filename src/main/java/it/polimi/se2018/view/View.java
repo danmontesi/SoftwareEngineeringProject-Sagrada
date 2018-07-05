@@ -148,4 +148,9 @@ public class View extends Observable implements ObserverView { //VIEW: Osserva M
     public void updateBoard(RefreshBoardCommand refreshCommand) {
 
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
 }

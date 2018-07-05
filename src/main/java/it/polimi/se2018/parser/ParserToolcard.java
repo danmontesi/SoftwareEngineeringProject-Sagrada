@@ -1,10 +1,11 @@
 package it.polimi.se2018.parser;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import it.polimi.se2018.model.ACTION_TYPE;
-import it.polimi.se2018.model.Action;
-import it.polimi.se2018.model.ToolCard;
+import com.google.gson.stream.MalformedJsonException;
+import it.polimi.se2018.exceptions.NoSuchColorException;
+import it.polimi.se2018.model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,4 +51,5 @@ public class ParserToolcard {
         }
         return toolCards;
     }
+
 }

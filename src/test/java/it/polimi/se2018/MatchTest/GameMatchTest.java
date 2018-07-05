@@ -4,9 +4,14 @@ import it.polimi.se2018.commands.client_to_server_command.*;
 import it.polimi.se2018.exceptions.EmptyCellException;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.network.server.Controller;
+import it.polimi.se2018.parser.ParserToolcard;
+import it.polimi.se2018.parser.ParserWindowPatternCard;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -53,47 +58,49 @@ public class GameMatchTest {
     public void testWpcChoice(){
         setUpController();
         setUpWpcChoice();
-//        assertEquals(controller.getUninitializedOrderedPlayers().size(), 0);
-//        assertEquals(controller.getOrderedPlayers().size(), 3);
-//        assertEquals("Daniele", controller.getOrderedPlayers().get(1).getUsername());
+        assertEquals(controller.getUninitializedOrderedPlayers().size(), 0);
+        assertEquals(controller.getOrderedPlayers().size(), 3);
+        assertEquals("Daniele", controller.getOrderedPlayers().get(1).getUsername());
     }
 
 
     @Test
     public void testRound(){
-        /*for (String user : players)
-            controller.getUsernameTimerMap().get(user).cancel();
-            */
         setUpController();
         setUpWpcChoice();
+        //       for (String user : players)
+        //            controller.getUsernameTimerMap().get(user).cancel();
+
+
         assertEquals(controller.getCurrentPlayer(), "Nives");
         ClientToServerCommand command = new MoveChoiceDiePlacement(11, 1);
         command.setUsername("Nives");
         controller.update(command);
-//        assertEquals(controller.getCurrentPlayer(), "Nives");
+        assertEquals(controller.getCurrentPlayer(), "Nives");
     }
 
     @Test
     public void testRoundPassTurn() {
-        /*for (String user : players)
-            controller.getUsernameTimerMap().get(user).cancel();
-            */
+        //for (String user : players)
+        //    controller.getUsernameTimerMap().get(user).cancel();
+        //
+
         setUpController();
         setUpWpcChoice();
 
         ClientToServerCommand command = new MoveChoiceDiePlacement(11, 1);
         command.setUsername("Nives");
         controller.update(command);
-//        assertEquals(controller.getCurrentPlayer(), "Nives");
+        assertEquals(controller.getCurrentPlayer(), "Nives");
         command = new MoveChoicePassTurn();
         command.setUsername("Nives");
         controller.update(command);
-//        assertEquals(controller.getCurrentPlayer(), "Daniele");
-//        assertEquals(controller.getCurrentRoundOrderedPlayers().size(), 4);
+        assertEquals(controller.getCurrentPlayer(), "Daniele");
+        assertEquals(controller.getCurrentRoundOrderedPlayers().size(), 4);
         command.setUsername("Daniele");
         controller.update(command);
-//        assertEquals(controller.getCurrentPlayer(), "Alessio");
-//        assertEquals(controller.getCurrentRoundOrderedPlayers().size(), 3);
+        assertEquals(controller.getCurrentPlayer(), "Alessio");
+        assertEquals(controller.getCurrentRoundOrderedPlayers().size(), 3);
         command.setUsername("Alessio");
         controller.update(command);
         command.setUsername("Alessio");
@@ -104,8 +111,8 @@ public class GameMatchTest {
         controller.update(command);
         command.setUsername("Nives");
         controller.update(command);
-//        assertEquals(controller.getCurrentRoundOrderedPlayers().size(), 5);
-//        assertEquals(controller.getOrderedRoundPlayers().size(), 8);
+        assertEquals(controller.getCurrentRoundOrderedPlayers().size(), 5);
+        assertEquals(controller.getOrderedRoundPlayers().size(), 8);
     }
 
 
@@ -124,7 +131,56 @@ public class GameMatchTest {
     }
 
 
+    @Test
+    public void testUseRoughingForceps() throws EmptyCellException {
+        setUpController();
+        setUpWpcChoice();
+        setKnownBoard();
+        skipRound();
 
+        ClientToServerCommand command = new MoveChoiceDiePlacement(11, 1);
+        sendCommandToController(command, "Daniele");
+
+        command = new MoveChoiceToolCard(0);
+        command.setUsername("Daniele");
+        controller.update(command);
+        command = new ReplyPickDie(1);
+        sendCommandToController(command, "Daniele");
+
+        command = new ReplyIncreaseDecrease(true); //Increase the die
+        sendCommandToController(command, "Daniele");
+        assertEquals(true, controller.isHasUsedTool());
+    }
+
+    @Test
+    public void testUseFirmPastryThinner() throws EmptyCellException {
+        setUpController();
+        setUpWpcChoice();
+        setKnownBoard();
+        skipRound();
+
+        ClientToServerCommand command;
+
+        command = new MoveChoiceToolCard(1);
+        command.setUsername("Daniele");
+        controller.update(command);
+        command = new ReplyPickDie(1);
+        sendCommandToController(command, "Daniele");
+
+        command = new ReplyDieValue(4); //Set this value for extracted die
+        sendCommandToController(command, "Daniele");
+
+        command = new ReplyPlaceDie(1); //Increase the die
+        sendCommandToController(command, "Daniele");
+
+        assertEquals(true, controller.isHasUsedTool());
+    }
+
+    private void sendCommandToController(ClientToServerCommand command, String username){
+        command.setUsername(username);
+        controller.update(command);
+
+    }
 
     private void skipRound(){
         ClientToServerCommand command;
@@ -146,15 +202,38 @@ public class GameMatchTest {
 
 
     private void setKnownBoard(){
-        WindowPatternCard card = new WindowPatternCard((ArrayList<Cell>) fillWithColoredCells("rnnnnnnnnnnnnnnnnnnn", 1));
+        WindowPatternCard card = new WindowPatternCard(fillWithColoredCells("rnnnnnnnnnnnnnnnnnnn", 1));
         card.setName("Prova_card");
         card.setDifficulty(5);
         controller.getOrderedPlayers().get(0).setWindowPatternCard(card);
         controller.getOrderedPlayers().get(1).setWindowPatternCard(card);
         controller.getOrderedPlayers().get(2).setWindowPatternCard(card);
-        //TODO RIASSEGNA controller.getModel().setDraftPool();
+        controller.getModel().getDraftPool().fillDraftPool( fillWithColoredDice("rrrrrrr", 1));
 
-         }
+        ParserToolcard parserToolcard = new ParserToolcard();
+
+        List<ToolCard> newToolCards = new ArrayList<>();
+        try {
+            List<ToolCard> toolCardDeck = null;
+            toolCardDeck = parserToolcard.parseCards();
+            for (int i = 0; i < 12; i++) {
+                if (toolCardDeck.get(i).getName().equals("Roughing Forceps") || //num 0
+                        toolCardDeck.get(i).getName().equals("Firm Pastry Thinner") || //num. 1
+                        toolCardDeck.get(i).getName().equals("Manual Cutter")){ //num 2
+                    newToolCards.add(toolCardDeck.get(i));
+                }
+            }
+            controller.getModel().setExtractedToolCard(newToolCards);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("La toolcard 1 2 3 sono di size " + controller.getModel().getExtractedToolCard().size()+ " e sono " + controller.getModel().getExtractedToolCard().get(0).getName() +
+                " - " + controller.getModel().getExtractedToolCard().get(1).getName() + " - " + controller.getModel().getExtractedToolCard().get(2).getName());
+
+        //Find 3 toolcards I need
+        //toolCardDeck.add;
+    }
 
     private List<Cell> fillWithColoredCells(String colors, int valueToSet){
         ArrayList<Cell> cells = new ArrayList<>();
@@ -224,6 +303,8 @@ public class GameMatchTest {
         }
         return dice;
     }
+
+
    /*
    @Test
     public void updateAllWpc(){

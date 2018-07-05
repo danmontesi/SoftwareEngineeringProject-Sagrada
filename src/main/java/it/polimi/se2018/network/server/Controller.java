@@ -37,6 +37,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private HashMap<String, View> userViewMap;
     private List<Player> orderedPlayers;
     private List<Player> uninitializedOrderedPlayers;
+
+
     private HashMap<String, Timer> usernameTimerMap;
     private ToolcardData toolcardData;
 
@@ -113,10 +115,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             View tempView = new View(this); //Vedi meglio
             userViewMap.put(username, tempView);
             model.register(tempView);
+            tempView.setUsername(username);
         }
         this.orderedPlayers = new ArrayList<>();
 
-        this.timerCostant = CONSTANTS.TURN_TIMER;
+        this.timerCostant = 10000000;
         // Now I will start each player's View
         for (String username : usernamePlayerMap.keySet())
             userViewMap.get(username).startGame(); //notifying game starting
@@ -436,7 +439,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
 
         //inizializza toolcardData
         toolcardData = new ToolcardData(chosen.getName(), chosen.getActions(), current);
-        toolcardData.setOldModel(model);
+        //toolcardData.setOldModel(model);
         toolcardData.setRequiredTokensForLastToolUse(requiredTokens);
         toolcardData.setLastUsedToolCardNum(usedToolNumber);
 
@@ -1175,6 +1178,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             usernameTimerMap.get(username).cancel();
         }
         usernameTimerMap.clear();
+    }
+
+
+    public HashMap<String, Timer> getUsernameTimerMap() {
+        return usernameTimerMap;
     }
 
     @Override

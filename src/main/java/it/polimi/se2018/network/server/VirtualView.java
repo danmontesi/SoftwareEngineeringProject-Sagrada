@@ -81,6 +81,8 @@ public class VirtualView extends View {
         }
     }
 
+
+    //TODO rimuovi la call del metodo updateDisconnectedUser
     @Override
     public void startTurnMenu() {
         if (!Server.getConnectedClients().containsKey(this.username)) { //disconnected
