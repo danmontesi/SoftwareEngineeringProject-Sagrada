@@ -5,8 +5,19 @@ import it.polimi.se2018.utils.ControllerClientInterface;
 public class ChooseWindowPatternCardCommand extends ServerToClientCommand{
 
     private String wpcsInStrings;
-
     private String privateObjectiveCard;
+
+    /**
+     * Contains the names of the four Window Pattern Cards the user can choose from and the assigned Private Objective Card
+     */
+    public ChooseWindowPatternCardCommand(String wpcsInString, String privateObjectiveCard) {
+        this.wpcsInStrings = wpcsInString;
+        this.privateObjectiveCard = privateObjectiveCard;
+    }
+
+    public void visit(ControllerClientInterface clientController) {
+        clientController.applyCommand(this);
+    }
 
     public String getWpcsInStrings() {
         return wpcsInStrings;
@@ -15,18 +26,4 @@ public class ChooseWindowPatternCardCommand extends ServerToClientCommand{
     public String getPrivateObjectiveCard() {
         return privateObjectiveCard;
     }
-
-    public ChooseWindowPatternCardCommand(String wpcsInString, String privateObjectiveCard) {
-        this.wpcsInStrings = wpcsInString;
-        this.privateObjectiveCard = privateObjectiveCard;
-    }
-
-    /**
-     * Visitor methods, it calls the clientController to perform a move using dynamic binding
-     * @param clientController the parameters who calls the dynamic method
-     */
-    public void visit(ControllerClientInterface clientController) {
-        clientController.applyCommand(this);
-    }
-
 }

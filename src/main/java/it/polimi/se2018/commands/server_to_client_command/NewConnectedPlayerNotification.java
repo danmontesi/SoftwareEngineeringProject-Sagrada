@@ -3,15 +3,12 @@ package it.polimi.se2018.commands.server_to_client_command;
 import it.polimi.se2018.utils.ControllerClientInterface;
 
 public class NewConnectedPlayerNotification extends ServerToClientCommand {
-
     private String username;
 
-    public String getUsername() {
-        return username;
-    }
-
+    /**
+     * Notifies all the other users about the connection of one player
+     */
     public NewConnectedPlayerNotification(String username) {
-
         this.username = username;
     }
 
@@ -20,4 +17,7 @@ public class NewConnectedPlayerNotification extends ServerToClientCommand {
         clientController.applyCommand(this);
     }
 
+    public String getUsername() {
+        return username;
+    }
 }

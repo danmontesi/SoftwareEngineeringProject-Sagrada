@@ -137,7 +137,7 @@ public class GUIView extends View {
                 Thread.currentThread().interrupt();
             }
         }
-        gameBoardNotifier.updateGui(new DraftPoolRoundTrackUpdate("DP", refreshCommand.getDraftpool()));
+        gameBoardNotifier.updateGui(new DraftPoolRoundTrackUpdate("DP", refreshCommand.getDraftPool()));
     }
 
     @Override

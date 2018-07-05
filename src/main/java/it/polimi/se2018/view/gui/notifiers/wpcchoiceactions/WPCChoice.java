@@ -7,6 +7,9 @@ public class WPCChoice implements WPCChoiceAction {
     private List<Integer> wpcDifficulties;
     private String privateOC;
 
+    /**
+     * Contains the information about the four Window Pattern Cards the user can choose between and the associated Private Objective Card
+     */
     public WPCChoice(List<String> wpcNames, List<Integer> wpcDifficulties, String privateObjectiveCard) {
         this.wpcNames = wpcNames;
         this.wpcDifficulties = wpcDifficulties;

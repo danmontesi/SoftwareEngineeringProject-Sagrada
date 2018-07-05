@@ -5,6 +5,9 @@ import it.polimi.se2018.view.gui.GUIView;
 public class WGUIViewSetting implements WPCChoiceAction {
     private GUIView guiView;
 
+    /**
+     * Passes guiView on to WPCChoiceController so that it can interact with guiView
+     */
     public WGUIViewSetting(GUIView guiView) {
         this.guiView = guiView;
     }
@@ -17,5 +20,4 @@ public class WGUIViewSetting implements WPCChoiceAction {
     public GUIView getGuiView() {
         return guiView;
     }
-
 }
