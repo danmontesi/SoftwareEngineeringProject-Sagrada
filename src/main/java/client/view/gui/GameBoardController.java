@@ -157,6 +157,7 @@ public class GameBoardController extends Observable implements Observer {
 
     private DropShadow shadow = new DropShadow();
     private DropShadow redShadow = new DropShadow();
+    private DropShadow greenShadow = new DropShadow();
 
     public GameBoardController() {
         pubOCards = new ArrayList<>();
@@ -385,6 +386,7 @@ public class GameBoardController extends Observable implements Observer {
                         disableAllButtons(false);
                         moveDice();
                         msgBox.setText("It's your turn!\n");
+                        greenLight();
                     } else {
                         disableAllButtons(true);
                         msgBox.setText("It's " + turnStart.getUsername() + "'s turn!\n");
@@ -401,7 +403,7 @@ public class GameBoardController extends Observable implements Observer {
                 @Override
                 public void visitGameBoardAction(InvalidAction invalidAction) {
                     Platform.runLater(() -> msgBox.appendText(invalidAction.getMessage() + "\n"));
-                    inputError();
+                    redLight();
                 }
 
                 @Override
@@ -920,11 +922,22 @@ public class GameBoardController extends Observable implements Observer {
     /**
      * Indicates if an input error occurred
      */
-    private void inputError() {
+    private void redLight() {
         redShadow.setColor(new Color(0.7, 0, 0, 1));
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.6), evt -> msgBox.setEffect(null)),
                 new KeyFrame(Duration.seconds(0.2), evt -> msgBox.setEffect(redShadow)));
         timeline.setCycleCount(3);
+        timeline.play();
+    }
+
+    /**
+     * Indicates the turn is starting
+     */
+    private void greenLight() {
+        greenShadow.setColor(new Color(0, 0.7, 0, 1));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.6), evt -> msgBox.setEffect(null)),
+                new KeyFrame(Duration.seconds(0.2), evt -> msgBox.setEffect(greenShadow)));
+        timeline.setCycleCount(2);
         timeline.play();
     }
 }

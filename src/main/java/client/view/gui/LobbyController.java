@@ -84,7 +84,7 @@ public class LobbyController extends Observable implements Observer {
             }
             if (!playerNames.isEmpty()) {
                 for (int i = 0; i < playerNames.size(); i++) {
-                    players.get(i).setText(playerNames.get(i) + " joined the game");
+                    players.get(i).setText(playerNames.get(i) + " just joined the game");
                 }
                 for (int j = playerNames.size(); j < 3; j++) {
                     players.get(j).setText("");
