@@ -1,3 +1,7 @@
+@font-face { 
+    src: url('GoudyBookLetter1911.ttf'); 
+}
+
 .root {
     -fx-background-image: url(/client/images/marble2.jpg);
     -fx-font-family: 'Goudy Bookletter 1911', serif;

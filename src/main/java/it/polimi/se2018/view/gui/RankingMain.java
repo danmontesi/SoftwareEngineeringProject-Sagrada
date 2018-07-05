@@ -13,7 +13,6 @@ public class RankingMain extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/client/ranking.fxml"));
         primaryStage.setTitle("Ranking");
         primaryStage.setScene(new Scene(root, 570, 520));
-        Font.loadFont(LoginMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 20);
         primaryStage.show();
     }
 

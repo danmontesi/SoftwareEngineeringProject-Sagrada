@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class LoginMain extends Application {
@@ -13,7 +14,6 @@ public class LoginMain extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/client/login.fxml"));
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(new Scene(root, 400, 500));
-        //Font.loadFont(LoginMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 10);
         primaryStage.show();
     }
 

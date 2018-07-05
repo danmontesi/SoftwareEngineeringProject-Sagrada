@@ -13,7 +13,6 @@ public class LobbyMain extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/client/lobby.fxml"));
         primaryStage.setTitle("Lobby");
         primaryStage.setScene(new Scene(root, 400, 330));
-        Font.loadFont(LoginMain.class.getResource("GoudyBookletter1911.ttf").toExternalForm(), 20);
         primaryStage.show();
     }
 
