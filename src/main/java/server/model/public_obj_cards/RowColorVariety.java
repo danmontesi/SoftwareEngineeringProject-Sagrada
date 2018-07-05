@@ -8,9 +8,7 @@ import java.util.HashSet;
 
 public class RowColorVariety extends PublicObjectiveCard{
     public RowColorVariety(String name, String description, Integer score) {
-        this.name = name;
-        this.description = description;
-        this.score = score;
+        super(name, description, score);
     }
 
     @Override

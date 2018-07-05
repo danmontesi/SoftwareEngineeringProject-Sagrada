@@ -294,7 +294,7 @@ public class CLIView extends View implements Runnable {
                 break;
             case END_GAME:
                 if (checkCorrectInput(input, 1, 2)) {
-                    //TODO: cosa succede con end game?
+
                 }
         }
     }

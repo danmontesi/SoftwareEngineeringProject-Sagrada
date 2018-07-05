@@ -7,9 +7,7 @@ import java.util.HashSet;
 
 public class ColumnShadeVariety extends PublicObjectiveCard{
     public ColumnShadeVariety(String name, String description, Integer score) {
-        this.name = name;
-        this.description = description;
-        this.score = score;
+        super(name, description, score);
     }
 
     @Override

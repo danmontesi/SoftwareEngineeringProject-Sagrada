@@ -8,9 +8,7 @@ import java.util.HashSet;
 
 public class ColorVariety extends PublicObjectiveCard {
     public ColorVariety(String name, String description, Integer score) {
-        this.name = name;
-        this.description = description;
-        this.score = score;
+        super(name, description, score);
     }
 
     @Override

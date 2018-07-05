@@ -5,9 +5,7 @@ import server.model.WindowPatternCard;
 
 public class MediumShade extends PublicObjectiveCard{
     public MediumShade(String name, String description, Integer score) {
-        this.name = name;
-        this.description = description;
-        this.score = score;
+        super(name, description, score);
     }
 
     @Override

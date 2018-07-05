@@ -8,9 +8,7 @@ import server.model.WindowPatternCard;
 public class ColorDiagonals extends PublicObjectiveCard {
 
     public ColorDiagonals(String name, String description, Integer score) {
-        this.name = name;
-        this.description = description;
-        this.score = score;
+        super(name, description, score);
     }
 
     @Override

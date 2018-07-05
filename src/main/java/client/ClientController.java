@@ -113,10 +113,7 @@ public class ClientController extends Observable implements Observer, Controller
     public void applyCommand(RefreshBoardCommand command) {
         view.updateBoard(command);
     }
-    @Override
-    public void setPlayerModel(String modelString){
-        //PROBABLY TO DELETE
-    }
+
 
     /**
      * Applies commands coming from the Server, calling the right graphical methods of the View
