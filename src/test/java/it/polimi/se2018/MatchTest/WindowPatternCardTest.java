@@ -154,7 +154,7 @@ public class WindowPatternCardTest {
     public void moveDieIgnoringPlacementRestriction(){
         wpc.placeDie(new Die(COLOR.RED, 4), 3, 2);
         try {
-            assertTrue(wpc.moveDie(equivalentIndex(3, 2), equivalentIndex(2, 2),
+            assertTrue(wpc.moveDie(equivalentIndex(3, 2), equivalentIndex(3, 1),
                     true, true, false));
         } catch (EmptyCellException e) {
             Assert.fail();
