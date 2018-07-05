@@ -98,10 +98,6 @@ public class Model extends Observable { //Observable of View
         this.roundTrack = oldModel.getRoundTrack();
         }
 
-    public List<Die> extractDraftPoolDice(int numPlayers) {
-        return diceBag.extractDice(numPlayers);
-    }
-
     /**
      * Returns an ArrayList of 4 WindowPatternCards
      * @return list of extracted cards
@@ -349,10 +345,6 @@ public class Model extends Observable { //Observable of View
 
     public int getCurrentRound() {
         return currentRound;
-    }
-
-    public Player getCurrentPlayer() {
-        return currentPlayer;
     }
 
     public void setGamePlayersNoRefresh(List<Player> players) {
