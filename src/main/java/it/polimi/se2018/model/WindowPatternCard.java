@@ -61,13 +61,13 @@ public class WindowPatternCard {
      * @param column column index
      * @param colorRestriction indicates whether the color restrictions have to be checked
      * @param valueRestriction indicates whether the value restrictions have to be checked
-     * @param placementRestriction indicates whether the placement restrictions have to be checked
+     * @param adjacentsRestriction indicates whether the placement restrictions have to be checked
      * @return true if restrictions are respected and die is placed, false otherwise
      */
     public boolean placeDie(Die d, int row, int column, boolean colorRestriction, boolean valueRestriction,
-                            boolean placementRestriction) {
+                            boolean adjacentsRestriction) {
         int index = row * 5 + column;
-        return placeDie(d, index, colorRestriction, valueRestriction, placementRestriction);
+        return placeDie(d, index, colorRestriction, valueRestriction, adjacentsRestriction);
     }
 
 
@@ -75,8 +75,8 @@ public class WindowPatternCard {
      * Same of place die, but has index instead of row/column
      */
     public boolean placeDie(Die d, int index, boolean colorRestriction, boolean valueRestriction,
-                            boolean placementRestriction) {
-        if (checkCorrectDiePlacement(d, index, colorRestriction, valueRestriction, placementRestriction)) {
+                            boolean adjacentsRestriction) {
+        if (checkCorrectDiePlacement(d, index, colorRestriction, valueRestriction, adjacentsRestriction)) {
             this.getCell(index).setAssociatedDie(d);
             return true;
         } else {
@@ -97,15 +97,15 @@ public class WindowPatternCard {
      * @param newPosition new die position
      * @param colorRestriction indicates whether the color restrictions have to be checked
      * @param valueRestriction indicates whether the value restrictions have to be checked
-     * @param placementRestriction indicates whether the placement restrictions have to be checked
+     * @param adjacentsRestriction indicates whether the placement restrictions have to be checked
      * @return true if restrictions are respected and die is placed, false otherwise
      * @throws EmptyCellException if the old position is empty
      */
     public boolean moveDie(int oldPosition, int newPosition, boolean colorRestriction, boolean valueRestriction,
-                           boolean placementRestriction) throws EmptyCellException {
+                           boolean adjacentsRestriction) throws EmptyCellException {
         Die d = this.removeDie(oldPosition);
-        if (checkCorrectDiePlacement(d, newPosition, colorRestriction, valueRestriction, placementRestriction)) {
-            return placeDie(d, newPosition, colorRestriction, valueRestriction, placementRestriction);
+        if (checkCorrectDiePlacement(d, newPosition, colorRestriction, valueRestriction, adjacentsRestriction)) {
+            return placeDie(d, newPosition, colorRestriction, valueRestriction, adjacentsRestriction);
         } else {
             this.setDie(d, oldPosition);
             return false;
@@ -134,7 +134,7 @@ public class WindowPatternCard {
         if (this.isEmpty()) {
             return row == 0 || row == 3 || column == 0 || column == 4;
         } else {
-            return (checkAdjacents(c) && checkAdjacentsColorsAndValues(c, d));
+            return (checkAdjacentsColorsAndValues(c, d));
         }
     }
 
@@ -155,6 +155,9 @@ public class WindowPatternCard {
      * @return true if the destination cell is next to the source one (vertically, horizontally or diagonally), false otherwise
      */
     private boolean checkAdjacents(Cell c) {
+        if(this.isEmpty()){
+            return true;
+        }
         int row = c.getRow();
         int column = c.getColumn();
         for (int i = -1; i <= 1; i++) {
@@ -255,17 +258,18 @@ public class WindowPatternCard {
      * @param index destination cell position
      * @param colorRestriction indicates whether the color restrictions have to be checked
      * @param valueRestriction indicates whether the value restrictions have to be checked
-     * @param placementRestriction indicates whether the placement restrictions have to be checked
+     * @param adjacentsRestriction indicates whether the placement restrictions have to be checked
      * @return true if all restrictions are respected, false otherwise
      */
-    private boolean checkCorrectDiePlacement(Die die, int index, boolean colorRestriction, boolean valueRestriction, boolean placementRestriction) {
+    private boolean checkCorrectDiePlacement(Die die, int index, boolean colorRestriction, boolean valueRestriction, boolean adjacentsRestriction) {
         Cell cell = this.getCell(index);
         if (cell.hasDie()) {
             return false;
         }
         return (!colorRestriction || checkColorRestriction(cell, die)) &&
                 (!valueRestriction || checkValueRestriction(cell, die)) &&
-                (!placementRestriction || checkPlacementRestriction(cell, die));
+                (!adjacentsRestriction || checkAdjacents(cell)) &&
+                checkPlacementRestriction(cell, die);
     }
 
     public String getCardName() {

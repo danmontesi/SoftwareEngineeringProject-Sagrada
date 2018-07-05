@@ -49,9 +49,9 @@ public class ToolCard {
     }
 
     public List<Action> getActions() {
-        ArrayList<Action> actionsToReturn = new ArrayList<>();
-        actionsToReturn.addAll(actions);
-        return actionsToReturn;
+        List<Action> actionsCopy = new ArrayList<>();
+        actionsCopy.addAll(actions);
+        return actionsCopy;
     }
 
     public boolean isReversible() {

@@ -32,8 +32,8 @@ public class GameMatchTest {
    @Test
     public void testCheckUpController() {
         setUpController();
-//      assertEquals(controller.getUninitializedOrderedPlayers().size(), 3);
-//      assertEquals(model.getObservers().size(), 3);
+        assertEquals(controller.getUninitializedOrderedPlayers().size(), 3);
+        assertEquals(model.getObservers().size(), 3);
    }
 
    public void setUpWpcChoice(){
