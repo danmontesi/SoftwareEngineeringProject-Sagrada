@@ -25,9 +25,8 @@ public class VirtualView extends View {
 
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
-    public VirtualView(Observer controller, Model model, String username) {
+    public VirtualView(Observer controller, String username) {
         super(controller);
-        this.observable = model; //this can be omitted
         this.username = username;
         this.disconnected = false;
         Server.getUserMap().put(username, this);

@@ -157,7 +157,7 @@ public class DraftPool {
                     builder.append(i).append(":- ").append(cells.get(i).getAssociatedDie().toString());
                 }
             } catch (EmptyCellException e) {
-                e.printStackTrace();
+                //error
             }
             builder.append("\t");
         }

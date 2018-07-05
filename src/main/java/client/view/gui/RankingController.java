@@ -47,7 +47,7 @@ public class RankingController extends Observable implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        setContent((List<String>)arg);
+        setContent((List<String>) arg);
     }
 
     /**

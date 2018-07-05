@@ -16,35 +16,42 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server {
 
-    /* Clients that are waiting for a game to start and saved by username*/
+    /**Clients that are waiting for a game to start and saved by username */
     private static List<String> waitingClients = new ArrayList<>();
 
-    /* Clients connected with their own username and ClientConnection:
-       ClientConnection is the reference that the server has to contact them
-       These clients could both be in a game or be waiting for a game to start */
+    /**
+     * Clients connected with their own username and ClientConnection:
+     * ClientConnection is the reference that the server has to contact them
+     * These clients could both be in a game or be waiting for a game to start
+     */
     private static Map<String, ClientConnection> connectedClients = new ConcurrentHashMap<>();
 
-    /* Clients that were in a game andd then got disconnected
-       These clients could be reinserted in a paused game when they reconnect to the server
-       Clients are saved by their unique username */
+    /** Clients that were in a game andd then got disconnected
+     *  These clients could be reinserted in a paused game when they reconnect to the serverClients are saved by their unique username
+     */
     private static List<String> disconnectedClients = new ArrayList<>();
 
-    /* List of active games (one Thread for each game) */
+    /** List of active games (one Thread for each game) */
     private static List<Controller> activeGames = new ArrayList<>();
 
-    /* Map used to pass a command coming from the network to the right controller (the right game) to manage it */
+    /** Map used to pass a command coming from the network to the right controller (the right game) to manage it */
     private static Map<String, VirtualView> userMap = new HashMap<>();
 
+    /** Timer before starting a match after 2 connected players */
     private static Timer timer;
+
+    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
+
 
     public static void main(String[] args) {
         boolean activeServer = true;
-        //pubblica RMI impl server side
+
         new RMIServer().RMIStartListening();
-        //listen socket connections
         new SocketServer().socketStartListening();
 
         new Thread(() -> {
@@ -56,12 +63,14 @@ public class Server {
                     Thread.currentThread().interrupt();
                 }
                 for (String user : connectedClients.keySet()) {
+                    System.out.println("Now sending ping to->" + user);
                     connectedClients.get(user).notifyClient(new PingConnectionTester());  //Checking if still connected(for RMI)
                 }
                 removeInactiveControllers();
             }
         }
         ).start();
+
     }
 
     /**
@@ -78,27 +87,25 @@ public class Server {
         }
     }
 
+    /**
+     * Method called by VirtualView sending the message from the Controller through the network to the real Client View
+     * @param command command that has to be sent
+     */
     public static void handle(ClientToServerCommand command){
         String username = command.getUsername();
         userMap.get(username).notify(command);
     }
 
 
-    /* New connections are automatically added to waitingClients because they haven't chosen a username yet.
-       They are later moved from waitingClients to connnectedClients when they are connected with their user. */
     /**
      * Adds clients (RMI)
+     * New connections are automatically added to waitingClients because they haven't chosen a username yet.
+     * They are later moved from waitingClients to connnectedClients when they are connected with their user.
      */
     public static void addClientInterface(RMIClientInterface client, String username){
         //Create reference to RMIClient
         RMIVirtualClient vc = new RMIVirtualClient(client);
-        /*
-        Three cases:
-        1) Attempt to reconnect after disconnection
-        2) Correct login request. view is added to waitingClients (waiting for a game to start)
-        3) Attempt to connect with a user already taken, the server choose a similar valid one and notifies it to the view
-        Every time, a response is sent back to notify success or failure
-         */
+
         if (disconnectedClients.contains(username)){
             disconnectedClients.remove(username);
             connectedClients.put(username, vc);
@@ -140,16 +147,9 @@ public class Server {
      * Adds clients (Socket)
      */
     public static void addClientInterface(Socket socket, ObjectInputStream input, ObjectOutputStream output, String username){
-        //Create reference to Socket view
+        //Create reference to SocketClient
         SocketVirtualClient vc = new SocketVirtualClient(socket, input, output);
-        /*
-        Three cases:
-        1) Attempt to reconnect after disconnection
-        2) Correct login request. view is added to waitingClients (waiting for a game to start)
-        3) Attempt to connect with a user already taken, the server choose a similar valid one and notifies it to the view
-        Every time, a response is sent back to notify success or failure
-         */
-        System.out.println("Entro in addClientSocket");
+
         if (disconnectedClients.contains(username)){
             disconnectedClients.remove(username);
             connectedClients.put(username, vc);
@@ -159,7 +159,6 @@ public class Server {
             refreshBoardAndNotifyReconnectedPlayer(username);
         }  else if (!connectedClients.containsKey(username)){
             connectedClients.put(username, vc);
-            System.out.println("prima di inviare AuthCommand");
             vc.notifyClient(new AuthenticatedCorrectlyCommand(username));
             vc.start();
             addToWaitingClients(username);
@@ -183,7 +182,7 @@ public class Server {
     /**
      * Removes all references of a given player from the server
      */
-    public static void removeClient(String username){
+    private static void removeClient(String username){
         if (connectedClients.containsKey(username)){
             connectedClients.remove(username);
         }
@@ -222,36 +221,31 @@ public class Server {
             if (counter==1){
                 game.getUserViewMap().get(lastPlayer).endGame();
                 ArrayList<String> fakeScores = new ArrayList<>();
-                fakeScores.add("1_" + lastPlayer + "_999");
+                fakeScores.add("1_" + lastPlayer + "_999999");
                 game.getUserViewMap().get(lastPlayer).winMessage(fakeScores);
                 game.setInactive();
                 removeClient(lastPlayer);
             }
         } else {
-            System.out.println("Could not found such view");
+           //username has already been removed before
         }
     }
 
     /**
      * Adds players to a game and starts the game
      */
-    public synchronized static void addToWaitingClients(String username){ //TODO Gestire la concorrenza: se vengono addate insieme 6 view, faccio partire un timer e l'altro per i 2 player rimanenti?
+    private static synchronized void addToWaitingClients(String username){
         waitingClients.add(username);
-        System.out.println("Aggiunto "+ username);
+        System.out.println("SERVER: Connected new player name "+ username);
         notifyNewConnectedPlayer(username);
         if (waitingClients.size() == 2){
             System.out.println("Starting timer");
-            timer = new Timer(); //TODO gestire il caso di più partite in attesa: devo avere degli ARRAY di timer in quel caso! e sapere quali sono attivi
+            timer = new Timer();
             timer.schedule(
                 new TimerTask() {
                     @Override
                     public void run() {
-                        // Inutile -> itsTimeToStart = true;  //TODO a cosa serve questa variabile? startNewGame() deve essere controllato da questa variabile? deve essere messo in un thread quindi?
-                        System.out.println("Time expired");
-                        //TODO: check all players from RMI are connected -> Ping
-                        //wait for 1s (time to the ping to be sent)
-                        //if arrives here, the client connected are more than 1 (if not, disconnectPlayers can cancel the timer
-                        startNewGame(); //DA TOGLIERE, l'ho utilizzato solo come prova. il metodo deve essere contorllato dalla variabile itsTimeToStart
+                        startNewGame();
                     }
                 },
                 CONSTANTS.LOBBY_TIMER
@@ -277,12 +271,9 @@ public class Server {
                 break;
             }
         }
+        waitingClients.removeAll(players);
 
-        for(String user : players){
-            waitingClients.remove(user);
-        }
-
-        Controller controller = new Controller(players);
+        Controller controller = new Controller(players, false);
         activeGames.add(controller);
     }
 
@@ -318,11 +309,11 @@ public class Server {
             Controller game = getControllerFromUsername(username);
             for (String usernameToNotify : game.getUserViewMap().keySet()) {
                 if (!username.equals(usernameToNotify))
-                    game.getUserViewMap().get(usernameToNotify).messageBox("Player" + username + " has disconnected");
+                    game.getUserViewMap().get(usernameToNotify).messageBox("Player " + username + " has disconnected");
             }
         }
         catch (NoSuchElementException e){
-            System.out.println("Error: No controller found, error");
+            LOGGER.log(Level.INFO,"Controller just deleted");
         }
     }
 
@@ -340,20 +331,8 @@ public class Server {
         throw new NoSuchElementException();
     }
 
-    public static List<String> getWaitingClients(){
-        return waitingClients;
-    }
-
     public static Map<String, ClientConnection> getConnectedClients() {
         return connectedClients;
-    }
-
-    public static List<String> getDisconnectedClients() {
-        return disconnectedClients;
-    }
-
-    public static List<Controller> getActiveGames() {
-        return activeGames;
     }
 
     static Map<String, VirtualView> getUserMap() {
