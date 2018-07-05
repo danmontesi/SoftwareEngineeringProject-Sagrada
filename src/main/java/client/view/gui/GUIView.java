@@ -76,6 +76,13 @@ public class GUIView extends View {
             cardNames.add(cards.get(i).get(0));
             cardDifficulties.add(wpcDifficulties.get(i));
         }
+        while(!wpcChoiceNotifier.isOpen()){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
         wpcChoiceNotifier.updateGui(new WGUIViewSetting(this));
         wpcChoiceNotifier.updateGui(new WPCChoice(cardNames, cardDifficulties, privateObjectiveCard));
     }

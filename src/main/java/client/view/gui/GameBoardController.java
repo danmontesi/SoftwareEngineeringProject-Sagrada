@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 public class GameBoardController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(WPCChoiceController.class.getName());
+    private GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
 
     private GUIView guiViewT;
     private RefreshBoardCommand modelRepresentation;
@@ -173,7 +174,6 @@ public class GameBoardController extends Observable implements Observer {
     }
 
     public void initialize() {
-        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.addObserver(this);
         initCardLists();
         initLabels();
@@ -855,7 +855,6 @@ public class GameBoardController extends Observable implements Observer {
      * Closes current stage
      */
     private void closeStage() {
-        GameBoardNotifier gameBoardNotifier = GameBoardNotifier.getInstance();
         gameBoardNotifier.setOpen(false);
         Stage stage = (Stage) pass.getScene().getWindow();
         stage.close();

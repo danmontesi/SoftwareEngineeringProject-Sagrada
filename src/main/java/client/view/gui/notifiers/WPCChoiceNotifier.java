@@ -5,7 +5,11 @@ import client.view.gui.notifiers.wpcchoiceactions.WPCChoiceAction;
 import java.util.Observable;
 
 public class WPCChoiceNotifier extends Observable {
-    private WPCChoiceNotifier() {}
+    private boolean open;
+
+    private WPCChoiceNotifier() {
+        open = false;
+    }
 
     private static class WPCChoiceNotifierHolder {
         private static final WPCChoiceNotifier INSTANCE = new WPCChoiceNotifier();
@@ -23,5 +27,17 @@ public class WPCChoiceNotifier extends Observable {
     public void updateGui(WPCChoiceAction guiReply) {
         setChanged();
         notifyObservers(guiReply);
+    }
+
+    public void setOpen(boolean b) {
+        if (b) {
+            this.open = true;
+        } else {
+            this.open = false;
+        }
+    }
+
+    public boolean isOpen() {
+        return open;
     }
 }

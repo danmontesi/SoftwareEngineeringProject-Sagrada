@@ -37,6 +37,7 @@ import java.util.logging.Logger;
 public class WPCChoiceController extends Observable implements Observer {
 
     private static final Logger LOGGER = Logger.getLogger(WPCChoiceController.class.getName());
+    private WPCChoiceNotifier wpcChoiceNotifier = WPCChoiceNotifier.getInstance();
 
     private GUIView guiViewT;
 
@@ -95,10 +96,31 @@ public class WPCChoiceController extends Observable implements Observer {
     }
 
     public void initialize() {
-        WPCChoiceNotifier.getInstance().addObserver(this);
+        wpcChoiceNotifier.addObserver(this);
         initCards();
         wpcGroup.getToggles().addAll(wpc1, wpc2, wpc3, wpc4);
         start.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-border-color: gray; -fx-border-width: 0.3px");
+        wpcChoiceNotifier.setOpen(true);
+    }
+
+    /**
+     * Adds all cards attributes to lists
+     */
+    private void initCards() {
+        wpCards.add(wpc1);
+        wpCards.add(wpc2);
+        wpCards.add(wpc3);
+        wpCards.add(wpc4);
+
+        wpcNames.add(wpc1n);
+        wpcNames.add(wpc2n);
+        wpcNames.add(wpc3n);
+        wpcNames.add(wpc4n);
+
+        wpcDifficulties.add(wpc1d);
+        wpcDifficulties.add(wpc2d);
+        wpcDifficulties.add(wpc3d);
+        wpcDifficulties.add(wpc4d);
     }
 
     public void update(Observable o, Object arg) {
@@ -122,26 +144,6 @@ public class WPCChoiceController extends Observable implements Observer {
     }
 
     /**
-     * Adds all cards attributes to lists
-     */
-    private void initCards() {
-        wpCards.add(wpc1);
-        wpCards.add(wpc2);
-        wpCards.add(wpc3);
-        wpCards.add(wpc4);
-
-        wpcNames.add(wpc1n);
-        wpcNames.add(wpc2n);
-        wpcNames.add(wpc3n);
-        wpcNames.add(wpc4n);
-
-        wpcDifficulties.add(wpc1d);
-        wpcDifficulties.add(wpc2d);
-        wpcDifficulties.add(wpc3d);
-        wpcDifficulties.add(wpc4d);
-    }
-
-    /**
      * Assigns to each card the relative information
      * @param names list of Window Pattern Cards names
      * @param difficulties  list of Window Pattern Cards difficulties
@@ -154,7 +156,6 @@ public class WPCChoiceController extends Observable implements Observer {
             prioc.setImage(image1);
             for (int i=0; i<names.size(); i++) {
                 String img = names.get(i);
-                System.out.println("card name: "+img);
                 String path = "/client/WPC/" + img + ".jpg";
                 Image image = new Image(path);
                 ImageView iv = new ImageView(image);
@@ -224,6 +225,7 @@ public class WPCChoiceController extends Observable implements Observer {
      * Closes current stage
      */
     private void closeStage() {
+        wpcChoiceNotifier.setOpen(false);
         Stage stage = (Stage)start.getScene().getWindow();
         stage.close();
     }
