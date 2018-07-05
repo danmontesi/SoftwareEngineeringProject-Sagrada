@@ -74,8 +74,9 @@
     </dependencies>
  
     <build>
+
         <plugins>
- 
+
             <!-- Export the project as a runnable JAR, with the provided mainClass -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -84,7 +85,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>it.polimi.se2018.model.App</mainClass>
+                            <mainClass>server.model.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

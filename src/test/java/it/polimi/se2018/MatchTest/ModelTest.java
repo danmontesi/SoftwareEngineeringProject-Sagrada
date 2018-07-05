@@ -1,7 +1,7 @@
 package it.polimi.se2018.MatchTest;
 
-import it.polimi.se2018.model.Model;
-import it.polimi.se2018.model.Player;
+import server.model.Model;
+import server.model.Player;
 import org.junit.Before;
 import org.junit.Test;
 

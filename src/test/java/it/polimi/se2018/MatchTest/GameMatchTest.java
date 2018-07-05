@@ -1,17 +1,14 @@
 package it.polimi.se2018.MatchTest;
 
-import it.polimi.se2018.commands.client_to_server_command.*;
-import it.polimi.se2018.exceptions.EmptyCellException;
-import it.polimi.se2018.model.*;
-import it.polimi.se2018.network.server.Controller;
-import it.polimi.se2018.parser.ParserToolcard;
-import it.polimi.se2018.parser.ParserWindowPatternCard;
+import shared.commands.client_to_server_command.*;
+import shared.exceptions.EmptyCellException;
+import server.model.*;
+import server.Controller;
+import server.parser.ParserToolcard;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;

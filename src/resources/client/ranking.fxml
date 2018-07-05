@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="530.0" prefWidth="570.0" stylesheets="/client/ranking.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.view.gui.RankingController">
+<AnchorPane prefHeight="530.0" prefWidth="570.0" stylesheets="/client/ranking.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.gui.RankingController">
    <children>
       <Label fx:id="outcome" alignment="CENTER" layoutX="135.0" layoutY="50.0" prefHeight="80.0" prefWidth="300.0" style="-fx-font-size: 54px;" textAlignment="CENTER" />
       <Label fx:id="rank" alignment="CENTER" layoutX="135.0" layoutY="130.0" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 38px" textAlignment="CENTER" />

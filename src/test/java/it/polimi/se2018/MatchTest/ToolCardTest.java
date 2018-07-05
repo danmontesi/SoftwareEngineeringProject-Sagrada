@@ -1,8 +1,8 @@
 package it.polimi.se2018.MatchTest;
 
-import it.polimi.se2018.model.ACTION_TYPE;
-import it.polimi.se2018.model.Action;
-import it.polimi.se2018.model.ToolCard;
+import server.model.ACTION_TYPE;
+import server.model.Action;
+import server.model.ToolCard;
 import org.junit.Before;
 import org.junit.Test;
 

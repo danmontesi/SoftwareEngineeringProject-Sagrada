@@ -1,8 +1,8 @@
 package it.polimi.se2018.ParserTest;
 
 import com.google.gson.stream.MalformedJsonException;
-import it.polimi.se2018.model.WindowPatternCard;
-import it.polimi.se2018.parser.ParserWindowPatternCard;
+import server.model.WindowPatternCard;
+import server.parser.ParserWindowPatternCard;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

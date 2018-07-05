@@ -1,11 +1,11 @@
 package it.polimi.se2018.MatchTest;
 
-import it.polimi.se2018.exceptions.EmptyCellException;
-import it.polimi.se2018.model.COLOR;
-import it.polimi.se2018.model.Cell;
-import it.polimi.se2018.model.Die;
-import it.polimi.se2018.model.WindowPatternCard;
-import it.polimi.se2018.parser.ParserWindowPatternCard;
+import shared.exceptions.EmptyCellException;
+import server.model.COLOR;
+import server.model.Cell;
+import server.model.Die;
+import server.model.WindowPatternCard;
+import server.parser.ParserWindowPatternCard;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
