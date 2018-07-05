@@ -159,6 +159,8 @@ public class GameBoardController extends Observable implements Observer {
     private DropShadow redShadow = new DropShadow();
     private DropShadow greenShadow = new DropShadow();
 
+    private boolean myTurn = false;
+
     public GameBoardController() {
         pubOCards = new ArrayList<>();
         wpCards = new ArrayList<>();
@@ -383,11 +385,13 @@ public class GameBoardController extends Observable implements Observer {
                 @Override
                 public void visitGameBoardAction(TurnStart turnStart) {
                     if (turnStart.getUsername() == null) {
+                        myTurn = true;
                         disableAllButtons(false);
                         moveDice();
                         msgBox.setText("It's your turn!\n");
                         greenLight();
                     } else {
+                        myTurn = false;
                         disableAllButtons(true);
                         msgBox.setText("It's " + turnStart.getUsername() + "'s turn!\n");
                     }
@@ -585,6 +589,7 @@ public class GameBoardController extends Observable implements Observer {
                     iv.setFitWidth(43);
                     iv.setFitHeight(43);
                     ((ToggleButton) draftPoolDice.getChildren().get(i)).setGraphic(iv);
+                    draftPoolDice.getChildren().get(i).setDisable(!myTurn);
                 } else {
                     ((ToggleButton) draftPoolDice.getChildren().get(i)).setGraphic(null);
                 }
