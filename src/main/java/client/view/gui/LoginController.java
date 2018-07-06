@@ -1,8 +1,8 @@
 package client.view.gui;
 
-import client.client_network.rmi.RMIClient;
-import client.client_network.socket.SocketClient;
-import server.server_network.ServerConnection;
+import shared.client_network.rmi.RMIClient;
+import shared.client_network.socket.SocketClient;
+import shared.server_network.ServerConnection;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -77,7 +77,7 @@ public class LoginController implements Observer {
             usernameField.setEffect(null);
             ServerConnection server;
             if (getConnection().equals("RMI")) {
-                server = new RMIClient(2, ipAddressField.getText());
+                server = RMIClient.getInstance(2, ipAddressField.getText());
                 server.startConnection(getUsername());
             } else if (getConnection().equals("Socket")) {
                 server = new SocketClient(2, ipAddressField.getText());
@@ -108,6 +108,10 @@ public class LoginController implements Observer {
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));
                 stage.show();
+                stage.setOnCloseRequest(event -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
                 closeScene();
             } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch interface choice", e);

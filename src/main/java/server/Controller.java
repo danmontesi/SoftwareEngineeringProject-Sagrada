@@ -140,6 +140,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             for (int i = 0; i < localWpc.size(); i++) {
                 localWpcsString.add(localWpc.get(i).wpcPathRepresentation());
                 wpcDifficulties.add(localWpc.get(i).getDifficulty());
+                System.out.println(localWpc.get(i).getCardName());
             }
 
             WindowPatternCard defaultCard = localWpc.get(0); //default wpc in case the player disconnects

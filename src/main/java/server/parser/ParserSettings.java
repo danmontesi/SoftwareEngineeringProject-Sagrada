@@ -3,9 +3,7 @@ package server.parser;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Class with common configuration settings for every json file
@@ -23,13 +21,37 @@ public class ParserSettings {
      * @throws IOException
      */
     public JsonObject extractJsonObject(String jsonName) throws IOException{
-        String path = PATH + jsonName;
-        open(path);
+
+        String path = "/json/" + jsonName;
+        //InputStream instr = new FileInputStream(new File(path));
+        //File file = new File(this.getClass().getResource(path).getFile());
+                //instr = this.getClass().getResource(path).openStream();
+        InputStream stream = ParserSettings.class.getResourceAsStream(path);
+        BufferedReader rd = new BufferedReader(new InputStreamReader(stream));
+
+        //FileReader fileReader= new FileReader(file);
+        //inputStream= CLASSECHEHAI.getClass().getClassLoader().getResourceAsStream(PERCORSORESOURCES);
+
+
+            JsonParser parser = new JsonParser();
+            JsonObject object = parser.parse(rd).getAsJsonObject();
+            rd.close();
+            stream.close();
+            return object;
+
+
+
+        //InputStreamReader stream = new InputStreamReader( instr);
+        /*open(path);
         JsonParser parser = new JsonParser();
-        JsonObject object = parser.parse(br).getAsJsonObject();
+
+        JsonObject object = parser.parse(bufferedReader).getAsJsonObject();
         close();
         return object;
+        */
     }
+
+
 
     /**
      * Instantiates new FileReader and BufferReader

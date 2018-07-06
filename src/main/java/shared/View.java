@@ -61,11 +61,7 @@ public class View extends Observable implements ObserverView { //VIEW: Osserva M
     }
 
     public void invalidActionMessage(String message){
-        //Di qualsiasi tipo:
-        // sia per il tool (seguita da una richiesta di uso del tool, di nuovo)
-        // sia per il piazzamento di un dado scorretto
-        // sia per qualsiasi azione non va bene
-        //OSS: il message contiene il messaggio con le informazioni dell'errore
+
     }
 
     public void loseMessage(Integer position, List<String> scores){

@@ -104,6 +104,10 @@ public class LobbyController extends Observable implements Observer {
                 Stage wpcChoiceStage = new Stage();
                 wpcChoiceStage.setScene(new Scene(root));
                 wpcChoiceStage.show();
+                wpcChoiceStage.setOnCloseRequest(event -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
                 closeStage();
             } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch window pattern card choice", e);
@@ -122,6 +126,10 @@ public class LobbyController extends Observable implements Observer {
                 Stage wpcChoiceStage = new Stage();
                 wpcChoiceStage.setScene(new Scene(root));
                 wpcChoiceStage.show();
+                wpcChoiceStage.setOnCloseRequest(event -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
                 closeStage();
             } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch game board", e);

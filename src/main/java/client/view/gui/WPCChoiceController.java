@@ -155,9 +155,12 @@ public class WPCChoiceController extends Observable implements Observer {
             priocname.setText(priOC);
             prioc.setImage(image1);
             for (int i=0; i<names.size(); i++) {
+                System.out.println(names.get(i));
                 String img = names.get(i);
                 String path = "/client/WPC/" + img + ".jpg";
-                Image image = new Image(path);
+                System.out.println(path);
+                Image image = new Image(getClass().getResource(path).toExternalForm());
+                System.out.println(image);
                 ImageView iv = new ImageView(image);
                 iv.setFitHeight(184);
                 iv.setFitWidth(230);
@@ -213,7 +216,7 @@ public class WPCChoiceController extends Observable implements Observer {
         if (!wpc1.isSelected() && !wpc2.isSelected() && !wpc3.isSelected() && !wpc4.isSelected()) {
             inputError();
         } else {
-            guiViewT.notify(new ChosenWindowPatternCard(selectedWPC));
+                guiViewT.notify(new ChosenWindowPatternCard(selectedWPC));
             for (ToggleButton tb : wpCards) {
                 tb.setDisable(true);
             }
@@ -241,6 +244,10 @@ public class WPCChoiceController extends Observable implements Observer {
                 Stage wpcChoiceStage = new Stage();
                 wpcChoiceStage.setScene(new Scene(root));
                 wpcChoiceStage.show();
+                wpcChoiceStage.setOnCloseRequest(event -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
                 closeStage();
             } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch game board", e);

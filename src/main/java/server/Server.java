@@ -2,14 +2,14 @@ package server;
 
 
 import shared.CONSTANTS;
-import server.server_network.rmi.RMIServer;
-import server.server_network.socket.SocketServer;
-import server.server_network.socket.SocketVirtualClient;
+import shared.server_network.rmi.RMIServer;
+import shared.server_network.socket.SocketServer;
+import shared.server_network.socket.SocketVirtualClient;
 import shared.commands.client_to_server_command.ClientToServerCommand;
 import shared.commands.server_to_client_command.*;
-import client.client_network.ClientConnection;
-import client.client_network.rmi.RMIClientInterface;
-import server.server_network.rmi.RMIVirtualClient;
+import shared.client_network.ClientConnection;
+import shared.client_network.rmi.RMIClientInterface;
+import shared.server_network.rmi.RMIVirtualClient;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

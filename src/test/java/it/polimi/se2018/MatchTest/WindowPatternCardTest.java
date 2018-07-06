@@ -107,8 +107,6 @@ public class WindowPatternCardTest {
         assertFalse(wpc.placeDie(new Die(COLOR.RED, 3), 1, 0));
     }
 
-    //TODO: DA SISTEMARE I PROSSIMI DUE
-
     @Test
     public void removeDie(){
         wpc.placeDie(new Die(COLOR.YELLOW, 3), 0, 0);

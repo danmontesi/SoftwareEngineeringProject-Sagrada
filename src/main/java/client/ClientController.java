@@ -2,7 +2,7 @@ package client;
 
 import shared.commands.client_to_server_command.ClientToServerCommand;
 import shared.commands.server_to_client_command.*;
-import server.server_network.ServerConnection;
+import shared.server_network.ServerConnection;
 import shared.utils.ControllerClientInterface;
 import shared.utils.Observable;
 import shared.utils.Observer;
@@ -51,6 +51,7 @@ public class ClientController extends Observable implements Observer, Controller
             ClientToServerCommand castedCommand = (ClientToServerCommand) command;
             LOGGER.log(Level.FINE, "Sto inviando un command ", castedCommand);
             castedCommand.setUsername(username);
+
             connection.send(castedCommand);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -150,14 +151,14 @@ public class ClientController extends Observable implements Observer, Controller
 
     @Override
     public void applyCommand(TimeOutCommand command){
-        LOGGER.log(Level.FINE,"Arriva a clientContorller" );
+        LOGGER.log(Level.FINE,"Arrives to  clientContorller" );
         view.timeOut();
     }
 
     @Override
     public void dispatchCommand(Object command) {
         ServerToClientCommand castedCommand = (ServerToClientCommand) command;
-        LOGGER.log(Level.FINE, "Arriva il command", command);
+        LOGGER.log(Level.FINE, "Arrives command", command);
         castedCommand.visit(this);
     }
 

@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="450.0" prefWidth="570.0" stylesheets="/client/ranking.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.gui.RankingController">
+<AnchorPane prefHeight="520.0" prefWidth="570.0" stylesheets="/client/ranking.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.gui.RankingController">
    <children>
       <Label fx:id="outcome" alignment="CENTER" layoutX="135.0" layoutY="50.0" prefHeight="80.0" prefWidth="300.0" style="-fx-font-size: 54px;" textAlignment="CENTER" />
       <Label fx:id="rank" alignment="CENTER" layoutX="135.0" layoutY="130.0" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 38px" textAlignment="CENTER" />
@@ -21,5 +21,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" />
         </rowConstraints>
       </GridPane>
+      <Button fx:id="playAgain" layoutX="130.0" layoutY="421.0" mnemonicParsing="false" onAction="#startNewGame" prefHeight="35.0" prefWidth="100.0" styleClass="button" text="Play again" />
+      <Button fx:id="exit" layoutX="341.0" layoutY="421.0" mnemonicParsing="false" onAction="#exit" prefHeight="35.0" prefWidth="100.0" styleClass="button" text="Exit" />
    </children>
 </AnchorPane>

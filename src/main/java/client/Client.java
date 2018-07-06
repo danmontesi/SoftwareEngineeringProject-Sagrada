@@ -1,11 +1,12 @@
 package client;
 
 
-import client.client_network.rmi.RMIClient;
-import client.client_network.socket.SocketClient;
-import server.server_network.ServerConnection;
+import shared.client_network.rmi.RMIClient;
+import shared.client_network.socket.SocketClient;
+import shared.server_network.ServerConnection;
 import client.view.gui.LoginMain;
 
+import java.rmi.server.RMIClassLoader;
 import java.util.Scanner;
 
 public class Client{
@@ -28,7 +29,7 @@ public class Client{
             String username = scanner.nextLine();
 
             if(connectionType.equals("2")){
-                server = new RMIClient(1, ipAddress);
+                server = RMIClient.getInstance(1, ipAddress);
             } else {
 
                 server = new SocketClient(1, ipAddress);

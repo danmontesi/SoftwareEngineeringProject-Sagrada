@@ -37,6 +37,7 @@ import java.util.logging.Logger;
 
 /**
  * Manages the Game Board window
+ *
  * @author Nives Migotto
  */
 public class GameBoardController extends Observable implements Observer {
@@ -346,6 +347,7 @@ public class GameBoardController extends Observable implements Observer {
 
     /**
      * Sets the shadow effect on hover
+     *
      * @param p pane whose children will be affected
      */
     private void setShadow(Pane p) {
@@ -529,7 +531,7 @@ public class GameBoardController extends Observable implements Observer {
             for (int i = 0; i < modelRepresentation.getOtherPlayersWpcs().size(); i++) {
                 String img = modelRepresentation.getOtherPlayersWpcs().get(i).get(0).replace("_", " ");
                 String path = "/client/WPC/" + img + ".jpg";
-                Image image = new Image(path);
+                Image image = new Image(getClass().getResource(path).toExternalForm());
                 wpCards.get(i).setImage(image);
                 userNames.get(i).setText(modelRepresentation.getOtherPlayersUsernames().get(i));
                 usersTokens.get(i).setText(modelRepresentation.getOtherPlayersTokens().get(i).toString());
@@ -575,6 +577,7 @@ public class GameBoardController extends Observable implements Observer {
 
     /**
      * Shows the dice on the DraftPool
+     *
      * @param dice to be shown dice
      */
     private void setDraftPool(List<String> dice) {
@@ -603,6 +606,7 @@ public class GameBoardController extends Observable implements Observer {
 
     /**
      * Shows the dice ont he RoundTrack
+     *
      * @param dice to be shown dice
      */
     private void setRoundTrack(List<String> dice) {
@@ -617,7 +621,7 @@ public class GameBoardController extends Observable implements Observer {
                     iv.setFitHeight(43);
                     ((ToggleButton) roundTrackDice.getChildren().get(i)).setGraphic(iv);
                 } else {
-                    ((ToggleButton)roundTrackDice.getChildren().get(i)).setGraphic(null);
+                    ((ToggleButton) roundTrackDice.getChildren().get(i)).setGraphic(null);
                 }
             }
             setShadow(roundTrackDice);
@@ -626,8 +630,9 @@ public class GameBoardController extends Observable implements Observer {
 
     /**
      * Updates Tool Cards and all players' tokens
-     * @param tcTok list of Tool Cards tokens numbers
-     * @param playersTok player's tokens number
+     *
+     * @param tcTok       list of Tool Cards tokens numbers
+     * @param playersTok  player's tokens number
      * @param personalTok list of other players' tokens numbers
      */
     private void setTokens(List<Integer> tcTok, List<Integer> playersTok, Integer personalTok) {
@@ -644,6 +649,7 @@ public class GameBoardController extends Observable implements Observer {
 
     /**
      * Shows the dice on the other players' Window Pattern Cards
+     *
      * @param wpcards to be shown dice
      */
     private void setWPCardsDice(List<List<String>> wpcards) {
@@ -657,10 +663,10 @@ public class GameBoardController extends Observable implements Observer {
                     if (img.contains("_")) {
                         String path = "/client/dice/" + img + ".jpg";
                         Image image = new Image(path);
-                        ((ImageView)otherWPCsDice.get(i).getChildren().get(j)).setImage(image);
+                        ((ImageView) otherWPCsDice.get(i).getChildren().get(j)).setImage(image);
                     } else {
                         Image image = new Image("/client/dice/transparent.png");
-                        ((ImageView)otherWPCsDice.get(i).getChildren().get(j)).setImage(image);
+                        ((ImageView) otherWPCsDice.get(i).getChildren().get(j)).setImage(image);
                     }
                 }
             }
@@ -669,6 +675,7 @@ public class GameBoardController extends Observable implements Observer {
 
     /**
      * Shows the dice in the player's Window Pattern Card
+     *
      * @param wpc to be shown dice
      */
     private void setPersonalWPCDice(List<String> wpc) {
@@ -683,7 +690,7 @@ public class GameBoardController extends Observable implements Observer {
                     iv.setFitHeight(43);
                     ((ToggleButton) personalWPCDice.getChildren().get(i)).setGraphic(iv);
                 } else {
-                    ((ToggleButton)personalWPCDice.getChildren().get(i)).setGraphic(null);
+                    ((ToggleButton) personalWPCDice.getChildren().get(i)).setGraphic(null);
                 }
             }
             setShadow(personalWPCDice);
@@ -713,6 +720,7 @@ public class GameBoardController extends Observable implements Observer {
 
     /**
      * Selects where the die can be selected from
+     *
      * @param from indicates where the dice can be selected from
      */
     private void selectParent(String from) {
@@ -733,6 +741,7 @@ public class GameBoardController extends Observable implements Observer {
 
     /**
      * Allows to select a die
+     *
      * @param parent indicates where the dice can be selected from
      * @param action indicates why the dice is selected (pick it or place it)
      */
@@ -878,6 +887,10 @@ public class GameBoardController extends Observable implements Observer {
                 Stage gameBoardStage = new Stage();
                 gameBoardStage.setScene(new Scene(root));
                 gameBoardStage.show();
+                gameBoardStage.setOnCloseRequest(event -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
                 closeStage();
             } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "An exception was thrown: cannot launch ranking pane", e);
@@ -887,6 +900,7 @@ public class GameBoardController extends Observable implements Observer {
 
     /**
      * Disables or enables all buttons
+     *
      * @param b indicates whether the buttons are to be enabled or disabled
      */
     private void disableAllButtons(boolean b) {
@@ -913,11 +927,11 @@ public class GameBoardController extends Observable implements Observer {
         Platform.runLater(() -> {
             for (Pane parent : parents) {
                 for (int j = 0; j < parent.getChildren().size(); j++) {
-                    ((ToggleButton)parent.getChildren().get(j)).setOnAction(null);
-                    ((ToggleButton)parent.getChildren().get(j)).setSelected(false);
+                    ((ToggleButton) parent.getChildren().get(j)).setOnAction(null);
+                    ((ToggleButton) parent.getChildren().get(j)).setSelected(false);
                     parent.getChildren().get(j).setEffect(null);
-                    }
                 }
+            }
             yes.setVisible(false);
             no.setVisible(false);
             valueChoice.setVisible(false);
