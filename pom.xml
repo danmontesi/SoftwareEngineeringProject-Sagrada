@@ -77,7 +77,31 @@
 
         <plugins>
 
-            <!-- Export the project as a runnable JAR, with the provided mainClass -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>server.Server</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Export the project as a runnable JAR, with the provided mainClass
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -89,7 +113,7 @@
                         </manifest>
                     </archive>
                 </configuration>
-            </plugin>
+            </plugin> -->
 
             <!-- Jacoco is a code coverage library that allows basic report creation -->
             <plugin>
