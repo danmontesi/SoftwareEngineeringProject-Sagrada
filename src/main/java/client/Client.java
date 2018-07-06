@@ -25,7 +25,7 @@ public class Client{
             System.out.println("Insert IP Address: (press enter to connect to localhost)");
             String ipAddress = scanner.nextLine();
             if(ipAddress.equals("")){
-                ipAddress = CONSTANTS.LOCALHOST;
+                ipAddress = "127.0.0.1";
             }
             System.out.println("Type the username you want to connect with:");
             String username = scanner.nextLine();

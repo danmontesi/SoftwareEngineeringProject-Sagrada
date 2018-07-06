@@ -99,7 +99,7 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>it.polimi.se2018.model.Cell</li>
+<li>server.model.Cell</li>
 </ul>
 </li>
 </ul>
@@ -134,13 +134,13 @@ extends java.lang.Object</pre>
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/Cell.html#Cell-it.polimi.se2018.model.COLOR-int-">Cell</a></span>(<a href="../../../it/polimi/se2018/COLOR.html" title="enum in it.polimi.se2018">COLOR</a>&nbsp;colorConstraint,
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/Cell.html#Cell-server.model.COLOR-int-">Cell</a></span>(<a href="../../../it/polimi/se2018/COLOR.html" title="enum in it.polimi.se2018">COLOR</a>&nbsp;colorConstraint,
     int&nbsp;index)</code>
 <div class="block">Constructor: generates a cell with color constraint</div>
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/Cell.html#Cell-it.polimi.se2018.model.COLOR-int-int-">Cell</a></span>(<a href="../../../it/polimi/se2018/COLOR.html" title="enum in it.polimi.se2018">COLOR</a>&nbsp;colorConstraint,
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/Cell.html#Cell-server.model.COLOR-int-int-">Cell</a></span>(<a href="../../../it/polimi/se2018/COLOR.html" title="enum in it.polimi.se2018">COLOR</a>&nbsp;colorConstraint,
     int&nbsp;valueConstraint,
     int&nbsp;index)</code>
 <div class="block">Constructor: generates a cell with color and value constraints</div>
@@ -204,11 +204,11 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/Cell.html#setAssociatedDie-it.polimi.se2018.model.Die-">setAssociatedDie</a></span>(<a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;toBeSetDie)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/Cell.html#setAssociatedDie-server.model.Die-">setAssociatedDie</a></span>(<a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;toBeSetDie)</code>&nbsp;</td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/Cell.html#setColorConstraint-it.polimi.se2018.model.COLOR-">setColorConstraint</a></span>(<a href="../../../it/polimi/se2018/COLOR.html" title="enum in it.polimi.se2018">COLOR</a>&nbsp;colorConstraint)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/Cell.html#setColorConstraint-server.model.COLOR-">setColorConstraint</a></span>(<a href="../../../it/polimi/se2018/COLOR.html" title="enum in it.polimi.se2018">COLOR</a>&nbsp;colorConstraint)</code>
 <div class="block">Set Cell color constraint</div>
 </td>
 </tr>
@@ -220,7 +220,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/Cell.html#switchDie-it.polimi.se2018.model.Die-">switchDie</a></span>(<a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;toSwitchDie)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/Cell.html#switchDie-server.model.Die-">switchDie</a></span>(<a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;toSwitchDie)</code>
 <div class="block">Switches the cell's associated die with another one
  You cannot switch a die with an empty cell</div>
 </td>
@@ -335,13 +335,13 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>removeDie</h4>
 <pre>public&nbsp;<a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;removeDie()
-              throws <a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in it.polimi.se2018.exceptions">EmptyCellException</a></pre>
+              throws <a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in shared.exceptions">EmptyCellException</a></pre>
 <div class="block">Removes the associated die from the cell</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>old cell's associated die</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in it.polimi.se2018.exceptions">EmptyCellException</a></code> - if the cell is empty</dd>
+<dd><code><a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in shared.exceptions">EmptyCellException</a></code> - if the cell is empty</dd>
 </dl>
 </li>
 </ul>
@@ -352,7 +352,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>switchDie</h4>
 <pre>public&nbsp;<a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;switchDie(<a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;toSwitchDie)
-              throws <a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in it.polimi.se2018.exceptions">EmptyCellException</a></pre>
+              throws <a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in shared.exceptions">EmptyCellException</a></pre>
 <div class="block">Switches the cell's associated die with another one
  You cannot switch a die with an empty cell</div>
 <dl>
@@ -361,7 +361,7 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>old cell's associated die</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in it.polimi.se2018.exceptions">EmptyCellException</a></code> - if the cell is empty</dd>
+<dd><code><a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in shared.exceptions">EmptyCellException</a></code> - if the cell is empty</dd>
 </dl>
 </li>
 </ul>
@@ -372,12 +372,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getAssociatedDie</h4>
 <pre>public&nbsp;<a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;getAssociatedDie()
-                     throws <a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in it.polimi.se2018.exceptions">EmptyCellException</a></pre>
+                     throws <a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in shared.exceptions">EmptyCellException</a></pre>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Die in Cell</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in it.polimi.se2018.exceptions">EmptyCellException</a></code> - if the cell is empty</dd>
+<dd><code><a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in shared.exceptions">EmptyCellException</a></code> - if the cell is empty</dd>
 </dl>
 </li>
 </ul>

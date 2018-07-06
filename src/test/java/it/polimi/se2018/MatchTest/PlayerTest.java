@@ -2,7 +2,7 @@ package it.polimi.se2018.MatchTest;
 
 import server.model.Player;
 import server.model.WindowPatternCard;
-import server.parser.ParserWindowPatternCard;
+import shared.parser.ParserWindowPatternCard;
 import org.junit.Before;
 import org.junit.Test;
 

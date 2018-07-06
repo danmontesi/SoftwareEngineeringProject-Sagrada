@@ -1,4 +1,4 @@
-package server.parser;
+package shared.parser;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

@@ -5,7 +5,7 @@ import shared.commands.client_to_server_command.*;
 import shared.exceptions.EmptyCellException;
 import server.model.*;
 import server.model.public_obj_cards.PublicObjectiveCard;
-import server.parser.ParserWindowPatternCard;
+import shared.parser.ParserWindowPatternCard;
 import shared.utils.ControllerServerInterface;
 import shared.utils.Observer;
 import shared.View;

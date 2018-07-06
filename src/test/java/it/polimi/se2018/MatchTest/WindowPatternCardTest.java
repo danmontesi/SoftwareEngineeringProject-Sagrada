@@ -5,7 +5,7 @@ import server.model.COLOR;
 import server.model.Cell;
 import server.model.Die;
 import server.model.WindowPatternCard;
-import server.parser.ParserWindowPatternCard;
+import shared.parser.ParserWindowPatternCard;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

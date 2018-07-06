@@ -1,4 +1,4 @@
-package server.parser;
+package shared.parser;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -10,9 +10,6 @@ import java.io.*;
  * @author Alessio
  */
 public class ParserSettings {
-    private static final String PATH = System.getProperty("user.dir") + "/src/resources/json/";
-    private BufferedReader br = null;
-    private FileReader fr = null;
 
     /**
      * Extracts json object
@@ -33,22 +30,4 @@ public class ParserSettings {
         return object;
     }
 
-    /**
-     * Instantiates new FileReader and BufferReader
-     * @param path entire path of json file to open
-     * @throws IOException
-     */
-    private void open(String path) throws IOException{
-        fr = new FileReader(path);
-        br = new BufferedReader(fr);
-    }
-
-    /**
-     * Closes FileReader and BufferedReader
-     * @throws IOException
-     */
-    private void close() throws IOException {
-        br.close();
-        fr.close();
-    }
 }

@@ -16,7 +16,7 @@ import java.net.Socket;
  * @author Alessio Molianri
  */
 public class SocketServer {
-    private static final int port = CONSTANTS.SOCKET_PORT;
+    private static final int port = 11111;
 
     ServerSocket serverSocket;
 

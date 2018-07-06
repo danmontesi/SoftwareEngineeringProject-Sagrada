@@ -1,11 +1,10 @@
 package it.polimi.se2018.MatchTest;
 
-import com.sun.org.apache.regexp.internal.RE;
 import shared.commands.client_to_server_command.*;
 import shared.exceptions.EmptyCellException;
 import server.model.*;
 import server.Controller;
-import server.parser.ParserToolcard;
+import shared.parser.ParserToolcard;
 import org.junit.Test;
 
 import java.io.IOException;

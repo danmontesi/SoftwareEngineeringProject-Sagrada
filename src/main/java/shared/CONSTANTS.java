@@ -1,7 +1,7 @@
 package shared;
 
 import com.google.gson.JsonObject;
-import server.parser.ParserSettings;
+import shared.parser.ParserSettings;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -29,7 +29,5 @@ public class CONSTANTS {
     public static final int TURN_TIMER = jConstants.get("TURN_TIMER").getAsInt();
     public static final int WPC_TIMER = jConstants.get("WPC_TIMER").getAsInt();
     public static final int PING_TIMER = jConstants.get("PING_TIMER").getAsInt();
-    public static final String LOCALHOST = jConstants.get("LOCALHOST").getAsString();
     public static final int RMI_PORT = jConstants.get("RMI_PORT").getAsInt();
-    public static final int SOCKET_PORT =jConstants.get("SOCKET_PORT").getAsInt();
 }

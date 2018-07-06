@@ -20,8 +20,8 @@ import java.util.logging.Logger;
  * @author Alessio Molinari
  */
 public class SocketClient implements ServerConnection {
-    private static final int port = CONSTANTS.SOCKET_PORT;
-    private static String host = CONSTANTS.LOCALHOST;
+    private static final int port = 11111;
+    private static String host = "127.0.0.1";
     private Socket socket;
     private ObjectOutputStream output;
     private ObjectInputStream input;

@@ -4,7 +4,7 @@ import server.model.COLOR;
 import server.model.Cell;
 import server.model.Die;
 import server.model.WindowPatternCard;
-import server.parser.ParserPublicObjectiveCard;
+import shared.parser.ParserPublicObjectiveCard;
 import server.model.public_obj_cards.PublicObjectiveCard;
 import org.junit.Assert;
 import org.junit.Before;

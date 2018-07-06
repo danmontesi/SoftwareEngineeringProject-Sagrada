@@ -137,9 +137,9 @@ extends <a href="../../../../../it/polimi/se2018/network/ClientConnection.html" 
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../it/polimi/se2018/network/socket/ClientConnectionSocket.html#ClientConnectionSocket-java.lang.String-int-it.polimi.se2018.view.ClientNetworkHandler-">ClientConnectionSocket</a></span>(java.lang.String&nbsp;host,
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../it/polimi/se2018/network/socket/ClientConnectionSocket.html#ClientConnectionSocket-java.lang.String-int-client.view.ClientNetworkHandler-">ClientConnectionSocket</a></span>(java.lang.String&nbsp;host,
                       int&nbsp;port,
-                      <a href="../../../../../it/polimi/se2018/MVC/ClientNetworkHandler.html" title="class in it.polimi.se2018.view">ClientNetworkHandler</a>&nbsp;clientNetworkHandler)</code>&nbsp;</td>
+                      <a href="../../../../../it/polimi/se2018/MVC/ClientNetworkHandler.html" title="class in client.view">ClientNetworkHandler</a>&nbsp;clientNetworkHandler)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -162,7 +162,7 @@ extends <a href="../../../../../it/polimi/se2018/network/ClientConnection.html" 
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../it/polimi/se2018/network/socket/ClientConnectionSocket.html#sendCommand-it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand-">sendCommand</a></span>(<a href="../../../../../it/polimi/se2018/client_to_server_command/ClientToServerCommand.html" title="class in it.polimi.se2018.commands.client_to_server_command">ClientToServerCommand</a>&nbsp;command)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../it/polimi/se2018/network/socket/ClientConnectionSocket.html#sendCommand-shared.commands.client_to_server_command.ClientToServerCommand-">sendCommand</a></span>(<a href="../../../../../it/polimi/se2018/client_to_server_command/ClientToServerCommand.html" title="class in shared.commands.client_to_server_command">ClientToServerCommand</a>&nbsp;command)</code>&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
@@ -170,7 +170,7 @@ extends <a href="../../../../../it/polimi/se2018/network/ClientConnection.html" 
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../it/polimi/se2018/network/socket/ClientConnectionSocket.html#update-it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand-">update</a></span>(<a href="../../../../../it/polimi/se2018/client_to_server_command/ClientToServerCommand.html" title="class in it.polimi.se2018.commands.client_to_server_command">ClientToServerCommand</a>&nbsp;command)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../it/polimi/se2018/network/socket/ClientConnectionSocket.html#update-shared.commands.client_to_server_command.ClientToServerCommand-">update</a></span>(<a href="../../../../../it/polimi/se2018/client_to_server_command/ClientToServerCommand.html" title="class in shared.commands.client_to_server_command">ClientToServerCommand</a>&nbsp;command)</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -201,7 +201,7 @@ extends <a href="../../../../../it/polimi/se2018/network/ClientConnection.html" 
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a name="ClientConnectionSocket-java.lang.String-int-it.polimi.se2018.view.ClientNetworkHandler-">
+<a name="ClientConnectionSocket-java.lang.String-int-client.view.ClientNetworkHandler-">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -209,7 +209,7 @@ extends <a href="../../../../../it/polimi/se2018/network/ClientConnection.html" 
 <h4>ClientConnectionSocket</h4>
 <pre>public&nbsp;ClientConnectionSocket(java.lang.String&nbsp;host,
                               int&nbsp;port,
-                              <a href="../../../../../it/polimi/se2018/MVC/ClientNetworkHandler.html" title="class in it.polimi.se2018.view">ClientNetworkHandler</a>&nbsp;clientNetworkHandler)</pre>
+                              <a href="../../../../../it/polimi/se2018/MVC/ClientNetworkHandler.html" title="class in client.view">ClientNetworkHandler</a>&nbsp;clientNetworkHandler)</pre>
 </li>
 </ul>
 </li>
@@ -248,26 +248,26 @@ extends <a href="../../../../../it/polimi/se2018/network/ClientConnection.html" 
 </dl>
 </li>
 </ul>
-<a name="sendCommand-it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand-">
+<a name="sendCommand-shared.commands.client_to_server_command.ClientToServerCommand-">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>sendCommand</h4>
-<pre>public&nbsp;void&nbsp;sendCommand(<a href="../../../../../it/polimi/se2018/client_to_server_command/ClientToServerCommand.html" title="class in it.polimi.se2018.commands.client_to_server_command">ClientToServerCommand</a>&nbsp;command)</pre>
+<pre>public&nbsp;void&nbsp;sendCommand(<a href="../../../../../it/polimi/se2018/client_to_server_command/ClientToServerCommand.html" title="class in shared.commands.client_to_server_command">ClientToServerCommand</a>&nbsp;command)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="../../../../../it/polimi/se2018/network/ClientConnection.html#sendCommand-it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand-">sendCommand</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../it/polimi/se2018/network/ClientConnection.html" title="class in it.polimi.se2018.network">ClientConnection</a></code></dd>
+<dd><code><a href="../../../../../it/polimi/se2018/network/ClientConnection.html#sendCommand-shared.commands.client_to_server_command.ClientToServerCommand-">sendCommand</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../it/polimi/se2018/network/ClientConnection.html" title="class in it.polimi.se2018.network">ClientConnection</a></code></dd>
 </dl>
 </li>
 </ul>
-<a name="update-it.polimi.se2018.commands.client_to_server_command.ClientToServerCommand-">
+<a name="update-shared.commands.client_to_server_command.ClientToServerCommand-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>update</h4>
-<pre>public&nbsp;void&nbsp;update(<a href="../../../../../it/polimi/se2018/client_to_server_command/ClientToServerCommand.html" title="class in it.polimi.se2018.commands.client_to_server_command">ClientToServerCommand</a>&nbsp;command)</pre>
+<pre>public&nbsp;void&nbsp;update(<a href="../../../../../it/polimi/se2018/client_to_server_command/ClientToServerCommand.html" title="class in shared.commands.client_to_server_command">ClientToServerCommand</a>&nbsp;command)</pre>
 </li>
 </ul>
 </li>

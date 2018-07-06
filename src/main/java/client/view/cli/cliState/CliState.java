@@ -2,7 +2,7 @@ package client.view.cli.cliState;
 
 import shared.commands.server_to_client_command.*;
 import server.model.WindowPatternCard;
-import server.parser.ParserWindowPatternCard;
+import shared.parser.ParserWindowPatternCard;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -99,7 +99,7 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>it.polimi.se2018.model.RoundTrack</li>
+<li>server.model.RoundTrack</li>
 </ul>
 </li>
 </ul>
@@ -175,7 +175,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/RoundTrack.html#placeDie-it.polimi.se2018.model.Die-">placeDie</a></span>(<a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;toBePlaced)</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/RoundTrack.html#placeDie-server.model.Die-">placeDie</a></span>(<a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;toBePlaced)</code>
 <div class="block">Places a die on the roundTrack (in last position)</div>
 </td>
 </tr>
@@ -187,7 +187,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/RoundTrack.html#switchDie-int-it.polimi.se2018.model.Die-">switchDie</a></span>(int&nbsp;diePosition,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../it/polimi/se2018/RoundTrack.html#switchDie-int-server.model.Die-">switchDie</a></span>(int&nbsp;diePosition,
          <a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;toBeSwitched)</code>
 <div class="block">Switches a die with a given one in the RoundTrack</div>
 </td>
@@ -239,7 +239,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>removeDie</h4>
 <pre>public&nbsp;<a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;removeDie(int&nbsp;diePosition)
-              throws <a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in it.polimi.se2018.exceptions">EmptyCellException</a></pre>
+              throws <a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in shared.exceptions">EmptyCellException</a></pre>
 <div class="block">Removes a die from the roundTrack</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -247,7 +247,7 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>removed die</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in it.polimi.se2018.exceptions">EmptyCellException</a></code> - if there is no die in diePosition</dd>
+<dd><code><a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in shared.exceptions">EmptyCellException</a></code> - if there is no die in diePosition</dd>
 </dl>
 </li>
 </ul>
@@ -259,7 +259,7 @@ extends java.lang.Object</pre>
 <h4>switchDie</h4>
 <pre>public&nbsp;<a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;switchDie(int&nbsp;diePosition,
                      <a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;toBeSwitched)
-              throws <a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in it.polimi.se2018.exceptions">EmptyCellException</a></pre>
+              throws <a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in shared.exceptions">EmptyCellException</a></pre>
 <div class="block">Switches a die with a given one in the RoundTrack</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -268,7 +268,7 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>old die from roundTrack</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in it.polimi.se2018.exceptions">EmptyCellException</a></code> - if there is no die in diePosition</dd>
+<dd><code><a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in shared.exceptions">EmptyCellException</a></code> - if there is no die in diePosition</dd>
 </dl>
 </li>
 </ul>
@@ -307,7 +307,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>getDie</h4>
 <pre>public&nbsp;<a href="../../../it/polimi/se2018/Die.html" title="class in it.polimi.se2018">Die</a>&nbsp;getDie(int&nbsp;cellNumber)
-           throws <a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in it.polimi.se2018.exceptions">EmptyCellException</a></pre>
+           throws <a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in shared.exceptions">EmptyCellException</a></pre>
 <div class="block">Returns associated die</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -315,7 +315,7 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>associated die</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in it.polimi.se2018.exceptions">EmptyCellException</a></code> - if the cell is empty</dd>
+<dd><code><a href="../../../it/polimi/se2018/Exceptions/EmptyCellException.html" title="class in shared.exceptions">EmptyCellException</a></code> - if the cell is empty</dd>
 </dl>
 </li>
 </ul>

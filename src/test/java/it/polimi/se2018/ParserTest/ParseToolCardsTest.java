@@ -1,7 +1,7 @@
 package it.polimi.se2018.ParserTest;
 
 import server.model.ToolCard;
-import server.parser.ParserToolcard;
+import shared.parser.ParserToolcard;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
