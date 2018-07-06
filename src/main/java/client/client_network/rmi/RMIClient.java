@@ -1,10 +1,11 @@
-package shared.client_network.rmi;
+package client.client_network.rmi;
 
 import shared.commands.client_to_server_command.ClientToServerCommand;
 import shared.commands.server_to_client_command.ServerToClientCommand;
 import client.ClientController;
-import shared.server_network.ServerConnection;
-import shared.server_network.rmi.RMIServerInterface;
+import shared.network_interfaces.RMIClientInterface;
+import shared.network_interfaces.ServerConnection;
+import shared.network_interfaces.RMIServerInterface;
 import shared.utils.ControllerClientInterface;
 
 import java.rmi.NotBoundException;
@@ -22,21 +23,6 @@ import java.util.logging.Logger;
  */
 public class RMIClient implements Remote, ServerConnection{
 
-    private static RMIClient instance;
-
-    public static RMIClient getInstance(){
-        if (instance!=null)
-            return instance;
-        else return null;
-    }
-
-    public static RMIClient getInstance(int viewChoice, String ipAddress){
-        if (instance!=null)
-            return null;
-        return instance=new RMIClient(viewChoice, ipAddress);
-    }
-
-
     private Registry registry;
     private RMIServerInterface server;
     private String ipAddress;
@@ -49,7 +35,7 @@ public class RMIClient implements Remote, ServerConnection{
 
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
-    private RMIClient(int viewChoice, String ipAddress){
+    public RMIClient(int viewChoice, String ipAddress){
         clientController = new ClientController(viewChoice, this);
         this.ipAddress = ipAddress;
     }
@@ -59,7 +45,7 @@ public class RMIClient implements Remote, ServerConnection{
         new Thread(() -> {
             try {
                 if (!command.hasUsername()) {
-                    LOGGER.log(Level.INFO, "Connection not open yet: please start connection first");
+                    LOGGER.log(Level.FINE, "Connection not open yet: please start connection first");
                     return;
                 }
                 server.rmiSend(command);
@@ -83,14 +69,16 @@ public class RMIClient implements Remote, ServerConnection{
 
     @Override
     public void startConnection(String username) {
-        try {
-            registry = LocateRegistry.getRegistry(ipAddress, 1099);
-            server = (RMIServerInterface)registry.lookup("RMIImplementation");
-            RMIClientImplementation client = new RMIClientImplementation(this);
-            RMIClientInterface remoteRef = (RMIClientInterface) UnicastRemoteObject.exportObject(client, 0);
-            server.addClient(remoteRef, username);
-        } catch (RemoteException | NotBoundException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
+        new Thread(() -> {
+            try {
+                registry = LocateRegistry.getRegistry(ipAddress, 1099);
+                server = (RMIServerInterface) registry.lookup("RMIImplementation");
+                RMIClientImplementation client = new RMIClientImplementation(this);
+                RMIClientInterface remoteRef = (RMIClientInterface) UnicastRemoteObject.exportObject(client, 0);
+                server.addClient(remoteRef, username);
+            } catch (RemoteException | NotBoundException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
+        }).start();
     }
 }

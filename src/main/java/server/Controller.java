@@ -29,8 +29,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private static final String EMPTY_DRAFTPOOL_INDEX = "The draft pool die you selected doesn't exits. Try again";
     private static final String WRONG_GIVEN_VALUE = "The value you sent is incorrect";
     private static final String NOT_FINISHED_TOOLUSE = "You haven't finished to use the tool";
-
-    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
     private static final String NOT_YOUR_TURN = "It's not your turn, you can't do any action.";
     private static final String ALREADY_MOVE_PERFORMED = "You have already performed a move" ;
     private static final String STILL_USING_TOOL = "You haven't finished to use a ToolCard";
@@ -39,6 +37,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
     private static final String CANT_UNDO_TOOL = "You can't go back with this tool!";
     private static final String CORRECT_UNDO_TOOL = "Correctly got back!";
     private static final String COMPLETED_TOOL_USE = "ToolCard use completed";
+    private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
 
     private Model model;
     private HashMap<String, Player> usernamePlayerMap;
@@ -140,7 +139,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             for (int i = 0; i < localWpc.size(); i++) {
                 localWpcsString.add(localWpc.get(i).wpcPathRepresentation());
                 wpcDifficulties.add(localWpc.get(i).getDifficulty());
-                System.out.println(localWpc.get(i).getCardName());
             }
 
             WindowPatternCard defaultCard = localWpc.get(0); //default wpc in case the player disconnects
@@ -689,7 +687,7 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             try {
                 model.increaseDraftpoolDieValue(toolcardData.getIndexFromDraftPool(), false);
             } catch (EmptyCellException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.WARNING,"Error that can't happen, checked before!");
             }
         }
         toolcardData.getToolCardActions().remove(0);
@@ -909,7 +907,14 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             userViewMap.get(playerUsername).continueTurnMenu(hasPerformedMove, hasUsedTool);
             return;
         }
-        toolcardData.setAnotherAction(command.isAnother());
+
+        if (command.isAnother()) {
+            toolcardData.setAnotherAction(true);
+        }
+        else{
+            toolcardData.setAnotherAction(false);
+        }
+
         toolcardData.getToolCardActions().remove(0);
         executeAction();
     }
@@ -1081,11 +1086,11 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
             return;
         }
         if (toolcardData.hasDoneMove()) {
-            Die temp = null; //indice WPC ORA
+            Die temp = null;
             try {
                 temp = usernamePlayerMap.get(currentPlayer).getWindowPatternCard().removeDie(toolcardData.getIndexMovedDie());
             } catch (EmptyCellException e) {
-                System.out.println("Should not happen, just checked before");
+                LOGGER.log(Level.WARNING,"Should not happen, just checked before");
             }
             switch (toolcardData.getSource()) {
                 case "WPC":
@@ -1153,10 +1158,6 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         return hasUsedTool;
     }
 
-    public boolean isHasPerformedMove() {
-        return hasPerformedMove;
-    }
-
     public String getCurrentPlayer() {
 
         return currentPlayer;
@@ -1182,8 +1183,8 @@ public class Controller implements Observer, ControllerServerInterface { //Obser
         usernameTimerMap.clear();
     }
 
-    public Map<String, Timer> getUsernameTimerMap() {
-        return usernameTimerMap;
+    public HashMap<String, Player> getUsernamePlayerMap() {
+        return usernamePlayerMap;
     }
 
     @Override

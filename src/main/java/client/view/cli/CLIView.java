@@ -69,6 +69,10 @@ public class CLIView extends View implements Runnable {
     }
 
     @Override
+    public void endGame() {
+        currentState = INPUT_STATE.END_GAME;
+    }
+    @Override
     public synchronized void otherPlayerTurn(String username) {
         currentState = INPUT_STATE.NOT_YOUR_TURN;
         System.out.println("It's " + username + "'s turn");
@@ -100,22 +104,24 @@ public class CLIView extends View implements Runnable {
 
     @Override
     public synchronized void loseMessage(Integer position, List<String> scores) {
-        System.out.println("You lost! Your rank is " + position + "\n");
+        System.out.println("You lost! :( Your rank is " + position + "\n");
         System.out.println("Here other players ordered scores:");
         for (String score : scores) {
-            score = score.replace("_", " ");
+            score = score.replace("_", "\t");
             System.out.println(score);
         }
+        System.out.println("Thanks for playing Sagrada!");
     }
 
     @Override
     public void winMessage(List<String> scores) {
-        System.out.println("Congratulation! You won!");
+        System.out.println("Congratulation! :) You won!");
         System.out.println("Here other players ordered scores:\n");
         for (String score : scores) {
-            score = score.replace("_", " ");
+            score = score.replace("_", "\t");
             System.out.println(score);
         }
+        System.out.println("Thanks for playing Sagrada!");
     }
 
     @Override
@@ -293,9 +299,8 @@ public class CLIView extends View implements Runnable {
                 }
                 break;
             case END_GAME:
-                if (checkCorrectInput(input, 1, 2)) {
-
-                }
+               //game is over
+                break;
         }
     }
 

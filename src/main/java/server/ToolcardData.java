@@ -26,7 +26,6 @@ public class ToolcardData {
     private boolean increaseValue;
     private boolean anotherAction;
 
-    private Model oldModel;
     private int requiredTokensForLastToolUse;
     private int lastUsedToolCardNum;
 
@@ -39,17 +38,6 @@ public class ToolcardData {
         this.toolCardName = toolCardName;
         this.toolCardActions = toolCardActions;
         this.playerUsingTool = playerUsingTool;
-    }
-
-    public Model removeOldModel(){
-        Model temp = oldModel;
-        oldModel = null;
-        return temp;
-    }
-
-    void setOldModel(Model oldModel) {
-        Model newModel = new Model(oldModel);
-        this.oldModel = newModel;
     }
 
     void setRequiredTokensForLastToolUse(int requiredTokensForLastToolUse) {
@@ -129,7 +117,7 @@ public class ToolcardData {
         return toolCardActions;
     }
 
-    public String getToolCardName() {
+    String getToolCardName() {
         return toolCardName;
     }
 
@@ -173,7 +161,4 @@ public class ToolcardData {
         hasDoneMove=true;
     }
 
-    public Player getPlayerUsingTool() {
-        return playerUsingTool;
-    }
 }

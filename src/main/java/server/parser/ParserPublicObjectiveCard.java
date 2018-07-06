@@ -41,7 +41,7 @@ public class ParserPublicObjectiveCard {
                 PublicObjectiveCard instance = (PublicObjectiveCard)constructor.newInstance(cardName, description, score);
                 cards.add(instance);
             } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                e.printStackTrace();
+                //nothing
             }
         }
     return cards;

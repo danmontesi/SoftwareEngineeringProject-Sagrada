@@ -1,60 +1,6 @@
 {
   "ToolCards":[
     {
-      "name": "Roughing Forceps",
-      "description": "After drafting, increase or decrease the value of the drafted die by 1. 1 may not change to 6, or 6 to 1.",
-      "actions": [["ASK_PICK_DIE", "DP"], ["ASK_INCREASE_DECREASE"], ["DO_INCREASE_DECREASE"]],
-      "reversible": true
-    },
-    {
-      "name": "Eglomise Brush",
-      "description": "Move any one die in your window ignoring the color restrictions. You must obey all other placement restrictions.",
-      "actions": [["ASK_PICK_DIE", "WPC"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC", "COLOR"]],
-      "reversible": true
-    },
-    {
-      "name": "Copper Foil Reamer",
-      "description": "Move any one die in your window ignoring shade restrictions. You must obey all other placement restrictions.",
-      "actions": [["ASK_PICK_DIE", "WPC"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC", "VALUE"]],
-      "reversible": true
-    },
-    {
-      "name": "Lathekin",
-      "description": "Move exactly two dice, obeying all placement restrictions.",
-      "actions": [["ASK_PICK_DIE", "WPC"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC", "NONE"], ["ASK_PICK_DIE", "WPC"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC", "NONE"]],
-      "reversible": true
-    },
-    {
-      "name": "Circular Cutter",
-      "description": "After drafting, swap the drafted die with a die from the Round Track.",
-      "actions": [["ASK_PICK_DIE", "DP"], ["ASK_PICK_DIE", "RT"], ["DO_SWAP", "DP", "RT"]],
-      "reversible": true
-    },
-    {
-      "name": "Firm Pastry Brush",
-      "description": "After drafting, re-roll che drafted die. If it cannot be placed, return it to the Draft Pool.",
-      "actions": [["ASK_PICK_DIE", "DP"], ["DO_SHUFFLE"], ["CHECK_POSSIBLE_PLACEMENT"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "DP", "NONE"]],
-      "reversible": false
-    },
-    {
-      "name": "Gavel",
-      "description": "Re-roll all dice in the Draft Pool. This may only be used on your second turn before drafting.",
-      "actions": [["DO_SHUFFLE_ALL"]],
-      "reversible": false
-    },
-    {
-      "name": "Wheels Pincher",
-      "description": "After your first turn, immediately draft a die. Skip your next turn this round.",
-      "actions": [["ASK_PICK_DIE", "DP"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "DP", "NONE"]],
-      "reversible": true
-    },
-    {
-      "name": "Cork Line",
-      "description": "After drafting, place the die in a spot that is not adjacent to another die. You must obey all other placement restrictions.",
-      "actions": [["ASK_PICK_DIE", "DP"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "DP", "ADJACENT"]],
-      "reversible": true
-    },
-    {
       "name": "Diamond Swab",
       "description": "After drafting, flip the die to its opposite side. 6 flips to 1, 5 to 2, 4 to 3, etc.",
       "actions": [["ASK_PICK_DIE", "DP"], ["DO_FLIP"]],
@@ -69,7 +15,7 @@
     {
       "name": "Manual Cutter",
       "description": "Move up to two dice of the same color that match the color of a die on the Round Track. You must obey all placement restrictions.",
-      "actions": [["ASK_PICK_DIE", "WPC"], ["CHECK_EXISTS_COLOR_RT"], ["DO_SAVE_COLOR"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC", "NONE"], ["ASK_ANOTHER_ACTION"], ["ASK_PICK_DIE", "WPC"], ["CHECK_SAME_COLOR"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC", "NONE"]],
+      "actions": [["ASK_PICK_DIE", "WPC"], ["CHECK_EXISTS_COLOR_RT"], ["DO_SAVE_COLOR"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC", "NONE"], ["ASK_ANOTHER_ACTION"],["CHECK_ANOTHER_ACTION"], ["ASK_PICK_DIE", "WPC"], ["CHECK_SAME_COLOR"], ["ASK_PLACE_DIE"], ["DO_PLACE_DIE", "WPC", "NONE"]],
       "reversible": true
     }
   ]

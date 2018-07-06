@@ -204,7 +204,6 @@ public class Model extends Observable { //Observable of View
             List<List<String>> otherPlayersWpcs = refreshWPCs(view);
             List<String> personalWpc = otherPlayersWpcs.remove(0);
             view.updateWpc(new RefreshWpcCommand(personalWpc, otherPlayersWpcs));
-            LOGGER.log(Level.INFO, "Notificando una V.V. delle nuove WPC: " + view.getUsername());
         }
     }
 
@@ -225,7 +224,6 @@ public class Model extends Observable { //Observable of View
     private void notifyRefreshRoundTrack() {
         List<String> roundTrackString = refreshRoundTrack();
         for (Observer observer : observers) {
-            LOGGER.log(Level.INFO, "Notificando una V.V. del nuovo round track");
             ((View) observer).updateRoundTrack(new RefreshRoundTrackCommand(roundTrackString));
         }
     }
@@ -237,7 +235,6 @@ public class Model extends Observable { //Observable of View
     }
 
     private void notifyRefreshTokens() {
-        LOGGER.log(Level.INFO, "Notificando una V.V. dei nuovi tokens");
         List<Integer> tokensToolCards = refreshToolCardTokens(); //Ordered
 
         for (Observer observer : observers) {

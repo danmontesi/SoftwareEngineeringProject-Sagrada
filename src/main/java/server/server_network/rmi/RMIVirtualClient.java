@@ -1,8 +1,8 @@
-package shared.server_network.rmi;
+package server.server_network.rmi;
 
 
-import shared.client_network.ClientConnection;
-import shared.client_network.rmi.RMIClientInterface;
+import shared.network_interfaces.ClientConnection;
+import shared.network_interfaces.RMIClientInterface;
 import server.Server;
 import shared.commands.server_to_client_command.ServerToClientCommand;
 
@@ -28,7 +28,6 @@ public class RMIVirtualClient implements ClientConnection{
                 if (entry.getValue().equals(this)) {
                     disconnecting = entry.getKey();
                     Server.disconnectClient(disconnecting);
-                    System.out.println("client " + entry.getKey() + " disconnected");
                     break;
                 }
             }

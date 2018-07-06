@@ -1,8 +1,8 @@
 package client.view.gui;
 
-import shared.client_network.rmi.RMIClient;
-import shared.client_network.socket.SocketClient;
-import shared.server_network.ServerConnection;
+import client.client_network.rmi.RMIClient;
+import client.client_network.socket.SocketClient;
+import shared.network_interfaces.ServerConnection;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -77,7 +77,7 @@ public class LoginController implements Observer {
             usernameField.setEffect(null);
             ServerConnection server;
             if (getConnection().equals("RMI")) {
-                server = RMIClient.getInstance(2, ipAddressField.getText());
+                server = new RMIClient(2, ipAddressField.getText());
                 server.startConnection(getUsername());
             } else if (getConnection().equals("Socket")) {
                 server = new SocketClient(2, ipAddressField.getText());

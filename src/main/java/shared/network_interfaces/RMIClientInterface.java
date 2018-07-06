@@ -1,4 +1,4 @@
-package shared.client_network.rmi;
+package shared.network_interfaces;
 
 
 import shared.commands.server_to_client_command.ServerToClientCommand;

@@ -1,8 +1,8 @@
-package shared.server_network.socket;
+package server.server_network.socket;
 
 
 import shared.commands.client_to_server_command.ClientToServerCommand;
-import shared.client_network.ClientConnection;
+import shared.network_interfaces.ClientConnection;
 import server.Server;
 import shared.commands.server_to_client_command.ServerToClientCommand;
 
@@ -36,7 +36,6 @@ public class SocketVirtualClient extends Thread implements ClientConnection {
                     break;
                 }
             }
-            e.printStackTrace();
         }
     }
 
@@ -47,9 +46,6 @@ public class SocketVirtualClient extends Thread implements ClientConnection {
                 ClientToServerCommand command = (ClientToServerCommand) input.readObject();
                 Server.handle(command);
             } catch (IOException e) {
-                //if the connection has not been stopped compliantly but consequently to
-                //a thrown exception, it is necessary to close the connection with socket.close()
-                //in order to avoid an infinite loop
                 try{
                     socket.close();
                 } catch (IOException f){

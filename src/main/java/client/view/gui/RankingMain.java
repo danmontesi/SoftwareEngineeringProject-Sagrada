@@ -14,7 +14,6 @@ public class RankingMain extends Application {
         primaryStage.setTitle("Ranking");
         primaryStage.setScene(new Scene(root, 570, 520));
         primaryStage.show();
-
     }
 
     public static void main (String[] args) {

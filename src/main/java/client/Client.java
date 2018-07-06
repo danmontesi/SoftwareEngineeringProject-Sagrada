@@ -1,17 +1,19 @@
 package client;
 
 
-import shared.client_network.rmi.RMIClient;
-import shared.client_network.socket.SocketClient;
-import shared.server_network.ServerConnection;
+import client.client_network.rmi.RMIClient;
+import client.client_network.socket.SocketClient;
+import shared.CONSTANTS;
+import shared.network_interfaces.ServerConnection;
 import client.view.gui.LoginMain;
 
-import java.rmi.server.RMIClassLoader;
 import java.util.Scanner;
 
 public class Client{
+
     /* Default choices: GUI and Socket
        In case of incorrect input no exception is thrown: default choices are applied.*/
+
     public static void main(String[] args) {
         ServerConnection server;
         Scanner scanner = new Scanner(System.in);
@@ -23,13 +25,13 @@ public class Client{
             System.out.println("Insert IP Address: (press enter to connect to localhost)");
             String ipAddress = scanner.nextLine();
             if(ipAddress.equals("")){
-                ipAddress = "127.0.0.1";
+                ipAddress = CONSTANTS.LOCALHOST;
             }
             System.out.println("Type the username you want to connect with:");
             String username = scanner.nextLine();
 
             if(connectionType.equals("2")){
-                server = RMIClient.getInstance(1, ipAddress);
+                server = new RMIClient(1, ipAddress);
             } else {
 
                 server = new SocketClient(1, ipAddress);

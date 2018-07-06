@@ -2,7 +2,7 @@ package client;
 
 import shared.commands.client_to_server_command.ClientToServerCommand;
 import shared.commands.server_to_client_command.*;
-import shared.server_network.ServerConnection;
+import shared.network_interfaces.ServerConnection;
 import shared.utils.ControllerClientInterface;
 import shared.utils.Observable;
 import shared.utils.Observer;
@@ -18,16 +18,18 @@ import java.util.logging.Logger;
 public class ClientController extends Observable implements Observer, ControllerClientInterface {
 
     /**
-     * La classe che viene in contatto con la connessione (Socket o RMI)
-     *
+     * The ClientController is the Controller who receives the command from View and send it
+     * to the real Controller using a ServerConnection that created it.
      * First role of ClientController is to send commands to Server requesting a move, or a Tool use.
+     * Second role is to send commands from Client to Server to the real controller.
      *
+     * @author Daniele Montesi
      */
+
     private View view;
     private String username;
     private ServerConnection connection;
     private static final Logger LOGGER = Logger.getLogger(Class.class.getName());
-
 
     /**
      * Constructor
@@ -40,12 +42,11 @@ public class ClientController extends Observable implements Observer, Controller
         else{
             this.view = new GUIView(this);
         }
-
     }
 
-    // Main method for sending commands to Server
-
-
+    /**
+     * @param command command to send
+     */
     public void update(Object command) {
         try {
             ClientToServerCommand castedCommand = (ClientToServerCommand) command;
@@ -60,74 +61,43 @@ public class ClientController extends Observable implements Observer, Controller
 
     @Override
     public void applyCommand(ChooseWindowPatternCardCommand command){
-        //Splitting the string obtaining the correct Wpc
         view.chooseWindowPatternCardMenu(command.getWpcsInStrings(), command.getPrivateObjectiveCard(), command.getWpcDifficulties());
     }
 
-    /**
-     * It shows correct authentication printing the message
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     * @param command Command received
-     */
     @Override
     public void applyCommand(AuthenticatedCorrectlyCommand command){
-        //AGGIORNO USERNAME
         this.username = command.getMessage();
         view.correctAuthenthication(command.getMessage());
     }
 
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
     @Override
     public void applyCommand(InvalidActionCommand command){
         view.invalidActionMessage(command.getMessage());
     }
 
-    /**
-     * The command created an ArrayList of strings in the format "PlayerUsername,playerScore"
-     * It gives it to the View.
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
     @Override
     public void applyCommand(WinCommand command){
         view.winMessage(command.getScores());
 
     }
 
-    /**
-     * The command created an ArrayList of strings in the format "PlayterUsername,playerScore"
-     * It gives it to the View.
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
     @Override
     public void applyCommand(LoseCommand command){
         view.loseMessage(command.getPosition(), command.getScores());
-
     }
 
-    /**
-     * Refresh the player model and calls a function of the view that modifies the board with the edits
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
     @Override
     public void applyCommand(RefreshBoardCommand command) {
         view.updateBoard(command);
     }
 
 
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
     @Override
     public void applyCommand(StartPlayerTurnCommand command){
         view.startTurnMenu();
     }
 
 
-    /**
-     * Applies commands coming from the Server, calling the right graphical methods of the View
-     */
     @Override
     public void applyCommand(ContinueTurnCommand command){
         LOGGER.log(Level.FINE, "Arrivo a continueturn sul clientController");
@@ -151,7 +121,6 @@ public class ClientController extends Observable implements Observer, Controller
 
     @Override
     public void applyCommand(TimeOutCommand command){
-        LOGGER.log(Level.FINE,"Arrives to  clientContorller" );
         view.timeOut();
     }
 

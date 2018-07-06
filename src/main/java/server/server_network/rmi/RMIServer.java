@@ -1,4 +1,6 @@
-package shared.server_network.rmi;
+package server.server_network.rmi;
+
+import shared.CONSTANTS;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -11,7 +13,7 @@ import java.rmi.registry.Registry;
  * @author Alessio Molinari
  */
 public class RMIServer {
-    private static int port = 1099;
+    private static int port = CONSTANTS.RMI_PORT;
 
     /**
      * Starts listening
@@ -23,9 +25,9 @@ public class RMIServer {
             registry.rebind("RMIImplementation", serverImplementation);
             System.out.println("Listening RMI, address: " + InetAddress.getLocalHost() + " port: " + port);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            //nothing
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            //nothing
         }
     }
 }

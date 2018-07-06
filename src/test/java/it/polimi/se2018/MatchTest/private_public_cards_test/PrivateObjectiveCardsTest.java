@@ -114,9 +114,8 @@ public class PrivateObjectiveCardsTest {
 
         correctPoints = new Integer[testCards.size()];
         int counter= 0;
-        //System.out.println("Ok");
 
-        //TODO Assegna i valori corretti all'array per il controllo del corretto calcolo score
+
         //Color purple
         correctPoints[counter]=0;
         counter++;
@@ -149,8 +148,6 @@ public class PrivateObjectiveCardsTest {
 
     @Test
     public void testThird(){
-
-        //System.out.println(correctPoints[2]); //TODO Correggi il NullPointerException
         assertEquals(6, testCards.get(2).calculateScore(myWPCard));
 
     }

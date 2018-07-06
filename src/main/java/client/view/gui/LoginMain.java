@@ -20,7 +20,6 @@ public class LoginMain extends Application {
             System.exit(0);
         });
 
-
     }
 
     public static void main(String[] args) {

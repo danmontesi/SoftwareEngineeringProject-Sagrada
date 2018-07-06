@@ -1,6 +1,7 @@
-package shared.client_network.rmi;
+package client.client_network.rmi;
 
 import shared.commands.server_to_client_command.ServerToClientCommand;
+import shared.network_interfaces.RMIClientInterface;
 
 public class RMIClientImplementation implements RMIClientInterface {
 

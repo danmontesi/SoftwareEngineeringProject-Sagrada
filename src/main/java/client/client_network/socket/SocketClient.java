@@ -1,11 +1,11 @@
-package shared.client_network.socket;
+package client.client_network.socket;
 
 
+import shared.CONSTANTS;
 import shared.commands.client_to_server_command.ClientToServerCommand;
-import shared.commands.server_to_client_command.PingConnectionTester;
 import shared.commands.server_to_client_command.ServerToClientCommand;
 import client.ClientController;
-import shared.server_network.ServerConnection;
+import shared.network_interfaces.ServerConnection;
 import shared.utils.ControllerClientInterface;
 
 import java.io.IOException;
@@ -20,8 +20,8 @@ import java.util.logging.Logger;
  * @author Alessio Molinari
  */
 public class SocketClient implements ServerConnection {
-    private static final int port = 11111;
-    private static String host = "127.0.0.1";
+    private static final int port = CONSTANTS.SOCKET_PORT;
+    private static String host = CONSTANTS.LOCALHOST;
     private Socket socket;
     private ObjectOutputStream output;
     private ObjectInputStream input;
@@ -38,7 +38,7 @@ public class SocketClient implements ServerConnection {
     public void send(ClientToServerCommand command) {
         try {
             if (!command.hasUsername()){
-                LOGGER.log(Level.INFO, "Connection not open yet: please start connection first");
+                LOGGER.log(Level.FINE, "Connection not open yet: please start connection first");
                 return;
             }
             output.writeObject(command);
@@ -55,22 +55,21 @@ public class SocketClient implements ServerConnection {
             socket = new Socket(host, port);
             output = new ObjectOutputStream(socket.getOutputStream());
             input = new ObjectInputStream(socket.getInputStream());
-            //invia l'username al server per verificarne la validità
+            //Send username to verify if it's correct
             output.writeObject(username);
             output.flush();
-
 
 
             new Thread(() -> {
                 while (isAlive){
                     try {
                         ServerToClientCommand command = (ServerToClientCommand) input.readObject();
-                        if (!(command instanceof PingConnectionTester)) {
-                            ServerToClientCommand toDispatch = command;
-                            clientController.dispatchCommand(toDispatch);
+                        if (command.hasMessage() && command.getMessage().equals("Ping")) {
+                            LOGGER.log(Level.FINE,"Arrived ping from server");
                         }
                         else {
-                            LOGGER.log(Level.FINE,"Arrived ping from server");
+                            ServerToClientCommand toDispatch = command;
+                            clientController.dispatchCommand(toDispatch);
                         }
                     } catch (IOException e) {
                         LOGGER.log(Level.SEVERE, e.getMessage(), e);

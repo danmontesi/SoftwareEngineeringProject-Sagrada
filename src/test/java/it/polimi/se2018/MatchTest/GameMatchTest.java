@@ -1,5 +1,6 @@
 package it.polimi.se2018.MatchTest;
 
+import com.sun.org.apache.regexp.internal.RE;
 import shared.commands.client_to_server_command.*;
 import shared.exceptions.EmptyCellException;
 import server.model.*;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public class GameMatchTest {
@@ -135,6 +137,7 @@ public class GameMatchTest {
         setKnownBoard();
         skipRound();
 
+        controller.getModel().getDraftPool().fillDraftPool(fillWithColoredDice("rrrrrrr", 1));
         ClientToServerCommand command = new MoveChoiceDiePlacement(11, 1);
         sendCommandToController(command, "Daniele");
 
@@ -146,7 +149,6 @@ public class GameMatchTest {
 
         command = new ReplyIncreaseDecrease(true); //Increase the die
         sendCommandToController(command, "Daniele");
-//todo        assertEquals(true, controller.isHasUsedTool());
     }
 
     @Test
@@ -157,11 +159,11 @@ public class GameMatchTest {
         skipRound();
 
         ClientToServerCommand command;
-
-        command = new MoveChoiceToolCard(2);
+        controller.getModel().getDraftPool().fillDraftPool(fillWithColoredDice("rrrrrrr", 1));
+        command = new MoveChoiceToolCard(1);
         command.setUsername("Daniele");
         controller.update(command);
-        command = new ReplyPickDie(1);
+        command = new ReplyPickDie(0);
         sendCommandToController(command, "Daniele");
 
         command = new ReplyDieValue(4); //Set this value for extracted die
@@ -170,7 +172,40 @@ public class GameMatchTest {
         command = new ReplyPlaceDie(1); //Increase the die
         sendCommandToController(command, "Daniele");
 
-//        assertEquals(true, controller.isHasUsedTool());
+    }
+
+    @Test
+    public void testUseManualCutter(){
+        setUpController();
+        setUpWpcChoice();
+        setKnownBoard();
+        skipRound();
+
+        System.out.println("Current:" +controller.getCurrentPlayer());
+        ClientToServerCommand command;
+        controller.getUsernamePlayerMap().get("Daniele").getWindowPatternCard().placeDie(new Die(COLOR.RED), 1, false,false,false);
+
+        controller.getModel().getRoundTrack().placeDie(new Die(COLOR.RED));
+
+        command = new MoveChoiceToolCard(2);
+        command.setUsername("Daniele");
+        controller.update(command);
+
+        command = new ReplyPickDie(0);
+        sendCommandToController(command, "Daniele");
+
+        command = new ReplyPlaceDie(1);
+        sendCommandToController(command, "Daniele");
+
+        command = new ReplyAnotherAction(true);
+        sendCommandToController(command, "Daniele");
+
+        command = new ReplyPickDie(1);
+        sendCommandToController(command, "Daniele");
+
+        command = new ReplyPlaceDie(0); //Increase the die
+        sendCommandToController(command, "Daniele");
+
     }
 
     private void sendCommandToController(ClientToServerCommand command, String username){
@@ -182,6 +217,8 @@ public class GameMatchTest {
     private void skipRound(){
         ClientToServerCommand command;
         command = new MoveChoicePassTurn();
+        command.setUsername("Daniele");
+        controller.update(command);
         command.setUsername("Nives");
         controller.update(command);
         command.setUsername("Daniele");
@@ -194,6 +231,20 @@ public class GameMatchTest {
         controller.update(command);
         command.setUsername("Nives");
         controller.update(command);
+    }
+
+    private void skipSecondRound(){
+        ClientToServerCommand command;
+        command = new MoveChoicePassTurn();
+        command.setUsername("Daniele");
+        controller.update(command);
+        command.setUsername("Nives");
+        controller.update(command);
+        command.setUsername("Alessio");
+        controller.update(command);
+        command.setUsername("Alessio");
+        controller.update(command);
+
     }
 
 

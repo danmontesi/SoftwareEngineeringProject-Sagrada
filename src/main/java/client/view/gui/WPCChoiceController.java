@@ -155,12 +155,9 @@ public class WPCChoiceController extends Observable implements Observer {
             priocname.setText(priOC);
             prioc.setImage(image1);
             for (int i=0; i<names.size(); i++) {
-                System.out.println(names.get(i));
                 String img = names.get(i);
                 String path = "/client/WPC/" + img + ".jpg";
-                System.out.println(path);
                 Image image = new Image(getClass().getResource(path).toExternalForm());
-                System.out.println(image);
                 ImageView iv = new ImageView(image);
                 iv.setFitHeight(184);
                 iv.setFitWidth(230);

@@ -1,7 +1,8 @@
-package shared.server_network.socket;
+package server.server_network.socket;
 
 
 import server.Server;
+import shared.CONSTANTS;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,7 +16,7 @@ import java.net.Socket;
  * @author Alessio Molianri
  */
 public class SocketServer {
-    private static final int port = 11111;
+    private static final int port = CONSTANTS.SOCKET_PORT;
 
     ServerSocket serverSocket;
 
@@ -33,24 +34,22 @@ public class SocketServer {
                         Socket socket;
                         try {
                             socket = serverSocket.accept();
-                            System.out.println("Accettato Socket");
                             ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
                             output.flush();
                             ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
                             String username = (String) input.readObject();
-                            System.out.println("Letto username: "+ username);
                             Server.addClientInterface(socket, input, output, username);
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            //nothing
                         } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
+                            //nothing
                         }
 
                     }
                 }
             }.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            //nothing
         }
     }
 

@@ -1,8 +1,7 @@
-package shared.server_network.rmi;
+package shared.network_interfaces;
 
 
 import shared.commands.client_to_server_command.ClientToServerCommand;
-import shared.client_network.rmi.RMIClientInterface;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

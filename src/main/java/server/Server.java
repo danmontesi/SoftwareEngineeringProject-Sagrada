@@ -1,15 +1,14 @@
 package server;
 
-
 import shared.CONSTANTS;
-import shared.server_network.rmi.RMIServer;
-import shared.server_network.socket.SocketServer;
-import shared.server_network.socket.SocketVirtualClient;
+import server.server_network.rmi.RMIServer;
+import server.server_network.socket.SocketServer;
+import server.server_network.socket.SocketVirtualClient;
 import shared.commands.client_to_server_command.ClientToServerCommand;
 import shared.commands.server_to_client_command.*;
-import shared.client_network.ClientConnection;
-import shared.client_network.rmi.RMIClientInterface;
-import shared.server_network.rmi.RMIVirtualClient;
+import shared.network_interfaces.ClientConnection;
+import shared.network_interfaces.RMIClientInterface;
+import server.server_network.rmi.RMIVirtualClient;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -59,14 +58,18 @@ public class Server {
                 try {
                     Thread.sleep(CONSTANTS.PING_TIMER);
                 } catch (InterruptedException e) {
-                    System.out.println("Problem!");
                     Thread.currentThread().interrupt();
                 }
-                for (String user : connectedClients.keySet()) {
-                    System.out.println("Now sending ping to->" + user);
-                    connectedClients.get(user).notifyClient(new PingConnectionTester());  //Checking if still connected(for RMI)
+                try {
+                    for (String user : connectedClients.keySet()) {
+                        LOGGER.log(Level.FINE, "Now sending ping to->" + user);
+                        connectedClients.get(user).notifyClient(new PingConnectionTester());  //Checking if still connected(for RMI)
+                    }
+                    removeInactiveControllers();
                 }
-                removeInactiveControllers();
+                catch (NullPointerException e){
+                    //nothing, user deleted before
+                }
             }
         }
         ).start();
@@ -202,13 +205,14 @@ public class Server {
             removeClient(username);
             if (waitingClients.size() == 1) {
                 timer.cancel();
+                System.out.println("There are less than 2 players in the WaitingList, Timer cancelled");
             }
             return;
         }
         if(connectedClients.containsKey(username)){
             connectedClients.remove(username);
             disconnectedClients.add(username);
-            updateDisconnectedUser(username);
+            updateDisconnectedUser(username, false);
             int counter = 0;
             String lastPlayer = null;
             Controller game = getControllerFromUsername(username);
@@ -221,7 +225,7 @@ public class Server {
             if (counter==1){
                 game.getUserViewMap().get(lastPlayer).endGame();
                 ArrayList<String> fakeScores = new ArrayList<>();
-                fakeScores.add("1_" + lastPlayer + "_999999");
+                fakeScores.add("1_" + lastPlayer + "_999");
                 game.getUserViewMap().get(lastPlayer).winMessage(fakeScores);
                 game.setInactive();
                 removeClient(lastPlayer);
@@ -236,7 +240,7 @@ public class Server {
      */
     private static synchronized void addToWaitingClients(String username){
         waitingClients.add(username);
-        System.out.println("SERVER: Connected new player name "+ username);
+        System.out.println("Connected new player, whose name is "+ username);
         notifyNewConnectedPlayer(username);
         if (waitingClients.size() == 2){
             System.out.println("Starting timer");
@@ -245,6 +249,7 @@ public class Server {
                 new TimerTask() {
                     @Override
                     public void run() {
+                        System.out.println("Timer expired! \nStarting a new match!");
                         startNewGame();
                     }
                 },
@@ -280,7 +285,7 @@ public class Server {
     /**
      * Sends a game board refresh to reconnected players
      */
-    static void refreshBoardAndNotifyReconnectedPlayer(String username){
+    private static void refreshBoardAndNotifyReconnectedPlayer(String username){
         for (Controller game : activeGames){
             for (String user : game.getUserViewMap().keySet()){
                 if (username.equals(user)){
@@ -295,7 +300,8 @@ public class Server {
                     }
                 }
                 else{
-                    game.getUserViewMap().get(user).messageBox("Player " + username + " has reconnected");
+                    System.out.println("Player " + username + "has reconnected :)");
+                    game.getUserViewMap().get(user).messageBox("Player " + username + " has reconnected :)");
                 }
             }
         }
@@ -304,16 +310,23 @@ public class Server {
     /**
      * Notifies other players of the disconnection of a player
      */
-    static void updateDisconnectedUser(String username){
+    static void updateDisconnectedUser(String username, boolean isTurnStartNotification){
         try {
             Controller game = getControllerFromUsername(username);
             for (String usernameToNotify : game.getUserViewMap().keySet()) {
-                if (!username.equals(usernameToNotify))
-                    game.getUserViewMap().get(usernameToNotify).messageBox("Player " + username + " has disconnected");
+                if (!username.equals(usernameToNotify)) {
+                    if (isTurnStartNotification){
+                        game.getUserViewMap().get(usernameToNotify).messageBox(username + " is disconnected so skips its turn");
+                    }
+                    else {
+                        System.out.println("Player " + username + "has disconnected :(");
+                        game.getUserViewMap().get(usernameToNotify).messageBox("Player " + username + " has disconnected :(");
+                    }
+                }
             }
         }
         catch (NoSuchElementException e){
-            LOGGER.log(Level.INFO,"Controller just deleted");
+            LOGGER.log(Level.FINE,"Controller just deleted");
         }
     }
 
