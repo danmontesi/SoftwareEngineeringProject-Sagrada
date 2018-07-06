@@ -1,2 +1,18 @@
-FOR JavaDoc ->
-https://github.com/migo3/ing-sw-2018-migotto-molinari-montesi/tree/master/Doc
+Project: Sagrada
+
+Team members:
+- Nives Migotto
+- Alessio Molinari
+- Daniele Montesi
+
+We have implemented:
+- Complete Rules
+- Command Line Interface
+- Graphical User Interface
+- RMI
+- Socket
+
+1 F.A:
+Multiple games
+
+... more information to come out, stay tuned
